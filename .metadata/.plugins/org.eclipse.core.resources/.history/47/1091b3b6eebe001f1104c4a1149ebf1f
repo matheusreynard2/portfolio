@@ -1,0 +1,42 @@
+package com.apiestudar.ApiEstudar.service;
+
+import com.apiestudar.ApiEstudar.model.Produto;
+import com.apiestudar.ApiEstudar.repository.ProdutoRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Optional;
+
+@Service
+public class ProdutoServiceImpl implements ProdutoService {
+
+    @Autowired
+    private ProdutoRepository produtoRepository;
+
+    @Override
+    public Produto adicionarProduto(Produto produto) {
+        return produtoRepository.save(produto);
+    }
+
+    @Override
+    public List<Produto> listarProdutos() {
+        return produtoRepository.findAll();
+    }
+
+    @Override
+    public Optional<Produto> buscarProduto(Long id) {
+        return produtoRepository.buscarProduto(id);
+    }
+
+    @Override
+    public Produto update(Produto produto) {
+        return produtoRepository.save(produto);
+    }
+
+    @Override
+    public void deleteById(Long id) {
+    	produtoRepository.deleteById(id);
+    }
+
+}

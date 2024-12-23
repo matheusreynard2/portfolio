@@ -1,0 +1,46 @@
+package com.apiestudar.ApiEstudar.controller;
+
+import com.apiestudar.ApiEstudar.model.Produto;
+import com.apiestudar.ApiEstudar.ProdutoService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Optional;
+
+@RestController
+@RequestMapping("api/v1/products")
+public class ProdutoController {
+
+    @Autowired
+    private ProdutoService produtoService;
+
+    @GetMapping
+    public ResponseEntity<List<Produto>> findAll(){
+        return ResponseEntity.status(HttpStatus.OK).body(productService.findAll());
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Optional<Produto>> findById(@PathVariable Long id){
+        return ResponseEntity.status(HttpStatus.OK).body(productService.findById(id));
+    }
+
+    @PostMapping
+    public ResponseEntity<Produto> create(@RequestBody Produto product){
+        return ResponseEntity.status(HttpStatus.CREATED).body(productService.save(product));
+    }
+
+    @PutMapping
+    public ResponseEntity<Produto> update(@RequestBody Produto product){
+        return ResponseEntity.status(HttpStatus.OK).body(productService.update(product));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> delete(@PathVariable Long id){
+    	produtoService.deleteById(id);
+        return ResponseEntity.status(HttpStatus.OK).build();
+    }
+
+}

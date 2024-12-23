@@ -1,0 +1,20 @@
+package com.apiestudar.ApiEstudar.service;
+
+import com.apiestudar.ApiEstudar.model.Produto;
+
+import java.util.List;
+import java.util.Optional;
+
+public interface ProdutoService {
+
+	Produto adicionarProduto(Produto produto);
+
+    List<Produto> listarProdutos();
+
+    Optional<Produto> buscarProduto(Long id);
+
+    Produto atualizarProduto(Produto produto);
+
+    void deleteById(Long id);
+
+}

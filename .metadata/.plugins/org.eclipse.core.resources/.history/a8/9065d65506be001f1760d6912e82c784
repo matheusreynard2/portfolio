@@ -1,0 +1,23 @@
+package com.apiestudar.ApiEstudar.service;
+
+import com.apiestudar.ApiEstudar.model.Produto;
+
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.stereotype.Service;
+
+@Service
+public interface ProdutoService {
+
+	Produto save(Produto produto);
+
+    List<Produto> findAll();
+
+    Optional<Produto> findById(Long id);
+
+    Produto update(Produto produto);
+
+    void deleteById(Long id);
+
+}

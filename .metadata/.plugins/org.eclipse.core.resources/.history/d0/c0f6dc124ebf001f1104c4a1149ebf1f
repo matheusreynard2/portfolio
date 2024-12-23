@@ -1,0 +1,47 @@
+package com.apiestudar.controller;
+
+import com.apiestudar.ApiEstudar.service.ProdutoService;
+import com.apiestudar.model.Produto;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Optional;
+
+@RestController
+@RequestMapping("api/produtos")
+public class ProdutoController {
+
+    @Autowired
+    private ProdutoService produtoService;
+
+    @GetMapping
+    public List<Produto> listarProdutos() {
+        return produtoService.listarProdutos();
+    }
+
+    @GetMapping("/{id}")
+    public Optional<Produto> buscarProduto(@PathVariable Long id) {
+        return produtoService.buscarProduto(id);
+    }
+
+    @PostMapping
+    public Produto adicionarProduto(@RequestBody Produto product) {
+        return produtoService.adicionarProduto(product);
+    }
+
+    @PutMapping
+    public Produto atualizarProduto(@RequestBody Produto product) {
+        return produtoService.atualizarProduto(product);
+    }
+
+    @DeleteMapping("/{id}")
+    public String deletarProduto(@PathVariable Long id) {
+    	produtoService.deletarProduto(id);
+        return "Produto deletado com sucesso.";
+    }
+
+}

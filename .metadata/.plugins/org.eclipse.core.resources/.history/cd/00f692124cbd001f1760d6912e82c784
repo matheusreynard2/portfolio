@@ -1,0 +1,5 @@
+package com.apiestudar.ApiEstudar.repository;
+
+public class ProdutoRepository {
+
+}
