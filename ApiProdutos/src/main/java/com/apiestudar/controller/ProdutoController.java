@@ -4,6 +4,8 @@ import com.apiestudar.model.Produto;
 import com.apiestudar.service.ProdutoService;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -11,41 +13,56 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("api/produtos")
+@CrossOrigin(origins = "http://localhost:4200")
 public class ProdutoController {
 
 	@Autowired
 	private ProdutoService produtoService;
 
 	@GetMapping("/listarProdutos")
-	public List<Produto> listarProdutos() {
-		return produtoService.listarProdutos();
+	public ResponseEntity<List<Produto>> listarProdutos() {
+		List<Produto> produtos = produtoService.listarProdutos();
+		return new ResponseEntity<>(produtos, HttpStatus.OK);
 	}
 
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@GetMapping("/buscarProduto/{id}")
-	public Optional<Produto> buscarProduto(@PathVariable long id) {
-		return produtoService.buscarProduto(id);
+	public ResponseEntity<Produto> buscarProduto(@PathVariable long id) {
+		Optional<Produto> produto = produtoService.buscarProduto(id);
+		// Produto não foi encontrado pelo id
+		if (produto == null)
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		// Produto foi encontrado pelo id
+		else
+			return new ResponseEntity(produto, HttpStatus.OK);
 	}
 
 	@PostMapping("/adicionarProduto")
-	public Produto adicionarProduto(@RequestBody Produto produto) {
-		return produtoService.adicionarProduto(produto);
+	public ResponseEntity<Produto> adicionarProduto(@RequestBody Produto produto) {
+		Produto produtoAdicionado = (Produto) produtoService.adicionarProduto(produto);
+		return new ResponseEntity<>(produtoAdicionado, HttpStatus.CREATED);
 	}
 
 	@PutMapping("/atualizarProduto/{id}")
-	public String atualizarProduto(@PathVariable long id, @RequestBody Produto produtoAtualizado) {
+	public ResponseEntity<Produto> atualizarProduto(@PathVariable long id, @RequestBody Produto produtoAtualizado) {
 		Produto produto = produtoService.atualizarProduto(id, produtoAtualizado);
 		// Se o produto for encontrado pelo id e for atualizado
 		if (produto != null)
-			return "Produto atualizado com sucesso.";
+			return new ResponseEntity<>(produto, HttpStatus.OK);
 		// Se o produto não for encontrado pelo id e não for atualizado
 		else
-			return "Produto não encontrado.";
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 	}
 
 	@DeleteMapping("/deletarProduto/{id}")
-	public String deletarProduto(@PathVariable int id) {
-		produtoService.deletarProduto(id);
-		return "Produto deletado com sucesso.";
+	public ResponseEntity<Void> deletarProduto(@PathVariable int id) {
+		boolean estaDeletado = produtoService.deletarProduto(id);
+		// Se encontrar o produto pelo id, deleta e retorna o status NO_CONTENT mas se
+		// não encontrar retorna NOT_FOUND
+		if (estaDeletado == true)
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		else
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 	}
 
 }

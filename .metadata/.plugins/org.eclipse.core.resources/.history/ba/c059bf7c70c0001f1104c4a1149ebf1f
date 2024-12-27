@@ -1,5 +1,0 @@
-package com.apiestudar.exceptions;
-
-public class ProdutoNaoEncontradoExcpetion {
-
-}

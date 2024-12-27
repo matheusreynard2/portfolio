@@ -1,9 +1,0 @@
-package com.apiestudar.ApiEstudar.repository;
-
-import com.apiestudar.ApiEstudar.model.Produto;
-import org.springframework.data.jpa.repository.JpaRepository;
-
-
-public interface ProdutoRepository extends JpaRepository<Produto, Long> {
-
-}

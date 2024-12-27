@@ -1,0 +1,28 @@
+<div class="container">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="bg-dark border border-5 border-secondary rounded-top-5 my-2">
+        <div class="card-body">
+          <h2 class="bg-gradient p-2 text-center text-white position-relative">
+            <img src="/logo_produtos.png" alt="Logo" class="position-absolute start-0"  width="130" height="130">
+            {{ title }}</h2>
+          <ul class="text-center list-inline py-3">
+            <li class="list-inline-item">
+              <a routerLink="/produtos" class="btn btn-outline-secondary">Lista de produtos</a>
+            </li>
+            <li class="list-inline-item">
+              <a routerLink="/addproduto" class="btn btn-outline-secondary">Adicionar produto</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <router-outlet></router-outlet>
+
+      <div class="bg-dark border border-5 border-secondary ">
+        <h2 class="bg-gradient p-3"></h2>
+      </div>
+
+    </div>
+  </div>
+</div>

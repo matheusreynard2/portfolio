@@ -15,6 +15,6 @@ public interface ProdutoService {
 
 	Produto atualizarProduto(long id, Produto produtoAtualizado);
 
-	void deletarProduto(long id);
+	boolean deletarProduto(long id);
 
 }
