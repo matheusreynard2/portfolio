@@ -11,14 +11,22 @@ export class ProdutoService {
   private produtosUrl: string;
 
   constructor(private http: HttpClient) {
+    // URL DO REST CONTROLLER
     this.produtosUrl = 'http://localhost:8080/api/produtos';
   }
 
+  // ENDPOINT GET
   public listarProdutos(): Observable<Produto[]> {
     return this.http.get<Produto[]>(this.produtosUrl + "/listarProdutos");
   }
 
+  // ENDPOINT POST
   public adicionarProduto(produto: Produto) {
     return this.http.post<Produto>(this.produtosUrl + "/adicionarProduto", produto);
+  }
+
+  // ENDPOINT DELETE
+  public deletarProduto(id: number) {
+    return this.http.delete(this.produtosUrl + "/deletarProduto/" + id);
   }
 }

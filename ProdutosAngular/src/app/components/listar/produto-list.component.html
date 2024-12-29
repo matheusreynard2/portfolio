@@ -3,11 +3,15 @@
     <table class="table table-bordered table-striped">
       <thead class="thead-dark">
       <tr>
-        <th scope="col">ID</th>
-        <th scope="col">Nome</th>
-        <th scope="col">Descrição</th>
-        <th scope="col">Valor</th>
-        <th scope="col">Quantidade</th>
+        <th colspan="6">Produtos</th>
+      </tr>
+      <tr>
+        <th><strong>ID</strong></th>
+        <th><strong>Nome</strong></th>
+        <th><strong>Descrição</strong></th>
+        <th><strong>Valor</strong></th>
+        <th><strong>Quantidade</strong></th>
+        <th><strong>Excluir</strong></th>
       </tr>
       </thead>
       <tbody>
@@ -17,6 +21,12 @@
         <td>{{ produto.descricao }}</td>
         <td>{{ formatarValor(produto.valor) }}</td>
         <td>{{ produto.quantia }}</td>
+        <td><button type="button" class="btn-close red-button" aria-label="Excluir" (click)="deletarProduto(produto.id)"></button></td>
+      </tr>
+      <tr>
+        <td colspan="6">
+          <a class="btn bg-primary-subtle" (click)="atualizarLista()" role="button">Atualizar lista</a>
+        </td>
       </tr>
       </tbody>
     </table>

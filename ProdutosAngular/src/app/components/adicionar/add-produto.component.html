@@ -1,26 +1,73 @@
 <div class="card my-5">
   <div class="card-body">
     <form (ngSubmit)="onSubmit()" #produtoForm="ngForm">
-      <div class="form-group">
-        <label for="nome">Nome:</label>
-        <input type="text" [(ngModel)]="produto.nome"
-               class="form-control"
-               id="nome"
-               name="nomeProduto"
-               placeholder="Nome do produto."
-               required #nome="ngModel">
-      </div>
-      <div class="form-group">
-        <label for="descricao">Descrição:</label>
-        <input type="text" [(ngModel)]="produto.descricao"
-               class="form-control"
-               id="descricao"
-               name="descriaoProduto"
-               placeholder="Descrição do produto."
-               required #descricao="ngModel">
-      </div>
-      <button type="submit" [disabled]="!produtoForm.form.valid"
-              class="btn btn-info">Cadastrar</button>
+      <table class="table">
+        <thead>
+        <tr>
+          <th colspan="2">Cadastrar um novo produto</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+          <!-- Nome do Produto -->
+          <td><label for="nome">Nome:</label></td>
+          <td>
+            <input type="text" [(ngModel)]="produto.nome"
+                   class="form-control"
+                   id="nome"
+                   name="nomeProduto"
+                   placeholder="Insira o nome do produto."
+                   required #nome="ngModel"
+                   maxlength="50">
+          </td>
+
+          <!-- Descrição do Produto -->
+          <td><label for="descricao">Descrição:</label></td>
+          <td>
+            <input type="text" [(ngModel)]="produto.descricao"
+                   class="form-control"
+                   id="descricao"
+                   name="descricaoProduto"
+                   placeholder="Insira a descrição do produto."
+                   required #descricao="ngModel"
+                   maxlength="150">
+          </td>
+        </tr>
+        <tr>
+          <td><label for="valor">Valor:</label></td>
+          <td class="d-flex flex-column">
+            <!-- Input valor -->
+            <input type="number" [(ngModel)]="produto.valor"
+                   class="form-control"
+                   id="valor"
+                   name="valorProduto"
+                   placeholder="Insira o valor do produto."
+                   required #valor="ngModel"
+                   maxlength="20">
+          <!-- Div para exibir o valor formatado -->
+          <div class="mt-1">{{produto.valor | currency : 'BRL'}}</div>
+          </td>
+          <td>
+            <label for="quantidade">Quantidade:</label>
+          </td>
+          <td>
+            <input type="number" [(ngModel)]="produto.quantia"
+                   class="form-control"
+                   id="quantidade"
+                   name="quantidadeProduto"
+                   placeholder="Insira a quantidade do produto em estoque."
+                   required #quantidade="ngModel"
+                   maxlength="20">
+          </td>
+        </tr>
+        <tr>
+          <td colspan="4">
+            <button type="submit" [disabled]="!produtoForm.form.valid"
+                    class="btn bg-primary-subtle">Cadastrar</button>
+          </td>
+        </tr>
+        </tbody>
+      </table>
     </form>
   </div>
 </div>
