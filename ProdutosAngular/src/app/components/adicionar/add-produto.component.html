@@ -1,10 +1,10 @@
 <div class="card my-5">
   <div class="card-body">
     <form (ngSubmit)="onSubmit()" #produtoForm="ngForm">
-      <table class="table">
+      <table class="table table-bordered">
         <thead>
         <tr>
-          <th colspan="2">Cadastrar um novo produto</th>
+          <th colspan="4" class="text-center">Cadastrar um novo produto</th>
         </tr>
         </thead>
         <tbody>
@@ -44,12 +44,11 @@
                    placeholder="Insira o valor do produto."
                    required #valor="ngModel"
                    maxlength="20">
-          <!-- Div para exibir o valor formatado -->
-          <div class="mt-1">{{produto.valor | currency : 'BRL'}}</div>
+            <!-- Div para exibir o valor formatado -->
+            <div class="mt-1">{{produto.valor | currency : 'BRL'}}</div>
           </td>
-          <td>
-            <label for="quantidade">Quantidade:</label>
-          </td>
+
+          <td><label for="quantidade">Quantidade:</label></td>
           <td>
             <input type="number" [(ngModel)]="produto.quantia"
                    class="form-control"
@@ -61,9 +60,8 @@
           </td>
         </tr>
         <tr>
-          <td colspan="4">
-            <button type="submit" [disabled]="!produtoForm.form.valid"
-                    class="btn bg-primary-subtle">Cadastrar</button>
+          <td colspan="4" class="text-left">
+            <button type="submit" [disabled]="!produtoForm.form.valid" class="btn bg-primary-subtle fw-bold" (click)="msgAddProduto(modalMsg)">Cadastrar</button>
           </td>
         </tr>
         </tbody>
@@ -71,3 +69,17 @@
     </form>
   </div>
 </div>
+
+<!-- Janela (modal) que abre depois de cadastrar um produto -->
+<ng-template #modalMsg let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title">Sucesso!</h5>
+  </div>
+  <div class="modal-body">
+    <a>Produto <b>{{ produto.nome }}</b> cadastrado.</a>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="modal.close()">Fechar</button>
+  </div>
+</ng-template>
+

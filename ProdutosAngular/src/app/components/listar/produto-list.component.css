@@ -1,3 +1,23 @@
-.btn-close.red-button {
-  border: 3px solid red;
+#btn_excluir, #btn_editar {
+  font-size: 13px;
+}
+
+.full-width-btn {
+  width: 100%;
+  display: block;
+}
+
+/* Garantir que a largura das colunas seja fixa ou proporcional */
+.table th, .table td {
+  padding: 10px;      /* Adiciona um padding consistente */
+}
+
+.table td button {
+  width: 100%;        /* Faz o botão ocupar toda a célula */
+}
+
+/* Alinha todos os botões de "Editar" e "Excluir" na mesma largura */
+.full-width-btn {
+  width: 100%;
+  display: block;
 }

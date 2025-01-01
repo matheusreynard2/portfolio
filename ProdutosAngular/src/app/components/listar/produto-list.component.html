@@ -3,32 +3,51 @@
     <table class="table table-bordered table-striped">
       <thead class="thead-dark">
       <tr>
-        <th colspan="6">Produtos</th>
+        <th colspan="9" class="text-center">Produtos</th>
       </tr>
       <tr>
-        <th><strong>ID</strong></th>
-        <th><strong>Nome</strong></th>
-        <th><strong>Descrição</strong></th>
-        <th><strong>Valor</strong></th>
-        <th><strong>Quantidade</strong></th>
-        <th><strong>Excluir</strong></th>
+        <th class="text-center"><strong>ID</strong></th>
+        <th class="text-left"><strong>Nome</strong></th>
+        <th class="text-left"><strong>Descrição</strong></th>
+        <th class="text-center"><strong>Valor</strong></th>
+        <th class="text-center"><strong>Quantidade</strong></th>
+        <th class="text-center"><strong></strong></th>
+        <th class="text-center"><strong></strong></th>
       </tr>
       </thead>
       <tbody>
       <tr *ngFor="let produto of listaDeProdutos">
-        <td>{{ produto.id }}</td>
-        <td>{{ produto.nome }}</td>
-        <td>{{ produto.descricao }}</td>
-        <td>{{ formatarValor(produto.valor) }}</td>
-        <td>{{ produto.quantia }}</td>
-        <td><button type="button" class="btn-close red-button" aria-label="Excluir" (click)="deletarProduto(produto.id)"></button></td>
+        <td class="text-center">{{ produto.id }}</td>
+        <td class="text-left">{{ produto.nome }}</td>
+        <td class="text-left">{{ produto.descricao }}</td>
+        <td class="text-center">{{ formatarValor(produto.valor) }}</td>
+        <td class="text-center">{{ produto.quantia }}</td>
+        <td class="text-center">
+          <button type="button" class="btn btn-info full-width-btn" id="btn_editar" (click)="atualizarProduto(janelaEditar, produto.id, produto)">Editar</button>
+        </td>
+        <td class="text-center">
+          <button type="button" class="btn btn-danger full-width-btn" id="btn_excluir" (click)="deletarProduto(produto.id)">Excluir</button>
+        </td>
       </tr>
       <tr>
-        <td colspan="6">
-          <a class="btn bg-primary-subtle" (click)="atualizarLista()" role="button">Atualizar lista</a>
+        <td colspan="9" class="text-left">
+          <a class="btn bg-primary-subtle fw-bold" (click)="atualizarLista()" role="button">Atualizar lista</a>
         </td>
       </tr>
       </tbody>
     </table>
   </div>
 </div>
+
+<!-- Janela (modal) que abre ao clicar no botão de editar produto -->
+<ng-template #janelaEditar let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title">Atualizar produto</h5>
+  </div>
+  <div class="modal-body">
+    <p>Produto <b>{{ produtoAtualizado.nome }}</b> está pronto para ser atualizado.</p>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="modal.close()">Fechar</button>
+  </div>
+</ng-template>

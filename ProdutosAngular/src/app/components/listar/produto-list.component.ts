@@ -2,13 +2,14 @@ import { Component, OnInit } from '@angular/core';
 import { Produto } from '../../model/produto';
 import { ProdutoService } from '../../service/produto.service';
 import {NgForOf} from '@angular/common';
-import {Observable} from 'rxjs';
+import {NgbModal, NgbModule} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: '/app-produto-list',
   templateUrl: './produto-list.component.html',
   imports: [
-    NgForOf
+    NgForOf,
+    NgbModule
   ],
   styleUrls: ['./produto-list.component.css']
 })
@@ -16,13 +17,15 @@ import {Observable} from 'rxjs';
 export class ProdutoListComponent implements OnInit {
 
   listaDeProdutos: Produto[] = [];
+  produtoAtualizado!: Produto;
+  private modalService: NgbModal = new NgbModal();
 
   constructor(private produtoService: ProdutoService) { }
 
   // Ao abrir a página, chama o endpoint para preencher a lista de produtos
   ngOnInit() {
     this.produtoService.listarProdutos().subscribe(data => {
-      this.listaDeProdutos = data;
+      this.listaDeProdutos = data.sort((a, b) => a.id - b.id);
     });
   }
 
@@ -34,6 +37,16 @@ export class ProdutoListComponent implements OnInit {
           this.exibirAlerta("Produto ID número " + id + " excluído com sucesso!")
           this.atualizarLista()
         }
+      }
+    })
+  }
+  // Método para atualizar um produto através do id
+  atualizarProduto(modalEditar: any, id: number, produto: Produto) {
+    this.produtoService.atualizarProduto(id, produto).subscribe({
+      next: (produtoRetornado: Produto) => {
+        // Atribui o Produto retornado (produtoRetornado) ao produto que será atualizado
+        this.produtoAtualizado = produtoRetornado
+        this.abrirTelaEdicao(modalEditar)
       }
     })
   }
@@ -56,6 +69,11 @@ export class ProdutoListComponent implements OnInit {
   // Método que exibe uma mensagem passada como parâmetro
   exibirAlerta(mensagem: string) {
     window.alert(mensagem)
+  }
+
+  // Função que abre o modal via HTML - Janela de edição de produto
+  abrirTelaEdicao(modalEditar: any) {
+    const modalRef = this.modalService.open(modalEditar);
   }
 
 }

@@ -15,18 +15,24 @@ export class ProdutoService {
     this.produtosUrl = 'http://localhost:8080/api/produtos';
   }
 
-  // ENDPOINT GET
+  // ENDPOINT GET - Listar todos os produtos
   public listarProdutos(): Observable<Produto[]> {
     return this.http.get<Produto[]>(this.produtosUrl + "/listarProdutos");
   }
 
-  // ENDPOINT POST
+  // ENDPOINT POST - Adicionar / Cadastrar um novo produto
   public adicionarProduto(produto: Produto) {
     return this.http.post<Produto>(this.produtosUrl + "/adicionarProduto", produto);
   }
 
-  // ENDPOINT DELETE
+  // ENDPOINT DELETE - Deletar / Excluir um produto
   public deletarProduto(id: number) {
     return this.http.delete(this.produtosUrl + "/deletarProduto/" + id);
   }
+
+  // ENDPOINT PUT - Atualizar um produto
+  public atualizarProduto(id: number, produto: Produto) {
+    return this.http.put<Produto>(this.produtosUrl + "/atualizarProduto/" + id, produto);
+  }
+
 }
