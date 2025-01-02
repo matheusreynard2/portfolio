@@ -20,49 +20,46 @@ public class ProdutoController {
 	private ProdutoService produtoService;
 
 	@GetMapping("/listarProdutos")
-	public ResponseEntity<List<Produto>> listarProdutos() {
+	public List<Produto> listarProdutos() {
 		List<Produto> produtos = produtoService.listarProdutos();
-		return new ResponseEntity<>(produtos, HttpStatus.OK);
+		return produtos;
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@GetMapping("/buscarProduto/{id}")
-	public ResponseEntity<Produto> buscarProduto(@PathVariable long id) {
+	public Optional<Produto> buscarProduto(@PathVariable long id) {
 		Optional<Produto> produto = produtoService.buscarProduto(id);
 		// Produto não foi encontrado pelo id
 		if (produto == null)
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+			return null;
 		// Produto foi encontrado pelo id
 		else
-			return new ResponseEntity(produto, HttpStatus.OK);
+			return produto;
 	}
 
 	@PostMapping("/adicionarProduto")
-	public ResponseEntity<Produto> adicionarProduto(@RequestBody Produto produto) {
+	public Produto adicionarProduto(@RequestBody Produto produto) {
 		Produto produtoAdicionado = (Produto) produtoService.adicionarProduto(produto);
-		return new ResponseEntity<>(produtoAdicionado, HttpStatus.CREATED);
+		return produtoAdicionado;
 	}
 
 	@PutMapping("/atualizarProduto/{id}")
-	public ResponseEntity<Produto> atualizarProduto(@PathVariable long id, @RequestBody Produto produtoAtualizado) {
+	public Produto atualizarProduto(@PathVariable long id, @RequestBody Produto produtoAtualizado) {
 		Produto produto = produtoService.atualizarProduto(id, produtoAtualizado);
 		// Se o produto for encontrado pelo id e for atualizado
 		if (produto != null)
-			return new ResponseEntity<>(produto, HttpStatus.OK);
+			return produto;
 		// Se o produto não for encontrado pelo id e não for atualizado
 		else
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+			return null;
 	}
 
 	@DeleteMapping("/deletarProduto/{id}")
-	public ResponseEntity<Void> deletarProduto(@PathVariable int id) {
+	public Boolean deletarProduto(@PathVariable int id) {
 		boolean estaDeletado = produtoService.deletarProduto(id);
-		// Se encontrar o produto pelo id, deleta e retorna o status NO_CONTENT mas se
-		// não encontrar retorna NOT_FOUND
-		if (estaDeletado == true)
-			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-		else
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		// Se encontrar o produto pelo id, deleta e retorna TRUE mas se
+		// não encontrar retorna FALSE
+		return estaDeletado;
 	}
 
 }

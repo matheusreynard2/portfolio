@@ -26,7 +26,7 @@
           <button type="button" class="btn btn-info full-width-btn" id="btn_editar" (click)="atualizarProduto(janelaEditar, produto.id, produto)">Editar</button>
         </td>
         <td class="text-center">
-          <button type="button" class="btn btn-danger full-width-btn" id="btn_excluir" (click)="deletarProduto(produto.id)">Excluir</button>
+          <button type="button" class="btn btn-danger full-width-btn" id="btn_excluir" (click)="deletarProduto(modalMsg, produto.id, produto)">Excluir</button>
         </td>
       </tr>
       <tr>
@@ -42,10 +42,29 @@
 <!-- Janela (modal) que abre ao clicar no botão de editar produto -->
 <ng-template #janelaEditar let-modal>
   <div class="modal-header">
-    <h5 class="modal-title">Atualizar produto</h5>
+    <h5 class="modal-title">
+      Atualizar produto
+    </h5>
+    <img ngSrc="/codigo_barras.png" height="60" width="60" class="img-right"/>
   </div>
   <div class="modal-body">
     <p>Produto <b>{{ produtoAtualizado.nome }}</b> está pronto para ser atualizado.</p>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="modal.close()">Fechar</button>
+  </div>
+</ng-template>
+
+<!-- Janela (modal) que abre ao clicar no botão Excluir -->
+<ng-template #modalMsg let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title">
+      Sucesso!
+    </h5>
+    <img ngSrc="/codigo_barras.png" height="60" width="60" class="img-right"/>
+  </div>
+  <div class="modal-body">
+    <a>Produto <b>{{ produtoExcluido.nome }}</b> excluído.</a>
   </div>
   <div class="modal-footer">
     <button type="button" class="btn btn-secondary" (click)="modal.close()">Fechar</button>

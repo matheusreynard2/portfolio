@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Produto } from '../../model/produto';
 import { ProdutoService } from '../../service/produto.service';
-import {NgForOf} from '@angular/common';
+import {NgForOf, NgOptimizedImage} from '@angular/common';
 import {NgbModal, NgbModule} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
@@ -9,7 +9,8 @@ import {NgbModal, NgbModule} from '@ng-bootstrap/ng-bootstrap';
   templateUrl: './produto-list.component.html',
   imports: [
     NgForOf,
-    NgbModule
+    NgbModule,
+    NgOptimizedImage
   ],
   styleUrls: ['./produto-list.component.css']
 })
@@ -19,6 +20,7 @@ export class ProdutoListComponent implements OnInit {
   listaDeProdutos: Produto[] = [];
   produtoAtualizado!: Produto;
   private modalService: NgbModal = new NgbModal();
+  produtoExcluido!: Produto;
 
   constructor(private produtoService: ProdutoService) { }
 
@@ -30,12 +32,12 @@ export class ProdutoListComponent implements OnInit {
   }
 
   // Método para deletar um produto através do id
-  deletarProduto(id: number) {
+  deletarProduto(modalDeletar: any, id: number, produto: Produto) {
     this.produtoService.deletarProduto(id).subscribe({
       next: (response) => {
         if (response == true) {
-          this.exibirAlerta("Produto ID número " + id + " excluído com sucesso!")
-          this.atualizarLista()
+          this.produtoExcluido = produto;
+          this.abrirTelaExclusao(modalDeletar);
         }
       }
     })
@@ -44,7 +46,8 @@ export class ProdutoListComponent implements OnInit {
   atualizarProduto(modalEditar: any, id: number, produto: Produto) {
     this.produtoService.atualizarProduto(id, produto).subscribe({
       next: (produtoRetornado: Produto) => {
-        // Atribui o Produto retornado (produtoRetornado) ao produto que será atualizado
+        // Atribui o Produto retornado pelo id fornecido(produtoRetornado)
+        // ao produto que será atualizado e abre a tela de edição
         this.produtoAtualizado = produtoRetornado
         this.abrirTelaEdicao(modalEditar)
       }
@@ -66,14 +69,15 @@ export class ProdutoListComponent implements OnInit {
     });
   }
 
-  // Método que exibe uma mensagem passada como parâmetro
-  exibirAlerta(mensagem: string) {
-    window.alert(mensagem)
-  }
-
   // Função que abre o modal via HTML - Janela de edição de produto
   abrirTelaEdicao(modalEditar: any) {
     const modalRef = this.modalService.open(modalEditar);
+  }
+
+  // Função que abre o modal via HTML - Janela de exclusão de produto
+  abrirTelaExclusao(modalExcluir: any) {
+    const modalRef = this.modalService.open(modalExcluir);
+    this.atualizarLista();
   }
 
 }

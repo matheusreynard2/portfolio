@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { ProdutoService } from '../../service/produto.service';
 import {FormsModule} from '@angular/forms';
 import {Produto} from '../../model/produto';
-import {CurrencyPipe} from '@angular/common';
+import {CurrencyPipe, NgOptimizedImage} from '@angular/common';
 import {NgbModal, NgbModalRef} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
@@ -11,7 +11,8 @@ import {NgbModal, NgbModalRef} from '@ng-bootstrap/ng-bootstrap';
   templateUrl: './add-produto.component.html',
   imports: [
     FormsModule,
-    CurrencyPipe
+    CurrencyPipe,
+    NgOptimizedImage
   ],
   styleUrls: ['./add-produto.component.css']
 })
@@ -58,6 +59,7 @@ export class AddProdutoComponent {
     const modalRef = this.modalService.open(modalMsg);
     // Espera 0.3 segundos para setar o produto no modal por que ele chama no HTML o submit e click ao mesmo tempo
     // E se chamar os dois eventos ao mesmo tempo, o submit não consegue gravar no banco de dados
+    // E depois que seta o produto no modal, ele chama e abre o modal
     setTimeout(() => {
       modalRef.componentInstance.produto = this.novoProduto;
     }, 300);

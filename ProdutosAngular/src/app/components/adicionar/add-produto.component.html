@@ -73,7 +73,10 @@
 <!-- Janela (modal) que abre depois de cadastrar um produto -->
 <ng-template #modalMsg let-modal>
   <div class="modal-header">
-    <h5 class="modal-title">Sucesso!</h5>
+    <h5 class="modal-title">
+      Sucesso!
+    </h5>
+    <img ngSrc="/codigo_barras.png" height="60" width="60" class="img-right"/>
   </div>
   <div class="modal-body">
     <a>Produto <b>{{ produto.nome }}</b> cadastrado.</a>
