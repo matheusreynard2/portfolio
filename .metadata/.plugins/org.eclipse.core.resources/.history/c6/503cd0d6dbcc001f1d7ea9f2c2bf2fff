@@ -1,0 +1,11 @@
+public class RetornouFalseException extends RuntimeException {
+
+	private static final long serialVersionUID = 7196029775947471383L;
+	
+	String message;
+
+	public RetornouFalseException(String message) {
+		super(message);
+	}
+	
+}

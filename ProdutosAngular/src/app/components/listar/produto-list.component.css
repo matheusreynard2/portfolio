@@ -1,10 +1,13 @@
 #btn_excluir, #btn_editar {
-  font-size: 13px;
+  font-size: 15px;
 }
 
-.full-width-btn {
-  width: 100%;
-  display: block;
+.coluna_id {
+  width: 50px;
+}
+
+.coluna_nome {
+  width: 200px;
 }
 
 /* Garantir que a largura das colunas seja fixa ou proporcional */

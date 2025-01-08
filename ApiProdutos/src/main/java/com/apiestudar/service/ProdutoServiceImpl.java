@@ -1,5 +1,7 @@
 package com.apiestudar.service;
 
+import com.apiestudar.exceptions.RetornouFalseException;
+import com.apiestudar.exceptions.RetornouNuloException;
 import com.apiestudar.model.Produto;
 import com.apiestudar.repository.ProdutoRepository;
 
@@ -26,32 +28,25 @@ public class ProdutoServiceImpl implements ProdutoService {
 	}
 
 	@Override
-	public Optional<Produto> buscarProduto(long id) {
-		// Pega o produto pelo id
-		Optional<Produto> produto = produtoRepository.findById(id);
-		// Se o produto não existir, ou seja, se ele estiver vazio (empty), retorna nulo
-		if (produto.isEmpty() == true)
-			return null;
-		// Se o produto existir, ou seja, se não estiver vazio (!empty), retorna o
-		// produto
-		else
-			return produto;
-	}
-
-	@Override
 	public Produto atualizarProduto(long id, Produto produtoAtualizado) {
 		// Chama o método e busca o produto pelo id no repositório
-		Optional<Produto> produto = buscarProduto(id);
-		// Se não encontrou o produto, retorna nulo.
-		if (produto == null)
-			return null;
+		Optional<Produto> produto = produtoRepository.findById(id);
+		// Se não encontrou o produto...
+		if (produto.isPresent() == false)
+			throw new RetornouNuloException("Registro não encontrado no banco de dados. Retorno = NULL.");
 		// Se encontrou o produto ele seta os novos atributos, salva e retorna pro
 		// controller.
 		else {
 			produto.get().setNome(produtoAtualizado.getNome());
 			produto.get().setDescricao(produtoAtualizado.getDescricao());
+			produto.get().setFrete(produtoAtualizado.getFrete());
+			produto.get().setPromocao(produtoAtualizado.isPromocao());
+			produto.get().setValorTotalDesc(produtoAtualizado.getValorTotalDesc());
+			produto.get().setValorTotalFrete(produtoAtualizado.getValorTotalFrete());
 			produto.get().setValor(produtoAtualizado.getValor());
 			produto.get().setQuantia(produtoAtualizado.getQuantia());
+			produto.get().setSomaTotalValores(produtoAtualizado.getSomaTotalValores());
+			produto.get().setFreteAtivo(produtoAtualizado.isFreteAtivo());
 			produtoRepository.save(produto.get());
 			return produto.get();
 		}
@@ -59,14 +54,24 @@ public class ProdutoServiceImpl implements ProdutoService {
 
 	@Override
 	public boolean deletarProduto(long id) {
-		// Procura o produto pelo id, se encontrar e for != nulo ele deleta e retorna
-		// "true" para o
-		// status "estaDeletado", caso contrário ele retorna false
-		if (buscarProduto(id) != null) {
+		// Procura o produto pelo id, se encontrar e for != false ele deleta e retorna
+		// "true" para o controller
+		if (produtoRepository.findById(id).isPresent() == true) {
 			produtoRepository.deleteById(id);
 			return true;
 		} else
-			return false;
+			throw new RetornouFalseException("Registro não encontrado no banco de dados. Retorno = FALSE.");
+	}
+
+	@Override
+	public List<Produto> listarProdutoMaisCaro() {
+		return produtoRepository.listarProdutoMaisCaro();
+	}
+	
+	@Override
+	public Double obterMediaPreco() {
+		Optional<Double> valor = Optional.ofNullable(produtoRepository.obterMediaPreco());
+		return valor.orElse(0.0);
 	}
 
 }

@@ -3,25 +3,37 @@
     <table class="table table-bordered table-striped">
       <thead class="thead-dark">
       <tr>
-        <th colspan="9" class="text-center">Produtos</th>
+        <th colspan="11" class="text-center">Produtos</th>
       </tr>
       <tr>
-        <th class="text-center"><strong>ID</strong></th>
-        <th class="text-left"><strong>Nome</strong></th>
-        <th class="text-left"><strong>Descrição</strong></th>
-        <th class="text-center"><strong>Valor</strong></th>
-        <th class="text-center"><strong>Quantidade</strong></th>
+        <th class="text-center coluna_id"><strong>ID</strong></th>
+        <th class="text-left coluna_nome"><strong>Nome</strong></th>
+        <th class="text-center"><strong>Valor unitário</strong></th>
+        <th class="text-center"><strong>Promoção</strong></th>
+        <th class="text-center"><strong>Vl un desc</strong></th>
+        <th class="text-center"><strong>Valor total</strong></th>
         <th class="text-center"><strong></strong></th>
         <th class="text-center"><strong></strong></th>
       </tr>
       </thead>
       <tbody>
       <tr *ngFor="let produto of listaDeProdutos">
-        <td class="text-center">{{ produto.id }}</td>
-        <td class="text-left">{{ produto.nome }}</td>
-        <td class="text-left">{{ produto.descricao }}</td>
+        <td class="text-center coluna_id">{{ produto.id }}</td>
+        <td class="text-left coluna_nome">{{ produto.nome }}</td>
         <td class="text-center">{{ formatarValor(produto.valor) }}</td>
-        <td class="text-center">{{ produto.quantia }}</td>
+        <td class="text-center">
+          <img
+            [src]="produto.promocao ? '/bolinha_verde.png' : '/bolinha_vermelha.png'"
+            [alt]="produto.promocao ? 'Promoção Ativa' : 'Promoção Inativa'"
+            width="25"
+            height="25">
+        </td>
+        <td class="text-center">
+          {{ formatarValor(produto.valorTotalDesc) }}
+        </td>
+        <td class="text-center">
+          {{ formatarValor(produto.somaTotalValores) }}
+        </td>
         <td class="text-center">
           <button type="button" class="btn btn-info full-width-btn" id="btn_editar" (click)="atualizarProduto(janelaEditar, produto.id, produto)">Editar</button>
         </td>
@@ -29,9 +41,22 @@
           <button type="button" class="btn btn-danger full-width-btn" id="btn_excluir" (click)="deletarProduto(modalMsg, produto.id, produto)">Excluir</button>
         </td>
       </tr>
+
+      <!-- Label que exibe a variável do produto mais caro -->
       <tr>
-        <td colspan="9" class="text-left">
-          <a class="btn bg-primary-subtle fw-bold" (click)="atualizarLista()" role="button">Atualizar lista</a>
+        <td colspan="11" class="text-left">
+          <b><label style="font-size: 16px;">* <u>Produto mais caro</u> - <label style="color: green; font-size: 20px">ID: {{ stringProdutoMaisCaro }}</label></label></b> |
+          <b><label style="font-size: 16px;">* <u>Média de preço</u>: <label style="color: green; font-size: 20px">{{ formatarValor(mediaPreco) }}</label></label></b>
+        </td>
+      </tr>
+      <tr>
+        <td colspan="10" class="text-left">
+          <label style="font-size: 12px;">* <b><u>Vl un desc</u>:</b> este é o valor unitário do produto com desconto, caso esteja em promoção. </label><label style="font-size: 12px;"> <b> | <u> Valor total</u>:</b> este é o valor total do produto, com frete e com desconto, caso tenha frete e caso esteja em promoção.</label>
+          </td>
+        </tr>
+      <tr>
+        <td>
+          <button class="btn bg-primary-subtle fw-bold" (click)="atualizarLista()" role="button">Atualizar</button>
         </td>
       </tr>
       </tbody>
@@ -39,21 +64,186 @@
   </div>
 </div>
 
-<!-- Janela (modal) que abre ao clicar no botão de editar produto -->
+<!-- ## NGTEMPLATE-EDITAR ######## Janela (modal) que abre ao clicar no botão de editar produto ######## -->
 <ng-template #janelaEditar let-modal>
-  <div class="modal-header">
-    <h5 class="modal-title">
-      Atualizar produto
-    </h5>
-    <img ngSrc="/codigo_barras.png" height="60" width="60" class="img-right"/>
-  </div>
-  <div class="modal-body">
-    <p>Produto <b>{{ produtoAtualizado.nome }}</b> está pronto para ser atualizado.</p>
-  </div>
-  <div class="modal-footer">
-    <button type="button" class="btn btn-secondary" (click)="modal.close()">Fechar</button>
+  <div class="largeTemplate">
+    <div class="modal-header">
+      <h5 class="modal-title">
+        Atualizar produto
+      </h5>
+      <img ngSrc="/codigo_barras.png" height="60" width="60" class="img-right"/>
+    </div>
+    <div class="modal-body">
+      <p>Informações do produto <b>{{ produtoAtualizar.nome }}</b></p>
+    </div>
+
+    <!--######## INICIO DO FORMULÁRIO DE EDIÇÃO DE PRODUTO ######## -->
+
+    <div class="card-body">
+      <form (ngSubmit)="onSubmitSalvar(modal)" #produtoForm="ngForm" >
+        <table class="table table-bordered">
+          <tbody>
+
+          <tr>
+            <td><label for="nome">Nome:</label></td>
+            <td colspan="4">
+              <input type="text" [(ngModel)]="produtoAtualizar.nome"
+                     class="form-control"
+                     id="nome"
+                     name="nomeProduto"
+                     placeholder="Insira o nome do produto."
+                     required #nome="ngModel"
+                     maxlength="50">
+            </td>
+          </tr>
+
+          <tr>
+            <td><label for="descricao">Descrição:</label></td>
+            <td colspan="4">
+              <input type="text" [(ngModel)]="produtoAtualizar.descricao"
+                     class="form-control"
+                     id="descricao"
+                     name="descricaoProduto"
+                     placeholder="Insira a descrição do produto."
+                     required #descricao="ngModel"
+                     maxlength="100">
+            </td>
+          </tr>
+          <tr>
+            <td><label for="quantidade">Quantidade:</label></td>
+            <td colspan="4">
+              <input type="number" [(ngModel)]="produtoAtualizar.quantia"
+                     class="form-control"
+                     id="quantidade"
+                     name="quantidadeProduto"
+                     required #quantidade="ngModel"
+                     maxlength="1">
+            </td>
+          </tr>
+
+          <tr>
+            <td rowspan="3"><label>Valor do frete:</label></td>
+            <td rowspan="3" colspan="1">
+              <!-- Div para exibir o valor formatado -->
+              <div class="mt-1">{{produtoAtualizar.frete | currency : 'BRL'}}</div>
+              <!-- INPUT EXISTE PARA O CAMPO DA ENTIDADE FAZER PARTE DO NGMODEL, MAS TEM DISPLAY = NONE -->
+              <input type="number" [(ngModel)]="produtoAtualizar.frete"
+                     class="form-control"
+                     id="freteTrue"
+                     name="freteProduto"
+                     required #frete="ngModel"
+                     maxlength="30"
+                     [disabled]="!produtoAtualizar.freteAtivo"
+                     style="display: none;">
+            </td>
+          </tr>
+          <tr>
+          </tr>
+          <tr>
+            <td><label for="valor">Valor unitário:</label></td>
+            <td>
+              <input type="number" [(ngModel)]="produtoAtualizar.valor"
+                     class="form-control"
+                     id="valor"
+                     name="valorProduto"
+                     required #valor="ngModel"
+                     maxlength="30">
+            </td>
+            <td colspan="2">
+              <div class="mt-1">{{produtoAtualizar.valor | currency : 'BRL'}}</div>
+            </td>
+          </tr>
+
+          <tr>
+            <td><label for="valorTotalDesc">Valor total com desconto:</label></td>
+            <td colspan="4">
+              <input type="number" [(ngModel)]="produtoAtualizar.valorTotalDesc"
+                     class="form-control"
+                     id="valorTotalDesc"
+                     name="valorTotalDescProduto"
+                     required #valorTotalDesc="ngModel"
+                     maxlength="30"
+                     style="display: none;">
+              <div class="mt-1">{{produtoAtualizar.valorTotalDesc | currency : 'BRL'}}</div>
+          </tr>
+
+          <tr>
+            <td><label for="valorTotalFrete">Valor total com frete:</label></td>
+            <td colspan="4">
+              <input type="number" [(ngModel)]="produtoAtualizar.valorTotalFrete"
+                     class="form-control"
+                     id="valorTotalFrete"
+                     name="valorTotalFreteProduto"
+                     required #valorTotalFrete="ngModel"
+                     maxlength="30"
+                     style="display: none;">
+              <div class="mt-1">{{produtoAtualizar.valorTotalFrete | currency : 'BRL'}}</div>
+            </td>
+          </tr>
+
+          <tr>
+            <td><label for="promocao">Promoção:</label></td>
+            <td>
+              <select [(ngModel)]="produtoAtualizar.promocao"
+                      class="form-control"
+                      id="promocao"
+                      name="promocaoProduto"
+                      required #promocao="ngModel"
+                      (ngModelChange)="selecionarPromocao($event)">
+                <option [ngValue]="true">Sim</option>
+                <option [ngValue]="false">Não</option>
+              </select>
+            </td>
+            <td><label for="freteAtivo">Frete:</label></td>
+            <td colspan="2">
+              <select [(ngModel)]="produtoAtualizar.freteAtivo"
+                      class="form-control"
+                      id="freteAtivo"
+                      name="freteAtivoProduto"
+                      required #freteAtivo="ngModel"
+                      (ngModelChange)="ativarFrete($event)">
+                <option [ngValue]="true">Sim</option>
+                <option [ngValue]="false">Não</option>
+              </select>
+            </td>
+          </tr>
+
+          <tr>
+            <td>
+              <label for="somaTotalValores"><b>VALOR TOTAL: </b></label>
+            </td>
+            <td colspan="5">
+              <input type="number" [(ngModel)]="produtoAtualizar.somaTotalValores"
+                     class="form-control"
+                     id="somaTotalValores"
+                     name="somaTotalValoresProduto"
+                     required #somaTotalValores="ngModel"
+                     maxlength="15"
+                     style="display: none;">
+              <div class="mt-1">{{produtoAtualizar.somaTotalValores | currency : 'BRL'}}</div>
+            </td>
+          </tr>
+
+          <tr>
+            <td colspan="2">
+              <button type="button" class="btn btn-secondary" (click)="calcularValores()">Calcular valores</button>
+            </td>
+            <td colspan="4" class="text-left">
+              <button type="submit" [disabled]="!produtoForm.form.valid" class="btn bg-primary-subtle fw-bold" (click)="abrirTelaAviso(modalAviso)">Salvar</button>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </form>
+    </div>
+
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" (click)="modal.close()">Fechar</button>
+    </div>
   </div>
 </ng-template>
+
+<!--######## FIM DO MODAL DE EDIÇÃO DE PRODUTO ######## -->
 
 <!-- Janela (modal) que abre ao clicar no botão Excluir -->
 <ng-template #modalMsg let-modal>
@@ -65,6 +255,23 @@
   </div>
   <div class="modal-body">
     <a>Produto <b>{{ produtoExcluido.nome }}</b> excluído.</a>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="modal.close()">Fechar</button>
+  </div>
+</ng-template>
+
+<!-- Janela (modal) de AVISO que abre depois de Salvar as atualizações de um produto -->
+<ng-template #modalAviso let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title">
+      AVISO!
+    </h4>
+    <img ngSrc="/codigo_barras.png" height="60" width="60" class="img-right"/>
+  </div>
+  <div class="modal-body">
+    <a style="font-size: 15px;">Informações atualizadas! Clique em <strong>ATUALIZAR LISTA</strong></a><br>
+    <a style="font-size: 15px;">para visualizar as alterações!</a>
   </div>
   <div class="modal-footer">
     <button type="button" class="btn btn-secondary" (click)="modal.close()">Fechar</button>

@@ -15,10 +15,70 @@ public class Produto {
 	private String nome;
 
 	private String descricao;
+	
+	private double frete;
+	
+	private boolean promocao;
+	
+	private double valorTotalDesc;
+	
+	private double valorTotalFrete;
 
 	private double valor;
 
 	private int quantia;
+	
+	private double somaTotalValores;
+	
+	private boolean freteAtivo;
+
+	public boolean isFreteAtivo() {
+		return freteAtivo;
+	}
+
+	public void setFreteAtivo(boolean freteAtivo) {
+		this.freteAtivo = freteAtivo;
+	}
+
+	public double getSomaTotalValores() {
+		return somaTotalValores;
+	}
+
+	public void setSomaTotalValores(double somaTotalValores) {
+		this.somaTotalValores = somaTotalValores;
+	}
+
+	public double getFrete() {
+		return frete;
+	}
+
+	public void setFrete(double frete) {
+		this.frete = frete;
+	}
+
+	public boolean isPromocao() {
+		return promocao;
+	}
+
+	public void setPromocao(boolean promocao) {
+		this.promocao = promocao;
+	}
+
+	public double getValorTotalDesc() {
+		return valorTotalDesc;
+	}
+
+	public void setValorTotalDesc(double valorTotalDesc) {
+		this.valorTotalDesc = valorTotalDesc;
+	}
+
+	public double getValorTotalFrete() {
+		return valorTotalFrete;
+	}
+
+	public void setValorTotalFrete(double valorTotalFrete) {
+		this.valorTotalFrete = valorTotalFrete;
+	}
 
 	public long getId() {
 		return id;

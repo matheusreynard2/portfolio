@@ -35,4 +35,14 @@ export class ProdutoService {
     return this.http.put<Produto>(this.produtosUrl + "/atualizarProduto/" + id, produto);
   }
 
+  // ENDPOINT GET - Listar produto mais caro
+  public listarProdutoMaisCaro(): Observable<Produto[]> {
+    return this.http.get<Produto[]>(this.produtosUrl + "/produtoMaisCaro");
+  }
+
+  // ENDPOINT GET - Calcular média dos valores unitários
+  public calcularMedia(): Observable<number> {
+    return this.http.get<number>(this.produtosUrl + "/mediaPreco");
+  }
+
 }

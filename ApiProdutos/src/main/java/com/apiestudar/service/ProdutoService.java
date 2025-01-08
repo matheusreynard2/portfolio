@@ -1,7 +1,6 @@
 package com.apiestudar.service;
 
 import java.util.List;
-import java.util.Optional;
 
 import com.apiestudar.model.Produto;
 
@@ -11,10 +10,11 @@ public interface ProdutoService {
 
 	List<Produto> listarProdutos();
 
-	Optional<Produto> buscarProduto(long id);
-
 	Produto atualizarProduto(long id, Produto produtoAtualizado);
 
 	boolean deletarProduto(long id);
+	
+	List<Produto> listarProdutoMaisCaro();
 
+	Double obterMediaPreco();
 }
