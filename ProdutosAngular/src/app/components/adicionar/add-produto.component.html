@@ -44,19 +44,17 @@
                    name="quantidadeProduto"
                    required #quantidade="ngModel">
           </td>
-          <!-- Valor Total com Desconto -->
-          <td><label for="valorTotalDesc">Valor produto c/ desconto:</label></td>
-          <!-- INPUT EXISTE PARA O CAMPO DA ENTIDADE FAZER PARTE DO NGMODEL, MAS TEM DISPLAY = NONE -->
-          <input type="number" [(ngModel)]="produto.valorTotalDesc"
-                 class="form-control"
-                 id="valorTotalDesc"
-                 name="valorTotalDescProduto"
-                 required #valorTotalDesc="ngModel"
-                 maxlength="30"
-                 style="display: none;">
-          <td>
-            <!-- Div para exibir o valor formatado -->
-            <div class="mt-1">{{produto.valorTotalDesc | currency : 'BRL'}}</div>
+          <td><label for="promocao">Promoção:</label></td>
+          <td colspan="1">
+            <select [(ngModel)]="produto.promocao"
+                    class="form-control"
+                    id="promocao"
+                    name="promocaoProduto"
+                    required #promocao="ngModel"
+                    (ngModelChange)="selecionarPromocao($event)">
+              <option [ngValue]="true">Sim</option>
+              <option [ngValue]="false">Não</option>
+            </select>
           </td>
         </tr>
         <tr>
@@ -73,6 +71,54 @@
                    maxlength="30"
                    [disabled]="!produto.freteAtivo"
                    style="display: none;">
+          </td>
+          <td><label for="freteAtivo">Frete:</label></td>
+          <td colspan="1">
+            <select [(ngModel)]="produto.freteAtivo"
+                    class="form-control"
+                    id="freteAtivo"
+                    name="freteAtivoProduto"
+                    required #freteAtivo="ngModel"
+                    (ngModelChange)="ativarFrete($event)">
+              <option [ngValue]="true">Sim</option>
+              <option [ngValue]="false">Não</option>
+            </select>
+          </td>
+        </tr>
+        <tr>
+        </tr>
+        <tr>
+          <!-- Valor -->
+          <td><label for="valor">Valor unitário:</label></td>
+          <td>
+            <input type="number" [(ngModel)]="produto.valor"
+                   class="form-control"
+                   id="valor"
+                   name="valorProduto"
+                   required #valor="ngModel"
+                   maxlength="30">
+          </td>
+          <!-- Valor Total com Desconto -->
+          <td><label for="valorTotalDesc">Valor produto c/ desconto:</label></td>
+          <!-- INPUT EXISTE PARA O CAMPO DA ENTIDADE FAZER PARTE DO NGMODEL, MAS TEM DISPLAY = NONE -->
+          <input type="number" [(ngModel)]="produto.valorTotalDesc"
+                 class="form-control"
+                 id="valorTotalDesc"
+                 name="valorTotalDescProduto"
+                 required #valorTotalDesc="ngModel"
+                 maxlength="30"
+                 style="display: none;">
+          <td>
+            <!-- Div para exibir o valor formatado -->
+            <div class="mt-1">{{produto.valorTotalDesc | currency : 'BRL'}}</div>
+          </td>
+        </tr>
+        <tr>
+        <td>
+        </td>
+          <td>
+            <!-- Div para exibir o valor formatado -->
+            <div class="mt-1">{{produto.valor | currency : 'BRL'}}</div>
           </td>
           <!-- Valor Total do Frete -->
           <td>
@@ -92,49 +138,16 @@
           </td>
         </tr>
         <tr>
-        </tr>
-        <tr>
-          <!-- Valor -->
-          <td><label for="valor">Valor unitário:</label></td>
           <td>
-            <input type="number" [(ngModel)]="produto.valor"
+            Desconto:
+          </td>
+          <td>
+            <input type="number" [(ngModel)]="produto.desconto"
                    class="form-control"
-                   id="valor"
-                   name="valorProduto"
-                   required #valor="ngModel"
-                   maxlength="30">
-          </td>
-          <td><label for="promocao">Promoção:</label></td>
-          <td colspan="1">
-            <select [(ngModel)]="produto.promocao"
-                    class="form-control"
-                    id="promocao"
-                    name="promocaoProduto"
-                    required #promocao="ngModel"
-                    (ngModelChange)="selecionarPromocao($event)">
-              <option [ngValue]="true">Sim</option>
-              <option [ngValue]="false">Não</option>
-            </select>
-          </td>
-        </tr>
-        <tr>
-        <td>
-        </td>
-          <td>
-            <!-- Div para exibir o valor formatado -->
-            <div class="mt-1">{{produto.valor | currency : 'BRL'}}</div>
-          </td>
-          <td><label for="freteAtivo">Frete:</label></td>
-          <td colspan="1">
-            <select [(ngModel)]="produto.freteAtivo"
-                    class="form-control"
-                    id="freteAtivo"
-                    name="freteAtivoProduto"
-                    required #freteAtivo="ngModel"
-                    (ngModelChange)="ativarFrete($event)">
-              <option [ngValue]="true">Sim</option>
-              <option [ngValue]="false">Não</option>
-            </select>
+                   id="valorDesconto"
+                   name="valorDescontoProduto"
+                   required #valorDesconto="ngModel"
+                   maxlength="3">
           </td>
         </tr>
         <tr>

@@ -47,6 +47,7 @@ public class ProdutoServiceImpl implements ProdutoService {
 			produto.get().setQuantia(produtoAtualizado.getQuantia());
 			produto.get().setSomaTotalValores(produtoAtualizado.getSomaTotalValores());
 			produto.get().setFreteAtivo(produtoAtualizado.isFreteAtivo());
+			produto.get().setValorDesconto(produtoAtualizado.getValorDesconto());
 			produtoRepository.save(produto.get());
 			return produto.get();
 		}

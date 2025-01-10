@@ -4,6 +4,7 @@ import { ProdutoService } from '../../service/produto.service';
 import {CurrencyPipe, NgForOf, NgIf, NgOptimizedImage, NgStyle} from '@angular/common';
 import {NgbModal, NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import { ProdutoFunctionsService } from '../../service/produto-functions.service';
 
 @Component({
   selector: '/app-produto-list',
@@ -12,7 +13,6 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
     NgForOf,
     NgbModule,
     NgOptimizedImage,
-    NgIf,
     CurrencyPipe,
     FormsModule,
     ReactiveFormsModule
@@ -22,43 +22,34 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 
 export class ProdutoListComponent implements OnInit {
 
-  // Esta variável abaixo é a lista que contém o produto com Valor Total mais caro
+  // Variáveis
   listaProdutoMaisCaro: Produto[] = [];
-
-  // Variável que extrai o nome do produto e o id do produto com o Valor Total mais caro
   stringProdutoMaisCaro: string = '';
-  // Variável pra exibir o resultado da query que vem da API sobre média de preços
   mediaPreco: number = 0;
 
-  // Variaveln para: armazenar a lista de produtos para listagem na tela
   listaDeProdutos!: Produto[];
-  // Armazenar o produto a ser atualizado no modal de edição
   produtoAtualizar!: Produto;
-  // Armazena o produto que aparece no modal de mensagem de exclusão
   produtoExcluido!: Produto;
 
+  // Services
   private modalService: NgbModal = new NgbModal();
+  private produtoFunctionsService: ProdutoFunctionsService = new ProdutoFunctionsService();
 
   constructor(private produtoService: ProdutoService) { }
 
   // Ao abrir a página, chama os endpoints abaixo...
   ngOnInit() {
-    // Chama o Função de listar o produto mais caro
     this.listarProdutoMaisCaro();
-    // Chama o Função de calcular a média dos valores unitários
     this.calcularMedia();
-    // Lista todos os produtos na tela
+    // Lista e ordena os produtos por ID
     this.produtoService.listarProdutos().subscribe(data => {
-      // Lista e ordena os produtos por ID, em ordem crescente (de 'a' para 'b', de '0' a '10', por exemplo)
       this.listaDeProdutos = data.sort((a, b) => a.id - b.id);
     });
   }
 
   // Função chamada ao clicar no botão de Submit (Salvar) do formulário de Edição de produtos
   onSubmitSalvar(modal: any) {
-    // Chama o Função de calcular os totalizadores de valor antes de salvar o produto no banco de dados
     this.calcularValores();
-    // Salva o produto no banco de dados e fecha o modal
     this.produtoService.atualizarProduto(this.produtoAtualizar.id, this.produtoAtualizar).subscribe();
     modal.close();
   }
@@ -70,16 +61,12 @@ export class ProdutoListComponent implements OnInit {
     });
   }
 
-  // * O endpoint de valor mais caro retorna uma lista para facilitar uma implementação
-  // de ranking de valores mais caros, caso necessário
-
   // Função que busca o produto com Valor Total mais caro
   listarProdutoMaisCaro() {
   this.produtoService.listarProdutoMaisCaro().subscribe((produtos: Produto[]) => {
     this.listaProdutoMaisCaro = produtos;
 
     // Checa se existe registro na lista para preencher a string e exibir na tela
-    // Se não existir, preenche com vazio.
     if (this.listaProdutoMaisCaro[0] != null) {
       this.stringProdutoMaisCaro = '' + this.listaProdutoMaisCaro[0].id + ' - ' + this.listaProdutoMaisCaro[0].nome
     } else {
@@ -87,8 +74,7 @@ export class ProdutoListComponent implements OnInit {
     }
   })}
 
-  // Função para deletar um produto através do id. Chama o endpoint, e tendo sucesso na exclusão
-  // (retornando true do endpoint, abre o o modal de mensagem de produto excluido com sucesso)
+  // Função para deletar um produto através do id. Chama o endpoint, e a msg de sucesso
   deletarProduto(modalDeletar: any, id: number, produto: Produto) {
     this.produtoService.deletarProduto(id).subscribe({
       next: (response) => {
@@ -104,8 +90,6 @@ export class ProdutoListComponent implements OnInit {
   atualizarProduto(modalEditar: any, id: number, produto: Produto) {
     this.produtoService.atualizarProduto(id, produto).subscribe({
       next: (produtoRetornado: Produto) => {
-        // Atribui o Produto retornado (produtoRetornado) pelo id fornecido
-        // ao produto que será atualizado e abre a tela de edição, passando o produto para editar
         this.produtoAtualizar = produtoRetornado
         this.calcularValores();
         this.abrirTelaEdicao(modalEditar)
@@ -123,9 +107,7 @@ export class ProdutoListComponent implements OnInit {
 
   // Função que atualiza a lista de produtos
   atualizarLista(): void {
-    // Lista todos os produtos na tela
     this.produtoService.listarProdutos().subscribe(data => {
-      // Lista e ordena os produtos por ID, em ordem crescente (de 'a' para 'b', de '0' a '10', por exemplo)
       this.listaDeProdutos = data.sort((a, b) => a.id - b.id);
     });
     this.listarProdutoMaisCaro();
@@ -150,47 +132,29 @@ export class ProdutoListComponent implements OnInit {
     this.modalService.open(modalAviso);
   }
 
-  // função chamada ao mudar de valor na ComboBox de Promoção no ngModel
+  // Função chamada ao mudar de valor na ComboBox de Promoção no ngModel
   selecionarPromocao(selecionouPromocao: boolean): boolean {
-    if (selecionouPromocao) {
-      return true;
-    } else {
-      return false;
-    }
+    return this.produtoFunctionsService.selecionarPromocao(selecionouPromocao);
   }
 
-  // função chamada quando troca o valor da ComboBox Frete Ativo para saber se o Produto tem frete ou não
+  // Função chamada quando troca o valor da ComboBox Frete Ativo para saber se o Produto tem frete ou não
   ativarFrete(ativouFrete: boolean): boolean {
-    if (ativouFrete) {
-      return true;
-    } else {
-      return false;
-    }
+    return this.produtoFunctionsService.ativarFrete(ativouFrete);
   }
 
   // função chamada para calcular o valor do frete
-  // Condição necessária para checar se o produto é Físico ou não, pois a regra do Frete só se aplica
-  // para produtos tipo = físico. Se tipoFísico = true, calcula o frete. Caso contrário, frete = 0
   calcularFrete():number {
-    let valorFrete: number;
-
-    // CALCULO DE VALOR DE FRETE PELO CEP
-    valorFrete = 0
-
-    return valorFrete
+    return this.produtoFunctionsService.calcularFrete()
   }
 
   // Calcula os totalizadores de valor. função chamada ao clicar no botão Calcular valores
   // e antes de gravar o produto no banco de dados no onSubmit do formulário ngModel
   calcularValores() {
-    let valorFrete: number;
-
     // Desconto SIM e Frete SIM
     if (this.produtoAtualizar.promocao && this.produtoAtualizar.freteAtivo) {
-      valorFrete = this.calcularFrete()
       this.produtoAtualizar.valorTotalDesc = this.produtoAtualizar.valor - (this.produtoAtualizar.valor * 0.1)
-      this.produtoAtualizar.valorTotalFrete = this.produtoAtualizar.valorTotalDesc + valorFrete
-      this.produtoAtualizar.frete = valorFrete;
+      this.produtoAtualizar.valorTotalFrete = this.produtoAtualizar.valorTotalDesc + this.calcularFrete()
+      this.produtoAtualizar.frete = this.calcularFrete()
 
       this.produtoAtualizar.somaTotalValores = this.produtoAtualizar.valorTotalDesc + this.produtoAtualizar.frete
     }
@@ -206,10 +170,9 @@ export class ProdutoListComponent implements OnInit {
 
     // Desconto NÃO e Frete SIM
     if (!this.produtoAtualizar.promocao && this.produtoAtualizar.freteAtivo) {
-      valorFrete = this.calcularFrete()
-      this.produtoAtualizar.valorTotalFrete = this.produtoAtualizar.valor + valorFrete
+      this.produtoAtualizar.valorTotalFrete = this.produtoAtualizar.valor + this.calcularFrete()
       this.produtoAtualizar.valorTotalDesc = 0
-      this.produtoAtualizar.frete = valorFrete;
+      this.produtoAtualizar.frete = this.calcularFrete();
 
       this.produtoAtualizar.somaTotalValores = this.produtoAtualizar.valorTotalFrete
     }

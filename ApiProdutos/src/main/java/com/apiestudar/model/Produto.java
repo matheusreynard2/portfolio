@@ -31,6 +31,16 @@ public class Produto {
 	private double somaTotalValores;
 	
 	private boolean freteAtivo;
+	
+	private double valorDesconto;
+
+	public double getValorDesconto() {
+		return valorDesconto;
+	}
+
+	public void setValorDesconto(double valorDesconto) {
+		this.valorDesconto = valorDesconto;
+	}
 
 	public boolean isFreteAtivo() {
 		return freteAtivo;
