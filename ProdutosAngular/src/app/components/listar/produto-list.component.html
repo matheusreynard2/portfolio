@@ -226,7 +226,7 @@
 
           <tr>
             <td colspan="2">
-              <button type="button" class="btn btn-secondary" (click)="calcularValores()">Calcular valores</button>
+              <button type="button" class="btn btn-secondary" (click)="calcularValores(produtoAtualizar)">Calcular valores</button>
             </td>
             <td colspan="4" class="text-left">
               <button type="submit" [disabled]="!produtoForm.form.valid" class="btn bg-primary-subtle fw-bold" (click)="abrirTelaAviso(modalAviso)">Salvar</button>

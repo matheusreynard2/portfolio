@@ -74,5 +74,12 @@ public class ProdutoServiceImpl implements ProdutoService {
 		Optional<Double> valor = Optional.ofNullable(produtoRepository.obterMediaPreco());
 		return valor.orElse(0.0);
 	}
+	
+	@Override
+	public Double calcularValorDesconto(double valorProduto, double valorDesconto) {
+		double valorDescontoDecimal = valorDesconto / 100;
+		double valorComDesconto = valorProduto - (valorProduto * valorDescontoDecimal);
+		return valorComDesconto;
+	}
 
 }

@@ -61,5 +61,12 @@ public class ProdutoController {
 		Double media = produtoService.obterMediaPreco();
 		return media;
 	}
+			
+	@GetMapping("/calcularDesconto/{valorProduto}/{valorDesconto}")
+	public Double calcularValorDesconto(@PathVariable double valorProduto, @PathVariable double valorDesconto) {
+		Double valorComDesconto = produtoService.calcularValorDesconto(valorProduto, valorDesconto);
+		return valorComDesconto;
+	}
 
 }
+  

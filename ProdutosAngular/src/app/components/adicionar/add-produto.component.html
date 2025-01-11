@@ -142,12 +142,12 @@
             Desconto:
           </td>
           <td>
-            <input type="number" [(ngModel)]="produto.desconto"
+            <input type="text" [(ngModel)]="produto.desconto"
                    class="form-control"
                    id="valorDesconto"
                    name="valorDescontoProduto"
                    required #valorDesconto="ngModel"
-                   maxlength="3">
+                   appPorcentagemMask>
           </td>
         </tr>
         <tr>
@@ -173,7 +173,7 @@
         </tr>
         <tr>
           <td>
-            <button type="button" class="btn btn-secondary" (click)="calcularValores()">Calcular valores</button>
+            <button type="button" class="btn btn-secondary" (click)="calcularValores(produto)">Calcular valores</button>
           </td>
           <td colspan="6" class="text-left">
             <button type="submit" [disabled]="!produtoForm.form.valid" class="btn bg-primary-subtle fw-bold" (click)="msgAddProduto(modalMsg)">Cadastrar</button>

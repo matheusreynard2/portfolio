@@ -33,9 +33,9 @@ export class ProdutoListComponent implements OnInit {
 
   // Services
   private modalService: NgbModal = new NgbModal();
-  private produtoFunctionsService: ProdutoFunctionsService = new ProdutoFunctionsService();
 
-  constructor(private produtoService: ProdutoService) { }
+  constructor(private produtoService: ProdutoService,
+              private produtoFunctionsService: ProdutoFunctionsService) { }
 
   // Ao abrir a página, chama os endpoints abaixo...
   ngOnInit() {
@@ -49,7 +49,7 @@ export class ProdutoListComponent implements OnInit {
 
   // Função chamada ao clicar no botão de Submit (Salvar) do formulário de Edição de produtos
   onSubmitSalvar(modal: any) {
-    this.calcularValores();
+    this.calcularValores(this.produtoAtualizar);
     this.produtoService.atualizarProduto(this.produtoAtualizar.id, this.produtoAtualizar).subscribe();
     modal.close();
   }
@@ -91,7 +91,7 @@ export class ProdutoListComponent implements OnInit {
     this.produtoService.atualizarProduto(id, produto).subscribe({
       next: (produtoRetornado: Produto) => {
         this.produtoAtualizar = produtoRetornado
-        this.calcularValores();
+        this.calcularValores(this.produtoAtualizar);
         this.abrirTelaEdicao(modalEditar)
       }
     })
@@ -149,43 +149,8 @@ export class ProdutoListComponent implements OnInit {
 
   // Calcula os totalizadores de valor. função chamada ao clicar no botão Calcular valores
   // e antes de gravar o produto no banco de dados no onSubmit do formulário ngModel
-  calcularValores() {
-    // Desconto SIM e Frete SIM
-    if (this.produtoAtualizar.promocao && this.produtoAtualizar.freteAtivo) {
-      this.produtoAtualizar.valorTotalDesc = this.produtoAtualizar.valor - (this.produtoAtualizar.valor * 0.1)
-      this.produtoAtualizar.valorTotalFrete = this.produtoAtualizar.valorTotalDesc + this.calcularFrete()
-      this.produtoAtualizar.frete = this.calcularFrete()
-
-      this.produtoAtualizar.somaTotalValores = this.produtoAtualizar.valorTotalDesc + this.produtoAtualizar.frete
-    }
-
-    // Desconto SIM e Frete NÃO
-    if (this.produtoAtualizar.promocao && !this.produtoAtualizar.freteAtivo) {
-      this.produtoAtualizar.frete = 0
-      this.produtoAtualizar.valorTotalFrete = 0
-      this.produtoAtualizar.valorTotalDesc = this.produtoAtualizar.valor - (this.produtoAtualizar.valor * 0.1)
-
-      this.produtoAtualizar.somaTotalValores = this.produtoAtualizar.valorTotalDesc
-    }
-
-    // Desconto NÃO e Frete SIM
-    if (!this.produtoAtualizar.promocao && this.produtoAtualizar.freteAtivo) {
-      this.produtoAtualizar.valorTotalFrete = this.produtoAtualizar.valor + this.calcularFrete()
-      this.produtoAtualizar.valorTotalDesc = 0
-      this.produtoAtualizar.frete = this.calcularFrete();
-
-      this.produtoAtualizar.somaTotalValores = this.produtoAtualizar.valorTotalFrete
-    }
-
-    // Desconto NÃO e Frete NÃO
-    if (!this.produtoAtualizar.promocao && !this.produtoAtualizar.freteAtivo) {
-      this.produtoAtualizar.frete = 0
-      this.produtoAtualizar.valorTotalFrete = 0
-      this.produtoAtualizar.valorTotalDesc = 0
-
-      this.produtoAtualizar.somaTotalValores = this.produtoAtualizar.valor
-    }
-
+  calcularValores(produto: Produto) {
+    this.produtoFunctionsService.calcularValores(produto);
   }
 
 }

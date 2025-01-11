@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Produto } from '../model/produto';
 import { Observable } from 'rxjs';
 
@@ -43,6 +43,11 @@ export class ProdutoService {
   // ENDPOINT GET - Calcular média dos valores unitários
   public calcularMedia(): Observable<number> {
     return this.http.get<number>(this.produtosUrl + "/mediaPreco");
+  }
+
+  // ENDPOINT GET - Calcula o valor de desconto sobre o produto
+  public calcularDesconto(valorProduto: number, descontoDecimal: number): Observable<number> {
+    return this.http.get<number>(this.produtosUrl + "/calcularDesconto/" + valorProduto + '/' + descontoDecimal);
   }
 
 }
