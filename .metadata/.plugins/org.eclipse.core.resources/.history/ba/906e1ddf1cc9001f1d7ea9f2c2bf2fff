@@ -1,9 +1,0 @@
-spring.application.name=ApiEstudar
-spring.datasource.url=jdbc:postgresql://localhost:5432/apiestudar
-spring.datasource.username=postgres
-spring.datasource.password=admin
-spring.jpa.show-sql=true
-spring.datasource.driver-class-name=org.postgresql.Driver
-
-# Hibernate ddl auto (create, create-drop, validate, update)
-spring.jpa.hibernate.ddl-auto = update
