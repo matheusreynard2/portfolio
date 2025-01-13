@@ -1,5 +1,6 @@
 package com.apiestudar.ApiEstudar;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.mockito.Mockito.when;
 
@@ -15,7 +16,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import junit.framework.TestCase;
 
 @SpringBootTest
-public class ProdutoEndpointsTest extends TestCase {
+public class ProdutoEndpointsTest {
 	
 	@Mock
 	private ProdutoRepository produtoRepository;
@@ -25,7 +26,7 @@ public class ProdutoEndpointsTest extends TestCase {
 	
 	// Teste que valida o método do service de adicionar um produto no banco de dados
 	@Test
-	public void adicionarProdutoTest() {
+	public void testAdicionarProduto() {
 
 		Produto produtoTeste = new Produto();
 		produtoTeste.setId(1);
@@ -58,7 +59,7 @@ public class ProdutoEndpointsTest extends TestCase {
 	
 	// Teste que valida o calculo de desconto retornando o cáculo correto
 	@Test
-	public void calcularValorDescontoTrueTest() {
+	public void testCalcularValorDescontoTrue() {
 			
 		double valorProduto = 120;
 		double valorDesconto = 50; // em porcentagem
@@ -66,8 +67,8 @@ public class ProdutoEndpointsTest extends TestCase {
 		double valorRetornado = produtoService.calcularValorDesconto(valorProduto, valorDesconto);
 		double valorResultadoEsperado = 60;
 
-		// Retorna TRUE no teste
-		assertEquals(valorResultadoEsperado, valorRetornado);
+		// Valores devem ser iguais
+		assertEquals(valorResultadoEsperado, valorRetornado, 0);
 		
 		if (valorResultadoEsperado == valorRetornado)
 			System.out.println("TESTE 2: Passou. Resultados iguais.");
@@ -78,19 +79,19 @@ public class ProdutoEndpointsTest extends TestCase {
 	
 	// Teste que valida o calculo de desconto retornando o cálculo incorreto
 	@Test
-	public void calcularValorDescontoFalseTest() {
+	public void testCalcularValorDescontoFalseTest() {
 			
 		double valorProduto = 120;
 		double valorDesconto = 50; // em porcentagem
 		
 		// o valorRetornado deve ser 60
 		double valorRetornado = produtoService.calcularValorDesconto(valorProduto, valorDesconto);
-		double valorResultadoErrado = 70;
+		double valorResultado = 70;
 		
-		// Retorna FALSE no teste
-		assertNotEquals(valorResultadoErrado, valorRetornado);
+		// Valores devem ser diferentes
+		assertNotEquals(valorResultado, valorRetornado);
 		
-		if (valorResultadoErrado != valorRetornado)
+		if (valorResultado != valorRetornado)
 			System.out.println("TESTE 3: Passou. Resultados diferentes.");
 		else
 			System.out.println("TESTE 3: NÃO Passou. Resultados iguais.");

@@ -6393,3 +6393,384 @@ org.apache.maven.project.ProjectBuildingException: Some problems were encountere
 2025-01-12 09:21:55,729 [Worker-36: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
 2025-01-12 09:21:55,732 [Worker-36: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
 2025-01-12 09:21:55,732 [Worker-36: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\gradi\eclipse-workspace\ApiProdutos\src\test\resources
+2025-01-12 09:23:47,214 [Worker-36: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2025-01-12 09:23:47,215 [Worker-36: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2025-01-12 09:23:47,216 [Worker-36: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2025-01-12 09:23:47,218 [Worker-36: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2025-01-12 09:23:47,219 [Worker-36: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\gradi\eclipse-workspace\ApiProdutos\src\test\resources
+2025-01-12 09:24:03,213 [Worker-48: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2025-01-12 09:24:03,214 [Worker-48: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2025-01-12 09:24:03,215 [Worker-48: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2025-01-12 09:24:03,217 [Worker-48: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2025-01-12 09:24:03,218 [Worker-48: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\gradi\eclipse-workspace\ApiProdutos\src\test\resources
+2025-01-12 15:33:35,419 [Worker-96: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2025-01-12 15:33:35,420 [Worker-96: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 1 resource
+2025-01-12 15:33:35,436 [Worker-96: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2025-01-12 15:33:35,441 [Worker-96: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2025-01-12 15:33:35,441 [Worker-96: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\gradi\eclipse-workspace\ApiProdutos\src\test\resources
+2025-01-12 15:33:42,818 [Worker-92: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2025-01-12 15:33:42,818 [Worker-92: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2025-01-12 15:33:42,818 [Worker-92: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2025-01-12 15:33:42,824 [Worker-92: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2025-01-12 15:33:42,824 [Worker-92: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\gradi\eclipse-workspace\ApiProdutos\src\test\resources
+2025-01-12 15:34:54,674 [Worker-94: Building] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using org.eclipse.m2e.jdt.JarLifecycleMapping lifecycle mapping for MavenProject: com.apiestudar:apiestudar:0.0.1-SNAPSHOT @ C:\Users\gradi\eclipse-workspace\ApiProdutos\pom.xml.
+2025-01-12 15:34:57,827 [Worker-94: Building] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading https://repo.maven.apache.org/maven2/org/junit/jupiter/junit-jupiter-api/5.7.1/junit-jupiter-api-5.7.1.pom
+2025-01-12 15:34:57,861 [Worker-94: Building] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded https://repo.maven.apache.org/maven2/org/junit/jupiter/junit-jupiter-api/5.7.1/junit-jupiter-api-5.7.1.pom
+2025-01-12 15:34:58,081 [Worker-94: Building] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading https://repo.maven.apache.org/maven2/org/junit/jupiter/junit-jupiter-api/5.7.1/junit-jupiter-api-5.7.1.jar
+2025-01-12 15:34:58,163 [Worker-94: Building] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded https://repo.maven.apache.org/maven2/org/junit/jupiter/junit-jupiter-api/5.7.1/junit-jupiter-api-5.7.1.jar
+2025-01-12 15:34:59,369 [Worker-92: Download sources and javadoc] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading https://repo.maven.apache.org/maven2/org/junit/jupiter/junit-jupiter-api/5.7.1/junit-jupiter-api-5.7.1-sources.jar
+2025-01-12 15:34:59,449 [Worker-92: Download sources and javadoc] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded https://repo.maven.apache.org/maven2/org/junit/jupiter/junit-jupiter-api/5.7.1/junit-jupiter-api-5.7.1-sources.jar
+2025-01-12 15:34:59,457 [Worker-92: Download sources and javadoc] INFO  o.e.m.j.internal.DownloadSourcesJob - Downloaded sources for org.junit.jupiter:junit-jupiter-api:5.7.1
+2025-01-12 15:35:00,176 [Worker-94: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2025-01-12 15:35:00,181 [Worker-94: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2025-01-12 15:35:00,182 [Worker-94: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2025-01-12 15:35:00,189 [Worker-94: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2025-01-12 15:35:00,189 [Worker-94: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\gradi\eclipse-workspace\ApiProdutos\src\test\resources
+2025-01-12 15:35:00,660 [Worker-98: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2025-01-12 15:35:00,660 [Worker-98: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 1 resource
+2025-01-12 15:35:00,674 [Worker-98: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2025-01-12 15:35:00,677 [Worker-98: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2025-01-12 15:35:00,678 [Worker-98: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\gradi\eclipse-workspace\ApiProdutos\src\test\resources
+2025-01-12 15:36:16,987 [Worker-100: Building] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using org.eclipse.m2e.jdt.JarLifecycleMapping lifecycle mapping for MavenProject: com.apiestudar:apiestudar:0.0.1-SNAPSHOT @ C:\Users\gradi\eclipse-workspace\ApiProdutos\pom.xml.
+2025-01-12 15:36:17,812 [Worker-100: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2025-01-12 15:36:17,815 [Worker-100: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2025-01-12 15:36:17,816 [Worker-100: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2025-01-12 15:36:17,821 [Worker-100: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2025-01-12 15:36:17,821 [Worker-100: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\gradi\eclipse-workspace\ApiProdutos\src\test\resources
+2025-01-12 15:37:16,335 [Worker-103: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2025-01-12 15:37:16,335 [Worker-103: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2025-01-12 15:37:16,337 [Worker-103: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2025-01-12 15:37:16,340 [Worker-103: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2025-01-12 15:37:16,340 [Worker-103: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\gradi\eclipse-workspace\ApiProdutos\src\test\resources
+2025-01-12 15:37:47,565 [Worker-97: Building] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using org.eclipse.m2e.jdt.JarLifecycleMapping lifecycle mapping for MavenProject: com.apiestudar:apiestudar:0.0.1-SNAPSHOT @ C:\Users\gradi\eclipse-workspace\ApiProdutos\pom.xml.
+2025-01-12 15:37:48,289 [Worker-97: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2025-01-12 15:37:48,294 [Worker-97: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2025-01-12 15:37:48,295 [Worker-97: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2025-01-12 15:37:48,301 [Worker-97: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2025-01-12 15:37:48,301 [Worker-97: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\gradi\eclipse-workspace\ApiProdutos\src\test\resources
+2025-01-12 15:38:21,618 [Worker-104: Building] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using org.eclipse.m2e.jdt.JarLifecycleMapping lifecycle mapping for MavenProject: com.apiestudar:apiestudar:0.0.1-SNAPSHOT @ C:\Users\gradi\eclipse-workspace\ApiProdutos\pom.xml.
+2025-01-12 15:38:22,361 [Worker-104: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2025-01-12 15:38:22,363 [Worker-104: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2025-01-12 15:38:22,364 [Worker-104: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2025-01-12 15:38:22,368 [Worker-104: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2025-01-12 15:38:22,368 [Worker-104: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\gradi\eclipse-workspace\ApiProdutos\src\test\resources
+2025-01-12 15:38:23,563 [Worker-97: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2025-01-12 15:38:23,564 [Worker-97: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 1 resource
+2025-01-12 15:38:23,574 [Worker-97: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2025-01-12 15:38:23,577 [Worker-97: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2025-01-12 15:38:23,578 [Worker-97: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\gradi\eclipse-workspace\ApiProdutos\src\test\resources
+2025-01-13 10:09:11,036 [Worker-250: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2025-01-13 10:09:11,038 [Worker-250: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2025-01-13 10:09:11,038 [Worker-250: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2025-01-13 10:09:11,042 [Worker-250: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2025-01-13 10:09:11,043 [Worker-250: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\gradi\eclipse-workspace\ApiProdutos\src\test\resources
+2025-01-13 10:09:15,807 [main] INFO  o.e.m.jdt.internal.UnitTestSupport - Updating ProdutoEndpointsTest (2) from maven configuration
+2025-01-13 10:10:05,664 [Worker-253: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2025-01-13 10:10:05,665 [Worker-253: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 1 resource
+2025-01-13 10:10:05,677 [Worker-253: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2025-01-13 10:10:05,683 [Worker-253: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2025-01-13 10:10:05,683 [Worker-253: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\gradi\eclipse-workspace\ApiProdutos\src\test\resources
+2025-01-13 10:10:43,724 [ModalContext] INFO  o.e.m.jdt.internal.UnitTestSupport - Updating ProdutoEndpointsTests from maven configuration
+2025-01-13 10:10:44,043 [Worker-250: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2025-01-13 10:10:44,044 [Worker-250: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 1 resource
+2025-01-13 10:10:44,047 [Worker-250: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2025-01-13 10:10:44,052 [Worker-250: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2025-01-13 10:10:44,053 [Worker-250: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\gradi\eclipse-workspace\ApiProdutos\src\test\resources
+2025-01-13 10:11:15,161 [ModalContext] INFO  o.e.m.jdt.internal.UnitTestSupport - Updating ProdutoEndpointsTest from maven configuration
+2025-01-13 10:11:15,416 [Worker-251: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2025-01-13 10:11:15,416 [Worker-251: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 1 resource
+2025-01-13 10:11:15,418 [Worker-251: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2025-01-13 10:11:15,422 [Worker-251: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2025-01-13 10:11:15,422 [Worker-251: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\gradi\eclipse-workspace\ApiProdutos\src\test\resources
+2025-01-13 10:16:42,948 [Worker-256: Launching ProdutoEndpointsTest] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2025-01-13 10:16:42,949 [Worker-256: Launching ProdutoEndpointsTest] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2025-01-13 10:16:42,950 [Worker-256: Launching ProdutoEndpointsTest] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2025-01-13 10:16:42,954 [Worker-256: Launching ProdutoEndpointsTest] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2025-01-13 10:16:42,954 [Worker-256: Launching ProdutoEndpointsTest] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\gradi\eclipse-workspace\ApiProdutos\src\test\resources
+2025-01-13 10:27:42,208 [Worker-260: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2025-01-13 10:27:42,210 [Worker-260: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2025-01-13 10:27:42,211 [Worker-260: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2025-01-13 10:27:42,215 [Worker-260: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2025-01-13 10:27:42,215 [Worker-260: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\gradi\eclipse-workspace\ApiProdutos\src\test\resources
+2025-01-13 10:28:11,267 [Worker-262: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2025-01-13 10:28:11,268 [Worker-262: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2025-01-13 10:28:11,268 [Worker-262: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2025-01-13 10:28:11,271 [Worker-262: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2025-01-13 10:28:11,271 [Worker-262: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\gradi\eclipse-workspace\ApiProdutos\src\test\resources
+2025-01-13 10:32:12,880 [Worker-260: Building] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using org.eclipse.m2e.jdt.JarLifecycleMapping lifecycle mapping for MavenProject: com.apiestudar:apiestudar:0.0.1-SNAPSHOT @ C:\Users\gradi\eclipse-workspace\ApiProdutos\pom.xml.
+2025-01-13 10:32:16,157 [Worker-260: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2025-01-13 10:32:16,160 [Worker-260: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2025-01-13 10:32:16,160 [Worker-260: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2025-01-13 10:32:16,166 [Worker-260: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2025-01-13 10:32:16,166 [Worker-260: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\gradi\eclipse-workspace\ApiProdutos\src\test\resources
+2025-01-13 10:32:17,440 [Worker-262: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2025-01-13 10:32:17,441 [Worker-262: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 1 resource
+2025-01-13 10:32:17,455 [Worker-262: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2025-01-13 10:32:17,460 [Worker-262: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2025-01-13 10:32:17,460 [Worker-262: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\gradi\eclipse-workspace\ApiProdutos\src\test\resources
+2025-01-13 10:32:28,538 [main] INFO  o.e.m2e.actions.ExecutePomAction - Creating new launch configuration
+2025-01-13 10:32:36,399 [Worker-263: Launching ApiProdutos (10)] INFO  o.eclipse.m2e.core.internal.Bundles - getClasspathEntries(Bundle=org.eclipse.m2e.maven.runtime_3.9.900.20240824-1409 [299])
+2025-01-13 10:32:36,401 [Worker-263: Launching ApiProdutos (10)] INFO  o.eclipse.m2e.core.internal.Bundles - 	Entry: C:\Users\gradi\.p2\pool\plugins\org.eclipse.m2e.maven.runtime_3.9.900.20240824-1409
+2025-01-13 10:32:36,402 [Worker-263: Launching ApiProdutos (10)] INFO  o.eclipse.m2e.core.internal.Bundles - 	Entry: C:\Users\gradi\.p2\pool\plugins\org.eclipse.m2e.maven.runtime_3.9.900.20240824-1409\jars\aopalliance-1.0.jar
+2025-01-13 10:32:36,402 [Worker-263: Launching ApiProdutos (10)] INFO  o.eclipse.m2e.core.internal.Bundles - 	Entry: C:\Users\gradi\.p2\pool\plugins\org.eclipse.m2e.maven.runtime_3.9.900.20240824-1409\jars\guice-5.1.0.jar
+2025-01-13 10:32:36,402 [Worker-263: Launching ApiProdutos (10)] INFO  o.eclipse.m2e.core.internal.Bundles - 	Entry: C:\Users\gradi\.p2\pool\plugins\org.eclipse.m2e.maven.runtime_3.9.900.20240824-1409\jars\httpclient-4.5.14.jar
+2025-01-13 10:32:36,402 [Worker-263: Launching ApiProdutos (10)] INFO  o.eclipse.m2e.core.internal.Bundles - 	Entry: C:\Users\gradi\.p2\pool\plugins\org.eclipse.m2e.maven.runtime_3.9.900.20240824-1409\jars\httpcore-4.4.16.jar
+2025-01-13 10:32:36,402 [Worker-263: Launching ApiProdutos (10)] INFO  o.eclipse.m2e.core.internal.Bundles - 	Entry: C:\Users\gradi\.p2\pool\plugins\org.eclipse.m2e.maven.runtime_3.9.900.20240824-1409\jars\jansi-2.4.1.jar
+2025-01-13 10:32:36,402 [Worker-263: Launching ApiProdutos (10)] INFO  o.eclipse.m2e.core.internal.Bundles - 	Entry: C:\Users\gradi\.p2\pool\plugins\org.eclipse.m2e.maven.runtime_3.9.900.20240824-1409\jars\jcl-over-slf4j-1.7.36.jar
+2025-01-13 10:32:36,403 [Worker-263: Launching ApiProdutos (10)] INFO  o.eclipse.m2e.core.internal.Bundles - 	Entry: C:\Users\gradi\.p2\pool\plugins\org.eclipse.m2e.maven.runtime_3.9.900.20240824-1409\jars\maven-artifact-3.9.9.jar
+2025-01-13 10:32:36,403 [Worker-263: Launching ApiProdutos (10)] INFO  o.eclipse.m2e.core.internal.Bundles - 	Entry: C:\Users\gradi\.p2\pool\plugins\org.eclipse.m2e.maven.runtime_3.9.900.20240824-1409\jars\maven-builder-support-3.9.9.jar
+2025-01-13 10:32:36,403 [Worker-263: Launching ApiProdutos (10)] INFO  o.eclipse.m2e.core.internal.Bundles - 	Entry: C:\Users\gradi\.p2\pool\plugins\org.eclipse.m2e.maven.runtime_3.9.900.20240824-1409\jars\maven-compat-3.9.9.jar
+2025-01-13 10:32:36,403 [Worker-263: Launching ApiProdutos (10)] INFO  o.eclipse.m2e.core.internal.Bundles - 	Entry: C:\Users\gradi\.p2\pool\plugins\org.eclipse.m2e.maven.runtime_3.9.900.20240824-1409\jars\maven-core-3.9.9.jar
+2025-01-13 10:32:36,403 [Worker-263: Launching ApiProdutos (10)] INFO  o.eclipse.m2e.core.internal.Bundles - 	Entry: C:\Users\gradi\.p2\pool\plugins\org.eclipse.m2e.maven.runtime_3.9.900.20240824-1409\jars\maven-embedder-3.9.9.jar
+2025-01-13 10:32:36,403 [Worker-263: Launching ApiProdutos (10)] INFO  o.eclipse.m2e.core.internal.Bundles - 	Entry: C:\Users\gradi\.p2\pool\plugins\org.eclipse.m2e.maven.runtime_3.9.900.20240824-1409\jars\maven-model-3.9.9.jar
+2025-01-13 10:32:36,403 [Worker-263: Launching ApiProdutos (10)] INFO  o.eclipse.m2e.core.internal.Bundles - 	Entry: C:\Users\gradi\.p2\pool\plugins\org.eclipse.m2e.maven.runtime_3.9.900.20240824-1409\jars\maven-model-builder-3.9.9.jar
+2025-01-13 10:32:36,403 [Worker-263: Launching ApiProdutos (10)] INFO  o.eclipse.m2e.core.internal.Bundles - 	Entry: C:\Users\gradi\.p2\pool\plugins\org.eclipse.m2e.maven.runtime_3.9.900.20240824-1409\jars\maven-plugin-api-3.9.9.jar
+2025-01-13 10:32:36,404 [Worker-263: Launching ApiProdutos (10)] INFO  o.eclipse.m2e.core.internal.Bundles - 	Entry: C:\Users\gradi\.p2\pool\plugins\org.eclipse.m2e.maven.runtime_3.9.900.20240824-1409\jars\maven-repository-metadata-3.9.9.jar
+2025-01-13 10:32:36,404 [Worker-263: Launching ApiProdutos (10)] INFO  o.eclipse.m2e.core.internal.Bundles - 	Entry: C:\Users\gradi\.p2\pool\plugins\org.eclipse.m2e.maven.runtime_3.9.900.20240824-1409\jars\maven-resolver-api-1.9.22.jar
+2025-01-13 10:32:36,404 [Worker-263: Launching ApiProdutos (10)] INFO  o.eclipse.m2e.core.internal.Bundles - 	Entry: C:\Users\gradi\.p2\pool\plugins\org.eclipse.m2e.maven.runtime_3.9.900.20240824-1409\jars\maven-resolver-connector-basic-1.9.22.jar
+2025-01-13 10:32:36,404 [Worker-263: Launching ApiProdutos (10)] INFO  o.eclipse.m2e.core.internal.Bundles - 	Entry: C:\Users\gradi\.p2\pool\plugins\org.eclipse.m2e.maven.runtime_3.9.900.20240824-1409\jars\maven-resolver-impl-1.9.22.jar
+2025-01-13 10:32:36,404 [Worker-263: Launching ApiProdutos (10)] INFO  o.eclipse.m2e.core.internal.Bundles - 	Entry: C:\Users\gradi\.p2\pool\plugins\org.eclipse.m2e.maven.runtime_3.9.900.20240824-1409\jars\maven-resolver-named-locks-1.9.22.jar
+2025-01-13 10:32:36,404 [Worker-263: Launching ApiProdutos (10)] INFO  o.eclipse.m2e.core.internal.Bundles - 	Entry: C:\Users\gradi\.p2\pool\plugins\org.eclipse.m2e.maven.runtime_3.9.900.20240824-1409\jars\maven-resolver-provider-3.9.9.jar
+2025-01-13 10:32:36,404 [Worker-263: Launching ApiProdutos (10)] INFO  o.eclipse.m2e.core.internal.Bundles - 	Entry: C:\Users\gradi\.p2\pool\plugins\org.eclipse.m2e.maven.runtime_3.9.900.20240824-1409\jars\maven-resolver-spi-1.9.22.jar
+2025-01-13 10:32:36,405 [Worker-263: Launching ApiProdutos (10)] INFO  o.eclipse.m2e.core.internal.Bundles - 	Entry: C:\Users\gradi\.p2\pool\plugins\org.eclipse.m2e.maven.runtime_3.9.900.20240824-1409\jars\maven-resolver-transport-file-1.9.22.jar
+2025-01-13 10:32:36,405 [Worker-263: Launching ApiProdutos (10)] INFO  o.eclipse.m2e.core.internal.Bundles - 	Entry: C:\Users\gradi\.p2\pool\plugins\org.eclipse.m2e.maven.runtime_3.9.900.20240824-1409\jars\maven-resolver-transport-http-1.9.22.jar
+2025-01-13 10:32:36,405 [Worker-263: Launching ApiProdutos (10)] INFO  o.eclipse.m2e.core.internal.Bundles - 	Entry: C:\Users\gradi\.p2\pool\plugins\org.eclipse.m2e.maven.runtime_3.9.900.20240824-1409\jars\maven-resolver-transport-wagon-1.9.22.jar
+2025-01-13 10:32:36,405 [Worker-263: Launching ApiProdutos (10)] INFO  o.eclipse.m2e.core.internal.Bundles - 	Entry: C:\Users\gradi\.p2\pool\plugins\org.eclipse.m2e.maven.runtime_3.9.900.20240824-1409\jars\maven-resolver-util-1.9.22.jar
+2025-01-13 10:32:36,405 [Worker-263: Launching ApiProdutos (10)] INFO  o.eclipse.m2e.core.internal.Bundles - 	Entry: C:\Users\gradi\.p2\pool\plugins\org.eclipse.m2e.maven.runtime_3.9.900.20240824-1409\jars\maven-settings-3.9.9.jar
+2025-01-13 10:32:36,405 [Worker-263: Launching ApiProdutos (10)] INFO  o.eclipse.m2e.core.internal.Bundles - 	Entry: C:\Users\gradi\.p2\pool\plugins\org.eclipse.m2e.maven.runtime_3.9.900.20240824-1409\jars\maven-settings-builder-3.9.9.jar
+2025-01-13 10:32:36,405 [Worker-263: Launching ApiProdutos (10)] INFO  o.eclipse.m2e.core.internal.Bundles - 	Entry: C:\Users\gradi\.p2\pool\plugins\org.eclipse.m2e.maven.runtime_3.9.900.20240824-1409\jars\maven-shared-utils-3.4.2.jar
+2025-01-13 10:32:36,405 [Worker-263: Launching ApiProdutos (10)] INFO  o.eclipse.m2e.core.internal.Bundles - 	Entry: C:\Users\gradi\.p2\pool\plugins\org.eclipse.m2e.maven.runtime_3.9.900.20240824-1409\jars\org.eclipse.sisu.inject-0.9.0.M3.jar
+2025-01-13 10:32:36,405 [Worker-263: Launching ApiProdutos (10)] INFO  o.eclipse.m2e.core.internal.Bundles - 	Entry: C:\Users\gradi\.p2\pool\plugins\org.eclipse.m2e.maven.runtime_3.9.900.20240824-1409\jars\org.eclipse.sisu.plexus-0.9.0.M3.jar
+2025-01-13 10:32:36,406 [Worker-263: Launching ApiProdutos (10)] INFO  o.eclipse.m2e.core.internal.Bundles - 	Entry: C:\Users\gradi\.p2\pool\plugins\org.eclipse.m2e.maven.runtime_3.9.900.20240824-1409\jars\plexus-build-api-0.0.7.jar
+2025-01-13 10:32:36,406 [Worker-263: Launching ApiProdutos (10)] INFO  o.eclipse.m2e.core.internal.Bundles - 	Entry: C:\Users\gradi\.p2\pool\plugins\org.eclipse.m2e.maven.runtime_3.9.900.20240824-1409\jars\plexus-build-api-1.2.0.jar
+2025-01-13 10:32:36,406 [Worker-263: Launching ApiProdutos (10)] INFO  o.eclipse.m2e.core.internal.Bundles - 	Entry: C:\Users\gradi\.p2\pool\plugins\org.eclipse.m2e.maven.runtime_3.9.900.20240824-1409\jars\plexus-cipher-2.0.jar
+2025-01-13 10:32:36,406 [Worker-263: Launching ApiProdutos (10)] INFO  o.eclipse.m2e.core.internal.Bundles - 	Entry: C:\Users\gradi\.p2\pool\plugins\org.eclipse.m2e.maven.runtime_3.9.900.20240824-1409\jars\plexus-classworlds-2.8.0.jar
+2025-01-13 10:32:36,406 [Worker-263: Launching ApiProdutos (10)] INFO  o.eclipse.m2e.core.internal.Bundles - 	Entry: C:\Users\gradi\.p2\pool\plugins\org.eclipse.m2e.maven.runtime_3.9.900.20240824-1409\jars\plexus-component-annotations-2.1.0.jar
+2025-01-13 10:32:36,406 [Worker-263: Launching ApiProdutos (10)] INFO  o.eclipse.m2e.core.internal.Bundles - 	Entry: C:\Users\gradi\.p2\pool\plugins\org.eclipse.m2e.maven.runtime_3.9.900.20240824-1409\jars\plexus-interpolation-1.27.jar
+2025-01-13 10:32:36,406 [Worker-263: Launching ApiProdutos (10)] INFO  o.eclipse.m2e.core.internal.Bundles - 	Entry: C:\Users\gradi\.p2\pool\plugins\org.eclipse.m2e.maven.runtime_3.9.900.20240824-1409\jars\plexus-sec-dispatcher-2.0.jar
+2025-01-13 10:32:36,406 [Worker-263: Launching ApiProdutos (10)] INFO  o.eclipse.m2e.core.internal.Bundles - 	Entry: C:\Users\gradi\.p2\pool\plugins\org.eclipse.m2e.maven.runtime_3.9.900.20240824-1409\jars\plexus-utils-3.5.1.jar
+2025-01-13 10:32:36,407 [Worker-263: Launching ApiProdutos (10)] INFO  o.eclipse.m2e.core.internal.Bundles - 	Entry: C:\Users\gradi\.p2\pool\plugins\org.eclipse.m2e.maven.runtime_3.9.900.20240824-1409\jars\plexus-xml-3.0.1.jar
+2025-01-13 10:32:36,407 [Worker-263: Launching ApiProdutos (10)] INFO  o.eclipse.m2e.core.internal.Bundles - 	Entry: C:\Users\gradi\.p2\pool\plugins\org.eclipse.m2e.maven.runtime_3.9.900.20240824-1409\jars\wagon-file-3.5.3.jar
+2025-01-13 10:32:36,407 [Worker-263: Launching ApiProdutos (10)] INFO  o.eclipse.m2e.core.internal.Bundles - 	Entry: C:\Users\gradi\.p2\pool\plugins\org.eclipse.m2e.maven.runtime_3.9.900.20240824-1409\jars\wagon-http-3.5.3.jar
+2025-01-13 10:32:36,407 [Worker-263: Launching ApiProdutos (10)] INFO  o.eclipse.m2e.core.internal.Bundles - 	Entry: C:\Users\gradi\.p2\pool\plugins\org.eclipse.m2e.maven.runtime_3.9.900.20240824-1409\jars\wagon-http-shared-3.5.3.jar
+2025-01-13 10:32:36,407 [Worker-263: Launching ApiProdutos (10)] INFO  o.eclipse.m2e.core.internal.Bundles - 	Entry: C:\Users\gradi\.p2\pool\plugins\org.eclipse.m2e.maven.runtime_3.9.900.20240824-1409\jars\wagon-provider-api-3.5.3.jar
+2025-01-13 10:32:36,409 [Worker-263: Launching ApiProdutos (10)] INFO  o.eclipse.m2e.core.internal.Bundles - getClasspathEntries(Bundle=com.google.guava_33.3.1.jre [541])
+2025-01-13 10:32:36,409 [Worker-263: Launching ApiProdutos (10)] INFO  o.eclipse.m2e.core.internal.Bundles - 	Entry: C:\Users\gradi\.p2\pool\plugins\com.google.guava_33.3.1.jre.jar
+2025-01-13 10:32:36,409 [Worker-263: Launching ApiProdutos (10)] INFO  o.eclipse.m2e.core.internal.Bundles - getClasspathEntries(Bundle=slf4j.api_2.0.16 [521])
+2025-01-13 10:32:36,410 [Worker-263: Launching ApiProdutos (10)] INFO  o.eclipse.m2e.core.internal.Bundles - 	Entry: C:\Users\gradi\.p2\pool\plugins\slf4j.api_2.0.16.jar
+2025-01-13 10:32:36,410 [Worker-263: Launching ApiProdutos (10)] INFO  o.eclipse.m2e.core.internal.Bundles - getClasspathEntries(Bundle=jakarta.inject.jakarta.inject-api_1.0.5 [22])
+2025-01-13 10:32:36,411 [Worker-263: Launching ApiProdutos (10)] INFO  o.eclipse.m2e.core.internal.Bundles - 	Entry: C:\Users\gradi\.p2\pool\plugins\jakarta.inject.jakarta.inject-api_1.0.5.jar
+2025-01-13 10:32:36,411 [Worker-263: Launching ApiProdutos (10)] INFO  o.eclipse.m2e.core.internal.Bundles - getClasspathEntries(Bundle=jakarta.annotation-api_1.3.5 [20])
+2025-01-13 10:32:36,411 [Worker-263: Launching ApiProdutos (10)] INFO  o.eclipse.m2e.core.internal.Bundles - 	Entry: C:\Users\gradi\.p2\pool\plugins\jakarta.annotation-api_1.3.5.jar
+2025-01-13 10:32:36,411 [Worker-263: Launching ApiProdutos (10)] INFO  o.eclipse.m2e.core.internal.Bundles - getClasspathEntries(Bundle=org.apache.commons.cli_1.9.0 [47])
+2025-01-13 10:32:36,412 [Worker-263: Launching ApiProdutos (10)] INFO  o.eclipse.m2e.core.internal.Bundles - 	Entry: C:\Users\gradi\.p2\pool\plugins\org.apache.commons.cli_1.9.0.jar
+2025-01-13 10:32:36,412 [Worker-263: Launching ApiProdutos (10)] INFO  o.eclipse.m2e.core.internal.Bundles - getClasspathEntries(Bundle=org.apache.commons.commons-codec_1.16.0 [50])
+2025-01-13 10:32:36,412 [Worker-263: Launching ApiProdutos (10)] INFO  o.eclipse.m2e.core.internal.Bundles - 	Entry: C:\Users\gradi\.p2\pool\plugins\org.apache.commons.commons-codec_1.16.0.jar
+2025-01-13 10:32:36,413 [Worker-263: Launching ApiProdutos (10)] INFO  o.eclipse.m2e.core.internal.Bundles - getClasspathEntries(Bundle=com.google.guava.failureaccess_1.0.2 [11])
+2025-01-13 10:32:36,413 [Worker-263: Launching ApiProdutos (10)] INFO  o.eclipse.m2e.core.internal.Bundles - 	Entry: C:\Users\gradi\.p2\pool\plugins\com.google.guava.failureaccess_1.0.2.jar
+2025-01-13 10:32:36,418 [Worker-263: Launching ApiProdutos (10)] INFO  o.e.m.i.launch.MavenLaunchDelegate - Run build in "C:\Users\gradi\eclipse-workspace\ApiProdutos":
+2025-01-13 10:32:36,419 [Worker-263: Launching ApiProdutos (10)] INFO  o.e.m.i.launch.MavenLaunchDelegate -  mvn  -B -Dstyle.color=always clean compile
+2025-01-13 10:33:26,582 [Worker-261: Building] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using org.eclipse.m2e.jdt.JarLifecycleMapping lifecycle mapping for MavenProject: com.apiestudar:apiestudar:0.0.1-SNAPSHOT @ C:\Users\gradi\eclipse-workspace\ApiProdutos\pom.xml.
+2025-01-13 10:33:27,214 [Worker-261: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2025-01-13 10:33:27,217 [Worker-261: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2025-01-13 10:33:27,218 [Worker-261: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2025-01-13 10:33:27,222 [Worker-261: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2025-01-13 10:33:27,222 [Worker-261: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\gradi\eclipse-workspace\ApiProdutos\src\test\resources
+2025-01-13 10:33:28,446 [Worker-260: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2025-01-13 10:33:28,447 [Worker-260: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 1 resource
+2025-01-13 10:33:28,463 [Worker-260: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2025-01-13 10:33:28,467 [Worker-260: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2025-01-13 10:33:28,467 [Worker-260: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\gradi\eclipse-workspace\ApiProdutos\src\test\resources
+2025-01-13 10:33:49,197 [Worker-263: Building] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using org.eclipse.m2e.jdt.JarLifecycleMapping lifecycle mapping for MavenProject: com.apiestudar:apiestudar:0.0.1-SNAPSHOT @ C:\Users\gradi\eclipse-workspace\ApiProdutos\pom.xml.
+2025-01-13 10:33:49,853 [Worker-263: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2025-01-13 10:33:49,856 [Worker-263: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2025-01-13 10:33:49,857 [Worker-263: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2025-01-13 10:33:49,862 [Worker-263: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2025-01-13 10:33:49,862 [Worker-263: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\gradi\eclipse-workspace\ApiProdutos\src\test\resources
+2025-01-13 10:33:51,079 [Worker-263: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2025-01-13 10:33:51,080 [Worker-263: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 1 resource
+2025-01-13 10:33:51,088 [Worker-263: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2025-01-13 10:33:51,091 [Worker-263: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2025-01-13 10:33:51,092 [Worker-263: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\gradi\eclipse-workspace\ApiProdutos\src\test\resources
+2025-01-13 10:34:51,181 [Worker-260: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2025-01-13 10:34:51,183 [Worker-260: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2025-01-13 10:34:51,184 [Worker-260: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2025-01-13 10:34:51,187 [Worker-260: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2025-01-13 10:34:51,187 [Worker-260: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\gradi\eclipse-workspace\ApiProdutos\src\test\resources
+2025-01-13 10:35:24,565 [Worker-263: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2025-01-13 10:35:24,566 [Worker-263: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 1 resource
+2025-01-13 10:35:24,568 [Worker-263: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2025-01-13 10:35:24,571 [Worker-263: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2025-01-13 10:35:24,571 [Worker-263: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\gradi\eclipse-workspace\ApiProdutos\src\test\resources
+2025-01-13 10:35:39,310 [Worker-263: Building] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using org.eclipse.m2e.jdt.JarLifecycleMapping lifecycle mapping for MavenProject: com.apiestudar:apiestudar:0.0.1-SNAPSHOT @ C:\Users\gradi\eclipse-workspace\ApiProdutos\pom.xml.
+2025-01-13 10:35:39,975 [Worker-263: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2025-01-13 10:35:39,977 [Worker-263: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2025-01-13 10:35:39,977 [Worker-263: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2025-01-13 10:35:39,981 [Worker-263: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2025-01-13 10:35:39,981 [Worker-263: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\gradi\eclipse-workspace\ApiProdutos\src\test\resources
+2025-01-13 10:35:41,166 [Worker-260: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2025-01-13 10:35:41,166 [Worker-260: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 1 resource
+2025-01-13 10:35:41,210 [Worker-260: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2025-01-13 10:35:41,217 [Worker-260: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2025-01-13 10:35:41,217 [Worker-260: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\gradi\eclipse-workspace\ApiProdutos\src\test\resources
+2025-01-13 10:36:16,631 [Worker-259: Building] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using org.eclipse.m2e.jdt.JarLifecycleMapping lifecycle mapping for MavenProject: com.apiestudar:apiestudar:0.0.1-SNAPSHOT @ C:\Users\gradi\eclipse-workspace\ApiProdutos\pom.xml.
+2025-01-13 10:36:17,233 [Worker-259: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2025-01-13 10:36:17,236 [Worker-259: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2025-01-13 10:36:17,237 [Worker-259: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2025-01-13 10:36:17,241 [Worker-259: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2025-01-13 10:36:17,242 [Worker-259: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\gradi\eclipse-workspace\ApiProdutos\src\test\resources
+2025-01-13 10:36:18,450 [Worker-260: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2025-01-13 10:36:18,450 [Worker-260: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 1 resource
+2025-01-13 10:36:18,459 [Worker-260: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2025-01-13 10:36:18,462 [Worker-260: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2025-01-13 10:36:18,463 [Worker-260: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\gradi\eclipse-workspace\ApiProdutos\src\test\resources
+2025-01-13 10:36:59,110 [Worker-260: Building] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using org.eclipse.m2e.jdt.JarLifecycleMapping lifecycle mapping for MavenProject: com.apiestudar:apiestudar:0.0.1-SNAPSHOT @ C:\Users\gradi\eclipse-workspace\ApiProdutos\pom.xml.
+2025-01-13 10:36:59,795 [Worker-260: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2025-01-13 10:36:59,798 [Worker-260: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2025-01-13 10:36:59,799 [Worker-260: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2025-01-13 10:36:59,803 [Worker-260: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2025-01-13 10:36:59,803 [Worker-260: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\gradi\eclipse-workspace\ApiProdutos\src\test\resources
+2025-01-13 10:37:01,025 [Worker-259: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2025-01-13 10:37:01,025 [Worker-259: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 1 resource
+2025-01-13 10:37:01,035 [Worker-259: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2025-01-13 10:37:01,038 [Worker-259: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2025-01-13 10:37:01,038 [Worker-259: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\gradi\eclipse-workspace\ApiProdutos\src\test\resources
+2025-01-13 10:37:26,744 [Worker-261: Building] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using org.eclipse.m2e.jdt.JarLifecycleMapping lifecycle mapping for MavenProject: com.apiestudar:apiestudar:0.0.1-SNAPSHOT @ C:\Users\gradi\eclipse-workspace\ApiProdutos\pom.xml.
+2025-01-13 10:37:27,410 [Worker-261: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2025-01-13 10:37:27,413 [Worker-261: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2025-01-13 10:37:27,413 [Worker-261: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2025-01-13 10:37:27,419 [Worker-261: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2025-01-13 10:37:27,419 [Worker-261: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\gradi\eclipse-workspace\ApiProdutos\src\test\resources
+2025-01-13 10:37:28,572 [Worker-263: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2025-01-13 10:37:28,573 [Worker-263: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 1 resource
+2025-01-13 10:37:28,581 [Worker-263: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2025-01-13 10:37:28,583 [Worker-263: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2025-01-13 10:37:28,583 [Worker-263: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\gradi\eclipse-workspace\ApiProdutos\src\test\resources
+2025-01-13 10:37:48,477 [Worker-261: Building] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using org.eclipse.m2e.jdt.JarLifecycleMapping lifecycle mapping for MavenProject: com.apiestudar:apiestudar:0.0.1-SNAPSHOT @ C:\Users\gradi\eclipse-workspace\ApiProdutos\pom.xml.
+2025-01-13 10:37:49,278 [Worker-261: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2025-01-13 10:37:49,282 [Worker-261: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2025-01-13 10:37:49,283 [Worker-261: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2025-01-13 10:37:49,287 [Worker-261: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2025-01-13 10:37:49,287 [Worker-261: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\gradi\eclipse-workspace\ApiProdutos\src\test\resources
+2025-01-13 10:37:50,461 [Worker-262: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2025-01-13 10:37:50,462 [Worker-262: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 1 resource
+2025-01-13 10:37:50,474 [Worker-262: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2025-01-13 10:37:50,478 [Worker-262: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2025-01-13 10:37:50,478 [Worker-262: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\gradi\eclipse-workspace\ApiProdutos\src\test\resources
+2025-01-13 10:41:36,560 [Worker-263: Building] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using org.eclipse.m2e.jdt.JarLifecycleMapping lifecycle mapping for MavenProject: com.apiestudar:apiestudar:0.0.1-SNAPSHOT @ C:\Users\gradi\eclipse-workspace\ApiProdutos\pom.xml.
+2025-01-13 10:41:37,425 [Worker-263: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2025-01-13 10:41:37,428 [Worker-263: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2025-01-13 10:41:37,428 [Worker-263: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2025-01-13 10:41:37,431 [Worker-263: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2025-01-13 10:41:37,432 [Worker-263: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\gradi\eclipse-workspace\ApiProdutos\src\test\resources
+2025-01-13 10:41:38,576 [Worker-265: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2025-01-13 10:41:38,576 [Worker-265: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 1 resource
+2025-01-13 10:41:38,585 [Worker-265: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2025-01-13 10:41:38,588 [Worker-265: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2025-01-13 10:41:38,588 [Worker-265: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\gradi\eclipse-workspace\ApiProdutos\src\test\resources
+2025-01-13 10:41:49,640 [main] INFO  o.e.m2e.actions.ExecutePomAction - Creating new launch configuration
+2025-01-13 10:42:00,127 [Worker-263: Launching ApiProdutos (11)] INFO  o.eclipse.m2e.core.internal.Bundles - getClasspathEntries(Bundle=org.eclipse.m2e.maven.runtime_3.9.900.20240824-1409 [299])
+2025-01-13 10:42:00,127 [Worker-263: Launching ApiProdutos (11)] INFO  o.eclipse.m2e.core.internal.Bundles - 	Entry: C:\Users\gradi\.p2\pool\plugins\org.eclipse.m2e.maven.runtime_3.9.900.20240824-1409
+2025-01-13 10:42:00,128 [Worker-263: Launching ApiProdutos (11)] INFO  o.eclipse.m2e.core.internal.Bundles - 	Entry: C:\Users\gradi\.p2\pool\plugins\org.eclipse.m2e.maven.runtime_3.9.900.20240824-1409\jars\aopalliance-1.0.jar
+2025-01-13 10:42:00,128 [Worker-263: Launching ApiProdutos (11)] INFO  o.eclipse.m2e.core.internal.Bundles - 	Entry: C:\Users\gradi\.p2\pool\plugins\org.eclipse.m2e.maven.runtime_3.9.900.20240824-1409\jars\guice-5.1.0.jar
+2025-01-13 10:42:00,128 [Worker-263: Launching ApiProdutos (11)] INFO  o.eclipse.m2e.core.internal.Bundles - 	Entry: C:\Users\gradi\.p2\pool\plugins\org.eclipse.m2e.maven.runtime_3.9.900.20240824-1409\jars\httpclient-4.5.14.jar
+2025-01-13 10:42:00,128 [Worker-263: Launching ApiProdutos (11)] INFO  o.eclipse.m2e.core.internal.Bundles - 	Entry: C:\Users\gradi\.p2\pool\plugins\org.eclipse.m2e.maven.runtime_3.9.900.20240824-1409\jars\httpcore-4.4.16.jar
+2025-01-13 10:42:00,128 [Worker-263: Launching ApiProdutos (11)] INFO  o.eclipse.m2e.core.internal.Bundles - 	Entry: C:\Users\gradi\.p2\pool\plugins\org.eclipse.m2e.maven.runtime_3.9.900.20240824-1409\jars\jansi-2.4.1.jar
+2025-01-13 10:42:00,128 [Worker-263: Launching ApiProdutos (11)] INFO  o.eclipse.m2e.core.internal.Bundles - 	Entry: C:\Users\gradi\.p2\pool\plugins\org.eclipse.m2e.maven.runtime_3.9.900.20240824-1409\jars\jcl-over-slf4j-1.7.36.jar
+2025-01-13 10:42:00,128 [Worker-263: Launching ApiProdutos (11)] INFO  o.eclipse.m2e.core.internal.Bundles - 	Entry: C:\Users\gradi\.p2\pool\plugins\org.eclipse.m2e.maven.runtime_3.9.900.20240824-1409\jars\maven-artifact-3.9.9.jar
+2025-01-13 10:42:00,129 [Worker-263: Launching ApiProdutos (11)] INFO  o.eclipse.m2e.core.internal.Bundles - 	Entry: C:\Users\gradi\.p2\pool\plugins\org.eclipse.m2e.maven.runtime_3.9.900.20240824-1409\jars\maven-builder-support-3.9.9.jar
+2025-01-13 10:42:00,129 [Worker-263: Launching ApiProdutos (11)] INFO  o.eclipse.m2e.core.internal.Bundles - 	Entry: C:\Users\gradi\.p2\pool\plugins\org.eclipse.m2e.maven.runtime_3.9.900.20240824-1409\jars\maven-compat-3.9.9.jar
+2025-01-13 10:42:00,129 [Worker-263: Launching ApiProdutos (11)] INFO  o.eclipse.m2e.core.internal.Bundles - 	Entry: C:\Users\gradi\.p2\pool\plugins\org.eclipse.m2e.maven.runtime_3.9.900.20240824-1409\jars\maven-core-3.9.9.jar
+2025-01-13 10:42:00,129 [Worker-263: Launching ApiProdutos (11)] INFO  o.eclipse.m2e.core.internal.Bundles - 	Entry: C:\Users\gradi\.p2\pool\plugins\org.eclipse.m2e.maven.runtime_3.9.900.20240824-1409\jars\maven-embedder-3.9.9.jar
+2025-01-13 10:42:00,130 [Worker-263: Launching ApiProdutos (11)] INFO  o.eclipse.m2e.core.internal.Bundles - 	Entry: C:\Users\gradi\.p2\pool\plugins\org.eclipse.m2e.maven.runtime_3.9.900.20240824-1409\jars\maven-model-3.9.9.jar
+2025-01-13 10:42:00,130 [Worker-263: Launching ApiProdutos (11)] INFO  o.eclipse.m2e.core.internal.Bundles - 	Entry: C:\Users\gradi\.p2\pool\plugins\org.eclipse.m2e.maven.runtime_3.9.900.20240824-1409\jars\maven-model-builder-3.9.9.jar
+2025-01-13 10:42:00,130 [Worker-263: Launching ApiProdutos (11)] INFO  o.eclipse.m2e.core.internal.Bundles - 	Entry: C:\Users\gradi\.p2\pool\plugins\org.eclipse.m2e.maven.runtime_3.9.900.20240824-1409\jars\maven-plugin-api-3.9.9.jar
+2025-01-13 10:42:00,130 [Worker-263: Launching ApiProdutos (11)] INFO  o.eclipse.m2e.core.internal.Bundles - 	Entry: C:\Users\gradi\.p2\pool\plugins\org.eclipse.m2e.maven.runtime_3.9.900.20240824-1409\jars\maven-repository-metadata-3.9.9.jar
+2025-01-13 10:42:00,130 [Worker-263: Launching ApiProdutos (11)] INFO  o.eclipse.m2e.core.internal.Bundles - 	Entry: C:\Users\gradi\.p2\pool\plugins\org.eclipse.m2e.maven.runtime_3.9.900.20240824-1409\jars\maven-resolver-api-1.9.22.jar
+2025-01-13 10:42:00,130 [Worker-263: Launching ApiProdutos (11)] INFO  o.eclipse.m2e.core.internal.Bundles - 	Entry: C:\Users\gradi\.p2\pool\plugins\org.eclipse.m2e.maven.runtime_3.9.900.20240824-1409\jars\maven-resolver-connector-basic-1.9.22.jar
+2025-01-13 10:42:00,130 [Worker-263: Launching ApiProdutos (11)] INFO  o.eclipse.m2e.core.internal.Bundles - 	Entry: C:\Users\gradi\.p2\pool\plugins\org.eclipse.m2e.maven.runtime_3.9.900.20240824-1409\jars\maven-resolver-impl-1.9.22.jar
+2025-01-13 10:42:00,130 [Worker-263: Launching ApiProdutos (11)] INFO  o.eclipse.m2e.core.internal.Bundles - 	Entry: C:\Users\gradi\.p2\pool\plugins\org.eclipse.m2e.maven.runtime_3.9.900.20240824-1409\jars\maven-resolver-named-locks-1.9.22.jar
+2025-01-13 10:42:00,130 [Worker-263: Launching ApiProdutos (11)] INFO  o.eclipse.m2e.core.internal.Bundles - 	Entry: C:\Users\gradi\.p2\pool\plugins\org.eclipse.m2e.maven.runtime_3.9.900.20240824-1409\jars\maven-resolver-provider-3.9.9.jar
+2025-01-13 10:42:00,130 [Worker-263: Launching ApiProdutos (11)] INFO  o.eclipse.m2e.core.internal.Bundles - 	Entry: C:\Users\gradi\.p2\pool\plugins\org.eclipse.m2e.maven.runtime_3.9.900.20240824-1409\jars\maven-resolver-spi-1.9.22.jar
+2025-01-13 10:42:00,131 [Worker-263: Launching ApiProdutos (11)] INFO  o.eclipse.m2e.core.internal.Bundles - 	Entry: C:\Users\gradi\.p2\pool\plugins\org.eclipse.m2e.maven.runtime_3.9.900.20240824-1409\jars\maven-resolver-transport-file-1.9.22.jar
+2025-01-13 10:42:00,131 [Worker-263: Launching ApiProdutos (11)] INFO  o.eclipse.m2e.core.internal.Bundles - 	Entry: C:\Users\gradi\.p2\pool\plugins\org.eclipse.m2e.maven.runtime_3.9.900.20240824-1409\jars\maven-resolver-transport-http-1.9.22.jar
+2025-01-13 10:42:00,131 [Worker-263: Launching ApiProdutos (11)] INFO  o.eclipse.m2e.core.internal.Bundles - 	Entry: C:\Users\gradi\.p2\pool\plugins\org.eclipse.m2e.maven.runtime_3.9.900.20240824-1409\jars\maven-resolver-transport-wagon-1.9.22.jar
+2025-01-13 10:42:00,131 [Worker-263: Launching ApiProdutos (11)] INFO  o.eclipse.m2e.core.internal.Bundles - 	Entry: C:\Users\gradi\.p2\pool\plugins\org.eclipse.m2e.maven.runtime_3.9.900.20240824-1409\jars\maven-resolver-util-1.9.22.jar
+2025-01-13 10:42:00,131 [Worker-263: Launching ApiProdutos (11)] INFO  o.eclipse.m2e.core.internal.Bundles - 	Entry: C:\Users\gradi\.p2\pool\plugins\org.eclipse.m2e.maven.runtime_3.9.900.20240824-1409\jars\maven-settings-3.9.9.jar
+2025-01-13 10:42:00,131 [Worker-263: Launching ApiProdutos (11)] INFO  o.eclipse.m2e.core.internal.Bundles - 	Entry: C:\Users\gradi\.p2\pool\plugins\org.eclipse.m2e.maven.runtime_3.9.900.20240824-1409\jars\maven-settings-builder-3.9.9.jar
+2025-01-13 10:42:00,131 [Worker-263: Launching ApiProdutos (11)] INFO  o.eclipse.m2e.core.internal.Bundles - 	Entry: C:\Users\gradi\.p2\pool\plugins\org.eclipse.m2e.maven.runtime_3.9.900.20240824-1409\jars\maven-shared-utils-3.4.2.jar
+2025-01-13 10:42:00,131 [Worker-263: Launching ApiProdutos (11)] INFO  o.eclipse.m2e.core.internal.Bundles - 	Entry: C:\Users\gradi\.p2\pool\plugins\org.eclipse.m2e.maven.runtime_3.9.900.20240824-1409\jars\org.eclipse.sisu.inject-0.9.0.M3.jar
+2025-01-13 10:42:00,132 [Worker-263: Launching ApiProdutos (11)] INFO  o.eclipse.m2e.core.internal.Bundles - 	Entry: C:\Users\gradi\.p2\pool\plugins\org.eclipse.m2e.maven.runtime_3.9.900.20240824-1409\jars\org.eclipse.sisu.plexus-0.9.0.M3.jar
+2025-01-13 10:42:00,132 [Worker-263: Launching ApiProdutos (11)] INFO  o.eclipse.m2e.core.internal.Bundles - 	Entry: C:\Users\gradi\.p2\pool\plugins\org.eclipse.m2e.maven.runtime_3.9.900.20240824-1409\jars\plexus-build-api-0.0.7.jar
+2025-01-13 10:42:00,132 [Worker-263: Launching ApiProdutos (11)] INFO  o.eclipse.m2e.core.internal.Bundles - 	Entry: C:\Users\gradi\.p2\pool\plugins\org.eclipse.m2e.maven.runtime_3.9.900.20240824-1409\jars\plexus-build-api-1.2.0.jar
+2025-01-13 10:42:00,132 [Worker-263: Launching ApiProdutos (11)] INFO  o.eclipse.m2e.core.internal.Bundles - 	Entry: C:\Users\gradi\.p2\pool\plugins\org.eclipse.m2e.maven.runtime_3.9.900.20240824-1409\jars\plexus-cipher-2.0.jar
+2025-01-13 10:42:00,132 [Worker-263: Launching ApiProdutos (11)] INFO  o.eclipse.m2e.core.internal.Bundles - 	Entry: C:\Users\gradi\.p2\pool\plugins\org.eclipse.m2e.maven.runtime_3.9.900.20240824-1409\jars\plexus-classworlds-2.8.0.jar
+2025-01-13 10:42:00,132 [Worker-263: Launching ApiProdutos (11)] INFO  o.eclipse.m2e.core.internal.Bundles - 	Entry: C:\Users\gradi\.p2\pool\plugins\org.eclipse.m2e.maven.runtime_3.9.900.20240824-1409\jars\plexus-component-annotations-2.1.0.jar
+2025-01-13 10:42:00,132 [Worker-263: Launching ApiProdutos (11)] INFO  o.eclipse.m2e.core.internal.Bundles - 	Entry: C:\Users\gradi\.p2\pool\plugins\org.eclipse.m2e.maven.runtime_3.9.900.20240824-1409\jars\plexus-interpolation-1.27.jar
+2025-01-13 10:42:00,132 [Worker-263: Launching ApiProdutos (11)] INFO  o.eclipse.m2e.core.internal.Bundles - 	Entry: C:\Users\gradi\.p2\pool\plugins\org.eclipse.m2e.maven.runtime_3.9.900.20240824-1409\jars\plexus-sec-dispatcher-2.0.jar
+2025-01-13 10:42:00,132 [Worker-263: Launching ApiProdutos (11)] INFO  o.eclipse.m2e.core.internal.Bundles - 	Entry: C:\Users\gradi\.p2\pool\plugins\org.eclipse.m2e.maven.runtime_3.9.900.20240824-1409\jars\plexus-utils-3.5.1.jar
+2025-01-13 10:42:00,132 [Worker-263: Launching ApiProdutos (11)] INFO  o.eclipse.m2e.core.internal.Bundles - 	Entry: C:\Users\gradi\.p2\pool\plugins\org.eclipse.m2e.maven.runtime_3.9.900.20240824-1409\jars\plexus-xml-3.0.1.jar
+2025-01-13 10:42:00,133 [Worker-263: Launching ApiProdutos (11)] INFO  o.eclipse.m2e.core.internal.Bundles - 	Entry: C:\Users\gradi\.p2\pool\plugins\org.eclipse.m2e.maven.runtime_3.9.900.20240824-1409\jars\wagon-file-3.5.3.jar
+2025-01-13 10:42:00,133 [Worker-263: Launching ApiProdutos (11)] INFO  o.eclipse.m2e.core.internal.Bundles - 	Entry: C:\Users\gradi\.p2\pool\plugins\org.eclipse.m2e.maven.runtime_3.9.900.20240824-1409\jars\wagon-http-3.5.3.jar
+2025-01-13 10:42:00,133 [Worker-263: Launching ApiProdutos (11)] INFO  o.eclipse.m2e.core.internal.Bundles - 	Entry: C:\Users\gradi\.p2\pool\plugins\org.eclipse.m2e.maven.runtime_3.9.900.20240824-1409\jars\wagon-http-shared-3.5.3.jar
+2025-01-13 10:42:00,133 [Worker-263: Launching ApiProdutos (11)] INFO  o.eclipse.m2e.core.internal.Bundles - 	Entry: C:\Users\gradi\.p2\pool\plugins\org.eclipse.m2e.maven.runtime_3.9.900.20240824-1409\jars\wagon-provider-api-3.5.3.jar
+2025-01-13 10:42:00,133 [Worker-263: Launching ApiProdutos (11)] INFO  o.eclipse.m2e.core.internal.Bundles - getClasspathEntries(Bundle=com.google.guava_33.3.1.jre [541])
+2025-01-13 10:42:00,134 [Worker-263: Launching ApiProdutos (11)] INFO  o.eclipse.m2e.core.internal.Bundles - 	Entry: C:\Users\gradi\.p2\pool\plugins\com.google.guava_33.3.1.jre.jar
+2025-01-13 10:42:00,134 [Worker-263: Launching ApiProdutos (11)] INFO  o.eclipse.m2e.core.internal.Bundles - getClasspathEntries(Bundle=slf4j.api_2.0.16 [521])
+2025-01-13 10:42:00,135 [Worker-263: Launching ApiProdutos (11)] INFO  o.eclipse.m2e.core.internal.Bundles - 	Entry: C:\Users\gradi\.p2\pool\plugins\slf4j.api_2.0.16.jar
+2025-01-13 10:42:00,135 [Worker-263: Launching ApiProdutos (11)] INFO  o.eclipse.m2e.core.internal.Bundles - getClasspathEntries(Bundle=jakarta.inject.jakarta.inject-api_1.0.5 [22])
+2025-01-13 10:42:00,135 [Worker-263: Launching ApiProdutos (11)] INFO  o.eclipse.m2e.core.internal.Bundles - 	Entry: C:\Users\gradi\.p2\pool\plugins\jakarta.inject.jakarta.inject-api_1.0.5.jar
+2025-01-13 10:42:00,135 [Worker-263: Launching ApiProdutos (11)] INFO  o.eclipse.m2e.core.internal.Bundles - getClasspathEntries(Bundle=jakarta.annotation-api_1.3.5 [20])
+2025-01-13 10:42:00,135 [Worker-263: Launching ApiProdutos (11)] INFO  o.eclipse.m2e.core.internal.Bundles - 	Entry: C:\Users\gradi\.p2\pool\plugins\jakarta.annotation-api_1.3.5.jar
+2025-01-13 10:42:00,135 [Worker-263: Launching ApiProdutos (11)] INFO  o.eclipse.m2e.core.internal.Bundles - getClasspathEntries(Bundle=org.apache.commons.cli_1.9.0 [47])
+2025-01-13 10:42:00,136 [Worker-263: Launching ApiProdutos (11)] INFO  o.eclipse.m2e.core.internal.Bundles - 	Entry: C:\Users\gradi\.p2\pool\plugins\org.apache.commons.cli_1.9.0.jar
+2025-01-13 10:42:00,136 [Worker-263: Launching ApiProdutos (11)] INFO  o.eclipse.m2e.core.internal.Bundles - getClasspathEntries(Bundle=org.apache.commons.commons-codec_1.16.0 [50])
+2025-01-13 10:42:00,136 [Worker-263: Launching ApiProdutos (11)] INFO  o.eclipse.m2e.core.internal.Bundles - 	Entry: C:\Users\gradi\.p2\pool\plugins\org.apache.commons.commons-codec_1.16.0.jar
+2025-01-13 10:42:00,136 [Worker-263: Launching ApiProdutos (11)] INFO  o.eclipse.m2e.core.internal.Bundles - getClasspathEntries(Bundle=com.google.guava.failureaccess_1.0.2 [11])
+2025-01-13 10:42:00,136 [Worker-263: Launching ApiProdutos (11)] INFO  o.eclipse.m2e.core.internal.Bundles - 	Entry: C:\Users\gradi\.p2\pool\plugins\com.google.guava.failureaccess_1.0.2.jar
+2025-01-13 10:42:00,139 [Worker-263: Launching ApiProdutos (11)] INFO  o.e.m.i.launch.MavenLaunchDelegate - Run build in "C:\Users\gradi\eclipse-workspace\ApiProdutos":
+2025-01-13 10:42:00,140 [Worker-263: Launching ApiProdutos (11)] INFO  o.e.m.i.launch.MavenLaunchDelegate -  mvn  -B -Dstyle.color=always clean compile
+2025-01-13 10:42:31,409 [Worker-265: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2025-01-13 10:42:31,410 [Worker-265: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2025-01-13 10:42:31,410 [Worker-265: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2025-01-13 10:42:31,413 [Worker-265: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2025-01-13 10:42:31,414 [Worker-265: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\gradi\eclipse-workspace\ApiProdutos\src\test\resources
+2025-01-13 10:43:43,314 [Worker-263: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2025-01-13 10:43:43,315 [Worker-263: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2025-01-13 10:43:43,316 [Worker-263: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2025-01-13 10:43:43,319 [Worker-263: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2025-01-13 10:43:43,319 [Worker-263: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\gradi\eclipse-workspace\ApiProdutos\src\test\resources
+2025-01-13 10:44:03,859 [Worker-263: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2025-01-13 10:44:03,860 [Worker-263: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 1 resource
+2025-01-13 10:44:03,862 [Worker-263: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2025-01-13 10:44:03,866 [Worker-263: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2025-01-13 10:44:03,866 [Worker-263: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\gradi\eclipse-workspace\ApiProdutos\src\test\resources
+2025-01-13 10:45:42,446 [Worker-263: Building] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using org.eclipse.m2e.jdt.JarLifecycleMapping lifecycle mapping for MavenProject: com.apiestudar:apiestudar:0.0.1-SNAPSHOT @ C:\Users\gradi\eclipse-workspace\ApiProdutos\pom.xml.
+2025-01-13 10:45:43,020 [Worker-263: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2025-01-13 10:45:43,023 [Worker-263: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2025-01-13 10:45:43,023 [Worker-263: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2025-01-13 10:45:43,027 [Worker-263: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2025-01-13 10:45:43,027 [Worker-263: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\gradi\eclipse-workspace\ApiProdutos\src\test\resources
+2025-01-13 10:45:44,204 [Worker-267: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2025-01-13 10:45:44,204 [Worker-267: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 1 resource
+2025-01-13 10:45:44,249 [Worker-267: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2025-01-13 10:45:44,255 [Worker-267: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2025-01-13 10:45:44,255 [Worker-267: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\gradi\eclipse-workspace\ApiProdutos\src\test\resources
+2025-01-13 10:52:52,347 [main] INFO  o.e.m.jdt.internal.UnitTestSupport - Updating ProdutoEndpointsTest from maven configuration
+2025-01-13 10:54:55,825 [main] INFO  o.e.m.jdt.internal.UnitTestSupport - Updating ProdutoEndpointsTest from maven configuration
+2025-01-13 10:58:35,787 [main] INFO  o.e.m2e.actions.ExecutePomAction - Creating new launch configuration
+2025-01-13 11:03:50,038 [Worker-282: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2025-01-13 11:03:50,039 [Worker-282: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2025-01-13 11:03:50,040 [Worker-282: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2025-01-13 11:03:50,042 [Worker-282: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2025-01-13 11:03:50,043 [Worker-282: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\gradi\eclipse-workspace\ApiProdutos\src\test\resources
+2025-01-13 11:04:17,054 [Worker-282: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2025-01-13 11:04:17,055 [Worker-282: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2025-01-13 11:04:17,055 [Worker-282: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2025-01-13 11:04:17,058 [Worker-282: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2025-01-13 11:04:17,058 [Worker-282: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\gradi\eclipse-workspace\ApiProdutos\src\test\resources
+2025-01-13 11:05:34,139 [Worker-285: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2025-01-13 11:05:34,140 [Worker-285: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2025-01-13 11:05:34,141 [Worker-285: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2025-01-13 11:05:34,144 [Worker-285: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2025-01-13 11:05:34,144 [Worker-285: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\gradi\eclipse-workspace\ApiProdutos\src\test\resources
