@@ -69,17 +69,11 @@ export class AddProdutoComponent {
     return this.produtoFunctionsService.ativarFrete(ativouFrete);
   }
 
-  // função chamada para calcular o valor do frete
-  calcularFrete(): number {
-    return this.produtoFunctionsService.calcularFrete();
-  }
-
   // Função que abre o modal de mensagem de sucesso após cadastrar um produto
   msgAddProduto(modalMsg: any) {
     const modalRef = this.modalService.open(modalMsg);
     // Espera 0.3 segundos para setar o produto no modal por que ele chama no arquivo HTML o submit e o click
-    // ao mesmo tempo. Então, primeiramente ele chama o submit, grava no banco, depois de 0.3 segundos chama o modal.
-    // Pois se chamar os dois eventos ao mesmo tempo, gera conflito, e o submit não consegue gravar no banco de dados.
+    // ao mesmo tempo.
     setTimeout(() => {
       modalRef.componentInstance.produto = this.novoProduto;
     }, 300);

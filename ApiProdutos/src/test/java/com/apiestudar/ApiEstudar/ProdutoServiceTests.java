@@ -16,7 +16,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import junit.framework.TestCase;
 
 @SpringBootTest
-public class ProdutoEndpointsTest {
+public class ProdutoServiceTests {
 	
 	@Mock
 	private ProdutoRepository produtoRepository;
@@ -59,7 +59,7 @@ public class ProdutoEndpointsTest {
 	
 	// Teste que valida o calculo de desconto retornando o cáculo correto
 	@Test
-	public void testCalcularValorDescontoTrue() {
+	public void testCalcularValorDescontoCorreto() {
 			
 		double valorProduto = 120;
 		double valorDesconto = 50; // em porcentagem
@@ -79,7 +79,7 @@ public class ProdutoEndpointsTest {
 	
 	// Teste que valida o calculo de desconto retornando o cálculo incorreto
 	@Test
-	public void testCalcularValorDescontoFalseTest() {
+	public void testCalcularValorDescontoErrado() {
 			
 		double valorProduto = 120;
 		double valorDesconto = 50; // em porcentagem

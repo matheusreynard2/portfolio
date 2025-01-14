@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { Produto } from '../../model/produto';
 import { ProdutoService } from '../../service/produto.service';
-import {CurrencyPipe, NgForOf, NgIf, NgOptimizedImage, NgStyle} from '@angular/common';
+import {CurrencyPipe, NgForOf, NgOptimizedImage} from '@angular/common';
 import {NgbModal, NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { ProdutoFunctionsService } from '../../service/produto-functions.service';
+import {PorcentagemMaskDirective} from '../../directives/porcentagem-mask.directive';
 
 @Component({
   selector: '/app-produto-list',
@@ -13,9 +14,10 @@ import { ProdutoFunctionsService } from '../../service/produto-functions.service
     NgForOf,
     NgbModule,
     NgOptimizedImage,
-    CurrencyPipe,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    CurrencyPipe,
+    PorcentagemMaskDirective
   ],
   styleUrls: ['./produto-list.component.css']
 })
@@ -47,17 +49,10 @@ export class ProdutoListComponent implements OnInit {
     });
   }
 
-  // Função chamada ao clicar no botão de Submit (Salvar) do formulário de Edição de produtos
-  onSubmitSalvar(modal: any) {
-    this.calcularValores(this.produtoAtualizar);
-    this.produtoService.atualizarProduto(this.produtoAtualizar.id, this.produtoAtualizar).subscribe();
-    modal.close();
-  }
-
   // Função que calcula a média dos valores unitários
   calcularMedia() {
     this.produtoService.calcularMedia().subscribe((media: number) => {
-        this.mediaPreco = media;
+      this.mediaPreco = media;
     });
   }
 
@@ -87,12 +82,12 @@ export class ProdutoListComponent implements OnInit {
   }
 
   // Função para atualizar um produto através do id
-  atualizarProduto(modalEditar: any, id: number, produto: Produto) {
+  atualizarProduto(janelaEditar: any, id: number, produto: Produto) {
     this.produtoService.atualizarProduto(id, produto).subscribe({
       next: (produtoRetornado: Produto) => {
         this.produtoAtualizar = produtoRetornado
         this.calcularValores(this.produtoAtualizar);
-        this.abrirTelaEdicao(modalEditar)
+        this.abrirTelaEdicao(janelaEditar)
       }
     })
   }
@@ -115,8 +110,8 @@ export class ProdutoListComponent implements OnInit {
   }
 
   // Função que abre o modal - Janela de edição de produto
-  abrirTelaEdicao(modalEditar: any) {
-    this.modalService.open(modalEditar);
+  abrirTelaEdicao(janelaEditar: any) {
+    this.modalService.open(janelaEditar, { size: 'lg', backdrop: 'static' });
   }
 
   // Função que abre o modal - Janela de exclusão de produto
@@ -127,9 +122,17 @@ export class ProdutoListComponent implements OnInit {
     this.atualizarLista();
   }
 
-  // Função que abre o modal - Janel de Aviso para Atualizar List de Produtos
-  abrirTelaAviso(modalAviso: any) {
-    this.modalService.open(modalAviso);
+  // Função chamada ao clicar no botão de Submit (Salvar) do formulário de Edição de produtos
+  onSubmitSalvar(modal: any) {
+    this.calcularValores(this.produtoAtualizar);
+    this.produtoService.atualizarProduto(this.produtoAtualizar.id, this.produtoAtualizar).subscribe();
+    modal.close();
+  }
+
+  // Calcula os totalizadores de valor. função chamada ao clicar no botão Calcular valores
+  // e antes de gravar o produto no banco de dados no onSubmit do formulário ngModel
+  calcularValores(produto: Produto) {
+    this.produtoFunctionsService.calcularValores(produto);
   }
 
   // Função chamada ao mudar de valor na ComboBox de Promoção no ngModel
@@ -142,15 +145,9 @@ export class ProdutoListComponent implements OnInit {
     return this.produtoFunctionsService.ativarFrete(ativouFrete);
   }
 
-  // função chamada para calcular o valor do frete
-  calcularFrete():number {
-    return this.produtoFunctionsService.calcularFrete()
-  }
-
-  // Calcula os totalizadores de valor. função chamada ao clicar no botão Calcular valores
-  // e antes de gravar o produto no banco de dados no onSubmit do formulário ngModel
-  calcularValores(produto: Produto) {
-    this.produtoFunctionsService.calcularValores(produto);
+  // Função que abre o modal - Janel de Aviso para Atualizar List de Produtos
+  abrirTelaAviso(modalAviso: any) {
+    this.modalService.open(modalAviso);
   }
 
 }

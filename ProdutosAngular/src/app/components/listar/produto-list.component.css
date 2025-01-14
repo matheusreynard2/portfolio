@@ -43,3 +43,9 @@
   top: 0;   /* Alinha a imagem no topo */
   opacity: 75%;
 }
+
+#janelaEditar {
+  width: 750px;
+  height: 750px;
+  border-radius: 15px; /* Ajuste o valor conforme desejado para o arredondamento */
+}

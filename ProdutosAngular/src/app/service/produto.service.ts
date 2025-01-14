@@ -46,8 +46,8 @@ export class ProdutoService {
   }
 
   // ENDPOINT GET - Calcula o valor de desconto sobre o produto
-  public calcularDesconto(valorProduto: number, descontoDecimal: number): Observable<number> {
-    return this.http.get<number>(this.produtosUrl + "/calcularDesconto/" + valorProduto + '/' + descontoDecimal);
+  public calcularDesconto(valorProduto: number, porcentagemDesconto: number): Observable<number> {
+    return this.http.get<number>(this.produtosUrl + "/calcularDesconto/" + valorProduto + '/' + porcentagemDesconto);
   }
 
 }

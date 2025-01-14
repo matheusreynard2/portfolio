@@ -40,7 +40,12 @@ export class ProdutoFunctionsService {
 
   // Calcula o valor do desconto de acordo com a porcentagem passada pelo usuário
   calcularDesconto(produto: Produto) {
-    if (produto.promocao) {
+
+    if (produto.promocao && (produto.desconto == undefined)) {
+      produto.desconto = 0
+    }
+
+    if (produto.promocao && (produto.desconto != undefined)) {
       let valorDescontoString: string = produto.desconto.toString()
       valorDescontoString = valorDescontoString.replaceAll('%', '')
       let valorDescontoNumber: number = Number(valorDescontoString);
@@ -53,6 +58,7 @@ export class ProdutoFunctionsService {
   }
 
   calcularValores(produto: Produto) {
+
     // Desconto SIM e Frete SIM
     if (produto.promocao && produto.freteAtivo) {
       this.calcularDesconto(produto)
@@ -60,7 +66,12 @@ export class ProdutoFunctionsService {
       produto.valorTotalFrete = produto.valorTotalDesc + this.calcularFrete()
       produto.frete = this.calcularFrete()
 
-      produto.somaTotalValores = produto.valorTotalDesc + produto.frete
+      // Espera 0.2 segundos pra executar pois a chamada da API é assincrona e demora um pouco
+      // pra retornar o resultado e poder atualizar a variável resultadoDesconto
+      setTimeout(() => {
+        produto.valorTotalDesc = this.resultadoDesconto
+        produto.somaTotalValores = produto.valorTotalDesc + produto.frete
+      }, 200);
     }
 
     // Desconto SIM e Frete NÃO
@@ -68,13 +79,12 @@ export class ProdutoFunctionsService {
       produto.frete = 0
       produto.valorTotalFrete = 0
       this.calcularDesconto(produto)
-
-      // Espera 0.1 segundos pra executar pois a chamada da API é assincrona e demora um pouco
-      // pra retornar o resultado e poder atualizar a variável
+      // Espera 0.2 segundos pra executar pois a chamada da API é assincrona e demora um pouco
+      // pra retornar o resultado e poder atualizar a variável resultadoDesconto
       setTimeout(() => {
         produto.valorTotalDesc = this.resultadoDesconto
         produto.somaTotalValores = produto.valorTotalDesc
-      }, 150);
+      }, 200);
     }
 
     // Desconto NÃO e Frete SIM
@@ -96,6 +106,6 @@ export class ProdutoFunctionsService {
 
       produto.somaTotalValores = produto.valor
     }
-  }
 
+  }
 }

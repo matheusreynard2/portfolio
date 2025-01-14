@@ -35,7 +35,7 @@
           {{ formatarValor(produto.somaTotalValores) }}
         </td>
         <td class="text-center">
-          <button type="button" class="btn btn-info full-width-btn" id="btn_editar" (click)="atualizarProduto(janelaEditar, produto.id, produto)">Editar</button>
+          <button type="button" class="btn btn-info full-width-btn" id="btn_editar" (click)="atualizarProduto(modalEditar, produto.id, produto)">Editar</button>
         </td>
         <td class="text-center">
           <button type="button" class="btn btn-danger full-width-btn" id="btn_excluir" (click)="deletarProduto(modalMsg, produto.id, produto)">Excluir</button>
@@ -64,8 +64,7 @@
   </div>
 </div>
 
-<!-- ## NGTEMPLATE-EDITAR ######## Janela (modal) que abre ao clicar no botão de editar produto ######## -->
-<ng-template #janelaEditar let-modal>
+<ng-template #modalEditar let-modal>
   <div class="largeTemplate">
     <div class="modal-header">
       <h5 class="modal-title">
@@ -86,7 +85,7 @@
 
           <tr>
             <td><label for="nome">Nome:</label></td>
-            <td colspan="4">
+            <td colspan="6">
               <input type="text" [(ngModel)]="produtoAtualizar.nome"
                      class="form-control"
                      id="nome"
@@ -99,7 +98,7 @@
 
           <tr>
             <td><label for="descricao">Descrição:</label></td>
-            <td colspan="4">
+            <td colspan="6">
               <input type="text" [(ngModel)]="produtoAtualizar.descricao"
                      class="form-control"
                      id="descricao"
@@ -119,11 +118,20 @@
                      required #quantidade="ngModel"
                      maxlength="1">
             </td>
+            <td>Desconto:</td>
+            <td>
+              <input type="text" [(ngModel)]="produtoAtualizar.desconto"
+                     class="form-control"
+                     id="valorDesconto"
+                     name="valorDescontoProduto"
+                     required #valorDesconto="ngModel"
+                     appPorcentagemMask>
+            </td>
           </tr>
 
           <tr>
-            <td rowspan="3"><label>Valor do frete:</label></td>
-            <td rowspan="3" colspan="1">
+            <td><label>Valor do frete:</label></td>
+            <td colspan="6">
               <!-- Div para exibir o valor formatado -->
               <div class="mt-1">{{produtoAtualizar.frete | currency : 'BRL'}}</div>
               <!-- INPUT EXISTE PARA O CAMPO DA ENTIDADE FAZER PARTE DO NGMODEL, MAS TEM DISPLAY = NONE -->
@@ -149,14 +157,14 @@
                      required #valor="ngModel"
                      maxlength="30">
             </td>
-            <td colspan="2">
+            <td colspan="6">
               <div class="mt-1">{{produtoAtualizar.valor | currency : 'BRL'}}</div>
             </td>
           </tr>
 
           <tr>
             <td><label for="valorTotalDesc">Valor total com desconto:</label></td>
-            <td colspan="4">
+            <td colspan="6">
               <input type="number" [(ngModel)]="produtoAtualizar.valorTotalDesc"
                      class="form-control"
                      id="valorTotalDesc"
@@ -169,7 +177,7 @@
 
           <tr>
             <td><label for="valorTotalFrete">Valor total com frete:</label></td>
-            <td colspan="4">
+            <td colspan="6">
               <input type="number" [(ngModel)]="produtoAtualizar.valorTotalFrete"
                      class="form-control"
                      id="valorTotalFrete"
@@ -195,7 +203,7 @@
               </select>
             </td>
             <td><label for="freteAtivo">Frete:</label></td>
-            <td colspan="2">
+            <td colspan="3">
               <select [(ngModel)]="produtoAtualizar.freteAtivo"
                       class="form-control"
                       id="freteAtivo"
@@ -207,12 +215,11 @@
               </select>
             </td>
           </tr>
-
           <tr>
             <td>
               <label for="somaTotalValores"><b>VALOR TOTAL: </b></label>
             </td>
-            <td colspan="5">
+            <td colspan="6">
               <input type="number" [(ngModel)]="produtoAtualizar.somaTotalValores"
                      class="form-control"
                      id="somaTotalValores"
@@ -223,12 +230,11 @@
               <div class="mt-1">{{produtoAtualizar.somaTotalValores | currency : 'BRL'}}</div>
             </td>
           </tr>
-
           <tr>
             <td colspan="2">
               <button type="button" class="btn btn-secondary" (click)="calcularValores(produtoAtualizar)">Calcular valores</button>
             </td>
-            <td colspan="4" class="text-left">
+            <td colspan="5" class="text-left">
               <button type="submit" [disabled]="!produtoForm.form.valid" class="btn bg-primary-subtle fw-bold" (click)="abrirTelaAviso(modalAviso)">Salvar</button>
             </td>
           </tr>
@@ -242,7 +248,6 @@
     </div>
   </div>
 </ng-template>
-
 <!--######## FIM DO MODAL DE EDIÇÃO DE PRODUTO ######## -->
 
 <!-- Janela (modal) que abre ao clicar no botão Excluir -->

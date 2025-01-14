@@ -90,7 +90,6 @@ INDEX VERSION 1.134+C:\Users\gradi\eclipse-workspace\.metadata\.plugins\org.ecli
 4004097197.index
 2151909360.index
 740114835.index
-3428465824.index
 3657780207.index
 3308256685.index
 492727433.index
