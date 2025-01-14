@@ -13,7 +13,6 @@ Front-end em Angular e TypeScript do sistema Prodify, parte que consome a API de
 - Cálculo de desconto aplicado de 0 a 100% (não aceita decimais) sobre o preço do produto
 
 ### Funcionalidades em desenvolvimento
-- Cálculo de valor de frete pelo CEP de acordo com a API do Correios
 - Campo de buscar produtos
 - Lógica de quantidade de produtos (atualmente aceita somente 1)
 - Permitir colocar uma foto em anexo para cada registro de produto.
