@@ -81,5 +81,15 @@ public class ProdutoServiceImpl implements ProdutoService {
 		double valorComDesconto = valorProduto - (valorProduto * valorDescontoDecimal);
 		return valorComDesconto;
 	}
+	
+	@Override
+	public List<Produto> efetuarPesquisaById(Long valorPesquisa) {
+		return produtoRepository.efetuarPesquisaById(valorPesquisa);
+	}
+	
+	@Override
+	public List<Produto> efetuarPesquisaByNome(String valorPesquisa) {
+		return produtoRepository.efetuarPesquisaByNome(valorPesquisa);
+	}
 
 }

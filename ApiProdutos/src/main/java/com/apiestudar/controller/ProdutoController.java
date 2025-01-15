@@ -6,6 +6,7 @@ import com.apiestudar.service.ProdutoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -45,25 +46,38 @@ public class ProdutoController {
 		// Se encontrar o produto pelo id, o retorno é TRUE
 		return estaDeletado;
 	}
-	
-	
+
 	@GetMapping("/produtoMaisCaro")
 	public List<Produto> listarProdutoMaisCaro() {
 		List<Produto> produtoMaisCaro = produtoService.listarProdutoMaisCaro();
 		return produtoMaisCaro;
 	}
-	
+
 	@GetMapping("/mediaPreco")
 	public Double obterMediaPreco() {
 		Double media = produtoService.obterMediaPreco();
 		return media;
 	}
-			
+
 	@GetMapping("/calcularDesconto/{valorProduto}/{valorDesconto}")
 	public Double calcularValorDesconto(@PathVariable double valorProduto, @PathVariable double valorDesconto) {
 		Double valorComDesconto = produtoService.calcularValorDesconto(valorProduto, valorDesconto);
 		return valorComDesconto;
 	}
 
+	// Método responsável por retornar o resultado da barra de pesquisa do
+	// front-end. Filtra por id ou por nome dependendo do que o usuário escoheu
+	@GetMapping("/efetuarPesquisa/{tipoPesquisa}/{valorPesquisa}")
+	public List<Produto> efetuarPesquisa(@PathVariable String tipoPesquisa, @PathVariable String valorPesquisa) {
+		List<Produto> produtos = new ArrayList<Produto>();
+		if (tipoPesquisa.equals("id")) {
+			long valorPesquisaLong = Long.parseLong(valorPesquisa);
+			produtos = produtoService.efetuarPesquisaById(valorPesquisaLong);
+		} else if (tipoPesquisa.equals("nome")) {
+			System.out.println("entrou no nome");
+			produtos = produtoService.efetuarPesquisaByNome(valorPesquisa);
+		}
+		return produtos;
+	}
+
 }
-  

@@ -49,3 +49,14 @@
   height: 750px;
   border-radius: 15px; /* Ajuste o valor conforme desejado para o arredondamento */
 }
+
+#combo_tipo_pesquisa {
+  width: 100px;
+  height: 30px;
+}
+
+.searchBar_input, #searchBar_td, #btn_pesquisar {
+  height: 30px;
+  font-size: 14px;
+  width: 100%;
+}

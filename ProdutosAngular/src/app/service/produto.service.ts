@@ -15,6 +15,11 @@ export class ProdutoService {
     this.produtosUrl = 'http://localhost:8080/api/produtos';
   }
 
+  // ENDPOINT GET - Listar produtos pela barra de pesquisa
+  public efetuarPesquisa(tipoPesquisa: string, valorPesquisa: string): Observable<Produto[]> {
+    return this.http.get<Produto[]>(this.produtosUrl + "/efetuarPesquisa/" + tipoPesquisa + "/" + valorPesquisa);
+  }
+
   // ENDPOINT GET - Listar todos os produtos
   public listarProdutos(): Observable<Produto[]> {
     return this.http.get<Produto[]>(this.produtosUrl + "/listarProdutos");

@@ -19,4 +19,8 @@ public interface ProdutoService {
 	Double obterMediaPreco();
 	
 	Double calcularValorDesconto(double valorProduto, double valorDesconto);
+	
+	List<Produto> efetuarPesquisaById(Long valorPesquisa);
+	
+	List<Produto> efetuarPesquisaByNome(String valorPesquisa);
 }

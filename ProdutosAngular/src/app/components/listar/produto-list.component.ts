@@ -1,11 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import { Produto } from '../../model/produto';
 import { ProdutoService } from '../../service/produto.service';
-import {CurrencyPipe, NgForOf, NgOptimizedImage} from '@angular/common';
+import {CurrencyPipe, NgForOf, NgIf, NgOptimizedImage} from '@angular/common';
 import {NgbModal, NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { ProdutoFunctionsService } from '../../service/produto-functions.service';
 import {PorcentagemMaskDirective} from '../../directives/porcentagem-mask.directive';
+import {RouterLink} from '@angular/router';
 
 @Component({
   selector: '/app-produto-list',
@@ -17,7 +18,8 @@ import {PorcentagemMaskDirective} from '../../directives/porcentagem-mask.direct
     FormsModule,
     ReactiveFormsModule,
     CurrencyPipe,
-    PorcentagemMaskDirective
+    PorcentagemMaskDirective,
+    NgIf
   ],
   styleUrls: ['./produto-list.component.css']
 })
@@ -28,13 +30,14 @@ export class ProdutoListComponent implements OnInit {
   listaProdutoMaisCaro: Produto[] = [];
   stringProdutoMaisCaro: string = '';
   mediaPreco: number = 0;
+  tipoPesquisaSelecionado: string = 'id';
 
   listaDeProdutos!: Produto[];
   produtoAtualizar!: Produto;
   produtoExcluido!: Produto;
 
-  // Services
   private modalService: NgbModal = new NgbModal();
+  @ViewChild('searchBar') searchBar!: ElementRef
 
   constructor(private produtoService: ProdutoService,
               private produtoFunctionsService: ProdutoFunctionsService) { }
@@ -129,6 +132,19 @@ export class ProdutoListComponent implements OnInit {
     modal.close();
   }
 
+  // Função chamada ao clicar no botão Pesquisar
+  efetuarPesquisa() {
+
+    let searchBar_value = this.searchBar.nativeElement.value;
+
+    this.produtoService.efetuarPesquisa(this.tipoPesquisaSelecionado, searchBar_value).subscribe(data => {
+      this.listaDeProdutos = data.sort((a, b) => a.id - b.id);
+    });
+
+    this.listarProdutoMaisCaro();
+    this.calcularMedia();
+  }
+
   // Calcula os totalizadores de valor. função chamada ao clicar no botão Calcular valores
   // e antes de gravar o produto no banco de dados no onSubmit do formulário ngModel
   calcularValores(produto: Produto) {
@@ -148,6 +164,15 @@ export class ProdutoListComponent implements OnInit {
   // Função que abre o modal - Janel de Aviso para Atualizar List de Produtos
   abrirTelaAviso(modalAviso: any) {
     this.modalService.open(modalAviso);
+  }
+
+  // Função chamada ao mudar de valor na ComboBox Tipo de Pesquisa
+  trocarTipoPesquisa() {
+    if (this.tipoPesquisaSelecionado =='id') {
+      this.tipoPesquisaSelecionado ='nome'
+    } else {
+      this.tipoPesquisaSelecionado ='id'
+    }
   }
 
 }
