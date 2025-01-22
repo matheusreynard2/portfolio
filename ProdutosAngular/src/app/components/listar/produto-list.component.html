@@ -31,7 +31,9 @@
     <table class="table table-bordered table-striped">
       <thead class="thead-dark">
       <tr>
-        <th colspan="11" class="text-center">Produtos</th>
+        <th colspan="3" style="font-size: 12px">Passe o mouse sobre o nome do produto para visualização de imagem.</th>
+        <th colspan="2" class="text-center">Produtos</th>
+        <th colspan="5"></th>
       </tr>
       <tr>
         <th class="text-center coluna_id"><strong>ID</strong></th>
@@ -47,30 +49,33 @@
       <tbody>
       <tr *ngFor="let produto of listaDeProdutos">
         <td class="text-center coluna_id">{{ produto.id }}</td>
-        <td class="text-left coluna_nome">{{ produto.nome }}</td>
+        <td class="text-left coluna_nome passar_mouse" (mouseenter)="mostrarImgPopup(produto)" (mouseleave)="esconderImgPopup()">{{ produto.nome }}</td>
+        <div *ngIf="popUpVisivel" class="img-popup image-container">
+          <img *ngIf="imgBase64" [src]="'data:image/jpeg;base64,' + imgBase64"/>
+        </div>
         <td class="text-center">{{ formatarValor(produto.valor) }}</td>
-        <td class="text-center">
-          <img
-            [src]="produto.promocao ? '/bolinha_verde.png' : '/bolinha_vermelha.png'"
-            [alt]="produto.promocao ? 'Promoção Ativa' : 'Promoção Inativa'"
-            width="25"
-            height="25">
-        </td>
-        <td class="text-center">
-          {{ formatarValor(produto.valorTotalDesc) }}
-        </td>
-        <td class="text-center">
-          {{ formatarValor(produto.somaTotalValores) }}
-        </td>
-        <td class="text-center">
-          <button type="button" class="btn btn-info full-width-btn" id="btn_editar" (click)="atualizarProduto(modalEditar, produto.id, produto)">Editar</button>
-        </td>
-        <td class="text-center">
-          <button type="button" class="btn btn-danger full-width-btn" id="btn_excluir" (click)="deletarProduto(modalMsg, produto.id, produto)">Excluir</button>
-        </td>
-      </tr>
+          <td class="text-center">
+            <img
+              [src]="produto.promocao ? '/bolinha_verde.png' : '/bolinha_vermelha.png'"
+              [alt]="produto.promocao ? 'Promoção Ativa' : 'Promoção Inativa'"
+              width="25"
+              height="25">
+          </td>
+          <td class="text-center">
+            {{ formatarValor(produto.valorTotalDesc) }}
+          </td>
+          <td class="text-center">
+            {{ formatarValor(produto.somaTotalValores) }}
+          </td>
+          <td class="text-center">
+            <button type="button" class="btn btn-info full-width-btn" id="btn_editar" (click)="atualizarProduto(modalEditar, produto.id, produto)">Editar</button>
+          </td>
+          <td class="text-center">
+            <button type="button" class="btn btn-danger full-width-btn" id="btn_excluir" (click)="deletarProduto(modalMsg, produto.id, produto)">Excluir</button>
+          </td>
+        </tr>
 
-      <!-- Label que exibe a variável do produto mais caro -->
+        <!-- Label que exibe a variável do produto mais caro -->
       <tr>
         <td colspan="11" class="text-left">
           <b><label style="font-size: 16px;">* <u>Produto mais caro</u> - <label style="color: green; font-size: 20px">ID: {{ stringProdutoMaisCaro }}</label></label></b> |
@@ -146,7 +151,7 @@
             </td>
             <td>Desconto:</td>
             <td>
-              <input type="text" [(ngModel)]="produtoAtualizar.desconto"
+              <input type="text" [(ngModel)]="produtoAtualizar.valorDesconto"
                      class="form-control"
                      id="valorDesconto"
                      name="valorDescontoProduto"

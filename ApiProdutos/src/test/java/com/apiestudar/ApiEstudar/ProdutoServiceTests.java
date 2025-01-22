@@ -46,7 +46,7 @@ public class ProdutoServiceTests {
 		
 		when(produtoRepository.save(produtoTeste)).thenReturn(produtoRetornadoRepository);
 		
-		Produto produtoRetornadoService = produtoService.adicionarProduto(produtoTeste);
+		Produto produtoRetornadoService = produtoService.adicionarProduto(produtoTeste, null);
 
 		assertEquals(produtoRetornadoService, produtoRetornadoRepository);
 		

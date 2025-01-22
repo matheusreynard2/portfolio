@@ -6,7 +6,6 @@ import {NgbModal, NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { ProdutoFunctionsService } from '../../service/produto-functions.service';
 import {PorcentagemMaskDirective} from '../../directives/porcentagem-mask.directive';
-import {RouterLink} from '@angular/router';
 
 @Component({
   selector: '/app-produto-list',
@@ -31,6 +30,8 @@ export class ProdutoListComponent implements OnInit {
   stringProdutoMaisCaro: string = '';
   mediaPreco: number = 0;
   tipoPesquisaSelecionado: string = 'id';
+  popUpVisivel = false;  // Controle de visibilidade do pop-up
+  imgBase64: string = ''  // Variável para armazenar a imagem do produto
 
   listaDeProdutos!: Produto[];
   produtoAtualizar!: Produto;
@@ -173,6 +174,18 @@ export class ProdutoListComponent implements OnInit {
     } else {
       this.tipoPesquisaSelecionado ='id'
     }
+  }
+
+  // Método chamado quando o mouse entra no elemento para abrir pop-up de mostrar imagem
+  mostrarImgPopup(produto: any) {
+    this.imgBase64 = produto.imagem;  // Armazenar a imagem do produto
+    this.popUpVisivel = true;        // Mostrar o pop-up
+  }
+
+  // Método chamado quando o mouse sai do elemento para abrir pop-up de mostrar imagem
+  esconderImgPopup() {
+    this.imgBase64 = '';  // Limpar a imagem do produto
+    this.popUpVisivel = false;  // Esconder o pop-up
   }
 
 }

@@ -21,7 +21,9 @@ export class Produto {
 
   public freteAtivo: boolean;
 
-  public desconto: number;
+  public valorDesconto: number;
+
+  public imagem: string;
 
   constructor(
     id: number,
@@ -35,9 +37,10 @@ export class Produto {
     quantia: number,
     somaTotalValores: number,
     freteAtivo: boolean,
-    desconto: number
+    valorDesconto: number,
+    imagem: string
   ) {
-    this.desconto = desconto;
+    this.valorDesconto = valorDesconto;
     this.freteAtivo = freteAtivo;
     this.somaTotalValores = somaTotalValores;
     this.quantia = quantia;
@@ -49,5 +52,6 @@ export class Produto {
     this.descricao = descricao;
     this.nome = nome;
     this.id = id;
+    this.imagem = imagem;
   }
 }

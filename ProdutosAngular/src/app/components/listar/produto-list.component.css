@@ -60,3 +60,29 @@
   font-size: 14px;
   width: 100%;
 }
+
+.image-container {
+  max-width: 35%;  /* Limita a largura a 50% da largura do contêiner */
+  max-height: 35%; /* Limita a altura a 50% da altura do contêiner */
+  width: auto;
+  height: auto;
+  object-fit: contain; /* Garante que a imagem não será cortada */
+}
+
+.image-container img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Ajusta a imagem para cobrir toda a área da div */
+  text-align: center;
+}
+
+.passar_mouse {
+  cursor: pointer;
+  display: inline-block;
+}
+
+.img-popup {
+  position: absolute;
+  top: 10px;  /* Ajuste conforme a necessidade */
+  left: 350px; /* Ajuste conforme a necessidade */
+}

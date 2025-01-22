@@ -32,7 +32,7 @@ export class ProdutoFunctionsService {
     }
   }
 
-  // CALCULO DE VALOR DE FRETE PELO CEP
+  // CALCULO DE VALOR DE FRETE
   calcularFrete(): number {
     let valorFrete = 0;
     return valorFrete;
@@ -41,12 +41,14 @@ export class ProdutoFunctionsService {
   // Calcula o valor do desconto de acordo com a porcentagem passada pelo usuário
   calcularDesconto(produto: Produto) {
 
-    if (produto.promocao && (produto.desconto == undefined)) {
-      produto.desconto = 0
+    if (!produto.promocao) {
+      this.resultadoDesconto = 0
+      produto.valorDesconto = this.resultadoDesconto
     }
 
-    if (produto.promocao && (produto.desconto != undefined)) {
-      let valorDescontoString: string = produto.desconto.toString()
+    if (produto.promocao) {
+      console.log(produto.valorDesconto)
+      let valorDescontoString: string = produto.valorDesconto.toString()
       valorDescontoString = valorDescontoString.replaceAll('%', '')
       let valorDescontoNumber: number = Number(valorDescontoString);
       // Chama o endpoint na API de calcular o desconto passando os valores
@@ -62,7 +64,6 @@ export class ProdutoFunctionsService {
     // Desconto SIM e Frete SIM
     if (produto.promocao && produto.freteAtivo) {
       this.calcularDesconto(produto)
-      produto.valorTotalDesc = this.resultadoDesconto
       produto.valorTotalFrete = produto.valorTotalDesc + this.calcularFrete()
       produto.frete = this.calcularFrete()
 
@@ -70,8 +71,10 @@ export class ProdutoFunctionsService {
       // pra retornar o resultado e poder atualizar a variável resultadoDesconto
       setTimeout(() => {
         produto.valorTotalDesc = this.resultadoDesconto
+        produto.valorDesconto = this.resultadoDesconto
         produto.somaTotalValores = produto.valorTotalDesc + produto.frete
       }, 200);
+
     }
 
     // Desconto SIM e Frete NÃO
@@ -79,10 +82,12 @@ export class ProdutoFunctionsService {
       produto.frete = 0
       produto.valorTotalFrete = 0
       this.calcularDesconto(produto)
+
       // Espera 0.2 segundos pra executar pois a chamada da API é assincrona e demora um pouco
       // pra retornar o resultado e poder atualizar a variável resultadoDesconto
       setTimeout(() => {
         produto.valorTotalDesc = this.resultadoDesconto
+        produto.valorDesconto = this.resultadoDesconto
         produto.somaTotalValores = produto.valorTotalDesc
       }, 200);
     }

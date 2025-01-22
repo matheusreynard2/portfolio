@@ -124,12 +124,18 @@
         <tr>
           <td>Desconto:</td>
           <td>
-            <input type="text" [(ngModel)]="produto.desconto"
+            <input type="text" [(ngModel)]="produto.valorDesconto"
                    class="form-control"
                    id="valorDesconto"
                    name="valorDescontoProduto"
                    required #valorDesconto="ngModel"
                    appPorcentagemMask>
+          </td>
+          <td>
+            <label for="foto_produto">Foto do produto: </label>
+          </td>
+          <td>
+            <input id="foto_produto" type="file" (change)="onFileChange($event)" />
           </td>
         </tr>
         <tr>

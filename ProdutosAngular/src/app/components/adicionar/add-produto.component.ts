@@ -35,11 +35,13 @@ export class AddProdutoComponent {
     quantia: 1,
     somaTotalValores: 0,
     freteAtivo: false,
-    desconto: 0
+    valorDesconto: 0,
+    imagem: ''
   };
 
   // Variáveis
   novoProduto!: Produto;
+  imagemFile: File = new File([], 'arquivo_vazio.txt', {})
 
   // Services
   private modalService: NgbModal = new NgbModal();
@@ -52,7 +54,9 @@ export class AddProdutoComponent {
   // Função que é chamada ao clicar no botão Submit do formulário HTML (ngModel) ao criar um produto
   onSubmit() {
     this.calcularValores(this.produto);
-    this.produtoService.adicionarProduto(this.produto).subscribe({
+
+    // Adiciona o produto no banco depois chama a mensagem de sucesso de adição de produto "msgAddProduto"
+    this.produtoService.adicionarProduto(this.produto, this.imagemFile).subscribe({
       next: (produtoAdicionado: Produto) => {
         this.novoProduto = produtoAdicionado
       }
@@ -72,16 +76,20 @@ export class AddProdutoComponent {
   // Função que abre o modal de mensagem de sucesso após cadastrar um produto
   msgAddProduto(modalMsg: any) {
     const modalRef = this.modalService.open(modalMsg);
-    // Espera 0.3 segundos para setar o produto no modal por que ele chama no arquivo HTML o submit e o click
+    // Espera 0.2 segundos para setar o produto no modal por que ele chama no arquivo HTML o submit e o click
     // ao mesmo tempo.
     setTimeout(() => {
       modalRef.componentInstance.produto = this.novoProduto;
-    }, 300);
+    }, 200);
   }
 
   // Calcula os totalizadores de valor. Função chamada ao clicar no botão Calcular valores
   // e antes de gravar o produto no banco de dados.
   calcularValores(produto: Produto) {
     this.produtoFunctionsService.calcularValores(produto);
+  }
+
+  onFileChange(event: any) {
+    this.imagemFile = event.target.files[0];
   }
 }

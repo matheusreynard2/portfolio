@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
 import { Produto } from '../model/produto';
 import { Observable } from 'rxjs';
 
@@ -26,8 +26,14 @@ export class ProdutoService {
   }
 
   // ENDPOINT POST - Adicionar / Cadastrar um novo produto
-  public adicionarProduto(produto: Produto) {
-    return this.http.post<Produto>(this.produtosUrl + "/adicionarProduto", produto);
+    public adicionarProduto(produto: Produto, imagem: File) {
+
+    const formData = new FormData();
+    const headers = new HttpHeaders();
+    formData.append('produtoJSON', JSON.stringify(produto)); // Produto como JSON
+    formData.append('imagemFile', imagem);                   // Arquivo de imagem
+
+    return this.http.post<Produto>(this.produtosUrl + "/adicionarProduto/", formData, { headers });
   }
 
   // ENDPOINT DELETE - Deletar / Excluir um produto

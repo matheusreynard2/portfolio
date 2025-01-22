@@ -4,6 +4,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 
 @Entity
 public class Produto {
@@ -33,6 +34,17 @@ public class Produto {
 	private boolean freteAtivo;
 	
 	private double valorDesconto;
+	
+	@Lob
+	private String imagem;
+	
+	public String getImagem() {
+		return imagem;
+	}
+
+	public void setImagem(String imagem) {
+		this.imagem = imagem;
+	}
 
 	public double getValorDesconto() {
 		return valorDesconto;
