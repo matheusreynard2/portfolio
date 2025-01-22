@@ -38,8 +38,6 @@ public class ProdutoController {
         // Converter MultipartFile para String Base 64
         String imagemStringBase64 = Base64.getEncoder().encodeToString(imagemFile.getBytes());
         
-        System.out.println(imagemStringBase64);
-        
         produto.setImagem(imagemStringBase64);
 		
 		Produto produtoAdicionado = (Produto) produtoService.adicionarProduto(produto, imagemStringBase64);
@@ -48,12 +46,19 @@ public class ProdutoController {
 	}
 
 	@PutMapping("/atualizarProduto/{id}")
-	public Produto atualizarProduto(@PathVariable long id, @RequestBody Produto produtoAtualizado) {
-		Produto produto = produtoService.atualizarProduto(id, produtoAtualizado);
-		if (produto != null)
-			return produto;
-		else
-			return null;
+	public Produto atualizarProduto(@PathVariable long id, @RequestParam String produtoJSON, @RequestParam MultipartFile imagemFile) throws IOException {
+		
+	    // Converter o JSON de volta para um objeto Produto
+        Produto produto = new ObjectMapper().readValue(produtoJSON, Produto.class);
+        
+        // Converter MultipartFile para String Base 64
+        String imagemStringBase64 = Base64.getEncoder().encodeToString(imagemFile.getBytes());
+        
+        produto.setImagem(imagemStringBase64);
+		
+		Produto produtoAtualizado = produtoService.atualizarProduto(id, produto);
+		
+		return produtoAtualizado;
 	}
 
 	@DeleteMapping("/deletarProduto/{id}")

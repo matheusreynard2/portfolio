@@ -36,6 +36,7 @@ export class ProdutoListComponent implements OnInit {
   listaDeProdutos!: Produto[];
   produtoAtualizar!: Produto;
   produtoExcluido!: Produto;
+  imagemFile: File = new File([], 'arquivo_vazio.txt', {})
 
   private modalService: NgbModal = new NgbModal();
   @ViewChild('searchBar') searchBar!: ElementRef
@@ -87,7 +88,7 @@ export class ProdutoListComponent implements OnInit {
 
   // Função para atualizar um produto através do id
   atualizarProduto(janelaEditar: any, id: number, produto: Produto) {
-    this.produtoService.atualizarProduto(id, produto).subscribe({
+    this.produtoService.atualizarProduto(id, produto, this.imagemFile).subscribe({
       next: (produtoRetornado: Produto) => {
         this.produtoAtualizar = produtoRetornado
         this.calcularValores(this.produtoAtualizar);
@@ -129,7 +130,7 @@ export class ProdutoListComponent implements OnInit {
   // Função chamada ao clicar no botão de Submit (Salvar) do formulário de Edição de produtos
   onSubmitSalvar(modal: any) {
     this.calcularValores(this.produtoAtualizar);
-    this.produtoService.atualizarProduto(this.produtoAtualizar.id, this.produtoAtualizar).subscribe();
+    this.produtoService.atualizarProduto(this.produtoAtualizar.id, this.produtoAtualizar, this.imagemFile).subscribe();
     modal.close();
   }
 
@@ -186,6 +187,10 @@ export class ProdutoListComponent implements OnInit {
   esconderImgPopup() {
     this.imgBase64 = '';  // Limpar a imagem do produto
     this.popUpVisivel = false;  // Esconder o pop-up
+  }
+
+  onFileChange(event: any) {
+    this.imagemFile = event.target.files[0];
   }
 
 }

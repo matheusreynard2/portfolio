@@ -42,8 +42,13 @@ export class ProdutoService {
   }
 
   // ENDPOINT PUT - Atualizar um produto
-  public atualizarProduto(id: number, produto: Produto) {
-    return this.http.put<Produto>(this.produtosUrl + "/atualizarProduto/" + id, produto);
+  public atualizarProduto(id: number, produto: Produto, imagem: File) {
+    const formData = new FormData();
+    const headers = new HttpHeaders();
+    formData.append('produtoJSON', JSON.stringify(produto)); // Produto como JSON
+    formData.append('imagemFile', imagem);                   // Arquivo de imagem
+
+    return this.http.put<Produto>(this.produtosUrl + "/atualizarProduto/" + id, formData,  { headers });
   }
 
   // ENDPOINT GET - Listar produto mais caro

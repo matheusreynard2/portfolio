@@ -62,22 +62,23 @@
 }
 
 .image-container {
-  max-width: 35%;  /* Limita a largura a 50% da largura do contêiner */
-  max-height: 35%; /* Limita a altura a 50% da altura do contêiner */
-  width: auto;
-  height: auto;
-  object-fit: contain; /* Garante que a imagem não será cortada */
+  max-width: 40%; /* Limita a largura */
+  max-height: 40%; /* Limita a altura */
+  background-color: black; /* Fundo preto */
+  padding: 10px; /* Espaço extra ao redor da imagem */
+  border: 3px black; /* Bordas arredondadas */
+  overflow: hidden; /* Impede que a imagem ultrapasse o container */
+  text-align: center; /* Centraliza a imagem */
 }
 
 .image-container img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover; /* Ajusta a imagem para cobrir toda a área da div */
-  text-align: center;
+  max-width: 100%; /* Ajusta a largura da imagem */
+  max-height: 100%; /* Ajusta a altura da imagem */
+  object-fit: contain; /* A imagem se ajusta sem distorcer */
 }
 
 .passar_mouse {
-  cursor: pointer;
+  cursor: zoom-in;
   display: inline-block;
 }
 

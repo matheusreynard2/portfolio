@@ -10,6 +10,8 @@ import {Observable} from 'rxjs';
 export class ProdutoFunctionsService {
 
   private resultadoDesconto: number = 0
+  // Essa variavel é utilizada para setar a variavel produto.valorDesconto quando envia para a API
+  private valorDescontoNumber: number = 0;
 
   constructor(private http: HttpClient, private produtoService: ProdutoService) {
   }
@@ -43,16 +45,16 @@ export class ProdutoFunctionsService {
 
     if (!produto.promocao) {
       this.resultadoDesconto = 0
-      produto.valorDesconto = this.resultadoDesconto
+      produto.valorDesconto = 0
+      this.valorDescontoNumber = 0;
     }
 
     if (produto.promocao) {
-      console.log(produto.valorDesconto)
       let valorDescontoString: string = produto.valorDesconto.toString()
       valorDescontoString = valorDescontoString.replaceAll('%', '')
-      let valorDescontoNumber: number = Number(valorDescontoString);
+      this.valorDescontoNumber = Number(valorDescontoString);
       // Chama o endpoint na API de calcular o desconto passando os valores
-      this.produtoService.calcularDesconto(produto.valor, valorDescontoNumber).subscribe(
+      this.produtoService.calcularDesconto(produto.valor, this.valorDescontoNumber).subscribe(
         (resultadoApi: number) => {
           this.resultadoDesconto = resultadoApi;
         })
@@ -71,7 +73,7 @@ export class ProdutoFunctionsService {
       // pra retornar o resultado e poder atualizar a variável resultadoDesconto
       setTimeout(() => {
         produto.valorTotalDesc = this.resultadoDesconto
-        produto.valorDesconto = this.resultadoDesconto
+        produto.valorDesconto = this.valorDescontoNumber
         produto.somaTotalValores = produto.valorTotalDesc + produto.frete
       }, 200);
 
@@ -87,7 +89,7 @@ export class ProdutoFunctionsService {
       // pra retornar o resultado e poder atualizar a variável resultadoDesconto
       setTimeout(() => {
         produto.valorTotalDesc = this.resultadoDesconto
-        produto.valorDesconto = this.resultadoDesconto
+        produto.valorDesconto = this.valorDescontoNumber
         produto.somaTotalValores = produto.valorTotalDesc
       }, 200);
     }
