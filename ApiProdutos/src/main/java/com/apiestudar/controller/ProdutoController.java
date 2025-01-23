@@ -4,9 +4,9 @@ import com.apiestudar.model.Produto;
 import com.apiestudar.service.ProdutoService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -17,7 +17,6 @@ import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
 
-@Api(tags = "Prodify - Sistema de gerenciamento de produtos")
 @RestController
 @RequestMapping("api/produtos")
 @CrossOrigin(origins = "http://localhost:4200")
@@ -71,7 +70,7 @@ public class ProdutoController {
 	}
 
 	@ApiOperation(value = "Deleta/exclui um produto.", notes = "Faz a exclusão de um produto do banco de dados de acordo com o número de id passado como parâmetro.")
-	@ApiResponse(code = 200, message = "Produtos excluído.")
+	@ApiResponse(code = 200, message = "Produto excluído.")
 	@DeleteMapping("/deletarProduto/{id}")
 	public boolean deletarProduto(@PathVariable int id) {
 		boolean estaDeletado = produtoService.deletarProduto(id);

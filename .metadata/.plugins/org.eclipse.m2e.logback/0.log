@@ -7768,3 +7768,437 @@ org.apache.maven.project.ProjectBuildingException: Some problems were encountere
 2025-01-23 11:26:38,814 [Worker-636: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
 2025-01-23 11:26:38,820 [Worker-636: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
 2025-01-23 11:26:38,820 [Worker-636: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\gradi\eclipse-workspace\ApiProdutos\src\test\resources
+2025-01-23 11:28:56,570 [Worker-636: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2025-01-23 11:28:56,572 [Worker-636: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 1 resource
+2025-01-23 11:28:56,574 [Worker-636: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2025-01-23 11:28:56,602 [Worker-636: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2025-01-23 11:28:56,602 [Worker-636: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\gradi\eclipse-workspace\ApiProdutos\src\test\resources
+2025-01-23 14:25:48,223 [Worker-641: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2025-01-23 14:25:48,225 [Worker-641: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 1 resource
+2025-01-23 14:25:48,236 [Worker-641: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2025-01-23 14:25:48,241 [Worker-641: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2025-01-23 14:25:48,241 [Worker-641: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\gradi\eclipse-workspace\ApiProdutos\src\test\resources
+2025-01-23 14:26:01,102 [Worker-644: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2025-01-23 14:26:01,102 [Worker-644: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 1 resource
+2025-01-23 14:26:01,104 [Worker-644: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2025-01-23 14:26:01,107 [Worker-644: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2025-01-23 14:26:01,107 [Worker-644: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\gradi\eclipse-workspace\ApiProdutos\src\test\resources
+2025-01-23 14:26:23,817 [Worker-644: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2025-01-23 14:26:23,818 [Worker-644: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 1 resource
+2025-01-23 14:26:23,820 [Worker-644: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2025-01-23 14:26:23,824 [Worker-644: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2025-01-23 14:26:23,824 [Worker-644: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\gradi\eclipse-workspace\ApiProdutos\src\test\resources
+2025-01-23 14:32:36,468 [Worker-647: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2025-01-23 14:32:36,468 [Worker-647: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 1 resource
+2025-01-23 14:32:36,471 [Worker-647: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2025-01-23 14:32:36,476 [Worker-647: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2025-01-23 14:32:36,476 [Worker-647: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\gradi\eclipse-workspace\ApiProdutos\src\test\resources
+2025-01-23 14:32:37,687 [Worker-648: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2025-01-23 14:32:37,688 [Worker-648: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 1 resource
+2025-01-23 14:32:37,690 [Worker-648: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2025-01-23 14:32:37,693 [Worker-648: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2025-01-23 14:32:37,693 [Worker-648: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\gradi\eclipse-workspace\ApiProdutos\src\test\resources
+2025-01-23 14:32:45,338 [Worker-641: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2025-01-23 14:32:45,339 [Worker-641: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 1 resource
+2025-01-23 14:32:45,340 [Worker-641: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2025-01-23 14:32:45,342 [Worker-641: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2025-01-23 14:32:45,342 [Worker-641: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\gradi\eclipse-workspace\ApiProdutos\src\test\resources
+2025-01-23 14:32:52,085 [Worker-648: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2025-01-23 14:32:52,085 [Worker-648: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 1 resource
+2025-01-23 14:32:52,086 [Worker-648: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2025-01-23 14:32:52,089 [Worker-648: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2025-01-23 14:32:52,089 [Worker-648: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\gradi\eclipse-workspace\ApiProdutos\src\test\resources
+2025-01-23 14:33:51,855 [Worker-641: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2025-01-23 14:33:51,856 [Worker-641: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 1 resource
+2025-01-23 14:33:51,858 [Worker-641: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2025-01-23 14:33:51,862 [Worker-641: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2025-01-23 14:33:51,863 [Worker-641: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\gradi\eclipse-workspace\ApiProdutos\src\test\resources
+2025-01-23 14:38:11,520 [Worker-650: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2025-01-23 14:38:11,521 [Worker-650: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 1 resource
+2025-01-23 14:38:11,523 [Worker-650: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2025-01-23 14:38:11,526 [Worker-650: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2025-01-23 14:38:11,526 [Worker-650: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\gradi\eclipse-workspace\ApiProdutos\src\test\resources
+2025-01-23 14:45:02,383 [Worker-653: Launching ApiEstudarApplication (3)] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2025-01-23 14:45:02,385 [Worker-653: Launching ApiEstudarApplication (3)] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 1 resource
+2025-01-23 14:45:02,388 [Worker-653: Launching ApiEstudarApplication (3)] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2025-01-23 14:45:02,392 [Worker-653: Launching ApiEstudarApplication (3)] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2025-01-23 14:45:02,393 [Worker-653: Launching ApiEstudarApplication (3)] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\gradi\eclipse-workspace\ApiProdutos\src\test\resources
+2025-01-23 14:46:27,977 [Worker-655: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2025-01-23 14:46:27,978 [Worker-655: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 1 resource
+2025-01-23 14:46:27,979 [Worker-655: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2025-01-23 14:46:27,981 [Worker-655: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2025-01-23 14:46:27,981 [Worker-655: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\gradi\eclipse-workspace\ApiProdutos\src\test\resources
+2025-01-23 14:46:32,322 [Worker-652: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2025-01-23 14:46:32,323 [Worker-652: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 1 resource
+2025-01-23 14:46:32,324 [Worker-652: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2025-01-23 14:46:32,327 [Worker-652: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2025-01-23 14:46:32,327 [Worker-652: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\gradi\eclipse-workspace\ApiProdutos\src\test\resources
+2025-01-23 14:47:47,258 [Worker-656: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2025-01-23 14:47:47,259 [Worker-656: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 1 resource
+2025-01-23 14:47:47,260 [Worker-656: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2025-01-23 14:47:47,262 [Worker-656: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2025-01-23 14:47:47,264 [Worker-656: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\gradi\eclipse-workspace\ApiProdutos\src\test\resources
+2025-01-23 14:49:01,813 [Worker-656: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2025-01-23 14:49:01,814 [Worker-656: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 1 resource
+2025-01-23 14:49:01,816 [Worker-656: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2025-01-23 14:49:01,849 [Worker-656: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2025-01-23 14:49:01,849 [Worker-656: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\gradi\eclipse-workspace\ApiProdutos\src\test\resources
+2025-01-23 14:49:11,761 [Worker-653: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2025-01-23 14:49:11,762 [Worker-653: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 1 resource
+2025-01-23 14:49:11,763 [Worker-653: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2025-01-23 14:49:11,766 [Worker-653: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2025-01-23 14:49:11,767 [Worker-653: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\gradi\eclipse-workspace\ApiProdutos\src\test\resources
+2025-01-23 14:52:00,534 [Worker-657: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2025-01-23 14:52:00,535 [Worker-657: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 1 resource
+2025-01-23 14:52:00,536 [Worker-657: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2025-01-23 14:52:00,542 [Worker-657: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2025-01-23 14:52:00,542 [Worker-657: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\gradi\eclipse-workspace\ApiProdutos\src\test\resources
+2025-01-23 14:52:46,915 [Worker-650: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2025-01-23 14:52:46,916 [Worker-650: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 1 resource
+2025-01-23 14:52:46,917 [Worker-650: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2025-01-23 14:52:46,920 [Worker-650: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2025-01-23 14:52:46,921 [Worker-650: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\gradi\eclipse-workspace\ApiProdutos\src\test\resources
+2025-01-23 14:52:55,920 [Worker-650: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2025-01-23 14:52:55,922 [Worker-650: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 1 resource
+2025-01-23 14:52:55,924 [Worker-650: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2025-01-23 14:52:55,927 [Worker-650: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2025-01-23 14:52:55,927 [Worker-650: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\gradi\eclipse-workspace\ApiProdutos\src\test\resources
+2025-01-23 14:53:59,466 [Worker-650: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2025-01-23 14:53:59,466 [Worker-650: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 1 resource
+2025-01-23 14:53:59,468 [Worker-650: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2025-01-23 14:53:59,471 [Worker-650: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2025-01-23 14:53:59,471 [Worker-650: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\gradi\eclipse-workspace\ApiProdutos\src\test\resources
+2025-01-23 14:54:47,868 [Worker-650: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2025-01-23 14:54:47,869 [Worker-650: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 1 resource
+2025-01-23 14:54:47,870 [Worker-650: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2025-01-23 14:54:47,872 [Worker-650: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2025-01-23 14:54:47,872 [Worker-650: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\gradi\eclipse-workspace\ApiProdutos\src\test\resources
+2025-01-23 15:00:28,938 [Worker-657: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2025-01-23 15:00:28,938 [Worker-657: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 1 resource
+2025-01-23 15:00:28,940 [Worker-657: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2025-01-23 15:00:28,943 [Worker-657: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2025-01-23 15:00:28,943 [Worker-657: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\gradi\eclipse-workspace\ApiProdutos\src\test\resources
+2025-01-23 15:01:59,893 [Worker-662: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2025-01-23 15:01:59,894 [Worker-662: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 1 resource
+2025-01-23 15:01:59,895 [Worker-662: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2025-01-23 15:01:59,898 [Worker-662: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2025-01-23 15:01:59,898 [Worker-662: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\gradi\eclipse-workspace\ApiProdutos\src\test\resources
+2025-01-23 15:05:35,791 [Worker-644: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2025-01-23 15:05:35,792 [Worker-644: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 1 resource
+2025-01-23 15:05:35,793 [Worker-644: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2025-01-23 15:05:35,796 [Worker-644: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2025-01-23 15:05:35,796 [Worker-644: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\gradi\eclipse-workspace\ApiProdutos\src\test\resources
+2025-01-23 15:06:20,059 [Worker-657: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2025-01-23 15:06:20,060 [Worker-657: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 1 resource
+2025-01-23 15:06:20,061 [Worker-657: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2025-01-23 15:06:20,064 [Worker-657: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2025-01-23 15:06:20,064 [Worker-657: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\gradi\eclipse-workspace\ApiProdutos\src\test\resources
+2025-01-23 15:07:26,283 [Worker-650: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2025-01-23 15:07:26,283 [Worker-650: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 1 resource
+2025-01-23 15:07:26,285 [Worker-650: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2025-01-23 15:07:26,288 [Worker-650: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2025-01-23 15:07:26,288 [Worker-650: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\gradi\eclipse-workspace\ApiProdutos\src\test\resources
+2025-01-23 15:07:31,395 [Worker-662: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2025-01-23 15:07:31,396 [Worker-662: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 1 resource
+2025-01-23 15:07:31,397 [Worker-662: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2025-01-23 15:07:31,400 [Worker-662: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2025-01-23 15:07:31,401 [Worker-662: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\gradi\eclipse-workspace\ApiProdutos\src\test\resources
+2025-01-23 15:09:08,359 [Worker-662: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2025-01-23 15:09:08,360 [Worker-662: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 1 resource
+2025-01-23 15:09:08,361 [Worker-662: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2025-01-23 15:09:08,364 [Worker-662: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2025-01-23 15:09:08,364 [Worker-662: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\gradi\eclipse-workspace\ApiProdutos\src\test\resources
+2025-01-23 15:11:34,525 [Worker-666: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2025-01-23 15:11:34,526 [Worker-666: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 1 resource
+2025-01-23 15:11:34,527 [Worker-666: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2025-01-23 15:11:34,531 [Worker-666: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2025-01-23 15:11:34,531 [Worker-666: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\gradi\eclipse-workspace\ApiProdutos\src\test\resources
+2025-01-23 15:22:05,867 [Worker-669: Building] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using org.eclipse.m2e.jdt.JarLifecycleMapping lifecycle mapping for MavenProject: com.apiestudar:apiestudar:0.0.1-SNAPSHOT @ C:\Users\gradi\eclipse-workspace\ApiProdutos\pom.xml.
+2025-01-23 15:22:08,626 [Worker-669: Building] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading https://repo.maven.apache.org/maven2/org/springdoc/springdoc-openapi-starter-webmvc-ui/2.2.0/springdoc-openapi-starter-webmvc-ui-2.2.0.pom
+2025-01-23 15:22:08,657 [Worker-669: Building] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded https://repo.maven.apache.org/maven2/org/springdoc/springdoc-openapi-starter-webmvc-ui/2.2.0/springdoc-openapi-starter-webmvc-ui-2.2.0.pom
+2025-01-23 15:22:08,692 [Worker-669: Building] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading https://repo.maven.apache.org/maven2/org/springdoc/springdoc-openapi/2.2.0/springdoc-openapi-2.2.0.pom
+2025-01-23 15:22:08,725 [Worker-669: Building] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded https://repo.maven.apache.org/maven2/org/springdoc/springdoc-openapi/2.2.0/springdoc-openapi-2.2.0.pom
+2025-01-23 15:22:08,763 [Worker-669: Building] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading https://repo.maven.apache.org/maven2/org/springframework/boot/spring-boot-starter-parent/3.1.2/spring-boot-starter-parent-3.1.2.pom
+2025-01-23 15:22:08,799 [Worker-669: Building] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded https://repo.maven.apache.org/maven2/org/springframework/boot/spring-boot-starter-parent/3.1.2/spring-boot-starter-parent-3.1.2.pom
+2025-01-23 15:22:08,839 [Worker-669: Building] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading https://repo.maven.apache.org/maven2/org/springframework/boot/spring-boot-dependencies/3.1.2/spring-boot-dependencies-3.1.2.pom
+2025-01-23 15:22:08,907 [Worker-669: Building] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded https://repo.maven.apache.org/maven2/org/springframework/boot/spring-boot-dependencies/3.1.2/spring-boot-dependencies-3.1.2.pom
+2025-01-23 15:22:08,947 [Worker-669: Building] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading https://repo.maven.apache.org/maven2/org/assertj/assertj-bom/3.24.2/assertj-bom-3.24.2.pom
+2025-01-23 15:22:08,975 [Worker-669: Building] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded https://repo.maven.apache.org/maven2/org/assertj/assertj-bom/3.24.2/assertj-bom-3.24.2.pom
+2025-01-23 15:22:09,004 [Worker-669: Building] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading https://repo.maven.apache.org/maven2/io/zipkin/brave/brave-bom/5.15.1/brave-bom-5.15.1.pom
+2025-01-23 15:22:09,034 [Worker-669: Building] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded https://repo.maven.apache.org/maven2/io/zipkin/brave/brave-bom/5.15.1/brave-bom-5.15.1.pom
+2025-01-23 15:22:09,696 [Worker-669: Building] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded https://repo.spring.io/release/io/zipkin/reporter2/zipkin-reporter-bom/2.16.3/zipkin-reporter-bom-2.16.3.pom
+2025-01-23 15:22:09,864 [Worker-669: Building] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded https://repo.spring.io/snapshot/io/zipkin/reporter2/zipkin-reporter-bom/2.16.3/zipkin-reporter-bom-2.16.3.pom
+2025-01-23 15:22:09,900 [Worker-669: Building] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading https://repo.maven.apache.org/maven2/io/zipkin/reporter2/zipkin-reporter-bom/2.16.3/zipkin-reporter-bom-2.16.3.pom
+2025-01-23 15:22:09,928 [Worker-669: Building] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded https://repo.maven.apache.org/maven2/io/zipkin/reporter2/zipkin-reporter-bom/2.16.3/zipkin-reporter-bom-2.16.3.pom
+2025-01-23 15:22:09,958 [Worker-669: Building] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading https://repo.maven.apache.org/maven2/com/datastax/oss/java-driver-bom/4.15.0/java-driver-bom-4.15.0.pom
+2025-01-23 15:22:09,984 [Worker-669: Building] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded https://repo.maven.apache.org/maven2/com/datastax/oss/java-driver-bom/4.15.0/java-driver-bom-4.15.0.pom
+2025-01-23 15:22:10,017 [Worker-669: Building] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading https://repo.maven.apache.org/maven2/io/dropwizard/metrics/metrics-bom/4.2.19/metrics-bom-4.2.19.pom
+2025-01-23 15:22:10,044 [Worker-669: Building] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded https://repo.maven.apache.org/maven2/io/dropwizard/metrics/metrics-bom/4.2.19/metrics-bom-4.2.19.pom
+2025-01-23 15:22:10,088 [Worker-669: Building] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading https://repo.maven.apache.org/maven2/io/dropwizard/metrics/metrics-parent/4.2.19/metrics-parent-4.2.19.pom
+2025-01-23 15:22:10,126 [Worker-669: Building] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded https://repo.maven.apache.org/maven2/io/dropwizard/metrics/metrics-parent/4.2.19/metrics-parent-4.2.19.pom
+2025-01-23 15:22:10,173 [Worker-669: Building] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading https://repo.maven.apache.org/maven2/org/glassfish/jaxb/jaxb-bom/4.0.3/jaxb-bom-4.0.3.pom
+2025-01-23 15:22:10,200 [Worker-669: Building] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded https://repo.maven.apache.org/maven2/org/glassfish/jaxb/jaxb-bom/4.0.3/jaxb-bom-4.0.3.pom
+2025-01-23 15:22:10,237 [Worker-669: Building] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading https://repo.maven.apache.org/maven2/org/eclipse/ee4j/project/1.0.8/project-1.0.8.pom
+2025-01-23 15:22:10,265 [Worker-669: Building] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded https://repo.maven.apache.org/maven2/org/eclipse/ee4j/project/1.0.8/project-1.0.8.pom
+2025-01-23 15:22:10,301 [Worker-669: Building] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading https://repo.maven.apache.org/maven2/org/apache/groovy/groovy-bom/4.0.13/groovy-bom-4.0.13.pom
+2025-01-23 15:22:10,337 [Worker-669: Building] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded https://repo.maven.apache.org/maven2/org/apache/groovy/groovy-bom/4.0.13/groovy-bom-4.0.13.pom
+2025-01-23 15:22:10,374 [Worker-669: Building] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading https://repo.maven.apache.org/maven2/org/infinispan/infinispan-bom/14.0.12.Final/infinispan-bom-14.0.12.Final.pom
+2025-01-23 15:22:10,403 [Worker-669: Building] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded https://repo.maven.apache.org/maven2/org/infinispan/infinispan-bom/14.0.12.Final/infinispan-bom-14.0.12.Final.pom
+2025-01-23 15:22:10,442 [Worker-669: Building] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading https://repo.maven.apache.org/maven2/org/infinispan/infinispan-build-configuration-parent/14.0.12.Final/infinispan-build-configuration-parent-14.0.12.Final.pom
+2025-01-23 15:22:10,472 [Worker-669: Building] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded https://repo.maven.apache.org/maven2/org/infinispan/infinispan-build-configuration-parent/14.0.12.Final/infinispan-build-configuration-parent-14.0.12.Final.pom
+2025-01-23 15:22:10,523 [Worker-669: Building] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading https://repo.maven.apache.org/maven2/org/jboss/jboss-parent/39/jboss-parent-39.pom
+2025-01-23 15:22:10,584 [Worker-669: Building] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded https://repo.maven.apache.org/maven2/org/jboss/jboss-parent/39/jboss-parent-39.pom
+2025-01-23 15:22:10,634 [Worker-669: Building] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading https://repo.maven.apache.org/maven2/com/fasterxml/jackson/jackson-bom/2.15.2/jackson-bom-2.15.2.pom
+2025-01-23 15:22:10,667 [Worker-669: Building] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded https://repo.maven.apache.org/maven2/com/fasterxml/jackson/jackson-bom/2.15.2/jackson-bom-2.15.2.pom
+2025-01-23 15:22:10,713 [Worker-669: Building] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading https://repo.maven.apache.org/maven2/com/fasterxml/jackson/jackson-parent/2.15/jackson-parent-2.15.pom
+2025-01-23 15:22:10,741 [Worker-669: Building] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded https://repo.maven.apache.org/maven2/com/fasterxml/jackson/jackson-parent/2.15/jackson-parent-2.15.pom
+2025-01-23 15:22:10,772 [Worker-669: Building] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading https://repo.maven.apache.org/maven2/com/fasterxml/oss-parent/50/oss-parent-50.pom
+2025-01-23 15:22:10,804 [Worker-669: Building] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded https://repo.maven.apache.org/maven2/com/fasterxml/oss-parent/50/oss-parent-50.pom
+2025-01-23 15:22:10,858 [Worker-669: Building] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading https://repo.maven.apache.org/maven2/org/glassfish/jersey/jersey-bom/3.1.2/jersey-bom-3.1.2.pom
+2025-01-23 15:22:10,892 [Worker-669: Building] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded https://repo.maven.apache.org/maven2/org/glassfish/jersey/jersey-bom/3.1.2/jersey-bom-3.1.2.pom
+2025-01-23 15:22:10,932 [Worker-669: Building] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading https://repo.maven.apache.org/maven2/org/eclipse/jetty/jetty-bom/11.0.15/jetty-bom-11.0.15.pom
+2025-01-23 15:22:10,966 [Worker-669: Building] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded https://repo.maven.apache.org/maven2/org/eclipse/jetty/jetty-bom/11.0.15/jetty-bom-11.0.15.pom
+2025-01-23 15:22:11,006 [Worker-669: Building] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading https://repo.maven.apache.org/maven2/org/jetbrains/kotlin/kotlin-bom/1.8.22/kotlin-bom-1.8.22.pom
+2025-01-23 15:22:11,034 [Worker-669: Building] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded https://repo.maven.apache.org/maven2/org/jetbrains/kotlin/kotlin-bom/1.8.22/kotlin-bom-1.8.22.pom
+2025-01-23 15:22:11,073 [Worker-669: Building] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading https://repo.maven.apache.org/maven2/org/jetbrains/kotlinx/kotlinx-coroutines-bom/1.6.4/kotlinx-coroutines-bom-1.6.4.pom
+2025-01-23 15:22:11,101 [Worker-669: Building] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded https://repo.maven.apache.org/maven2/org/jetbrains/kotlinx/kotlinx-coroutines-bom/1.6.4/kotlinx-coroutines-bom-1.6.4.pom
+2025-01-23 15:22:11,142 [Worker-669: Building] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading https://repo.maven.apache.org/maven2/org/apache/logging/log4j/log4j-bom/2.20.0/log4j-bom-2.20.0.pom
+2025-01-23 15:22:11,169 [Worker-669: Building] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded https://repo.maven.apache.org/maven2/org/apache/logging/log4j/log4j-bom/2.20.0/log4j-bom-2.20.0.pom
+2025-01-23 15:22:11,207 [Worker-669: Building] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading https://repo.maven.apache.org/maven2/org/apache/logging/logging-parent/7/logging-parent-7.pom
+2025-01-23 15:22:11,235 [Worker-669: Building] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded https://repo.maven.apache.org/maven2/org/apache/logging/logging-parent/7/logging-parent-7.pom
+2025-01-23 15:22:11,268 [Worker-669: Building] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading https://repo.maven.apache.org/maven2/org/apache/apache/27/apache-27.pom
+2025-01-23 15:22:11,299 [Worker-669: Building] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded https://repo.maven.apache.org/maven2/org/apache/apache/27/apache-27.pom
+2025-01-23 15:22:11,335 [Worker-669: Building] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading https://repo.maven.apache.org/maven2/io/micrometer/micrometer-bom/1.11.2/micrometer-bom-1.11.2.pom
+2025-01-23 15:22:11,365 [Worker-669: Building] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded https://repo.maven.apache.org/maven2/io/micrometer/micrometer-bom/1.11.2/micrometer-bom-1.11.2.pom
+2025-01-23 15:22:11,397 [Worker-669: Building] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading https://repo.maven.apache.org/maven2/io/micrometer/micrometer-tracing-bom/1.1.3/micrometer-tracing-bom-1.1.3.pom
+2025-01-23 15:22:11,424 [Worker-669: Building] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded https://repo.maven.apache.org/maven2/io/micrometer/micrometer-tracing-bom/1.1.3/micrometer-tracing-bom-1.1.3.pom
+2025-01-23 15:22:11,464 [Worker-669: Building] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading https://repo.maven.apache.org/maven2/org/mockito/mockito-bom/5.3.1/mockito-bom-5.3.1.pom
+2025-01-23 15:22:11,493 [Worker-669: Building] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded https://repo.maven.apache.org/maven2/org/mockito/mockito-bom/5.3.1/mockito-bom-5.3.1.pom
+2025-01-23 15:22:11,526 [Worker-669: Building] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading https://repo.maven.apache.org/maven2/io/netty/netty-bom/4.1.94.Final/netty-bom-4.1.94.Final.pom
+2025-01-23 15:22:11,555 [Worker-669: Building] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded https://repo.maven.apache.org/maven2/io/netty/netty-bom/4.1.94.Final/netty-bom-4.1.94.Final.pom
+2025-01-23 15:22:11,591 [Worker-669: Building] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading https://repo.maven.apache.org/maven2/com/squareup/okhttp3/okhttp-bom/4.10.0/okhttp-bom-4.10.0.pom
+2025-01-23 15:22:11,623 [Worker-669: Building] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded https://repo.maven.apache.org/maven2/com/squareup/okhttp3/okhttp-bom/4.10.0/okhttp-bom-4.10.0.pom
+2025-01-23 15:22:11,651 [Worker-669: Building] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading https://repo.maven.apache.org/maven2/io/opentelemetry/opentelemetry-bom/1.25.0/opentelemetry-bom-1.25.0.pom
+2025-01-23 15:22:11,678 [Worker-669: Building] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded https://repo.maven.apache.org/maven2/io/opentelemetry/opentelemetry-bom/1.25.0/opentelemetry-bom-1.25.0.pom
+2025-01-23 15:22:11,708 [Worker-669: Building] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading https://repo.maven.apache.org/maven2/com/oracle/database/jdbc/ojdbc-bom/21.9.0.0/ojdbc-bom-21.9.0.0.pom
+2025-01-23 15:22:11,739 [Worker-669: Building] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded https://repo.maven.apache.org/maven2/com/oracle/database/jdbc/ojdbc-bom/21.9.0.0/ojdbc-bom-21.9.0.0.pom
+2025-01-23 15:22:11,811 [Worker-669: Building] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading https://repo.maven.apache.org/maven2/com/querydsl/querydsl-bom/5.0.0/querydsl-bom-5.0.0.pom
+2025-01-23 15:22:11,839 [Worker-669: Building] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded https://repo.maven.apache.org/maven2/com/querydsl/querydsl-bom/5.0.0/querydsl-bom-5.0.0.pom
+2025-01-23 15:22:11,867 [Worker-669: Building] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading https://repo.maven.apache.org/maven2/io/projectreactor/reactor-bom/2022.0.9/reactor-bom-2022.0.9.pom
+2025-01-23 15:22:11,895 [Worker-669: Building] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded https://repo.maven.apache.org/maven2/io/projectreactor/reactor-bom/2022.0.9/reactor-bom-2022.0.9.pom
+2025-01-23 15:22:11,923 [Worker-669: Building] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading https://repo.maven.apache.org/maven2/io/rest-assured/rest-assured-bom/5.3.1/rest-assured-bom-5.3.1.pom
+2025-01-23 15:22:11,950 [Worker-669: Building] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded https://repo.maven.apache.org/maven2/io/rest-assured/rest-assured-bom/5.3.1/rest-assured-bom-5.3.1.pom
+2025-01-23 15:22:11,981 [Worker-669: Building] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading https://repo.maven.apache.org/maven2/org/seleniumhq/selenium/selenium-bom/4.8.3/selenium-bom-4.8.3.pom
+2025-01-23 15:22:12,006 [Worker-669: Building] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded https://repo.maven.apache.org/maven2/org/seleniumhq/selenium/selenium-bom/4.8.3/selenium-bom-4.8.3.pom
+2025-01-23 15:22:12,037 [Worker-669: Building] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading https://repo.maven.apache.org/maven2/org/springframework/amqp/spring-amqp-bom/3.0.6/spring-amqp-bom-3.0.6.pom
+2025-01-23 15:22:12,064 [Worker-669: Building] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded https://repo.maven.apache.org/maven2/org/springframework/amqp/spring-amqp-bom/3.0.6/spring-amqp-bom-3.0.6.pom
+2025-01-23 15:22:12,101 [Worker-669: Building] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading https://repo.maven.apache.org/maven2/org/springframework/batch/spring-batch-bom/5.0.2/spring-batch-bom-5.0.2.pom
+2025-01-23 15:22:12,128 [Worker-669: Building] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded https://repo.maven.apache.org/maven2/org/springframework/batch/spring-batch-bom/5.0.2/spring-batch-bom-5.0.2.pom
+2025-01-23 15:22:12,157 [Worker-669: Building] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading https://repo.maven.apache.org/maven2/org/springframework/data/spring-data-bom/2023.0.2/spring-data-bom-2023.0.2.pom
+2025-01-23 15:22:12,183 [Worker-669: Building] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded https://repo.maven.apache.org/maven2/org/springframework/data/spring-data-bom/2023.0.2/spring-data-bom-2023.0.2.pom
+2025-01-23 15:22:12,221 [Worker-669: Building] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading https://repo.maven.apache.org/maven2/org/springframework/spring-framework-bom/6.0.11/spring-framework-bom-6.0.11.pom
+2025-01-23 15:22:12,247 [Worker-669: Building] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded https://repo.maven.apache.org/maven2/org/springframework/spring-framework-bom/6.0.11/spring-framework-bom-6.0.11.pom
+2025-01-23 15:22:12,276 [Worker-669: Building] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading https://repo.maven.apache.org/maven2/org/springframework/integration/spring-integration-bom/6.1.2/spring-integration-bom-6.1.2.pom
+2025-01-23 15:22:12,303 [Worker-669: Building] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded https://repo.maven.apache.org/maven2/org/springframework/integration/spring-integration-bom/6.1.2/spring-integration-bom-6.1.2.pom
+2025-01-23 15:22:12,359 [Worker-669: Building] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading https://repo.maven.apache.org/maven2/org/springframework/restdocs/spring-restdocs-bom/3.0.0/spring-restdocs-bom-3.0.0.pom
+2025-01-23 15:22:12,385 [Worker-669: Building] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded https://repo.maven.apache.org/maven2/org/springframework/restdocs/spring-restdocs-bom/3.0.0/spring-restdocs-bom-3.0.0.pom
+2025-01-23 15:22:12,423 [Worker-669: Building] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading https://repo.maven.apache.org/maven2/org/springframework/security/spring-security-bom/6.1.2/spring-security-bom-6.1.2.pom
+2025-01-23 15:22:12,453 [Worker-669: Building] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded https://repo.maven.apache.org/maven2/org/springframework/security/spring-security-bom/6.1.2/spring-security-bom-6.1.2.pom
+2025-01-23 15:22:12,485 [Worker-669: Building] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading https://repo.maven.apache.org/maven2/org/springframework/session/spring-session-bom/3.1.1/spring-session-bom-3.1.1.pom
+2025-01-23 15:22:12,529 [Worker-669: Building] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded https://repo.maven.apache.org/maven2/org/springframework/session/spring-session-bom/3.1.1/spring-session-bom-3.1.1.pom
+2025-01-23 15:22:12,562 [Worker-669: Building] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading https://repo.maven.apache.org/maven2/org/springframework/ws/spring-ws-bom/4.0.5/spring-ws-bom-4.0.5.pom
+2025-01-23 15:22:12,589 [Worker-669: Building] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded https://repo.maven.apache.org/maven2/org/springframework/ws/spring-ws-bom/4.0.5/spring-ws-bom-4.0.5.pom
+2025-01-23 15:22:12,624 [Worker-669: Building] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading https://repo.maven.apache.org/maven2/org/testcontainers/testcontainers-bom/1.18.3/testcontainers-bom-1.18.3.pom
+2025-01-23 15:22:12,649 [Worker-669: Building] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded https://repo.maven.apache.org/maven2/org/testcontainers/testcontainers-bom/1.18.3/testcontainers-bom-1.18.3.pom
+2025-01-23 15:22:12,692 [Worker-669: Building] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading https://repo.maven.apache.org/maven2/org/springdoc/springdoc-openapi-starter-webmvc-api/2.2.0/springdoc-openapi-starter-webmvc-api-2.2.0.pom
+2025-01-23 15:22:12,719 [Worker-669: Building] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded https://repo.maven.apache.org/maven2/org/springdoc/springdoc-openapi-starter-webmvc-api/2.2.0/springdoc-openapi-starter-webmvc-api-2.2.0.pom
+2025-01-23 15:22:12,765 [Worker-669: Building] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading https://repo.maven.apache.org/maven2/org/springdoc/springdoc-openapi-starter-common/2.2.0/springdoc-openapi-starter-common-2.2.0.pom
+2025-01-23 15:22:12,792 [Worker-669: Building] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded https://repo.maven.apache.org/maven2/org/springdoc/springdoc-openapi-starter-common/2.2.0/springdoc-openapi-starter-common-2.2.0.pom
+2025-01-23 15:22:12,845 [Worker-669: Building] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading https://repo.maven.apache.org/maven2/io/swagger/core/v3/swagger-core-jakarta/2.2.15/swagger-core-jakarta-2.2.15.pom
+2025-01-23 15:22:12,869 [Worker-669: Building] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded https://repo.maven.apache.org/maven2/io/swagger/core/v3/swagger-core-jakarta/2.2.15/swagger-core-jakarta-2.2.15.pom
+2025-01-23 15:22:12,898 [Worker-669: Building] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading https://repo.maven.apache.org/maven2/io/swagger/core/v3/swagger-project-jakarta/2.2.15/swagger-project-jakarta-2.2.15.pom
+2025-01-23 15:22:12,934 [Worker-669: Building] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded https://repo.maven.apache.org/maven2/io/swagger/core/v3/swagger-project-jakarta/2.2.15/swagger-project-jakarta-2.2.15.pom
+2025-01-23 15:22:12,974 [Worker-669: Building] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading https://repo.maven.apache.org/maven2/org/apache/commons/commons-lang3/3.9/commons-lang3-3.9.pom
+2025-01-23 15:22:13,006 [Worker-669: Building] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded https://repo.maven.apache.org/maven2/org/apache/commons/commons-lang3/3.9/commons-lang3-3.9.pom
+2025-01-23 15:22:13,044 [Worker-669: Building] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading https://repo.maven.apache.org/maven2/org/apache/commons/commons-parent/48/commons-parent-48.pom
+2025-01-23 15:22:13,100 [Worker-669: Building] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded https://repo.maven.apache.org/maven2/org/apache/commons/commons-parent/48/commons-parent-48.pom
+2025-01-23 15:22:13,150 [Worker-669: Building] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading https://repo.maven.apache.org/maven2/io/swagger/core/v3/swagger-annotations-jakarta/2.2.15/swagger-annotations-jakarta-2.2.15.pom
+2025-01-23 15:22:13,177 [Worker-669: Building] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded https://repo.maven.apache.org/maven2/io/swagger/core/v3/swagger-annotations-jakarta/2.2.15/swagger-annotations-jakarta-2.2.15.pom
+2025-01-23 15:22:13,206 [Worker-669: Building] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading https://repo.maven.apache.org/maven2/io/swagger/core/v3/swagger-models-jakarta/2.2.15/swagger-models-jakarta-2.2.15.pom
+2025-01-23 15:22:13,231 [Worker-669: Building] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded https://repo.maven.apache.org/maven2/io/swagger/core/v3/swagger-models-jakarta/2.2.15/swagger-models-jakarta-2.2.15.pom
+2025-01-23 15:22:13,264 [Worker-669: Building] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading https://repo.maven.apache.org/maven2/com/fasterxml/jackson/dataformat/jackson-dataformat-yaml/2.10.5/jackson-dataformat-yaml-2.10.5.pom
+2025-01-23 15:22:13,291 [Worker-669: Building] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded https://repo.maven.apache.org/maven2/com/fasterxml/jackson/dataformat/jackson-dataformat-yaml/2.10.5/jackson-dataformat-yaml-2.10.5.pom
+2025-01-23 15:22:13,324 [Worker-669: Building] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading https://repo.maven.apache.org/maven2/com/fasterxml/jackson/dataformat/jackson-dataformats-text/2.10.5/jackson-dataformats-text-2.10.5.pom
+2025-01-23 15:22:13,352 [Worker-669: Building] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded https://repo.maven.apache.org/maven2/com/fasterxml/jackson/dataformat/jackson-dataformats-text/2.10.5/jackson-dataformats-text-2.10.5.pom
+2025-01-23 15:22:13,397 [Worker-669: Building] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading https://repo.maven.apache.org/maven2/org/webjars/swagger-ui/5.2.0/swagger-ui-5.2.0.pom
+2025-01-23 15:22:13,424 [Worker-669: Building] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded https://repo.maven.apache.org/maven2/org/webjars/swagger-ui/5.2.0/swagger-ui-5.2.0.pom
+2025-01-23 15:22:14,239 [Worker-669: Building] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading https://repo.maven.apache.org/maven2/org/springdoc/springdoc-openapi-starter-webmvc-ui/2.2.0/springdoc-openapi-starter-webmvc-ui-2.2.0.jar
+2025-01-23 15:22:14,546 [Worker-669: Building] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded https://repo.maven.apache.org/maven2/org/springdoc/springdoc-openapi-starter-webmvc-ui/2.2.0/springdoc-openapi-starter-webmvc-ui-2.2.0.jar
+2025-01-23 15:22:14,579 [BasicRepositoryConnector-repo.maven.apache.org-1-2] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading https://repo.maven.apache.org/maven2/io/swagger/core/v3/swagger-core-jakarta/2.2.15/swagger-core-jakarta-2.2.15.jar
+2025-01-23 15:22:14,682 [BasicRepositoryConnector-repo.maven.apache.org-1-2] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded https://repo.maven.apache.org/maven2/io/swagger/core/v3/swagger-core-jakarta/2.2.15/swagger-core-jakarta-2.2.15.jar
+2025-01-23 15:22:14,693 [BasicRepositoryConnector-repo.maven.apache.org-1-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading https://repo.maven.apache.org/maven2/org/springdoc/springdoc-openapi-starter-common/2.2.0/springdoc-openapi-starter-common-2.2.0.jar
+2025-01-23 15:22:14,693 [BasicRepositoryConnector-repo.maven.apache.org-1-4] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading https://repo.maven.apache.org/maven2/io/swagger/core/v3/swagger-annotations-jakarta/2.2.15/swagger-annotations-jakarta-2.2.15.jar
+2025-01-23 15:22:14,709 [BasicRepositoryConnector-repo.maven.apache.org-1-0] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading https://repo.maven.apache.org/maven2/org/springdoc/springdoc-openapi-starter-webmvc-api/2.2.0/springdoc-openapi-starter-webmvc-api-2.2.0.jar
+2025-01-23 15:22:14,709 [BasicRepositoryConnector-repo.maven.apache.org-1-3] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading https://repo.maven.apache.org/maven2/org/apache/commons/commons-lang3/3.9/commons-lang3-3.9.jar
+2025-01-23 15:22:14,725 [BasicRepositoryConnector-repo.maven.apache.org-1-2] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading https://repo.maven.apache.org/maven2/io/swagger/core/v3/swagger-models-jakarta/2.2.15/swagger-models-jakarta-2.2.15.jar
+2025-01-23 15:22:14,784 [BasicRepositoryConnector-repo.maven.apache.org-1-2] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded https://repo.maven.apache.org/maven2/io/swagger/core/v3/swagger-models-jakarta/2.2.15/swagger-models-jakarta-2.2.15.jar
+2025-01-23 15:22:14,837 [BasicRepositoryConnector-repo.maven.apache.org-1-2] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading https://repo.maven.apache.org/maven2/com/fasterxml/jackson/dataformat/jackson-dataformat-yaml/2.10.5/jackson-dataformat-yaml-2.10.5.jar
+2025-01-23 15:22:14,955 [BasicRepositoryConnector-repo.maven.apache.org-1-3] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded https://repo.maven.apache.org/maven2/org/apache/commons/commons-lang3/3.9/commons-lang3-3.9.jar
+2025-01-23 15:22:14,995 [BasicRepositoryConnector-repo.maven.apache.org-1-3] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading https://repo.maven.apache.org/maven2/org/webjars/swagger-ui/5.2.0/swagger-ui-5.2.0.jar
+2025-01-23 15:22:14,996 [BasicRepositoryConnector-repo.maven.apache.org-1-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded https://repo.maven.apache.org/maven2/org/springdoc/springdoc-openapi-starter-common/2.2.0/springdoc-openapi-starter-common-2.2.0.jar
+2025-01-23 15:22:15,358 [BasicRepositoryConnector-repo.maven.apache.org-1-0] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded https://repo.maven.apache.org/maven2/org/springdoc/springdoc-openapi-starter-webmvc-api/2.2.0/springdoc-openapi-starter-webmvc-api-2.2.0.jar
+2025-01-23 15:22:15,561 [BasicRepositoryConnector-repo.maven.apache.org-1-2] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded https://repo.maven.apache.org/maven2/com/fasterxml/jackson/dataformat/jackson-dataformat-yaml/2.10.5/jackson-dataformat-yaml-2.10.5.jar
+2025-01-23 15:22:15,887 [BasicRepositoryConnector-repo.maven.apache.org-1-3] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded https://repo.maven.apache.org/maven2/org/webjars/swagger-ui/5.2.0/swagger-ui-5.2.0.jar
+2025-01-23 15:22:16,027 [BasicRepositoryConnector-repo.maven.apache.org-1-4] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded https://repo.maven.apache.org/maven2/io/swagger/core/v3/swagger-annotations-jakarta/2.2.15/swagger-annotations-jakarta-2.2.15.jar
+2025-01-23 15:22:17,327 [Worker-670: Download sources and javadoc] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading https://repo.maven.apache.org/maven2/org/springdoc/springdoc-openapi-starter-webmvc-ui/2.2.0/springdoc-openapi-starter-webmvc-ui-2.2.0-sources.jar
+2025-01-23 15:22:17,732 [Worker-670: Download sources and javadoc] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded https://repo.maven.apache.org/maven2/org/springdoc/springdoc-openapi-starter-webmvc-ui/2.2.0/springdoc-openapi-starter-webmvc-ui-2.2.0-sources.jar
+2025-01-23 15:22:17,741 [Worker-670: Download sources and javadoc] INFO  o.e.m.j.internal.DownloadSourcesJob - Downloaded sources for org.springdoc:springdoc-openapi-starter-webmvc-ui:2.2.0
+2025-01-23 15:22:17,850 [Worker-670: Download sources and javadoc] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading https://repo.maven.apache.org/maven2/org/springdoc/springdoc-openapi-starter-webmvc-api/2.2.0/springdoc-openapi-starter-webmvc-api-2.2.0-sources.jar
+2025-01-23 15:22:18,602 [Worker-670: Download sources and javadoc] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded https://repo.maven.apache.org/maven2/org/springdoc/springdoc-openapi-starter-webmvc-api/2.2.0/springdoc-openapi-starter-webmvc-api-2.2.0-sources.jar
+2025-01-23 15:22:18,609 [Worker-670: Download sources and javadoc] INFO  o.e.m.j.internal.DownloadSourcesJob - Downloaded sources for org.springdoc:springdoc-openapi-starter-webmvc-api:2.2.0
+2025-01-23 15:22:18,697 [Worker-670: Download sources and javadoc] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading https://repo.maven.apache.org/maven2/org/springdoc/springdoc-openapi-starter-common/2.2.0/springdoc-openapi-starter-common-2.2.0-sources.jar
+2025-01-23 15:22:18,866 [Worker-670: Download sources and javadoc] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded https://repo.maven.apache.org/maven2/org/springdoc/springdoc-openapi-starter-common/2.2.0/springdoc-openapi-starter-common-2.2.0-sources.jar
+2025-01-23 15:22:18,875 [Worker-670: Download sources and javadoc] INFO  o.e.m.j.internal.DownloadSourcesJob - Downloaded sources for org.springdoc:springdoc-openapi-starter-common:2.2.0
+2025-01-23 15:22:18,965 [Worker-670: Download sources and javadoc] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading https://repo.maven.apache.org/maven2/io/swagger/core/v3/swagger-core-jakarta/2.2.15/swagger-core-jakarta-2.2.15-sources.jar
+2025-01-23 15:22:19,053 [Worker-670: Download sources and javadoc] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded https://repo.maven.apache.org/maven2/io/swagger/core/v3/swagger-core-jakarta/2.2.15/swagger-core-jakarta-2.2.15-sources.jar
+2025-01-23 15:22:19,061 [Worker-670: Download sources and javadoc] INFO  o.e.m.j.internal.DownloadSourcesJob - Downloaded sources for io.swagger.core.v3:swagger-core-jakarta:2.2.15
+2025-01-23 15:22:19,154 [Worker-670: Download sources and javadoc] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading https://repo.maven.apache.org/maven2/org/apache/commons/commons-lang3/3.9/commons-lang3-3.9-sources.jar
+2025-01-23 15:22:19,396 [Worker-670: Download sources and javadoc] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded https://repo.maven.apache.org/maven2/org/apache/commons/commons-lang3/3.9/commons-lang3-3.9-sources.jar
+2025-01-23 15:22:19,405 [Worker-670: Download sources and javadoc] INFO  o.e.m.j.internal.DownloadSourcesJob - Downloaded sources for org.apache.commons:commons-lang3:3.9
+2025-01-23 15:22:19,541 [Worker-670: Download sources and javadoc] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading https://repo.maven.apache.org/maven2/io/swagger/core/v3/swagger-annotations-jakarta/2.2.15/swagger-annotations-jakarta-2.2.15-sources.jar
+2025-01-23 15:22:19,549 [Worker-669: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2025-01-23 15:22:19,553 [Worker-669: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2025-01-23 15:22:19,555 [Worker-669: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2025-01-23 15:22:19,565 [Worker-669: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2025-01-23 15:22:19,565 [Worker-669: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\gradi\eclipse-workspace\ApiProdutos\src\test\resources
+2025-01-23 15:22:19,700 [Worker-670: Download sources and javadoc] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded https://repo.maven.apache.org/maven2/io/swagger/core/v3/swagger-annotations-jakarta/2.2.15/swagger-annotations-jakarta-2.2.15-sources.jar
+2025-01-23 15:22:19,710 [Worker-670: Download sources and javadoc] INFO  o.e.m.j.internal.DownloadSourcesJob - Downloaded sources for io.swagger.core.v3:swagger-annotations-jakarta:2.2.15
+2025-01-23 15:22:19,815 [Worker-670: Download sources and javadoc] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading https://repo.maven.apache.org/maven2/io/swagger/core/v3/swagger-models-jakarta/2.2.15/swagger-models-jakarta-2.2.15-sources.jar
+2025-01-23 15:22:19,952 [Worker-670: Download sources and javadoc] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded https://repo.maven.apache.org/maven2/io/swagger/core/v3/swagger-models-jakarta/2.2.15/swagger-models-jakarta-2.2.15-sources.jar
+2025-01-23 15:22:19,962 [Worker-670: Download sources and javadoc] INFO  o.e.m.j.internal.DownloadSourcesJob - Downloaded sources for io.swagger.core.v3:swagger-models-jakarta:2.2.15
+2025-01-23 15:22:20,084 [Worker-670: Download sources and javadoc] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading https://repo.maven.apache.org/maven2/com/fasterxml/jackson/dataformat/jackson-dataformat-yaml/2.10.5/jackson-dataformat-yaml-2.10.5-sources.jar
+2025-01-23 15:22:20,812 [Worker-670: Download sources and javadoc] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded https://repo.maven.apache.org/maven2/com/fasterxml/jackson/dataformat/jackson-dataformat-yaml/2.10.5/jackson-dataformat-yaml-2.10.5-sources.jar
+2025-01-23 15:22:20,825 [Worker-670: Download sources and javadoc] INFO  o.e.m.j.internal.DownloadSourcesJob - Downloaded sources for com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.10.5
+2025-01-23 15:22:21,100 [Worker-670: Download sources and javadoc] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded https://repo.maven.apache.org/maven2/org/webjars/swagger-ui/5.2.0/swagger-ui-5.2.0-sources.jar
+2025-01-23 15:22:21,136 [Worker-674: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2025-01-23 15:22:21,137 [Worker-674: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 1 resource
+2025-01-23 15:22:21,183 [Worker-674: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2025-01-23 15:22:21,189 [Worker-674: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2025-01-23 15:22:21,189 [Worker-674: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\gradi\eclipse-workspace\ApiProdutos\src\test\resources
+2025-01-23 15:22:21,138 [Worker-670: Download sources and javadoc] ERROR o.e.m.j.internal.DownloadSourcesJob - Could not download sources for org.webjars:swagger-ui:5.2.0
+org.eclipse.core.runtime.CoreException: Could not resolve artifact org.webjars:swagger-ui:jar:sources:5.2.0
+	at org.eclipse.m2e.core.internal.embedder.MavenImpl.lambda$7(MavenImpl.java:540)
+	at org.eclipse.m2e.core.internal.embedder.MavenExecutionContext.executeBare(MavenExecutionContext.java:458)
+	at org.eclipse.m2e.core.internal.embedder.MavenExecutionContext.execute(MavenExecutionContext.java:292)
+	at org.eclipse.m2e.core.internal.embedder.MavenExecutionContext.execute(MavenExecutionContext.java:278)
+	at org.eclipse.m2e.core.internal.embedder.MavenImpl.resolve(MavenImpl.java:509)
+	at org.eclipse.m2e.core.internal.embedder.MavenImpl.resolve(MavenImpl.java:494)
+	at org.eclipse.m2e.jdt.internal.DownloadSourcesJob.download(DownloadSourcesJob.java:308)
+	at org.eclipse.m2e.jdt.internal.DownloadSourcesJob.downloadAttachments(DownloadSourcesJob.java:282)
+	at org.eclipse.m2e.jdt.internal.DownloadSourcesJob.downloadMaven(DownloadSourcesJob.java:252)
+	at org.eclipse.m2e.jdt.internal.DownloadSourcesJob.downloadFilesAndPopulateToUpdate(DownloadSourcesJob.java:220)
+	at org.eclipse.m2e.jdt.internal.DownloadSourcesJob.lambda$0(DownloadSourcesJob.java:149)
+	at org.eclipse.m2e.core.internal.embedder.MavenExecutionContext.executeBare(MavenExecutionContext.java:458)
+	at org.eclipse.m2e.core.internal.embedder.MavenExecutionContext.execute(MavenExecutionContext.java:339)
+	at org.eclipse.m2e.core.internal.embedder.MavenExecutionContext.execute(MavenExecutionContext.java:278)
+	at org.eclipse.m2e.core.embedder.IMaven.execute(IMaven.java:300)
+	at org.eclipse.m2e.jdt.internal.DownloadSourcesJob.run(DownloadSourcesJob.java:149)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:63)
+2025-01-23 15:24:12,034 [Worker-673: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2025-01-23 15:24:12,035 [Worker-673: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 1 resource
+2025-01-23 15:24:12,038 [Worker-673: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2025-01-23 15:24:12,041 [Worker-673: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2025-01-23 15:24:12,041 [Worker-673: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\gradi\eclipse-workspace\ApiProdutos\src\test\resources
+2025-01-23 15:25:51,903 [Worker-673: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2025-01-23 15:25:51,903 [Worker-673: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 1 resource
+2025-01-23 15:25:51,905 [Worker-673: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2025-01-23 15:25:51,908 [Worker-673: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2025-01-23 15:25:51,908 [Worker-673: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\gradi\eclipse-workspace\ApiProdutos\src\test\resources
+2025-01-23 15:25:53,610 [Worker-667: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2025-01-23 15:25:53,611 [Worker-667: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 1 resource
+2025-01-23 15:25:53,613 [Worker-667: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2025-01-23 15:25:53,616 [Worker-667: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2025-01-23 15:25:53,616 [Worker-667: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\gradi\eclipse-workspace\ApiProdutos\src\test\resources
+2025-01-23 15:26:02,117 [Worker-674: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2025-01-23 15:26:02,117 [Worker-674: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 1 resource
+2025-01-23 15:26:02,119 [Worker-674: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2025-01-23 15:26:02,122 [Worker-674: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2025-01-23 15:26:02,122 [Worker-674: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\gradi\eclipse-workspace\ApiProdutos\src\test\resources
+2025-01-23 15:26:05,289 [Worker-664: Download sources and javadoc] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading https://repo.maven.apache.org/maven2/org/webjars/swagger-ui/5.2.0/swagger-ui-5.2.0-javadoc.jar
+2025-01-23 15:26:06,203 [Worker-664: Download sources and javadoc] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded https://repo.maven.apache.org/maven2/org/webjars/swagger-ui/5.2.0/swagger-ui-5.2.0-javadoc.jar
+2025-01-23 15:26:06,208 [Worker-664: Download sources and javadoc] INFO  o.e.m.j.internal.DownloadSourcesJob - Downloaded javadoc for org.webjars:swagger-ui:5.2.0
+2025-01-23 15:27:02,365 [Worker-673: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2025-01-23 15:27:02,366 [Worker-673: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 1 resource
+2025-01-23 15:27:02,369 [Worker-673: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2025-01-23 15:27:02,373 [Worker-673: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2025-01-23 15:27:02,373 [Worker-673: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\gradi\eclipse-workspace\ApiProdutos\src\test\resources
+2025-01-23 15:27:33,890 [Worker-674: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2025-01-23 15:27:33,890 [Worker-674: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 1 resource
+2025-01-23 15:27:33,892 [Worker-674: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2025-01-23 15:27:33,894 [Worker-674: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2025-01-23 15:27:33,895 [Worker-674: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\gradi\eclipse-workspace\ApiProdutos\src\test\resources
+2025-01-23 15:30:54,367 [Worker-676: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2025-01-23 15:30:54,368 [Worker-676: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 1 resource
+2025-01-23 15:30:54,371 [Worker-676: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2025-01-23 15:30:54,374 [Worker-676: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2025-01-23 15:30:54,374 [Worker-676: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\gradi\eclipse-workspace\ApiProdutos\src\test\resources
+2025-01-23 15:32:42,095 [Worker-677: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2025-01-23 15:32:42,096 [Worker-677: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 1 resource
+2025-01-23 15:32:42,098 [Worker-677: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2025-01-23 15:32:42,101 [Worker-677: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2025-01-23 15:32:42,101 [Worker-677: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\gradi\eclipse-workspace\ApiProdutos\src\test\resources
+2025-01-23 15:33:46,863 [Worker-679: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2025-01-23 15:33:46,864 [Worker-679: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 1 resource
+2025-01-23 15:33:46,865 [Worker-679: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2025-01-23 15:33:46,867 [Worker-679: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2025-01-23 15:33:46,867 [Worker-679: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\gradi\eclipse-workspace\ApiProdutos\src\test\resources
+2025-01-23 15:35:05,295 [Worker-671: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2025-01-23 15:35:05,296 [Worker-671: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 1 resource
+2025-01-23 15:35:05,297 [Worker-671: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2025-01-23 15:35:05,301 [Worker-671: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2025-01-23 15:35:05,301 [Worker-671: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\gradi\eclipse-workspace\ApiProdutos\src\test\resources
+2025-01-23 15:35:12,018 [Worker-671: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2025-01-23 15:35:12,019 [Worker-671: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 1 resource
+2025-01-23 15:35:12,020 [Worker-671: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2025-01-23 15:35:12,022 [Worker-671: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2025-01-23 15:35:12,022 [Worker-671: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\gradi\eclipse-workspace\ApiProdutos\src\test\resources
+2025-01-23 15:35:16,504 [Worker-676: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2025-01-23 15:35:16,504 [Worker-676: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 1 resource
+2025-01-23 15:35:16,506 [Worker-676: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2025-01-23 15:35:16,510 [Worker-676: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2025-01-23 15:35:16,510 [Worker-676: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\gradi\eclipse-workspace\ApiProdutos\src\test\resources
+2025-01-23 15:36:41,113 [Worker-677: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2025-01-23 15:36:41,113 [Worker-677: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 1 resource
+2025-01-23 15:36:41,115 [Worker-677: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2025-01-23 15:36:41,117 [Worker-677: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2025-01-23 15:36:41,118 [Worker-677: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\gradi\eclipse-workspace\ApiProdutos\src\test\resources
+2025-01-23 15:37:29,987 [Worker-680: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2025-01-23 15:37:29,987 [Worker-680: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 1 resource
+2025-01-23 15:37:29,989 [Worker-680: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2025-01-23 15:37:29,991 [Worker-680: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2025-01-23 15:37:29,991 [Worker-680: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\gradi\eclipse-workspace\ApiProdutos\src\test\resources
+2025-01-23 15:41:13,255 [Worker-684: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2025-01-23 15:41:13,255 [Worker-684: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 1 resource
+2025-01-23 15:41:13,257 [Worker-684: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2025-01-23 15:41:13,260 [Worker-684: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2025-01-23 15:41:13,260 [Worker-684: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\gradi\eclipse-workspace\ApiProdutos\src\test\resources
+2025-01-23 15:41:20,891 [Worker-677: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2025-01-23 15:41:20,892 [Worker-677: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 1 resource
+2025-01-23 15:41:20,893 [Worker-677: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2025-01-23 15:41:20,896 [Worker-677: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2025-01-23 15:41:20,896 [Worker-677: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\gradi\eclipse-workspace\ApiProdutos\src\test\resources
+2025-01-23 15:42:18,425 [Worker-685: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2025-01-23 15:42:18,425 [Worker-685: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 1 resource
+2025-01-23 15:42:18,426 [Worker-685: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2025-01-23 15:42:18,429 [Worker-685: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2025-01-23 15:42:18,429 [Worker-685: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\gradi\eclipse-workspace\ApiProdutos\src\test\resources
+2025-01-23 15:42:28,454 [Worker-677: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2025-01-23 15:42:28,454 [Worker-677: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 1 resource
+2025-01-23 15:42:28,455 [Worker-677: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2025-01-23 15:42:28,457 [Worker-677: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2025-01-23 15:42:28,457 [Worker-677: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\gradi\eclipse-workspace\ApiProdutos\src\test\resources
+2025-01-23 15:45:17,588 [Worker-688: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2025-01-23 15:45:17,589 [Worker-688: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 1 resource
+2025-01-23 15:45:17,590 [Worker-688: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2025-01-23 15:45:17,592 [Worker-688: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2025-01-23 15:45:17,592 [Worker-688: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\gradi\eclipse-workspace\ApiProdutos\src\test\resources
