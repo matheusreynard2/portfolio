@@ -75,6 +75,13 @@
 	    <scope>test</scope>
 	</dependency>
 	
+	<!-- Dependência do Springfox Swagger -->
+    <dependency>
+        <groupId>io.springfox</groupId>
+        <artifactId>springfox-boot-starter</artifactId>
+        <version>3.0.0</version>
+    </dependency>
+	
 	<dependency>
     <groupId>commons-io</groupId>
     <artifactId>commons-io</artifactId>

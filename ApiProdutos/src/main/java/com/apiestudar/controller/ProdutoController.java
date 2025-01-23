@@ -4,17 +4,20 @@ import com.apiestudar.model.Produto;
 import com.apiestudar.service.ProdutoService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import org.apache.commons.io.FileUtils;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
 
+@Api(tags = "Prodify - Sistema de gerenciamento de produtos")
 @RestController
 @RequestMapping("api/produtos")
 @CrossOrigin(origins = "http://localhost:4200")
@@ -23,12 +26,16 @@ public class ProdutoController {
 	@Autowired
 	private ProdutoService produtoService;
 
+	@ApiOperation(value = "Listagem de todos os produtos cadastrados.", notes = "Faz uma busca no banco de dados retornando uma lista com todos os produtos cadastrados.")
+	@ApiResponse(code = 200, message = "Produtos encontrados.", response = Produto.class)
 	@GetMapping("/listarProdutos")
 	public List<Produto> listarProdutos() {
 		List<Produto> produtos = produtoService.listarProdutos();
 		return produtos;
 	}
 
+	@ApiOperation(value = "Adiciona/cadastra um novo produto.", notes = "Cria um novo registro de produto no banco de dados.")
+	@ApiResponse(code = 200, message = "Produto cadastrado.", response = Produto.class)
 	@PostMapping("/adicionarProduto")
 	public Produto adicionarProduto(@RequestParam String produtoJSON, @RequestParam MultipartFile imagemFile) throws IOException {
 		
@@ -45,6 +52,8 @@ public class ProdutoController {
 		return produtoAdicionado;
 	}
 
+	@ApiOperation(value = "Atualiza as informações de um produto.", notes = "Atualiza as informações registradas no banco de dados de um produto de acordo com o número de id passado como parâmetro.")
+	@ApiResponse(code = 200, message = "Produto atualizado.", response = Produto.class)
 	@PutMapping("/atualizarProduto/{id}")
 	public Produto atualizarProduto(@PathVariable long id, @RequestParam String produtoJSON, @RequestParam MultipartFile imagemFile) throws IOException {
 		
@@ -61,24 +70,32 @@ public class ProdutoController {
 		return produtoAtualizado;
 	}
 
+	@ApiOperation(value = "Deleta/exclui um produto.", notes = "Faz a exclusão de um produto do banco de dados de acordo com o número de id passado como parâmetro.")
+	@ApiResponse(code = 200, message = "Produtos excluído.")
 	@DeleteMapping("/deletarProduto/{id}")
 	public boolean deletarProduto(@PathVariable int id) {
 		boolean estaDeletado = produtoService.deletarProduto(id);
 		return estaDeletado;
 	}
 
+	@ApiOperation(value = "Exibe o produto mais caro.", notes = "Exibe o valor unitário do produto mais caro entre todos os produtos registrados no banco de dados.")
+	@ApiResponse(code = 200, message = "Cálculo de preço mais caro efetuado.")
 	@GetMapping("/produtoMaisCaro")
 	public List<Produto> listarProdutoMaisCaro() {
 		List<Produto> produtoMaisCaro = produtoService.listarProdutoMaisCaro();
 		return produtoMaisCaro;
 	}
 
+	@ApiOperation(value = "Exibe a média de preço dos produtos.", notes = "Exibe a média de preço entre os valores unitários dos produtos registrados no banco de dados.")
+	@ApiResponse(code = 200, message = "Cálculo de média de preços efetuado.")
 	@GetMapping("/mediaPreco")
 	public Double obterMediaPreco() {
 		Double media = produtoService.obterMediaPreco();
 		return media;
 	}
 
+	@ApiOperation(value = "Cálculo de valor de desconto.", notes = "Calcula o valor que será reduzido do preço do produto de acordo com a porcentagem de desconto passada pelo usuário.")
+	@ApiResponse(code = 200, message = "Cálculo de desconto efetuado.")
 	@GetMapping("/calcularDesconto/{valorProduto}/{valorDesconto}")
 	public Double calcularValorDesconto(@PathVariable double valorProduto, @PathVariable double valorDesconto) {
 		Double valorComDesconto = produtoService.calcularValorDesconto(valorProduto, valorDesconto);
@@ -87,6 +104,8 @@ public class ProdutoController {
 
 	// Método responsável por retornar o resultado da barra de pesquisa do
 	// front-end. Filtra por id ou por nome dependendo do que o usuário escoheu
+	@ApiOperation(value = "Pesquisar registros por 'id' ou por 'nome'.", notes = "Faz uma busca de registros no banco de dados utilizando como filtro o id do produto ou o nome do produto.")
+	@ApiResponse(code = 200, message = "Produtos encontrados.", response = Produto.class)
 	@GetMapping("/efetuarPesquisa/{tipoPesquisa}/{valorPesquisa}")
 	public List<Produto> efetuarPesquisa(@PathVariable String tipoPesquisa, @PathVariable String valorPesquisa) {
 		
