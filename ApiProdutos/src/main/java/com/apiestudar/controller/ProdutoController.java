@@ -27,7 +27,7 @@ public class ProdutoController {
 	private ProdutoService produtoService;
 
 	@ApiOperation(value = "Listagem de todos os produtos cadastrados.", notes = "Faz uma busca no banco de dados retornando uma lista com todos os produtos cadastrados.")
-	@ApiResponse(code = 200, message = "Produtos encontrados.", response = Produto.class)
+	@ApiResponse(code = 200, message = "Produtos encontrados.")
 	@GetMapping("/listarProdutos")
 	public List<Produto> listarProdutos() {
 		List<Produto> produtos = produtoService.listarProdutos();
@@ -35,7 +35,7 @@ public class ProdutoController {
 	}
 
 	@ApiOperation(value = "Adiciona/cadastra um novo produto.", notes = "Cria um novo registro de produto no banco de dados.")
-	@ApiResponse(code = 200, message = "Produto cadastrado.", response = Produto.class)
+	@ApiResponse(code = 200, message = "Produto cadastrado.")
 	@PostMapping("/adicionarProduto")
 	public Produto adicionarProduto(@RequestParam String produtoJSON, @RequestParam MultipartFile imagemFile) throws IOException {
 		
@@ -53,7 +53,7 @@ public class ProdutoController {
 	}
 
 	@ApiOperation(value = "Atualiza as informações de um produto.", notes = "Atualiza as informações registradas no banco de dados de um produto de acordo com o número de id passado como parâmetro.")
-	@ApiResponse(code = 200, message = "Produto atualizado.", response = Produto.class)
+	@ApiResponse(code = 200, message = "Produto atualizado.")
 	@PutMapping("/atualizarProduto/{id}")
 	public Produto atualizarProduto(@PathVariable long id, @RequestParam String produtoJSON, @RequestParam MultipartFile imagemFile) throws IOException {
 		
@@ -105,7 +105,7 @@ public class ProdutoController {
 	// Método responsável por retornar o resultado da barra de pesquisa do
 	// front-end. Filtra por id ou por nome dependendo do que o usuário escoheu
 	@ApiOperation(value = "Pesquisar registros por 'id' ou por 'nome'.", notes = "Faz uma busca de registros no banco de dados utilizando como filtro o id do produto ou o nome do produto.")
-	@ApiResponse(code = 200, message = "Produtos encontrados.", response = Produto.class)
+	@ApiResponse(code = 200, message = "Produtos encontrados.")
 	@GetMapping("/efetuarPesquisa/{tipoPesquisa}/{valorPesquisa}")
 	public List<Produto> efetuarPesquisa(@PathVariable String tipoPesquisa, @PathVariable String valorPesquisa) {
 		
