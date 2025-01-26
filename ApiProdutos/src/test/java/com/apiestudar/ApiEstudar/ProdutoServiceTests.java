@@ -1,7 +1,7 @@
 package com.apiestudar.ApiEstudar;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.mockito.Mockito.when;
 
 import java.util.Optional;
@@ -15,7 +15,6 @@ import com.apiestudar.repository.ProdutoRepository;
 import com.apiestudar.service.ProdutoServiceImpl;
 
 import org.springframework.boot.test.context.SpringBootTest;
-import junit.framework.TestCase;
 
 @SpringBootTest
 public class ProdutoServiceTests {

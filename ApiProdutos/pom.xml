@@ -5,13 +5,12 @@
   <parent>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-parent</artifactId>
-    <version>2.2.9.RELEASE</version>
+    <version>2.5.0</version>
     <relativePath/> <!-- lookup parent from repository -->
   </parent>
   <groupId>com.apiestudar</groupId>
-  <artifactId>apiestudar</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
-  <description>apiestudar</description>
+  <artifactId>api_prodify</artifactId>
+  <description>api_prodify</description>
   <url/>
   <licenses>
     <license/>
@@ -26,7 +25,10 @@
     <url/>
   </scm>
   <properties>
-    <java.version>1.8</java.version>
+    <maven.compiler.source>17</maven.compiler.source>
+    <maven.compiler.target>17</maven.compiler.target>
+    <java.version>17</java.version>
+
   </properties>
   
   <!-- INICIO DEPENDENCIAS -->
@@ -47,15 +49,12 @@
       <scope>runtime</scope>
     </dependency>
     <dependency>
-      <groupId>org.projectlombok</groupId>
-      <artifactId>lombok</artifactId>
-      <optional>true</optional>
+        <groupId>org.projectlombok</groupId>
+        <artifactId>lombok</artifactId>
+        <version>1.18.26</version><!--$NO-MVN-MAN-VER$-->
+        <scope>provided</scope>
     </dependency>
-    <dependency>
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter-test</artifactId>
-      <scope>test</scope>
-    </dependency>
+
     
     <dependency>
 	  <groupId>org.springdoc</groupId>
@@ -63,22 +62,32 @@
 	  <version>2.2.0</version>
 	</dependency>
     
-     <!-- Dependência do JUnit 5 -->
+     <!-- Dependência do JUnit 5 e do Spring Boot Test -->
+     
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-test</artifactId>
+    </dependency>
+    
     <dependency>
         <groupId>org.junit.jupiter</groupId>
         <artifactId>junit-jupiter-api</artifactId>
-        <scope>test</scope>
+        <version>5.7.0</version><!--$NO-MVN-MAN-VER$--> <!-- Ou a versão mais recente -->
+    </dependency>
+
+    <dependency>
+        <groupId>org.junit.jupiter</groupId>
+        <artifactId>junit-jupiter-engine</artifactId>
+        <version>5.7.0</version><!--$NO-MVN-MAN-VER$--> <!-- Ou a versão mais recente -->
     </dependency>
 
 	<dependency>
 	    <groupId>org.mockito</groupId>
 	    <artifactId>mockito-core</artifactId>
-	    <scope>test</scope>
 	</dependency>
 	<dependency>
 	    <groupId>org.mockito</groupId>
 	    <artifactId>mockito-junit-jupiter</artifactId>
-	    <scope>test</scope>
 	</dependency>
 	
 	<!-- Dependência do Springfox Swagger -->
@@ -98,33 +107,49 @@
   
   <!-- FIM DEPENDENCIAS -->
 
-  <build>
+ <build>
     <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <configuration>
-          <annotationProcessorPaths>
-            <path>
-              <groupId>org.projectlombok</groupId>
-              <artifactId>lombok</artifactId>
-            </path>
-          </annotationProcessorPaths>
-        </configuration>
-      </plugin>
-      <plugin>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-maven-plugin</artifactId>
-        <configuration>
-          <excludes>
-            <exclude>
-              <groupId>org.projectlombok</groupId>
-              <artifactId>lombok</artifactId>
-            </exclude>
-          </excludes>
-        </configuration>
-      </plugin>
+        <!-- Maven Compiler Plugin -->
+        <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-compiler-plugin</artifactId>
+            <executions>
+                <execution>
+                    <goals>
+                        <goal>compile</goal> <!-- Corrigido para o goal compile -->
+                    </goals>
+                    <configuration>
+                    	<finalName>api_prodify</finalName>
+                        <source>17</source>
+                        <target>17</target>
+                        <annotationProcessorPaths>
+                            <annotationProcessorPath>
+                                <groupId>org.projectlombok</groupId>
+                                <artifactId>lombok</artifactId>
+                                <version>1.18.26</version>
+                            </annotationProcessorPath>
+                        </annotationProcessorPaths>
+                    </configuration>
+                </execution>
+            </executions>
+        </plugin>
+
+        <!-- Spring Boot Maven Plugin -->
+        <plugin>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-maven-plugin</artifactId>
+            <version>2.5.0</version><!--$NO-MVN-MAN-VER$--> <!-- Adicionar versão diretamente ou usar a versão configurada em <properties> -->
+            <configuration>
+                <mainClass>com.apiestudar.ApiEstudarApplication</mainClass>
+                <excludes>
+                    <exclude>
+                        <groupId>org.projectlombok</groupId>
+                        <artifactId>lombok</artifactId>
+                    </exclude>
+                </excludes>
+            </configuration>
+        </plugin>
     </plugins>
-  </build>
+</build>
 
 </project>
