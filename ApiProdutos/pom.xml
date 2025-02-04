@@ -55,6 +55,16 @@
         <scope>provided</scope>
     </dependency>
 
+    <dependency>
+  		<groupId>org.springframework.boot</groupId>
+  		<artifactId>spring-boot-starter-security</artifactId>
+	</dependency>
+	
+	<dependency>
+	  	<groupId>com.auth0</groupId>
+	  	<artifactId>java-jwt</artifactId>
+	  	<version>4.4.0</version>
+	</dependency>
     
     <dependency>
 	  <groupId>org.springdoc</groupId>
@@ -119,7 +129,6 @@
                         <goal>compile</goal> <!-- Corrigido para o goal compile -->
                     </goals>
                     <configuration>
-                    	<finalName>api_prodify</finalName>
                         <source>17</source>
                         <target>17</target>
                         <annotationProcessorPaths>

@@ -1,4 +1,4 @@
-package com.apiestudar.service;
+package com.apiestudar.service.usuario;
 
 import java.util.List;
 
@@ -36,4 +36,13 @@ public class UsuarioServiceImpl implements UsuarioService {
 			throw new RetornouFalseException("Registro não encontrado no banco de dados. Retorno = FALSE.");
 	}
 
+	
+	public String getSenhaByLogin(String loginUsuario) {
+		return usuarioRepository.getSenhaByLogin(loginUsuario);
+	}
+	
+	public int findLoginRepetido(String login) {
+		return usuarioRepository.findLoginRepetido(login);
+	}
+	
 }

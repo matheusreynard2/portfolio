@@ -28,3 +28,13 @@ p {
   margin-top: 10px; /* Ajuste a margem superior para dar espaçamento entre o topo da div e o título */
   margin-bottom: 7px;
 }
+
+#logout-button {
+  position: absolute;
+  top: 10px; /* Distância do topo */
+  left: 210px; /* Distância à direita da imagem logo_produtos.png (ajustar conforme necessário) */
+  z-index: 10; /* Garantir que o logout fique acima de outros elementos */
+  font-size: 16px; /* Ajuste do tamanho da fonte, se necessário */
+  color: white;
+  font-weight: bold;
+}

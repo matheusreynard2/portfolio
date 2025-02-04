@@ -12,7 +12,7 @@ import org.mockito.Mock;
 
 import com.apiestudar.model.Produto;
 import com.apiestudar.repository.ProdutoRepository;
-import com.apiestudar.service.ProdutoServiceImpl;
+import com.apiestudar.service.produto.ProdutoServiceImpl;
 
 import org.springframework.boot.test.context.SpringBootTest;
 

@@ -1,0 +1,76 @@
+<form (ngSubmit)="onSubmit()" #cadastrarorm="ngForm">
+  <table style="width: 600px; margin: 0 auto;" class="table table-bordered">
+    <thead>
+    <tr>
+      <th colspan="2" class="text-center">CADASTRAR NOVO USUÁRIO</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+      <td class="coluna-1">
+        <label for="login">Usuário:</label>
+      </td>
+      <td>
+        <input type="text" [(ngModel)]="usuario.login"
+               class="form-control"
+               id="login"
+               name="loginUsuario"
+               placeholder="Insira o seu usuário."
+               required #nome="ngModel"
+               maxlength="30">
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <label for="senha">Senha:</label>
+      </td>
+      <td>
+        <input type="password" [(ngModel)]="usuario.senha"
+               class="form-control"
+               id="senha"
+               name="senhaUsuario"
+               placeholder="Insira sua senha."
+               required #nome="ngModel"
+               maxlength="30">
+      </td>
+    <tr>
+      <td>
+        <button type="submit" [disabled]="!cadastrarorm.form.valid" class="btn bg-primary-subtle fw-bold" style="width: 100px">Cadastrar</button>
+      </td>
+      <td colspan="2">
+        <button type="button" class="btn bg-secondary-subtle fw-bold" style="width: 100px" (click)="voltarTelaLogin()">Voltar</button>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</form>
+
+<!-- Janela (modal) que abre depois de cadastrar um usuário -->
+<ng-template #modalMsgAddUser let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title">
+      Sucesso!
+    </h5>
+    <img ngSrc="/codigo_barras.png" height="60" width="60" class="img-right"/>
+  </div>
+  <div class="modal-body">
+    <a>Usuário <b>{{ usuario.login }}</b> cadastrado.</a>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="modal.close()">Fechar</button>
+  </div>
+</ng-template>
+
+<!-- Janela (modal) que abre depois de inserir credenciais inválidas -->
+<ng-template #modalMsgLoginExistente let-modal class="modal">
+  <div class="modal-header">
+    <h4 class="modal-title">Erro</h4>
+    <img ngSrc="/codigo_barras.png" height="60" width="60" class="img-right"/>
+  </div>
+  <div class="modal-body">
+    <a>Nome de usuário já existe.</a>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="modal.close()">Fechar</button>
+  </div>
+</ng-template>

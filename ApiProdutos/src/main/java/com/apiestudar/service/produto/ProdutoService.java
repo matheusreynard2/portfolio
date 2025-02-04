@@ -1,4 +1,4 @@
-package com.apiestudar.service;
+package com.apiestudar.service.produto;
 
 import java.util.List;
 

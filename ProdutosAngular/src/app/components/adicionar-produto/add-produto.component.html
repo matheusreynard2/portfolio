@@ -1,0 +1,195 @@
+<div class="card my-5">
+  <div class="card-body">
+    <form (ngSubmit)="onSubmit()" #produtoForm="ngForm">
+      <table class="table table-bordered">
+        <thead>
+        <tr>
+          <th colspan="6" class="text-center">Cadastrar um novo produto</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+          <td><label for="nome">Nome:</label></td>
+          <td>
+            <input type="text" [(ngModel)]="produto.nome"
+                   class="form-control"
+                   id="nome"
+                   name="nomeProduto"
+                   placeholder="Insira o nome do produto."
+                   required #nome="ngModel"
+                   maxlength="35">
+          </td>
+          <td><label for="descricao">Descrição:</label></td>
+          <td>
+            <input type="text" [(ngModel)]="produto.descricao"
+                   class="form-control"
+                   id="descricao"
+                   name="descricaoProduto"
+                   placeholder="Insira a descrição do produto."
+                   required #descricao="ngModel"
+                   maxlength="100">
+          </td>
+        </tr>
+        <tr>
+          <td><label for="quantidade">Quantidade:</label></td>
+          <td colspan="1">
+            <input type="number" [(ngModel)]="produto.quantia"
+                   class="form-control"
+                   id="quantidade"
+                   name="quantidadeProduto"
+                   required #quantidade="ngModel">
+          </td>
+          <td><label for="promocao">Promoção:</label></td>
+          <td colspan="1">
+            <select [(ngModel)]="produto.promocao"
+                    class="form-control"
+                    id="promocao"
+                    name="promocaoProduto"
+                    required #promocao="ngModel"
+                    (ngModelChange)="selecionarPromocao($event)">
+              <option [ngValue]="true">Sim</option>
+              <option [ngValue]="false">Não</option>
+            </select>
+          </td>
+        </tr>
+        <tr>
+          <td rowspan="2"><label>Valor do frete:</label></td>
+          <td rowspan="2" colspan="1">
+            <div class="mt-1">{{produto.frete | currency : 'BRL'}}</div>
+            <input type="number" [(ngModel)]="produto.frete"
+                   class="form-control"
+                   id="freteTrue"
+                   name="freteProduto"
+                   required #frete="ngModel"
+                   maxlength="30"
+                   [disabled]="!produto.freteAtivo"
+                   style="display: none;">
+          </td>
+          <td><label for="freteAtivo">Frete:</label></td>
+          <td colspan="2">
+            <select [(ngModel)]="produto.freteAtivo"
+                    class="form-control"
+                    id="freteAtivo"
+                    name="freteAtivoProduto"
+                    required #freteAtivo="ngModel"
+                    (ngModelChange)="ativarFrete($event)">
+              <option [ngValue]="true">Sim</option>
+              <option [ngValue]="false">Não</option>
+            </select>
+          </td>
+        </tr>
+        <tr></tr>
+        <tr>
+          <td><label for="valor">Valor unitário:</label></td>
+          <td>
+            <input type="number" [(ngModel)]="produto.valor"
+                   class="form-control"
+                   id="valor"
+                   name="valorProduto"
+                   required #valor="ngModel"
+                   maxlength="30">
+          </td>
+          <td><label for="valorTotalDesc">Valor produto c/ desconto:</label></td>
+          <input type="number" [(ngModel)]="produto.valorTotalDesc"
+                 class="form-control"
+                 id="valorTotalDesc"
+                 name="valorTotalDescProduto"
+                 required #valorTotalDesc="ngModel"
+                 maxlength="30"
+                 style="display: none;">
+          <td>
+            <div class="mt-1">{{produto.valorTotalDesc | currency : 'BRL'}}</div>
+          </td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>
+            <div class="mt-1">{{produto.valor | currency : 'BRL'}}</div>
+          </td>
+          <!-- Valor Total com Desconto e Valor Total do Frete na mesma linha -->
+          <td>
+            <label for="valorTotalFrete">Valor total com frete:</label>
+          </td>
+          <input type="number" [(ngModel)]="produto.valorTotalFrete"
+                 class="form-control"
+                 id="valorTotalFrete"
+                 name="valorTotalFreteProduto"
+                 required #valorTotalFrete="ngModel"
+                 maxlength="30"
+                 style="display: none;">
+          <td>
+            <div class="mt-1">{{produto.valorTotalFrete | currency : 'BRL'}}</div>
+          </td>
+        </tr>
+        <tr>
+          <td>Desconto:</td>
+          <td>
+            <input type="text" [(ngModel)]="produto.valorDesconto"
+                   class="form-control"
+                   id="valorDesconto"
+                   name="valorDescontoProduto"
+                   required #valorDesconto="ngModel"
+                   appPorcentagemMask>
+          </td>
+          <td>
+            <label for="foto_produto">Foto do produto: </label>
+          </td>
+            <input id="foto_produto" type="file" (change)="onFileChange($event)" />
+        </tr>
+        <tr>
+          <td>
+          </td>
+          <td>
+          </td>
+          <td rowspan="2" colspan="2">
+            <span style="font-size: 12px">Não selecione imagens grandes pois atrapalham na visualização.</span>
+          </td>
+        </tr>
+        <tr>
+          <td colspan="6">
+            <hr style="border: 2px solid #000; width: 100%;">
+          </td>
+        </tr>
+        <tr>
+          <td colspan="1"><b>VALOR TOTAL: </b></td>
+          <input type="number" [(ngModel)]="produto.somaTotalValores"
+                 class="form-control"
+                 id="somaTotalValores"
+                 name="somaTotalValoresProduto"
+                 required #somaTotalValores="ngModel"
+                 maxlength="15"
+                 style="display: none;">
+          <td colspan="6">
+            <div class="mt-1">{{produto.somaTotalValores | currency : 'BRL'}}</div>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <button type="button" class="btn btn-secondary" (click)="calcularValores(produto)">Calcular valores</button>
+          </td>
+          <td colspan="6" class="text-left">
+            <button type="submit" [disabled]="!produtoForm.form.valid" class="btn bg-primary-subtle fw-bold">Cadastrar</button>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </form>
+  </div>
+</div>
+
+<!-- Janela (modal) que abre depois de cadastrar um produto -->
+<ng-template #modalMsgAddProduto let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title">
+      Sucesso!
+    </h5>
+    <img ngSrc="/codigo_barras.png" height="60" width="60" class="img-right"/>
+  </div>
+  <div class="modal-body">
+    <a>Produto <b>{{ produto.nome }}</b> cadastrado.</a>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="modal.close()">Fechar</button>
+  </div>
+</ng-template>
+

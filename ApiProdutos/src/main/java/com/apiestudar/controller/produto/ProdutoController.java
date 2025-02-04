@@ -1,14 +1,17 @@
-package com.apiestudar.controller;
+package com.apiestudar.controller.produto;
 
 import com.apiestudar.model.Produto;
-import com.apiestudar.service.ProdutoService;
+import com.apiestudar.service.produto.ProdutoService;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+import javax.servlet.http.HttpServletResponse;
 
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
-import io.swagger.v3.oas.annotations.tags.Tag;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -119,6 +122,15 @@ public class ProdutoController {
 		}
 		
 		return produtos;
+	}
+	
+	@SuppressWarnings("rawtypes")
+	@ApiOperation(value = "Acessar a página de cadastrar produto.", notes = "Endpoint usado para validação de Token pelo front.")
+	@ApiResponse(code = 200, message = "Página retornada.")
+	@GetMapping("/acessarPaginaCadastro")
+	public ResponseEntity acessarPaginaCadastro() {
+		ResponseEntity response = new ResponseEntity(HttpStatus.OK);
+		return response;
 	}
 
 }

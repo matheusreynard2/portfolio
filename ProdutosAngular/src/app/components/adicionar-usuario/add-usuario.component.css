@@ -1,0 +1,10 @@
+.coluna-1 {
+  width: 50px;
+}
+
+.img-right {
+  position: absolute;
+  right: 0; /* Coloca a imagem totalmente no lado direito */
+  top: 0;   /* Alinha a imagem no topo */
+  opacity: 75%;
+}

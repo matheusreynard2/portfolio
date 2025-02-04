@@ -1,4 +1,4 @@
-package com.apiestudar.service;
+package com.apiestudar.service.usuario;
 
 import java.util.List;
 
@@ -11,5 +11,9 @@ public interface UsuarioService {
 	List<Usuario> listarUsuarios();
 
 	boolean deletarUsuario(long id);
+	
+	String getSenhaByLogin(String loginUsuario);
+	
+	int findLoginRepetido(String login);
 	
 }
