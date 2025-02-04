@@ -17,7 +17,7 @@ import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 })
 export class AddUsuarioComponent implements OnInit {
 
-  usuario: Usuario = {
+  addUsuario: Usuario = {
     id: 0,
     login: '',
     senha: '',
@@ -44,7 +44,7 @@ export class AddUsuarioComponent implements OnInit {
         }, 100);
       } else if (!loginExistente) {
         // Adiciona o produto no banco depois chama a mensagem de sucesso de adição de usuario "msgAddUsuario"
-        this.usuarioService.adicionarUsuario(this.usuario).subscribe({
+        this.usuarioService.adicionarUsuario(this.addUsuario).subscribe({
           next: (response: Map<string, any>) => {
             if (response.has('usuario')) {
               this.usuarioNovo = response.get('usuario');
@@ -70,7 +70,7 @@ export class AddUsuarioComponent implements OnInit {
     if (this.adicionouUsuario) {
       setTimeout(() => {
         const modalRef = this.modalService.open(modalMsgAddUser);
-        modalRef.componentInstance.usuario = this.usuarioNovo;
+        modalRef.componentInstance.addUsuario = this.usuarioNovo;
       }, 100);
     }
   }

@@ -41,19 +41,28 @@ export class LoginComponent implements OnInit {
         }, 100);
       }
     })
-
-    // Exibir MSG de credenciais invalidas
-    this.authService.credenciaisObservable.subscribe((credenciaisInvalidas) => {
-      if (credenciaisInvalidas) {
-        setTimeout(() => {
-          this.modalService.open(this.modalMsgCredenciais, { size: 'lg' });
-        }, 100);
-      }
-    })
   }
 
   onSubmit() {
-    this.authService.realizarLogin(this.usuario)
+    this.authService.realizarLogin(this.usuario).subscribe({
+      next: (response: Map<string, string>) => {
+        if (response.has('token')) {
+          let token: string;
+          token = <string>response.get('token');
+          localStorage.setItem('bearerToken', token);
+          if (this.authService.existeToken()) {
+            this.router.navigate(['/produtos']);
+          }
+        }
+      },
+      error: (error) => {
+        if (error.status === 401 && error.error.message === 'Credenciais inválidas.') {
+          setTimeout(() => {
+            this.modalService.open(this.modalMsgCredenciais, {size: 'lg'});
+          }, 100);
+        }
+      }
+    })
   }
 
   cadastrarNovoUsuario() {

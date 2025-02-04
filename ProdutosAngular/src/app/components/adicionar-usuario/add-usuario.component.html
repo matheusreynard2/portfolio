@@ -1,4 +1,4 @@
-<form (ngSubmit)="onSubmit()" #cadastrarorm="ngForm">
+<form (ngSubmit)="onSubmit()" #cadastrarForm="ngForm">
   <table style="width: 600px; margin: 0 auto;" class="table table-bordered">
     <thead>
     <tr>
@@ -11,7 +11,7 @@
         <label for="login">Usuário:</label>
       </td>
       <td>
-        <input type="text" [(ngModel)]="usuario.login"
+        <input type="text" [(ngModel)]="addUsuario.login"
                class="form-control"
                id="login"
                name="loginUsuario"
@@ -25,7 +25,7 @@
         <label for="senha">Senha:</label>
       </td>
       <td>
-        <input type="password" [(ngModel)]="usuario.senha"
+        <input type="password" [(ngModel)]="addUsuario.senha"
                class="form-control"
                id="senha"
                name="senhaUsuario"
@@ -35,7 +35,7 @@
       </td>
     <tr>
       <td>
-        <button type="submit" [disabled]="!cadastrarorm.form.valid" class="btn bg-primary-subtle fw-bold" style="width: 100px">Cadastrar</button>
+        <button type="submit" [disabled]="!cadastrarForm.form.valid" class="btn bg-primary-subtle fw-bold" style="width: 100px">Cadastrar</button>
       </td>
       <td colspan="2">
         <button type="button" class="btn bg-secondary-subtle fw-bold" style="width: 100px" (click)="voltarTelaLogin()">Voltar</button>
@@ -54,7 +54,7 @@
     <img ngSrc="/codigo_barras.png" height="60" width="60" class="img-right"/>
   </div>
   <div class="modal-body">
-    <a>Usuário <b>{{ usuario.login }}</b> cadastrado.</a>
+    <a>Usuário <b>{{ addUsuario.login }}</b> cadastrado.</a>
   </div>
   <div class="modal-footer">
     <button type="button" class="btn btn-secondary" (click)="modal.close()">Fechar</button>

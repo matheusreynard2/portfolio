@@ -56,8 +56,7 @@ public class UsuarioController {
 		if (usuarioService.findLoginRepetido(usuario.getLogin()) >= 1) {
 			
 	        response.put("message", "Login já cadastrado no banco de dados.");
-	        
-	        return ResponseEntity.status(HttpStatus.CONFLICT).body(Collections.singletonMap("message", "Login já cadastrado no banco de dados."));
+	        return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
         } else {	
         	
         	Usuario usuarioAdicionado;
