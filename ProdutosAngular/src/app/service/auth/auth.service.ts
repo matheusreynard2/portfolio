@@ -16,10 +16,31 @@ export class AuthService {
     this.usuariosUrl = 'http://localhost:8080/api/usuarios';
   }
 
+  existeTokenExpirado(): boolean {
+    const estaExpirado = localStorage.getItem('tokenExpirado')
+    return !!estaExpirado
+  }
+
+  adicionarTokenExpirado(valor: string) {
+    localStorage.setItem('tokenExpirado', valor)
+  }
+
+  removerTokenExpirado() {
+    localStorage.removeItem('tokenExpirado');
+  }
+
   // Método para verificar se o token de autenticação está presente
   existeToken(): boolean {
     const token = localStorage.getItem('bearerToken');
     return !!token;  // Retorna true se o token existir, caso contrário false
+  }
+
+  removerToken() {
+    localStorage.removeItem('bearerToken');
+  }
+
+  adicionarToken(token: string) {
+    localStorage.setItem('bearerToken', token);
   }
 
   realizarLogin(usuario: Usuario): Observable<Map<string, any>> {

@@ -56,7 +56,7 @@ export class AddProdutoComponent implements OnInit {
 
   ngOnInit() {
     this.adicionouProduto = false;
-    this.produtoService.acessarPaginaCadastro();
+    this.produtoService.acessarPaginaCadastro().subscribe();
   }
 
   // Função que é chamada ao clicar no botão Submit do formulário HTML (ngModel) ao criar um produto

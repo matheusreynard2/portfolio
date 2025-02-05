@@ -4,7 +4,6 @@ import {FormsModule} from '@angular/forms';
 import {AuthService} from '../../service/auth/auth.service';
 import {Router} from '@angular/router';
 import {NgbModal, NgbModule} from '@ng-bootstrap/ng-bootstrap';
-import {ProdutoService} from '../../service/produto/produto.service';
 import {NgOptimizedImage} from '@angular/common';
 
 @Component({
@@ -30,17 +29,16 @@ export class LoginComponent implements OnInit {
   @ViewChild('modalMsgCredenciais') modalMsgCredenciais: any
 
   constructor(private authService: AuthService, private router: Router,
-              private produtoService: ProdutoService, private modalService: NgbModal) {}
+              private modalService: NgbModal) {}
 
   ngOnInit() {
     // Mostrar MSG Token expirado
-    this.produtoService.tokenObservable.subscribe((tokenExpirado: any) => {
-      if (tokenExpirado) {
-        setTimeout(() => {
-          this.modalService.open(this.modalMsgToken, { size: 'lg' });
-        }, 100);
-      }
-    })
+    if (!this.authService.existeToken() && this.authService.existeTokenExpirado()) {
+      setTimeout(() => {
+        this.modalService.open(this.modalMsgToken, {size: 'lg'});
+      }, 100);
+    }
+    this.authService.removerTokenExpirado()
   }
 
   onSubmit() {
@@ -49,10 +47,9 @@ export class LoginComponent implements OnInit {
         if (response.has('token')) {
           let token: string;
           token = <string>response.get('token');
-          localStorage.setItem('bearerToken', token);
-          if (this.authService.existeToken()) {
-            this.router.navigate(['/produtos']);
-          }
+          this.authService.adicionarToken(token)
+          this.authService.removerTokenExpirado()
+          this.router.navigate(['/produtos']);
         }
       },
       error: (error) => {

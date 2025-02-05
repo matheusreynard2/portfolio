@@ -137,7 +137,6 @@ export class ProdutoListComponent implements OnInit {
 
   // Função chamada ao clicar no botão Pesquisar
   efetuarPesquisa() {
-
     let searchBar_value = this.searchBar.nativeElement.value;
 
     this.produtoService.efetuarPesquisa(this.tipoPesquisaSelecionado, searchBar_value).subscribe(data => {

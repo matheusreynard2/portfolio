@@ -18,7 +18,7 @@ public class TokenService {
 				.withIssuer("AppProdify")
 				.withSubject(usuario.getLogin())
 				.withClaim("id", usuario.getId())
-			    .withExpiresAt(LocalDateTime.now().plusMinutes(30).toInstant(ZoneOffset.of("-03:00")))
+			    .withExpiresAt(LocalDateTime.now().plusMinutes(1).toInstant(ZoneOffset.of("-03:00")))
 			    .sign(Algorithm.HMAC256("secret"));
 			    
 	}
