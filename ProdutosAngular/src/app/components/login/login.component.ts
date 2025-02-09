@@ -22,7 +22,8 @@ export class LoginComponent implements OnInit {
     id: 0,
     login: '',
     senha: '',
-    token: ''
+    token: '',
+    imagem: ''
   };
 
   @ViewChild('modalMsgToken') modalMsgToken: any
@@ -33,22 +34,26 @@ export class LoginComponent implements OnInit {
 
   ngOnInit() {
     // Mostrar MSG Token expirado
-    if (!this.authService.existeToken() && this.authService.existeTokenExpirado()) {
+    if (this.authService.existeTokenExpirado() && !this.authService.existeToken()) {
       setTimeout(() => {
         this.modalService.open(this.modalMsgToken, {size: 'lg'});
       }, 100);
     }
+    this.authService.removerToken()
     this.authService.removerTokenExpirado()
   }
 
   onSubmit() {
+
     this.authService.realizarLogin(this.usuario).subscribe({
-      next: (response: Map<string, string>) => {
-        if (response.has('token')) {
-          let token: string;
-          token = <string>response.get('token');
-          this.authService.adicionarToken(token)
-          this.authService.removerTokenExpirado()
+      next: (response: Map<string, any>) => {
+        if (response.has('usuario')) {
+          let usuario: Usuario;
+          usuario = <Usuario>response.get('usuario');
+          this.usuario = usuario
+          this.authService.adicionarToken(usuario.token)
+          this.authService.adicionarUsuarioLogado(usuario)
+          console.log("token " + this.authService.existeToken() + ", tokenExpirado " + !this.authService.existeTokenExpirado())
           this.router.navigate(['/produtos']);
         }
       },

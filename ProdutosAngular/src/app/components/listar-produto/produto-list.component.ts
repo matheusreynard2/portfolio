@@ -41,16 +41,18 @@ export class ProdutoListComponent implements OnInit {
 
   private modalService: NgbModal = new NgbModal();
   @ViewChild('searchBar') searchBar!: ElementRef
+  @ViewChild('modalAvisoToken') modalAvisoToken!: ElementRef
 
   constructor(private produtoService: ProdutoService,
               private produtoFunctionsService: ProdutoFunctionsService) { }
 
-  // Ao abrir a página, chama os endpoints abaixo...
   ngOnInit() {
-    // Lista e ordena os produtos por ID
-    this.produtoService.listarProdutos().subscribe(data => {
-      this.listaDeProdutos = data.sort((a, b) => a.id - b.id);
-    })
+    this.produtoService.listarProdutos().subscribe(
+      data => {
+        this.listaDeProdutos = data.sort((a, b) => a.id - b.id);
+      }
+    );
+
     this.listarProdutoMaisCaro();
     this.calcularMedia();
   }

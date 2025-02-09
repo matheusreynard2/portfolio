@@ -40,12 +40,12 @@ public class FilterToken implements Filter {
 
 			try {
 				
-			var subject = this.tokenService.getSubject(token);
-			
-			var usuario = this.usuarioRepository.findByLogin(subject.toString());
-			
-			var authentication = new UsernamePasswordAuthenticationToken(usuario, null, usuario.getAuthorities());
-			SecurityContextHolder.getContext().setAuthentication(authentication);
+				var subject = this.tokenService.getSubject(token);
+				
+				var usuario = this.usuarioRepository.findByLogin(subject.toString());
+				
+				var authentication = new UsernamePasswordAuthenticationToken(usuario, null, usuario.getAuthorities());
+				SecurityContextHolder.getContext().setAuthentication(authentication);
 				
 			} catch (TokenExpiredException e) {
 				// Se o token expirou, enviamos a resposta com o código 401 e uma mensagem customizada

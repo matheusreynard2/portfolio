@@ -1,8 +1,10 @@
-import {Injectable} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
-import {Router} from '@angular/router';
+import { Injectable } from '@angular/core';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { Router } from '@angular/router';
 import {Usuario} from '../../model/usuario';
-import {BehaviorSubject, map, Observable} from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -18,11 +20,21 @@ export class UsuarioService {
     this.usuariosUrl = 'http://localhost:8080/api/usuarios';
   }
 
-  adicionarUsuario(usuario: Usuario): Observable<Map<string, any>> {
-    return this.http.post<Map<string, any>>(this.usuariosUrl + "/adicionarUsuario", usuario).pipe(
+  adicionarUsuario(usuario: Usuario, imagem: File): Observable<Map<string, any>> {
+    const formData = new FormData();
+    const headers = new HttpHeaders();
+
+    // Adiciona o objeto usuario como JSON no FormData
+    formData.append('usuarioJSON', JSON.stringify(usuario));
+    // Adiciona a imagem ao FormData
+    formData.append('imagemFile', imagem);
+
+    // Envia a requisição POST com o FormData
+    return this.http.post<Map<string, any>>(this.usuariosUrl + "/adicionarUsuario", formData, { headers }).pipe(
       map(response => {
-        return new Map<string, any>((Object.entries(response)))
+        // Converte a resposta em um Map
+        return new Map<string, any>(Object.entries(response));
       })
-    )
+    );
   }
 }

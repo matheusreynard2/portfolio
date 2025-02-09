@@ -1,5 +1,7 @@
 package com.apiestudar.controller.usuario;
 
+import java.io.IOException;
+import java.util.Base64;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -16,11 +18,14 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.apiestudar.model.Usuario;
 import com.apiestudar.service.jwt.TokenService;
 import com.apiestudar.service.usuario.UsuarioService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -41,31 +46,39 @@ public class UsuarioController {
 	@GetMapping("/listarUsuarios")
 	public List<Usuario> listarUsuarios() {
 		List<Usuario> usuarios = usuarioService.listarUsuarios();
-		System.out.println(usuarios);
 		return usuarios;
 	}
 
 	@ApiOperation(value = "Adiciona/cadastra um novo usuário.", notes = "Cria um novo registro de usuário no banco de dados.")
 	@ApiResponse(code = 200, message = "Usuário cadastrado.")
 	@PostMapping("/adicionarUsuario")
-	public ResponseEntity<Map<String, Object>> adicionarUsuario(@RequestBody Usuario usuario) {
+	public ResponseEntity<Map<String, Object>> adicionarUsuario(@RequestParam String usuarioJSON, @RequestParam MultipartFile imagemFile) throws IOException {
+
+		// Converter o JSON de volta para um objeto Produto
+        Usuario user = new ObjectMapper().readValue(usuarioJSON, Usuario.class);
+        
+        Map<String, Object> response = new HashMap<>();
 		
-		Map<String, Object> response = new HashMap<>();
-		
-		// Se já existe o mesmo login cadastrado no banco de dados, retorna erro, se não, retorna o usuário
-		if (usuarioService.findLoginRepetido(usuario.getLogin()) >= 1) {
-			
+		if (usuarioService.findLoginRepetido(user.getLogin()) >= 1) {
+					
 	        response.put("message", "Login já cadastrado no banco de dados.");
+	        
 	        return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
+	        
         } else {	
-        	
+	        
+	        // Converter MultipartFile para String Base 64
+	        String imagemStringBase64 = Base64.getEncoder().encodeToString(imagemFile.getBytes());
+	        
+	        user.setImagem(imagemStringBase64);
+        	        	
         	Usuario usuarioAdicionado;
         	
-			String senhaCriptografada = new BCryptPasswordEncoder().encode(usuario.getSenha());
+			String senhaCriptografada = new BCryptPasswordEncoder().encode(user.getSenha());
 			
-			usuario.setSenha(senhaCriptografada);
+			user.setSenha(senhaCriptografada);
 		    
-			usuarioAdicionado = usuarioService.adicionarUsuario(usuario);
+			usuarioAdicionado = usuarioService.adicionarUsuario(user);
 		    
 		    response.put("usuario", usuarioAdicionado);
 			
@@ -84,20 +97,17 @@ public class UsuarioController {
 	@ApiOperation(value = "Realiza um login com auntenticação JWT.", notes = "Realiza uma operação de login com autenticação de token via Spring Security - JWT e com senha criptografada.")
 	@ApiResponse(code = 200, message = "Login realizado.")	
 	@PostMapping("/realizarLogin")
-	public ResponseEntity<Map<String, String>> realizarLogin(@RequestBody Usuario usuarioLogin) {
+	public ResponseEntity<Map<String, Object>> realizarLogin(@RequestBody Usuario usuarioLogin) {
 		BCryptPasswordEncoder senhaCriptografada = new BCryptPasswordEncoder();
-		Usuario usuario = new Usuario();
 
-		usuario.setLogin(usuarioLogin.getLogin());
-		usuario.setSenha(usuarioLogin.getSenha());
+		String senhaArmazenada = usuarioService.getSenhaByLogin(usuarioLogin.getLogin());
 
-		String senhaArmazenada = usuarioService.getSenhaByLogin(usuario.getLogin());
-
-		if (senhaCriptografada.matches(usuario.getSenha(), senhaArmazenada)) {
-			String token = tokenService.gerarToken(usuario);
-	        Map<String, String> response = new HashMap<>();
-	        response.put("token", token);
-	        return ResponseEntity.ok(response);  // Retorna o token dentro de um Map
+		if (senhaCriptografada.matches(usuarioLogin.getSenha(), senhaArmazenada)) {
+			String token = tokenService.gerarToken(usuarioLogin);
+			usuarioLogin.setToken(token);
+	        Map<String, Object> response = new HashMap<>();
+	        response.put("usuario", usuarioLogin);
+	        return ResponseEntity.ok(response);
 		} else {
 			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Collections.singletonMap("message", "Credenciais inválidas."));
 		}

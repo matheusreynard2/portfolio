@@ -42,7 +42,7 @@ export class AddProdutoComponent implements OnInit {
 
   // Variáveis
   novoProduto!: Produto;
-  imagemFile: File = new File([], 'arquivo_vazio.txt', {})
+  imagemFile: File = new File([], '', {})
   adicionouProduto: boolean = false;
 
   // Services

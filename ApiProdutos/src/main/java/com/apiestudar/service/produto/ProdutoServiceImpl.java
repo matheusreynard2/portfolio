@@ -22,8 +22,7 @@ public class ProdutoServiceImpl implements ProdutoService {
 	private ProdutoRepository produtoRepository;
 
 	@Transactional
-	@Override
-	public Produto adicionarProduto(Produto produto, String imagemBase64) {
+	public Produto adicionarProduto(Produto produto) {
 		return produtoRepository.save(produto);
 	}
 

@@ -35,6 +35,11 @@
       </td>
     <tr>
       <td>
+        <input id="foto_perfil" type="file" (change)="onFileChange($event)" />
+      </td>
+    </tr>
+    <tr>
+      <td>
         <button type="submit" [disabled]="!cadastrarForm.form.valid" class="btn bg-primary-subtle fw-bold" style="width: 100px">Cadastrar</button>
       </td>
       <td colspan="2">

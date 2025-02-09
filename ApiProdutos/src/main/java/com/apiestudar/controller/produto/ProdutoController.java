@@ -49,7 +49,7 @@ public class ProdutoController {
         
         produto.setImagem(imagemStringBase64);
 		
-		Produto produtoAdicionado = (Produto) produtoService.adicionarProduto(produto, imagemStringBase64);
+		Produto produtoAdicionado = (Produto) produtoService.adicionarProduto(produto);
 		
 		return produtoAdicionado;
 	}

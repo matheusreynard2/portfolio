@@ -1,5 +1,7 @@
 package com.apiestudar.repository;
 
+import javax.transaction.Transactional;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
@@ -10,6 +12,7 @@ import com.apiestudar.model.Usuario;
 @EnableJpaRepositories
 public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
 	
+	@Transactional
 	Usuario findByLogin(String login);
 	
 	@Query(value = "SELECT senha FROM usuario WHERE login = :loginUsuario", nativeQuery = true)

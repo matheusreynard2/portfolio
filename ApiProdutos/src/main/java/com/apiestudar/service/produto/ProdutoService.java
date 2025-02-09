@@ -6,7 +6,7 @@ import com.apiestudar.model.Produto;
 
 public interface ProdutoService {
 
-	Produto adicionarProduto(Produto produto, String imagemBase64);
+	Produto adicionarProduto(Produto produto);
 
 	List<Produto> listarProdutos();
 

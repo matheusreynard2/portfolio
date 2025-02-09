@@ -5,6 +5,7 @@ import {Router} from '@angular/router';
 import {UsuarioService} from '../../service/usuario/usuario.service';
 import {NgOptimizedImage} from '@angular/common';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {Produto} from '../../model/produto';
 
 @Component({
   selector: 'app-add-usuario',
@@ -21,7 +22,8 @@ export class AddUsuarioComponent implements OnInit {
     id: 0,
     login: '',
     senha: '',
-    token: ''
+    token: '',
+    imagem: ''
   };
 
   private modalService: NgbModal = new NgbModal();
@@ -29,6 +31,7 @@ export class AddUsuarioComponent implements OnInit {
   adicionouUsuario: boolean = false;
   @ViewChild('modalMsgLoginExistente') modalMsgLoginExistente: any
   @ViewChild('modalMsgAddUser') modalMsgAddUser: any
+  imagemFile: File = new File([], '', {})
 
   constructor(private usuarioService: UsuarioService, private router: Router) {}
 
@@ -43,14 +46,12 @@ export class AddUsuarioComponent implements OnInit {
           this.modalService.open(this.modalMsgLoginExistente, { size: 'sm' });
         }, 100);
       } else if (!loginExistente) {
-        // Adiciona o produto no banco depois chama a mensagem de sucesso de adição de usuario "msgAddUsuario"
-        this.usuarioService.adicionarUsuario(this.addUsuario).subscribe({
-          next: (response: Map<string, any>) => {
-            if (response.has('usuario')) {
-              this.usuarioNovo = response.get('usuario');
-              this.adicionouUsuario = true;
-              this.msgAddUsuario(this.modalMsgAddUser)
-            }
+        // Adiciona no banco depois chama a mensagem de sucesso de adição de usuario "msgAddUsuario"
+        this.usuarioService.adicionarUsuario(this.addUsuario, this.imagemFile).subscribe({
+          next: (usuarioAdicionado: any) => {
+            this.usuarioNovo = usuarioAdicionado
+            this.adicionouUsuario = true
+            this.msgAddUsuario(this.modalMsgAddUser)
           },
           error: (error) => {
             // Se o erro for de login repetido, exibe a mensagem de erro.
@@ -77,6 +78,10 @@ export class AddUsuarioComponent implements OnInit {
 
   voltarTelaLogin() {
     this.router.navigate(['/login']);
+  }
+
+  onFileChange(event: any) {
+    this.imagemFile = event.target.files[0];
   }
 
 }

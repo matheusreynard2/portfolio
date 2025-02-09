@@ -1,41 +1,69 @@
 <div class="container">
-  <div class="row">
-    <div class="col-md-12">
-      <div class="bg-dark border border-5 border-secondary rounded-top-5 my-2">
-        <div class="card-body" id="div_banner">
-          <div class="bg-gradient" id="div_banner_gradient">
-            <h2 class="text-center text-white position-relative">
-              <a style="color: red;">PRO</a><a>DIFY</a>
-            </h2>
-            <img src="/logo_produtos.png" alt="Logo" class="position-absolute start-5" width="190" height="150">
-            <!-- Imagem duplicada no lado direito com opacidade de 50% -->
-            <img src="/etiqueta.png" alt="Logo" class="position-absolute end-0" width="120" height="120">
-          </div>
-          <ul class="text-center list-inline py-3">
-            <li class="list-inline-item">
-              <a routerLink="/produtos" class="btn btn-outline-secondary fw-bold">Lista de produtos</a>
-            </li>
-            <li class="list-inline-item">
-              <a routerLink="/addproduto" class="btn btn-outline-secondary fw-bold">Cadastrar produto</a>
-            </li>
-          </ul>
-        </div>
+  <div class="bg-dark border border-5 border-secondary rounded-top-5 my-2 d-flex bg-gradient" style="height: 180px;">
+
+    <div
+      *ngIf="mostrarPerfil; else divVazia"
+      class="perfil-div d-flex flex-column justify-content-between align-items-center border border-2 border-secondary rounded-top-5"
+      style="width: 13%; height: 100%;"
+    >
+      <!-- Botão de logout -->
+      <button type="button" class="btn btn-danger mt-2" (click)="logout()" style="font-size: 12px;">Logout</button>
+      <!-- Foto e nome do usuário -->
+      <div class="d-flex flex-column align-items-center">
+        <img src="/foto_perfil.png" alt="Foto do usuário" width="80" height="80">
+        <span class="text-white mt-2" style="font-size: 12px;">{{usuarioLogado?.login}}</span>
       </div>
+    </div>
 
-      <!-- Ajuste na posição do logout -->
-      <div class="position-absolute" id="logout-button">
-        <a href="#" class="text-white">[logout]</a>
+    <ng-template #divVazia>
+      <div
+        class="perfil-div d-flex flex-column justify-content-between align-items-center"
+        style="width: 13%; height: 100%; background-color: transparent;">
       </div>
+    </ng-template>
 
-      <router-outlet></router-outlet>
+    <!-- Coluna para o título e botões de navegação (80%) -->
+    <div class="w-100 ps-3 d-flex flex-column justify-content-center" style="height: 100%; margin-left: -125px;" [ngClass]="{'centralizado': !mostrarPerfil}">
+      <div id="div_banner_menu">
+        <h2 class="text-center text-white position-relative" style="font-size: 18px; line-height: 1.2;">
+          <span style="font-size: 36px"><a style="color: red;">PRO</a><a>DIFY</a></span>
+        </h2>
+        <img src="/logo_produtos.png" alt="Logo" class="position-absolute" width="165" height="120" style="right: 60px;">
 
-      <div class="bg-dark border border-5 border-secondary">
-        <div class="card-body position-relative">
-          <p class="bg-gradient p-3 text-center text-white"> Projeto desenvolvido para fins de estudo por Matheus Reynard. LinkedIn: www.linkedin.com/in/matheus-reynard</p>
-          <img src="/logo_sacolas.png" alt="Logo" class="position-absolute end-0 bottom-0" width="190" height="150">
-        </div>
+        <!-- Botões de navegação -->
+        <ul class="text-center list-inline py-1" style="font-size: 14px;">
+          <li class="list-inline-item">
+            <a routerLink="/produtos" class="btn btn-outline-secondary fw-bold">Lista de produtos</a>
+          </li>
+          <li class="list-inline-item">
+            <a routerLink="/addproduto" class="btn btn-outline-secondary fw-bold">Cadastrar produto</a>
+          </li>
+        </ul>
       </div>
+    </div>
+  </div>
 
+  <router-outlet></router-outlet>
+
+  <div class="bg-dark border border-5 border-secondary">
+    <div class="card-body position-relative text-center text-white">
+      <p class="bg-gradient p-3">Projeto desenvolvido para fins de estudo por Matheus Reynard. LinkedIn: www.linkedin.com/in/matheus-reynard</p>
+      <img src="/logo_sacolas.png" alt="Logo" class="position-absolute end-0 bottom-0" width="190" height="150">
     </div>
   </div>
 </div>
+
+<ng-template #modalAvisoToken let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title">
+      AVISO!
+    </h4>
+    <img ngSrc="/codigo_barras.png" height="60" width="60" class="img-right"/>
+  </div>
+  <div class="modal-body">
+    <a style="font-size: 15px;">Informações atualizadas! Clique em <strong>ATUALIZAR</strong></a><br>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="modal.close()">Fechar</button>
+  </div>
+</ng-template>

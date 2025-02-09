@@ -48,11 +48,11 @@
 <!-- Janela (modal) que abre depois da msg de TOKEN expirado -->
 <ng-template #modalMsgToken let-modal class="modal">
   <div class="modal-header">
-    <h4 class="modal-title">Erro</h4>
+    <h5 class="modal-title">AVISO</h5>
     <img ngSrc="/codigo_barras.png" height="60" width="60" class="img-right"/>
   </div>
   <div class="modal-body">
-    <a>Tempo limite de conexão com o sistema excedido. TOKEN Expirado.</a>
+    <a>O Token foi retirado. Você deslogou do sistema ou o token expirou por atingir o limite de tempo.</a>
   </div>
   <div class="modal-footer">
     <button type="button" class="btn btn-secondary" (click)="modal.close()">Fechar</button>

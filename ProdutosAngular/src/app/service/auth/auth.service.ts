@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
 import {Usuario} from '../../model/usuario';
-import {HttpClient, HttpErrorResponse} from '@angular/common/http';
-import {Router} from '@angular/router';
-import {BehaviorSubject, catchError, map, Observable, throwError} from 'rxjs';7
+import {HttpClient} from '@angular/common/http';
+import {map, Observable} from 'rxjs';7
 
 @Injectable({
   providedIn: 'root'
@@ -11,9 +10,15 @@ export class AuthService {
 
   private usuariosUrl: string;
 
-  constructor(private http: HttpClient, private router: Router) {
+  usuarioLogado!: Usuario;
+
+  constructor(private http: HttpClient) {
     // URL DO REST CONTROLLER
     this.usuariosUrl = 'http://localhost:8080/api/usuarios';
+  }
+
+  adicionarUsuarioLogado(usuario: Usuario) {
+    this.usuarioLogado = usuario;
   }
 
   existeTokenExpirado(): boolean {
@@ -43,10 +48,14 @@ export class AuthService {
     localStorage.setItem('bearerToken', token);
   }
 
+  getUsuarioLogado() {
+    return this.usuarioLogado
+  }
+
   realizarLogin(usuario: Usuario): Observable<Map<string, any>> {
-    return this.http.post<Map<string, string>>(this.usuariosUrl + "/realizarLogin", usuario).pipe(
+    return this.http.post<Map<string, any>>(this.usuariosUrl + "/realizarLogin", usuario).pipe(
       map(response => {
-        return new Map<string, string>((Object.entries(response)))
+        return new Map<string, any>((Object.entries(response)))
       })
     )
   }
