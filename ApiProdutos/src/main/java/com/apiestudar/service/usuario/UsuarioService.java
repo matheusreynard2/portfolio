@@ -16,4 +16,6 @@ public interface UsuarioService {
 	
 	int findLoginRepetido(String login);
 	
+	Usuario findByLogin(String login);
+	
 }

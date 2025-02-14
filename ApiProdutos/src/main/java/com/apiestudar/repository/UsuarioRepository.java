@@ -20,5 +20,4 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
 	
 	@Query(value = "SELECT COUNT(login) FROM usuario WHERE login = :usuarioLogin", nativeQuery = true)
 	int findLoginRepetido(@Param("usuarioLogin") String usuarioLogin);
-	
 }

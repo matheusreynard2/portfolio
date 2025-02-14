@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import {Usuario} from '../../model/usuario';
 import {HttpClient} from '@angular/common/http';
-import {map, Observable} from 'rxjs';7
+import {map, Observable} from 'rxjs';
+import {Router} from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -10,20 +11,21 @@ export class AuthService {
 
   private usuariosUrl: string;
 
-  usuarioLogado!: Usuario;
-
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private router: Router) {
     // URL DO REST CONTROLLER
     this.usuariosUrl = 'http://localhost:8080/api/usuarios';
   }
 
   adicionarUsuarioLogado(usuario: Usuario) {
-    this.usuarioLogado = usuario;
+    localStorage.setItem('usuarioLogado', JSON.stringify(usuario))
   }
 
-  existeTokenExpirado(): boolean {
-    const estaExpirado = localStorage.getItem('tokenExpirado')
-    return !!estaExpirado
+  removerUsuarioLogado() {
+    localStorage.removeItem('usuarioLogado');
+  }
+
+  getUsuarioLogado(): Usuario {
+    return JSON.parse(localStorage.getItem('usuarioLogado') || '{}');
   }
 
   adicionarTokenExpirado(valor: string) {
@@ -34,22 +36,23 @@ export class AuthService {
     localStorage.removeItem('tokenExpirado');
   }
 
-  // Método para verificar se o token de autenticação está presente
-  existeToken(): boolean {
-    const token = localStorage.getItem('bearerToken');
-    return !!token;  // Retorna true se o token existir, caso contrário false
-  }
-
-  removerToken() {
-    localStorage.removeItem('bearerToken');
+  existeTokenExpirado(): boolean {
+    const estaExpirado = localStorage.getItem('tokenExpirado')
+    return !!estaExpirado
   }
 
   adicionarToken(token: string) {
     localStorage.setItem('bearerToken', token);
   }
 
-  getUsuarioLogado() {
-    return this.usuarioLogado
+  removerToken() {
+    localStorage.removeItem('bearerToken');
+  }
+
+  // Método para verificar se o token de autenticação está presente
+  existeToken(): boolean {
+    const token = localStorage.getItem('bearerToken');
+    return !!token;  // Retorna true se o token existir, caso contrário false
   }
 
   realizarLogin(usuario: Usuario): Observable<Map<string, any>> {
@@ -59,4 +62,12 @@ export class AuthService {
       })
     )
   }
+
+  logout() {
+    this.removerToken()
+    this.removerTokenExpirado()
+    this.removerUsuarioLogado()
+    this.router.navigate(['/login']);
+  }
+
 }

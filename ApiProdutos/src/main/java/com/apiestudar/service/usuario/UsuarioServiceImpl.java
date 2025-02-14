@@ -46,4 +46,8 @@ public class UsuarioServiceImpl implements UsuarioService {
 		return usuarioRepository.findLoginRepetido(login);
 	}
 	
+	public Usuario findByLogin(String login) {
+		return usuarioRepository.findByLogin(login);
+	}
+	
 }

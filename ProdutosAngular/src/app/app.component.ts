@@ -22,34 +22,24 @@ export class AppComponent implements OnInit {
   mostrarPerfil: boolean = false;
   usuarioLogado!: Usuario;
 
-
   ngOnInit() {
     this.usuarioLogado = this.authService.getUsuarioLogado()
-
     this.router.events.pipe(
-      filter((event) => event instanceof NavigationEnd)
+      filter((event)  => event instanceof NavigationEnd)
     ).subscribe(() => {
+      this.usuarioLogado = this.authService.getUsuarioLogado()
       const rotaAtual = this.router.url;
 
-      // PARA ROTAS QUE NÃO EXIGEM AUTENTIAÇÃO JWT...
-      if (!this.authService.existeToken() && this.authService.existeTokenExpirado()) {
-        if (rotaAtual.includes('login') || rotaAtual.includes('cadastrar-usuario')) {
+      // CHECAGEM PARA EXIBIÇÃO DO PERFIL NO CANTO SUPERIOR ESQUERDO DA TELA
+      if (!this.authService.existeToken()) {
           this.mostrarPerfil = false;
-        }
+      } else if (this.authService.existeToken()) {
+        this.mostrarPerfil = !(rotaAtual.includes('login') || rotaAtual.includes('cadastrar-usuario'));
       }
-
-      // ...PARA AS QUE EXIGEM
-      if (this.authService.existeToken() && !this.authService.existeTokenExpirado()) {
-        this.mostrarPerfil = true;
-      }
-
-      this.ngOnInit()
     });
   }
 
   logout() {
-    this.authService.removerToken()
-    this.authService.adicionarTokenExpirado("true")
-    this.router.navigate(['/login']);
+    this.authService.logout()
   }
 }

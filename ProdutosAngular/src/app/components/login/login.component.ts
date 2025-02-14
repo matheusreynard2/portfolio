@@ -1,10 +1,10 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {Usuario} from '../../model/usuario';
 import {FormsModule} from '@angular/forms';
-import {AuthService} from '../../service/auth/auth.service';
 import {Router} from '@angular/router';
 import {NgbModal, NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {NgOptimizedImage} from '@angular/common';
+import {AuthService} from '../../service/auth/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -34,12 +34,11 @@ export class LoginComponent implements OnInit {
 
   ngOnInit() {
     // Mostrar MSG Token expirado
-    if (this.authService.existeTokenExpirado() && !this.authService.existeToken()) {
+    if (this.authService.existeTokenExpirado()) {
       setTimeout(() => {
         this.modalService.open(this.modalMsgToken, {size: 'lg'});
       }, 100);
     }
-    this.authService.removerToken()
     this.authService.removerTokenExpirado()
   }
 
@@ -50,11 +49,14 @@ export class LoginComponent implements OnInit {
         if (response.has('usuario')) {
           let usuario: Usuario;
           usuario = <Usuario>response.get('usuario');
-          this.usuario = usuario
-          this.authService.adicionarToken(usuario.token)
+          this.authService.removerUsuarioLogado()
           this.authService.adicionarUsuarioLogado(usuario)
-          console.log("token " + this.authService.existeToken() + ", tokenExpirado " + !this.authService.existeTokenExpirado())
-          this.router.navigate(['/produtos']);
+          this.authService.removerToken()
+          this.authService.adicionarToken(usuario.token)
+          this.authService.removerTokenExpirado()
+          console.log("getUsuarioLogado realizarLogin: " + this.authService.getUsuarioLogado().login)
+          this.router.navigate(['/produtos'])
+
         }
       },
       error: (error) => {

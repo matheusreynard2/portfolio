@@ -103,10 +103,17 @@ public class UsuarioController {
 		String senhaArmazenada = usuarioService.getSenhaByLogin(usuarioLogin.getLogin());
 
 		if (senhaCriptografada.matches(usuarioLogin.getSenha(), senhaArmazenada)) {
+			
+			Usuario usuarioLogado = usuarioService.findByLogin(usuarioLogin.getLogin());
+			
 			String token = tokenService.gerarToken(usuarioLogin);
-			usuarioLogin.setToken(token);
+			
+			usuarioLogado.setToken(token);
+			
 	        Map<String, Object> response = new HashMap<>();
-	        response.put("usuario", usuarioLogin);
+	        
+	        response.put("usuario", usuarioLogado);
+	        
 	        return ResponseEntity.ok(response);
 		} else {
 			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Collections.singletonMap("message", "Credenciais inválidas."));
