@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
-import {HttpClient, HttpErrorResponse, HttpHeaders} from '@angular/common/http';
+import {HttpClient, HttpErrorResponse, HttpHeaders, HttpParams} from '@angular/common/http';
 import { Produto } from '../../model/produto';
 import {BehaviorSubject, catchError, Observable, throwError} from 'rxjs';
 import {AuthService} from '../auth/auth.service';
 import {Router} from '@angular/router';
+import {PaginatedResponse} from '../../paginated-response';
 
 @Injectable({
   providedIn: 'root'  // Garante que o serviço esteja disponível globalmente em toda a aplicação
@@ -51,8 +52,13 @@ export class ProdutoService {
   }
 
   // ========= OK ========= ENDPOINT GET - Listar todos os produtos
-  public listarProdutos(): Observable<Produto[]> {
-    return this.http.get<Produto[]>(this.produtosUrl + "/listarProdutos").pipe(
+  public listarProdutos(page: number, size: number): Observable<PaginatedResponse<Produto>> {
+
+    const params = new HttpParams()
+      .set('page', page.toString())
+      .set('size', size.toString());
+
+    return this.http.get<PaginatedResponse<Produto>>(this.produtosUrl + "/listarProdutos", {params}).pipe(
     // Aqui fazemos o tratamento do erro 401 para TOKEN EXPIRADO
     catchError((error: HttpErrorResponse) => {
       if (error.status === 401 && error.error.message === 'Tempo limite de conexão com o sistema excedido. TOKEN Expirado')

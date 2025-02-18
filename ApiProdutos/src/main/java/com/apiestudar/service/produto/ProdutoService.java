@@ -2,13 +2,16 @@ package com.apiestudar.service.produto;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
 import com.apiestudar.model.Produto;
 
 public interface ProdutoService {
 
 	Produto adicionarProduto(Produto produto);
 
-	List<Produto> listarProdutos();
+	Page<Produto> listarProdutos(Pageable pageable);
 
 	Produto atualizarProduto(long id, Produto produtoAtualizado);
 

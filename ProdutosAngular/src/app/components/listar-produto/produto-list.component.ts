@@ -6,7 +6,8 @@ import {NgbModal, NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { ProdutoFunctionsService } from '../../service/produto/produto-functions.service';
 import {PorcentagemMaskDirective} from '../../directives/porcentagem-mask.directive';
-import {AuthService} from '../../service/auth/auth.service';
+import {NgxPaginationModule} from 'ngx-pagination';
+import {MatPaginatorModule, PageEvent} from '@angular/material/paginator';
 
 @Component({
   selector: 'app-produto-list',  // Corrigido para 'app-produto-list', sem a barra inicial
@@ -20,7 +21,9 @@ import {AuthService} from '../../service/auth/auth.service';
     ReactiveFormsModule,
     CurrencyPipe,
     PorcentagemMaskDirective,
-    NgIf
+    NgIf,
+    NgxPaginationModule,
+    MatPaginatorModule
   ]
 })
 
@@ -39,6 +42,11 @@ export class ProdutoListComponent implements OnInit {
   produtoExcluido!: Produto;
   imagemFile: File = new File([], 'arquivo_vazio.txt', {})
 
+  // Variáveis de paginação
+  totalRecords: number = 0;
+  currentPage: number = 0;
+  pageSize: number = 10;
+
   private modalService: NgbModal = new NgbModal();
   @ViewChild('searchBar') searchBar!: ElementRef
   @ViewChild('modalAvisoToken') modalAvisoToken!: ElementRef
@@ -47,11 +55,10 @@ export class ProdutoListComponent implements OnInit {
               private produtoFunctionsService: ProdutoFunctionsService) { }
 
   ngOnInit() {
-    this.produtoService.listarProdutos().subscribe(
-      data => {
-        this.listaDeProdutos = data.sort((a, b) => a.id - b.id);
-      }
-    );
+    this.produtoService.listarProdutos(this.currentPage, this.pageSize).subscribe(data => {
+      this.listaDeProdutos = data.content;  // Pega os registros da página atual
+      this.totalRecords = data.totalElements;  // Total de registros no banco
+    });
 
     this.listarProdutoMaisCaro();
     this.calcularMedia();
@@ -110,11 +117,17 @@ export class ProdutoListComponent implements OnInit {
 
   // Função que atualiza a lista de produtos
   atualizarLista(): void {
-    this.produtoService.listarProdutos().subscribe(data => {
-      this.listaDeProdutos = data.sort((a, b) => a.id - b.id);
+    this.produtoService.listarProdutos(this.currentPage, this.pageSize).subscribe(data => {
+      this.listaDeProdutos = data.content;  // Pega os registros da página atual
+      this.totalRecords = data.totalElements;  // Total de registros no banco
     });
     this.listarProdutoMaisCaro();
     this.calcularMedia();
+  }
+
+  trocarPagina(event: PageEvent): void {
+    this.currentPage = event.pageIndex;
+    this.atualizarLista();
   }
 
   // Função que abre o modal - Janela de edição de produto

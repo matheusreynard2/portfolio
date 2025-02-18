@@ -92,6 +92,7 @@
       </tr>
       </tbody>
     </table>
+    <mat-paginator [length]="totalRecords" [pageSize]="pageSize" [pageIndex]="currentPage" (page)="trocarPagina($event)"></mat-paginator>
   </div>
 </div>
 

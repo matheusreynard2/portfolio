@@ -10,6 +10,9 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -31,8 +34,9 @@ public class ProdutoController {
 	@ApiOperation(value = "Listagem de todos os produtos cadastrados.", notes = "Faz uma busca no banco de dados retornando uma lista com todos os produtos cadastrados.")
 	@ApiResponse(code = 200, message = "Produtos encontrados.")
 	@GetMapping("/listarProdutos")
-	public List<Produto> listarProdutos() {
-		List<Produto> produtos = produtoService.listarProdutos();
+	public Page<Produto> listarProdutos(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) {
+		Pageable pageable = PageRequest.of(page, size);
+		Page<Produto> produtos = produtoService.listarProdutos(pageable);
 		return produtos;
 	}
 

@@ -6,6 +6,8 @@ import com.apiestudar.model.Produto;
 import com.apiestudar.repository.ProdutoRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -28,8 +30,8 @@ public class ProdutoServiceImpl implements ProdutoService {
 
 	@Transactional
 	@Override
-	public List<Produto> listarProdutos() {
-		return produtoRepository.findAll();
+	public Page<Produto> listarProdutos(Pageable pageable) {
+		return produtoRepository.findAll(pageable);
 	}
 
 	@Transactional
