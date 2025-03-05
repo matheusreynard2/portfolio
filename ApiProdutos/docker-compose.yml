@@ -1,0 +1,43 @@
+services:
+  # Serviço do backend (Spring Boot API)
+  backend:
+    build:
+      context: ./
+    container_name: spring-boot-api
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/prodify
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=admin
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+      - SPRING_JPA_DATABASE_PLATFORM=org.hibernate.dialect.PostgreSQLDialect
+      - SPRING_SECURITY_USER_NAME=admin
+      - SPRING_SECURITY_USER_PASSWORD={bcrypt}$2a$10$Vt7GrOZJeXxLQXNpUswJEI4Jq8fH1kYlKc/6wwm.XY2p5TdzVE5zW
+    depends_on:
+      - db
+    networks:
+      - app-network
+
+  # Serviço do banco de dados (PostgreSQL)
+  db:
+    image: postgres:17
+    container_name: postgres-db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: admin
+      POSTGRES_DB: prodify
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - app-network
+
+# Redes para conectar os serviços
+networks:
+  app-network:
+    driver: bridge
+
+# Volumes para persistir os dados do banco de dados
+volumes:
+  postgres_data:
+    driver: local

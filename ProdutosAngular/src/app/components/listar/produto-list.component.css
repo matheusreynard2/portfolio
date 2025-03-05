@@ -1,0 +1,89 @@
+#btn_excluir, #btn_editar {
+  font-size: 15px;
+}
+
+.coluna_id {
+  width: 50px;
+}
+
+.coluna_nome {
+  width: 200px;
+}
+
+/* Garantir que a largura das colunas seja fixa ou proporcional */
+.table th, .table td {
+  padding: 10px;      /* Adiciona um padding consistente */
+}
+
+.table td button {
+  width: 100%;        /* Faz o botão ocupar toda a célula */
+}
+
+/* Alinha todos os botões de "Editar" e "Excluir" na mesma largura */
+.full-width-btn {
+  width: 100%;
+  display: block;
+}
+
+.modal-header {
+  position: relative;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  width: 100%;  /* Garante que o modal ocupe toda a largura */
+}
+
+.modal-title {
+  margin-right: 160px; /* Ajusta para o espaço da imagem */
+}
+
+.img-right {
+  position: absolute;
+  right: 0; /* Coloca a imagem totalmente no lado direito */
+  top: 0;   /* Alinha a imagem no topo */
+  opacity: 75%;
+}
+
+#janelaEditar {
+  width: 750px;
+  height: 750px;
+  border-radius: 15px; /* Ajuste o valor conforme desejado para o arredondamento */
+}
+
+#combo_tipo_pesquisa {
+  width: 100px;
+  height: 30px;
+}
+
+.searchBar_input, #searchBar_td, #btn_pesquisar {
+  height: 30px;
+  font-size: 14px;
+  width: 100%;
+}
+
+.image-container {
+  max-width: 40%; /* Limita a largura */
+  max-height: 40%; /* Limita a altura */
+  background-color: black; /* Fundo preto */
+  padding: 10px; /* Espaço extra ao redor da imagem */
+  border: 3px black; /* Bordas arredondadas */
+  overflow: hidden; /* Impede que a imagem ultrapasse o container */
+  text-align: center; /* Centraliza a imagem */
+}
+
+.image-container img {
+  max-width: 100%; /* Ajusta a largura da imagem */
+  max-height: 100%; /* Ajusta a altura da imagem */
+  object-fit: contain; /* A imagem se ajusta sem distorcer */
+}
+
+.passar_mouse {
+  cursor: zoom-in;
+  display: inline-block;
+}
+
+.img-popup {
+  position: absolute;
+  top: 10px;  /* Ajuste conforme a necessidade */
+  left: 350px; /* Ajuste conforme a necessidade */
+}

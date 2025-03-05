@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: prodify-bd-deploy
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: prodify-bd-service
+  template:
+    metadata:
+      labels:
+        app: prodify-bd-service
+    spec:
+      containers:
+        - name: postgres-bancodados
+          image: postgres:latest
+          env:
+            - name: POSTGRES_DB
+              value: prodify
+            - name: POSTGRES_USER
+              value: postgres
+            - name: POSTGRES_PASSWORD
+              value: admin
