@@ -4,4 +4,6 @@
     <fullyQualifiedTypeName name="com.apiestudar.exceptions.ErroConverterFileEmByte"/>
     <fullyQualifiedTypeName name="java.lang.System"/>
     <fullyQualifiedTypeName name="java.util.Base64.Encoder"/>
+    <fullyQualifiedTypeName name="org.springframework.web.bind.annotation.ResponseBody"/>
+    <fullyQualifiedTypeName name="org.springframework.security.authentication.UsernamePasswordAuthenticationToken"/>
 </qualifiedTypeNameHistroy>

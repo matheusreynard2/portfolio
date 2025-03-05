@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: prodify-backend-deploy
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: prodify-bd-service
+  template:
+    metadata:
+      labels:
+        app: prodify-bd-service
+    spec:
+      containers:
+        - name: prodify-backend
+          image: matheusreynardkolling2/apiprodutos-backend:latest
+          env:
+            - name: SPRING_DATASOURCE_URL
+              value: jdbc:postgresql://prodify-bd-service:5432/prodify
+            - name: SPRING_DATASOURCE_USERNAME
+              value: postgres
+            - name: SPRING_DATASOURCE_PASSWORD
+              value: admin
+          ports:
+            - containerPort: 8080
