@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <libraryInfos>
+<<<<<<< HEAD
+    <libraryInfo home="/usr/lib/jvm/jdk-17.0.12-oracle-x64" version="17.0.12"/>
+    <libraryInfo home="/home/matheusreynard/.p2/pool/plugins/org.eclipse.justj.openjdk.hotspot.jre.full.linux.x86_64_23.0.2.v20250131-0604" version="23.0.2">
+=======
     <libraryInfo home="C:\Program Files\Java\jdk-17.0.13" version="17.0.13"/>
     <libraryInfo home="C:\Users\gradi\.p2\pool\plugins\org.eclipse.justj.openjdk.hotspot.jre.full.win32.x86_64_23.0.1.v20241024-1700\jre" version="23.0.1"/>
     <libraryInfo home="C:\Program Files (x86)\Java\jdk1.8.0_202" version="1.8.0_202">
@@ -22,6 +26,7 @@
         </endorsedDirs>
     </libraryInfo>
     <libraryInfo home="C:\Users\gradi\.p2\pool\plugins\org.eclipse.justj.openjdk.hotspot.jre.full.win32.x86_64_23.0.1.v20241024-1700" version="23.0.1">
+>>>>>>> e9271c048611b1e60c95b3a807395b3b64004b88
         <bootpath>
             <entry path="null"/>
         </bootpath>
@@ -32,5 +37,9 @@
             <entry path="null"/>
         </endorsedDirs>
     </libraryInfo>
+<<<<<<< HEAD
+    <libraryInfo home="/home/matheusreynard/.p2/pool/plugins/org.eclipse.justj.openjdk.hotspot.jre.full.linux.x86_64_23.0.2.v20250131-0604/jre" version="23.0.2"/>
+=======
     <libraryInfo home="C:\Program Files\Java\jdk-23.0.1" version="23.0.1"/>
+>>>>>>> e9271c048611b1e60c95b3a807395b3b64004b88
 </libraryInfos>
