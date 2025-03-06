@@ -5,8 +5,9 @@ import {HttpClientModule} from '@angular/common/http';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {AuthService} from './service/auth/auth.service';
 import {NgClass, NgIf, NgOptimizedImage} from '@angular/common';
-import {filter} from 'rxjs';
+import {filter, firstValueFrom, Observable, of} from 'rxjs';
 import {Usuario} from './model/usuario';
+import {UsuarioService} from './service/usuario/usuario.service';
 
 @Component({
   selector: 'app-root',
@@ -17,12 +18,20 @@ import {Usuario} from './model/usuario';
 export class AppComponent implements OnInit {
   title = 'Sistema de Produtos';
 
-  constructor(private authService: AuthService, private router: Router) { }
+  constructor(private authService: AuthService, private router: Router, private usuarioService: UsuarioService) { }
 
   mostrarPerfil: boolean = false;
   usuarioLogado!: Usuario;
+  numeroVisitas: number = 0;
+  private observableVisitas: Observable<number> = of(0)
 
   ngOnInit() {
+    this.observableVisitas = this.usuarioService.addNovoAcessoIp()
+    this.numeroVisitas
+    this.observableVisitas.subscribe((valor: number) => {
+      this.numeroVisitas = valor;
+    });
+
     this.usuarioLogado = this.authService.getUsuarioLogado()
     this.router.events.pipe(
       filter((event)  => event instanceof NavigationEnd)

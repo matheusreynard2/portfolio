@@ -47,27 +47,17 @@
 
   <div class="bg-dark border border-5 border-secondary">
     <div class="card-body position-relative text-center text-white">
-      <p class="bg-gradient p-3">
-        <img src="/foto_dev.png" height="50" width="50" class="me-5" />
-        <span>Matheus Reynard. Conheça o Desenvolvedor: </span>
-        <a href="https://www.linkedin.com/in/matheus-reynard" target="_blank"> CLIQUE AQUI!</a>
-      </p>
+      <div class="bg-gradient p-3 d-flex flex-column align-items-start">
+        <div class="d-flex align-items-center">
+          <div class="text-start">
+            <span style="font-size: 12px; display: block;">MATHEUS REYNARD<br> Conheça o Desenvolvedor!</span>
+            <a href="https://www.linkedin.com/in/matheus-reynard" target="_blank" style="font-size: 13px;">CLIQUE AQUI!</a>
+          </div>
+          <img src="/foto_dev.png" height="60" width="60" />
+        </div>
+        <span style="font-size: 13px; margin-top: 8px; text-align: left;">Quantidade de IPs que acessaram o sistema PRODIFY até agora: {{numeroVisitas}}</span>
+      </div>
       <img src="/logo_sacolas.png" alt="Logo" class="position-absolute end-0 bottom-0" width="190" height="150">
     </div>
   </div>
 </div>
-
-<ng-template #modalAvisoToken let-modal>
-  <div class="modal-header">
-    <h4 class="modal-title">
-      AVISO!
-    </h4>
-    <img ngSrc="/codigo_barras.png" height="60" width="60" class="img-right"/>
-  </div>
-  <div class="modal-body">
-    <a style="font-size: 15px;">Informações atualizadas! Clique em <strong>ATUALIZAR</strong></a><br>
-  </div>
-  <div class="modal-footer">
-    <button type="button" class="btn btn-secondary" (click)="modal.close()">Fechar</button>
-  </div>
-</ng-template>

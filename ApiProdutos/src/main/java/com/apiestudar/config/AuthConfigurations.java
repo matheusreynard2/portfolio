@@ -33,6 +33,7 @@ public class AuthConfigurations implements WebMvcConfigurer {
 					try {
                         requests
                                 .antMatchers("/swagger-ui/**").permitAll()
+                                .antMatchers(HttpMethod.GET, "/api/usuarios/addNovoAcessoIp").permitAll()
                                 .antMatchers(HttpMethod.POST, "/api/usuarios/realizarLogin").permitAll()
                                 .antMatchers(HttpMethod.POST, "/api/usuarios/adicionarUsuario").permitAll()
                                 .antMatchers(HttpMethod.DELETE, "/api/usuarios/deletarUsuario/{id}").permitAll()

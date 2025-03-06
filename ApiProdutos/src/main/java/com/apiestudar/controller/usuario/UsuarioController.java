@@ -6,6 +6,10 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -23,6 +27,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.apiestudar.model.Usuario;
+import com.apiestudar.service.contador.ContadorIPService;
 import com.apiestudar.service.jwt.TokenService;
 import com.apiestudar.service.usuario.UsuarioService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -120,5 +125,22 @@ public class UsuarioController {
 		}
 
 	}
+	
+	@GetMapping("/addNovoAcessoIp")
+    protected int addNovoAcessoIp(HttpServletRequest req)  throws IOException {
+        String ip = req.getRemoteAddr(); // Pega o IP do visitante
+        
+        Set<String> ipsRegistrados = ContadorIPService.lerIPs();
+
+        // Verifica se o IP já foi registrado antes
+        if (!ipsRegistrados.contains(ip)) {
+            ipsRegistrados.add(ip);
+            ContadorIPService.salvarIP(ip);
+            ContadorIPService.setContador(ContadorIPService.getContador() + 1);
+            ContadorIPService.salvarAcessos(ContadorIPService.getContador());
+        }
+       
+        return ContadorIPService.getContador();
+    }
 	
 }

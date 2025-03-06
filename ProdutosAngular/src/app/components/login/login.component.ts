@@ -23,7 +23,11 @@ export class LoginComponent implements OnInit {
     login: '',
     senha: '',
     token: '',
-    imagem: ''
+    imagem: '',
+    nome: '',
+    linkedin: '',
+    whatsapp: '',
+    endereco:''
   };
 
   @ViewChild('modalMsgToken') modalMsgToken: any

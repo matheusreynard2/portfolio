@@ -5,7 +5,6 @@ import {Router} from '@angular/router';
 import {UsuarioService} from '../../service/usuario/usuario.service';
 import {NgOptimizedImage} from '@angular/common';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
-import {Produto} from '../../model/produto';
 
 @Component({
   selector: 'app-add-usuario',
@@ -23,7 +22,11 @@ export class AddUsuarioComponent implements OnInit {
     login: '',
     senha: '',
     token: '',
-    imagem: ''
+    imagem: '',
+    nome: '',
+    linkedin: '',
+    whatsapp: '',
+    endereco:''
   };
 
   private modalService: NgbModal = new NgbModal();

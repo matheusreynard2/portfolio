@@ -1,5 +1,9 @@
-.coluna-1 {
+.coluna-label-1 {
   width: 50px;
+}
+
+.coluna-label-2 {
+  width: 120px;
 }
 
 .img-right {
