@@ -1,0 +1,22 @@
+package com.apiestudar.service;
+
+import java.util.List;
+
+import com.apiestudar.model.Produto;
+
+public interface ProdutoService {
+
+	Produto adicionarProduto(Produto produto);
+
+	List<Produto> listarProdutos();
+
+	Produto atualizarProduto(long id, Produto produtoAtualizado);
+
+	boolean deletarProduto(long id);
+	
+	List<Produto> listarProdutoMaisCaro();
+
+	Double obterMediaPreco();
+	
+	Double calcularDesconto(double valorProduto, double descontoDecimal);
+}

@@ -1,0 +1,9 @@
+public class RetornouFalseException extends RuntimeException {
+	public OperacaoFalhouException(String message) {
+		super(message);
+	}
+
+	public OperacaoFalhouException(String message, Throwable cause) {
+		super(message, cause);
+	}
+}

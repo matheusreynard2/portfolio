@@ -1,0 +1,22 @@
+package com.apiestudar;
+
+public class Empregado {
+	
+	private String nome;
+	private String funcao;
+	private double salario;
+	
+	public Empregado(String nome, String funcao, double salario) {
+		this.nome = nome;
+		this.funcao = funcao;
+		this.salario = salario;
+	}
+	
+	
+	public class SalaryCalculator {
+		
+		public double
+		
+	}
+
+}

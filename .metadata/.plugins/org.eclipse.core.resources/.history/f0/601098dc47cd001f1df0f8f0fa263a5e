@@ -1,0 +1,28 @@
+package com.apiestudar;
+
+// S.O.L.I.D EXEMPLO 1 -> 𝟭. 𝘚𝘪𝘯𝘨𝘭𝘦-𝘙𝘦𝘴𝘱𝘰𝘯𝘴𝘪𝘣𝘪𝘭𝘪𝘵𝘺 𝘗𝘳𝘪𝘯𝘤𝘪𝘱𝘭𝘦 - Princípio da Responsabilidade Única
+
+public class Empregado {
+	
+	private String nome;
+	private String funcao;
+	private double salario;
+	
+	public Empregado(String nome, String funcao, double salario) {
+		this.nome = nome;
+		this.funcao = funcao;
+		this.salario = salario;
+	}
+	
+	
+	public class CalculadorSalario {
+		
+		public double calcularSalario(Empregado empregado) {
+			// Lógica para calcular o salário
+			return salario;
+		}
+		
+	}
+
+}
+
