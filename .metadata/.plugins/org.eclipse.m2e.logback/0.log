@@ -15405,3 +15405,4 @@ Caused by: org.codehaus.plexus.util.xml.pull.XmlPullParserException: TEXT must b
 2025-03-04 15:40:48,605 [Worker-8: Launching RUN CLEAN PKG TEST FOR DOCKER] INFO  o.eclipse.m2e.core.internal.Bundles - 	Entry: C:\Users\gradi\.p2\pool\plugins\com.google.guava.failureaccess_1.0.2.jar
 2025-03-04 15:40:48,609 [Worker-8: Launching RUN CLEAN PKG TEST FOR DOCKER] INFO  o.e.m.i.launch.MavenLaunchDelegate - Run build in "C:\Users\gradi\eclipse-workspace\ApiProdutos":
 2025-03-04 15:40:48,610 [Worker-8: Launching RUN CLEAN PKG TEST FOR DOCKER] INFO  o.e.m.i.launch.MavenLaunchDelegate -  mvn  -B -Dstyle.color=always clean package -DskipTests
+2025-03-05 19:51:55,845 [Worker-4: Loading available Gradle versions] INFO  o.e.b.c.i.u.g.PublishedGradleVersions - Gradle version information cache is out-of-date. Trying to update.
