@@ -14,6 +14,7 @@
 	</section>
 	<section name="MavenProjectImportWizardPage">
 		<list key="rootDirectory">
+			<item value="/home/matheusreynard/eclipse-workspace/ApiProdutos"/>
 			<item value="C:\Users\gradi\eclipse-workspace\ApiProdutos"/>
 		</list>
 		<list key="projectNameTemplate">

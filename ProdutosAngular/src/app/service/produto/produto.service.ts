@@ -5,6 +5,7 @@ import {BehaviorSubject, catchError, Observable, throwError} from 'rxjs';
 import {AuthService} from '../auth/auth.service';
 import {Router} from '@angular/router';
 import {PaginatedResponse} from '../../paginated-response';
+import {environment} from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'  // Garante que o serviço esteja disponível globalmente em toda a aplicação
@@ -12,10 +13,11 @@ import {PaginatedResponse} from '../../paginated-response';
 export class ProdutoService {
 
   private produtosUrl: string;
+  private apiUrl = environment.API_URL;
 
   constructor(private http: HttpClient, private authService: AuthService, private router: Router) {
     // URL DO REST CONTROLLER
-    this.produtosUrl = 'http://localhost:8080/api/produtos';
+    this.produtosUrl = this.apiUrl + '/produtos';
   }
 
   // Se o token expirou, remove o token

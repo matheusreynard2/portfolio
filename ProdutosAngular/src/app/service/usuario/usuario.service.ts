@@ -5,6 +5,7 @@ import { BehaviorSubject } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import {Usuario} from '../../model/usuario';
+import {environment} from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -12,13 +13,14 @@ import {Usuario} from '../../model/usuario';
 export class UsuarioService {
 
   private usuariosUrl: string;
+  private apiUrl = environment.API_URL;
   private loginExistente = new BehaviorSubject<boolean>(false);
   private numeroAcesso: number = 0
   loginObservable = this.loginExistente.asObservable();
 
   constructor(private http: HttpClient, private router: Router) {
     // URL DO REST CONTROLLER
-    this.usuariosUrl = 'http://localhost:8080/api/usuarios';
+    this.usuariosUrl = this.apiUrl + '/usuarios';
   }
 
   adicionarUsuario(usuario: Usuario, imagem: File): Observable<Map<string, any>> {

@@ -9,8 +9,8 @@ public class ContadorIPService extends HttpServlet {
 
 	private static final long serialVersionUID = 28583830074775329L;
 	
-	private static final String CONTADOR_FILE = "acessos.txt";
-	private static final String IPS_FILE = "listaips.txt";
+	private static final String CONTADOR_FILE = "/home/matheusreynard/Documents/contador_prodify/acessos.txt";
+	private static final String IPS_FILE = "/home/matheusreynard/Documents/contador_prodify/lista_ips.txt";
 
 	private static int contador = lerAcessos();
 	private static Set<String> ipsRegistrados = lerIPs();

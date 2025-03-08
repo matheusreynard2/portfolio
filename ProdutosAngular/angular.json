@@ -34,6 +34,15 @@
           },
           "configurations": {
             "production": {
+              "baseHref": "/",
+              "outputPath": "dist",
+              "deployUrl": "/",
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.prod.ts"
+                }
+              ],
               "budgets": [
                 {
                   "type": "initial",
@@ -94,11 +103,8 @@
         }
       }
     }
-<<<<<<< HEAD
   },
   "cli": {
     "analytics": false
-=======
->>>>>>> e9271c048611b1e60c95b3a807395b3b64004b88
   }
 }

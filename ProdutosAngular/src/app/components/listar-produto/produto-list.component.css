@@ -10,6 +10,12 @@
   width: 200px;
 }
 
+.div-tabela {
+  width: 100%;
+  margin: 0 auto;
+  overflow-x: auto;
+}
+
 /* Garantir que a largura das colunas seja fixa ou proporcional */
 .table th, .table td {
   padding: 10px;      /* Adiciona um padding consistente */

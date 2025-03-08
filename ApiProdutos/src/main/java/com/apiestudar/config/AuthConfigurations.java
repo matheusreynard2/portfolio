@@ -64,9 +64,9 @@ public class AuthConfigurations implements WebMvcConfigurer {
 		return new WebMvcConfigurer() {
 			@Override
 	        public void addCorsMappings(CorsRegistry registry) {
-	            // Permite CORS apenas para a rota "/api/usuarios"
+	            // Permite CORS 
 	            registry.addMapping("/api/**")
-	                    .allowedOrigins("http://localhost:4200")  // Endereço do frontend
+	                    .allowedOrigins("http://localhost:8080", "http://www.sistemaprodify.com", "http://www.sistemaprodify.com:8080", "http://www.sistemaprodify.com:80", "http://191.252.38.22:8080", "http://191.252.38.22:80", "http://191.252.38.22")  // Endereço do frontend
 	                    .allowedMethods("GET", "POST", "PUT", "DELETE")
 	                    .allowedHeaders("*")
 	                    .allowCredentials(true);

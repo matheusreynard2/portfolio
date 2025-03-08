@@ -3,6 +3,7 @@ import {Usuario} from '../../model/usuario';
 import {HttpClient} from '@angular/common/http';
 import {map, Observable} from 'rxjs';
 import {Router} from '@angular/router';
+import {environment} from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -10,10 +11,11 @@ import {Router} from '@angular/router';
 export class AuthService {
 
   private usuariosUrl: string;
+  private apiUrl = environment.API_URL;
 
   constructor(private http: HttpClient, private router: Router) {
     // URL DO REST CONTROLLER
-    this.usuariosUrl = 'http://localhost:8080/api/usuarios';
+    this.usuariosUrl = this.apiUrl + '/usuarios';
   }
 
   adicionarUsuarioLogado(usuario: Usuario) {

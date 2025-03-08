@@ -37,7 +37,7 @@ import io.swagger.annotations.ApiResponse;
 
 @RestController
 @RequestMapping("api/usuarios")
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = {"http://localhost:8080","http://www.sistemaprodify.com", "http://www.sistemaprodify.com:8080", "http://www.sistemaprodify.com:80", "http://191.252.38.22:8080", "http://191.252.38.22:80", "http://191.252.38.22"})
 public class UsuarioController {
 	
 	@Autowired
@@ -127,7 +127,7 @@ public class UsuarioController {
 	}
 	
 	@GetMapping("/addNovoAcessoIp")
-    protected int addNovoAcessoIp(HttpServletRequest req)  throws IOException {
+    public int addNovoAcessoIp(HttpServletRequest req) throws IOException {
         String ip = req.getRemoteAddr(); // Pega o IP do visitante
         
         Set<String> ipsRegistrados = ContadorIPService.lerIPs();
