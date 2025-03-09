@@ -37,7 +37,18 @@ import io.swagger.annotations.ApiResponse;
 
 @RestController
 @RequestMapping("api/usuarios")
-@CrossOrigin(origins = {"http://localhost:8080","http://www.sistemaprodify.com", "http://www.sistemaprodify.com:8080", "http://www.sistemaprodify.com:80", "http://191.252.38.22:8080", "http://191.252.38.22:80", "http://191.252.38.22"})
+@CrossOrigin(
+	    origins = {
+	        "http://localhost:8080",
+	        "http://www.sistemaprodify.com",
+	        "http://www.sistemaprodify.com:8080",
+	        "http://www.sistemaprodify.com:80",
+	        "http://191.252.38.22:8080",
+	        "http://191.252.38.22:80",
+	        "http://191.252.38.22"
+	    },
+	    allowedHeaders = {"*"}
+)
 public class UsuarioController {
 	
 	@Autowired

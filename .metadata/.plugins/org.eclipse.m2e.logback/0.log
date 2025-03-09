@@ -20890,3 +20890,123 @@ org.eclipse.core.runtime.CoreException: Could not resolve artifact antlr:antlr:j
 2025-03-08 17:43:19,280 [Worker-24: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
 2025-03-08 17:43:19,280 [Worker-24: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered properties files.
 2025-03-08 17:43:19,280 [Worker-24: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory /home/matheusreynard/eclipse-workspace/ApiProdutos/src/test/resources
+2025-03-08 23:13:49,267 [Worker-30: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2025-03-08 23:13:49,269 [Worker-30: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered properties files.
+2025-03-08 23:13:49,270 [Worker-30: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 1 resource
+2025-03-08 23:13:49,302 [Worker-30: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2025-03-08 23:13:49,318 [Worker-30: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2025-03-08 23:13:49,318 [Worker-30: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered properties files.
+2025-03-08 23:13:49,318 [Worker-30: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory /home/matheusreynard/eclipse-workspace/ApiProdutos/src/test/resources
+2025-03-09 08:25:15,017 [Worker-1: Loading available Gradle versions] INFO  o.e.b.c.i.u.g.PublishedGradleVersions - Gradle version information cache is up-to-date. Trying to read.
+2025-03-09 08:25:50,671 [Worker-6: Launching ApiEstudarApplication (3)] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2025-03-09 08:25:50,676 [Worker-6: Launching ApiEstudarApplication (3)] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered properties files.
+2025-03-09 08:25:50,683 [Worker-6: Launching ApiEstudarApplication (3)] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 1 resource
+2025-03-09 08:25:50,713 [Worker-6: Launching ApiEstudarApplication (3)] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2025-03-09 08:25:50,725 [Worker-6: Launching ApiEstudarApplication (3)] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2025-03-09 08:25:50,725 [Worker-6: Launching ApiEstudarApplication (3)] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered properties files.
+2025-03-09 08:25:50,725 [Worker-6: Launching ApiEstudarApplication (3)] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory /home/matheusreynard/eclipse-workspace/ApiProdutos/src/test/resources
+2025-03-09 08:31:18,888 [Worker-18: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2025-03-09 08:31:18,889 [Worker-18: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered properties files.
+2025-03-09 08:31:18,893 [Worker-18: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 1 resource
+2025-03-09 08:31:18,925 [Worker-18: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2025-03-09 08:31:18,938 [Worker-18: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2025-03-09 08:31:18,938 [Worker-18: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered properties files.
+2025-03-09 08:31:18,939 [Worker-18: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory /home/matheusreynard/eclipse-workspace/ApiProdutos/src/test/resources
+2025-03-09 09:37:17,619 [Worker-3: Loading available Gradle versions] INFO  o.e.b.c.i.u.g.PublishedGradleVersions - Gradle version information cache is up-to-date. Trying to read.
+2025-03-09 09:40:43,664 [Worker-6: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2025-03-09 09:40:43,675 [Worker-6: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered properties files.
+2025-03-09 09:40:43,694 [Worker-6: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 1 resource
+2025-03-09 09:40:43,749 [Worker-6: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2025-03-09 09:40:43,785 [Worker-6: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2025-03-09 09:40:43,785 [Worker-6: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered properties files.
+2025-03-09 09:40:43,785 [Worker-6: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory /home/matheusreynard/eclipse-workspace/ApiProdutos/src/test/resources
+2025-03-09 09:44:25,090 [Worker-6: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2025-03-09 09:44:25,090 [Worker-6: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered properties files.
+2025-03-09 09:44:25,099 [Worker-6: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 1 resource
+2025-03-09 09:44:25,194 [Worker-6: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2025-03-09 09:44:25,227 [Worker-6: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2025-03-09 09:44:25,227 [Worker-6: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered properties files.
+2025-03-09 09:44:25,227 [Worker-6: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory /home/matheusreynard/eclipse-workspace/ApiProdutos/src/test/resources
+2025-03-09 09:58:54,342 [Worker-27: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2025-03-09 09:58:54,343 [Worker-27: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered properties files.
+2025-03-09 09:58:54,343 [Worker-27: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 1 resource
+2025-03-09 09:58:54,373 [Worker-27: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2025-03-09 09:58:54,381 [Worker-27: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2025-03-09 09:58:54,381 [Worker-27: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered properties files.
+2025-03-09 09:58:54,386 [Worker-27: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory /home/matheusreynard/eclipse-workspace/ApiProdutos/src/test/resources
+2025-03-09 09:59:34,177 [Worker-27: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2025-03-09 09:59:34,177 [Worker-27: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered properties files.
+2025-03-09 09:59:34,180 [Worker-27: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 1 resource
+2025-03-09 09:59:34,212 [Worker-27: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2025-03-09 09:59:34,237 [Worker-27: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2025-03-09 09:59:34,237 [Worker-27: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered properties files.
+2025-03-09 09:59:34,237 [Worker-27: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory /home/matheusreynard/eclipse-workspace/ApiProdutos/src/test/resources
+2025-03-09 09:59:42,075 [Worker-26: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2025-03-09 09:59:42,075 [Worker-26: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered properties files.
+2025-03-09 09:59:42,076 [Worker-26: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 1 resource
+2025-03-09 09:59:42,089 [Worker-26: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2025-03-09 09:59:42,096 [Worker-26: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2025-03-09 09:59:42,096 [Worker-26: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered properties files.
+2025-03-09 09:59:42,096 [Worker-26: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory /home/matheusreynard/eclipse-workspace/ApiProdutos/src/test/resources
+2025-03-09 10:18:16,800 [Worker-2: Loading available Gradle versions] INFO  o.e.b.c.i.u.g.PublishedGradleVersions - Gradle version information cache is up-to-date. Trying to read.
+2025-03-09 10:18:38,868 [Worker-11: Launching ApiProdutos] INFO  o.eclipse.m2e.core.internal.Bundles - getClasspathEntries(Bundle=org.eclipse.m2e.maven.runtime_3.9.900.20240824-1409 [296])
+2025-03-09 10:18:38,872 [Worker-11: Launching ApiProdutos] INFO  o.eclipse.m2e.core.internal.Bundles - 	Entry: /home/matheusreynard/.p2/pool/plugins/org.eclipse.m2e.maven.runtime_3.9.900.20240824-1409
+2025-03-09 10:18:38,872 [Worker-11: Launching ApiProdutos] INFO  o.eclipse.m2e.core.internal.Bundles - 	Entry: /home/matheusreynard/.p2/pool/plugins/org.eclipse.m2e.maven.runtime_3.9.900.20240824-1409/jars/aopalliance-1.0.jar
+2025-03-09 10:18:38,872 [Worker-11: Launching ApiProdutos] INFO  o.eclipse.m2e.core.internal.Bundles - 	Entry: /home/matheusreynard/.p2/pool/plugins/org.eclipse.m2e.maven.runtime_3.9.900.20240824-1409/jars/guice-5.1.0.jar
+2025-03-09 10:18:38,872 [Worker-11: Launching ApiProdutos] INFO  o.eclipse.m2e.core.internal.Bundles - 	Entry: /home/matheusreynard/.p2/pool/plugins/org.eclipse.m2e.maven.runtime_3.9.900.20240824-1409/jars/httpclient-4.5.14.jar
+2025-03-09 10:18:38,872 [Worker-11: Launching ApiProdutos] INFO  o.eclipse.m2e.core.internal.Bundles - 	Entry: /home/matheusreynard/.p2/pool/plugins/org.eclipse.m2e.maven.runtime_3.9.900.20240824-1409/jars/httpcore-4.4.16.jar
+2025-03-09 10:18:38,872 [Worker-11: Launching ApiProdutos] INFO  o.eclipse.m2e.core.internal.Bundles - 	Entry: /home/matheusreynard/.p2/pool/plugins/org.eclipse.m2e.maven.runtime_3.9.900.20240824-1409/jars/jansi-2.4.1.jar
+2025-03-09 10:18:38,872 [Worker-11: Launching ApiProdutos] INFO  o.eclipse.m2e.core.internal.Bundles - 	Entry: /home/matheusreynard/.p2/pool/plugins/org.eclipse.m2e.maven.runtime_3.9.900.20240824-1409/jars/jcl-over-slf4j-1.7.36.jar
+2025-03-09 10:18:38,872 [Worker-11: Launching ApiProdutos] INFO  o.eclipse.m2e.core.internal.Bundles - 	Entry: /home/matheusreynard/.p2/pool/plugins/org.eclipse.m2e.maven.runtime_3.9.900.20240824-1409/jars/maven-artifact-3.9.9.jar
+2025-03-09 10:18:38,872 [Worker-11: Launching ApiProdutos] INFO  o.eclipse.m2e.core.internal.Bundles - 	Entry: /home/matheusreynard/.p2/pool/plugins/org.eclipse.m2e.maven.runtime_3.9.900.20240824-1409/jars/maven-builder-support-3.9.9.jar
+2025-03-09 10:18:38,872 [Worker-11: Launching ApiProdutos] INFO  o.eclipse.m2e.core.internal.Bundles - 	Entry: /home/matheusreynard/.p2/pool/plugins/org.eclipse.m2e.maven.runtime_3.9.900.20240824-1409/jars/maven-compat-3.9.9.jar
+2025-03-09 10:18:38,872 [Worker-11: Launching ApiProdutos] INFO  o.eclipse.m2e.core.internal.Bundles - 	Entry: /home/matheusreynard/.p2/pool/plugins/org.eclipse.m2e.maven.runtime_3.9.900.20240824-1409/jars/maven-core-3.9.9.jar
+2025-03-09 10:18:38,872 [Worker-11: Launching ApiProdutos] INFO  o.eclipse.m2e.core.internal.Bundles - 	Entry: /home/matheusreynard/.p2/pool/plugins/org.eclipse.m2e.maven.runtime_3.9.900.20240824-1409/jars/maven-embedder-3.9.9.jar
+2025-03-09 10:18:38,872 [Worker-11: Launching ApiProdutos] INFO  o.eclipse.m2e.core.internal.Bundles - 	Entry: /home/matheusreynard/.p2/pool/plugins/org.eclipse.m2e.maven.runtime_3.9.900.20240824-1409/jars/maven-model-3.9.9.jar
+2025-03-09 10:18:38,873 [Worker-11: Launching ApiProdutos] INFO  o.eclipse.m2e.core.internal.Bundles - 	Entry: /home/matheusreynard/.p2/pool/plugins/org.eclipse.m2e.maven.runtime_3.9.900.20240824-1409/jars/maven-model-builder-3.9.9.jar
+2025-03-09 10:18:38,873 [Worker-11: Launching ApiProdutos] INFO  o.eclipse.m2e.core.internal.Bundles - 	Entry: /home/matheusreynard/.p2/pool/plugins/org.eclipse.m2e.maven.runtime_3.9.900.20240824-1409/jars/maven-plugin-api-3.9.9.jar
+2025-03-09 10:18:38,873 [Worker-11: Launching ApiProdutos] INFO  o.eclipse.m2e.core.internal.Bundles - 	Entry: /home/matheusreynard/.p2/pool/plugins/org.eclipse.m2e.maven.runtime_3.9.900.20240824-1409/jars/maven-repository-metadata-3.9.9.jar
+2025-03-09 10:18:38,873 [Worker-11: Launching ApiProdutos] INFO  o.eclipse.m2e.core.internal.Bundles - 	Entry: /home/matheusreynard/.p2/pool/plugins/org.eclipse.m2e.maven.runtime_3.9.900.20240824-1409/jars/maven-resolver-api-1.9.22.jar
+2025-03-09 10:18:38,873 [Worker-11: Launching ApiProdutos] INFO  o.eclipse.m2e.core.internal.Bundles - 	Entry: /home/matheusreynard/.p2/pool/plugins/org.eclipse.m2e.maven.runtime_3.9.900.20240824-1409/jars/maven-resolver-connector-basic-1.9.22.jar
+2025-03-09 10:18:38,873 [Worker-11: Launching ApiProdutos] INFO  o.eclipse.m2e.core.internal.Bundles - 	Entry: /home/matheusreynard/.p2/pool/plugins/org.eclipse.m2e.maven.runtime_3.9.900.20240824-1409/jars/maven-resolver-impl-1.9.22.jar
+2025-03-09 10:18:38,873 [Worker-11: Launching ApiProdutos] INFO  o.eclipse.m2e.core.internal.Bundles - 	Entry: /home/matheusreynard/.p2/pool/plugins/org.eclipse.m2e.maven.runtime_3.9.900.20240824-1409/jars/maven-resolver-named-locks-1.9.22.jar
+2025-03-09 10:18:38,873 [Worker-11: Launching ApiProdutos] INFO  o.eclipse.m2e.core.internal.Bundles - 	Entry: /home/matheusreynard/.p2/pool/plugins/org.eclipse.m2e.maven.runtime_3.9.900.20240824-1409/jars/maven-resolver-provider-3.9.9.jar
+2025-03-09 10:18:38,873 [Worker-11: Launching ApiProdutos] INFO  o.eclipse.m2e.core.internal.Bundles - 	Entry: /home/matheusreynard/.p2/pool/plugins/org.eclipse.m2e.maven.runtime_3.9.900.20240824-1409/jars/maven-resolver-spi-1.9.22.jar
+2025-03-09 10:18:38,873 [Worker-11: Launching ApiProdutos] INFO  o.eclipse.m2e.core.internal.Bundles - 	Entry: /home/matheusreynard/.p2/pool/plugins/org.eclipse.m2e.maven.runtime_3.9.900.20240824-1409/jars/maven-resolver-transport-file-1.9.22.jar
+2025-03-09 10:18:38,873 [Worker-11: Launching ApiProdutos] INFO  o.eclipse.m2e.core.internal.Bundles - 	Entry: /home/matheusreynard/.p2/pool/plugins/org.eclipse.m2e.maven.runtime_3.9.900.20240824-1409/jars/maven-resolver-transport-http-1.9.22.jar
+2025-03-09 10:18:38,873 [Worker-11: Launching ApiProdutos] INFO  o.eclipse.m2e.core.internal.Bundles - 	Entry: /home/matheusreynard/.p2/pool/plugins/org.eclipse.m2e.maven.runtime_3.9.900.20240824-1409/jars/maven-resolver-transport-wagon-1.9.22.jar
+2025-03-09 10:18:38,873 [Worker-11: Launching ApiProdutos] INFO  o.eclipse.m2e.core.internal.Bundles - 	Entry: /home/matheusreynard/.p2/pool/plugins/org.eclipse.m2e.maven.runtime_3.9.900.20240824-1409/jars/maven-resolver-util-1.9.22.jar
+2025-03-09 10:18:38,873 [Worker-11: Launching ApiProdutos] INFO  o.eclipse.m2e.core.internal.Bundles - 	Entry: /home/matheusreynard/.p2/pool/plugins/org.eclipse.m2e.maven.runtime_3.9.900.20240824-1409/jars/maven-settings-3.9.9.jar
+2025-03-09 10:18:38,873 [Worker-11: Launching ApiProdutos] INFO  o.eclipse.m2e.core.internal.Bundles - 	Entry: /home/matheusreynard/.p2/pool/plugins/org.eclipse.m2e.maven.runtime_3.9.900.20240824-1409/jars/maven-settings-builder-3.9.9.jar
+2025-03-09 10:18:38,873 [Worker-11: Launching ApiProdutos] INFO  o.eclipse.m2e.core.internal.Bundles - 	Entry: /home/matheusreynard/.p2/pool/plugins/org.eclipse.m2e.maven.runtime_3.9.900.20240824-1409/jars/maven-shared-utils-3.4.2.jar
+2025-03-09 10:18:38,873 [Worker-11: Launching ApiProdutos] INFO  o.eclipse.m2e.core.internal.Bundles - 	Entry: /home/matheusreynard/.p2/pool/plugins/org.eclipse.m2e.maven.runtime_3.9.900.20240824-1409/jars/org.eclipse.sisu.inject-0.9.0.M3.jar
+2025-03-09 10:18:38,873 [Worker-11: Launching ApiProdutos] INFO  o.eclipse.m2e.core.internal.Bundles - 	Entry: /home/matheusreynard/.p2/pool/plugins/org.eclipse.m2e.maven.runtime_3.9.900.20240824-1409/jars/org.eclipse.sisu.plexus-0.9.0.M3.jar
+2025-03-09 10:18:38,873 [Worker-11: Launching ApiProdutos] INFO  o.eclipse.m2e.core.internal.Bundles - 	Entry: /home/matheusreynard/.p2/pool/plugins/org.eclipse.m2e.maven.runtime_3.9.900.20240824-1409/jars/plexus-build-api-0.0.7.jar
+2025-03-09 10:18:38,873 [Worker-11: Launching ApiProdutos] INFO  o.eclipse.m2e.core.internal.Bundles - 	Entry: /home/matheusreynard/.p2/pool/plugins/org.eclipse.m2e.maven.runtime_3.9.900.20240824-1409/jars/plexus-build-api-1.2.0.jar
+2025-03-09 10:18:38,873 [Worker-11: Launching ApiProdutos] INFO  o.eclipse.m2e.core.internal.Bundles - 	Entry: /home/matheusreynard/.p2/pool/plugins/org.eclipse.m2e.maven.runtime_3.9.900.20240824-1409/jars/plexus-cipher-2.0.jar
+2025-03-09 10:18:38,873 [Worker-11: Launching ApiProdutos] INFO  o.eclipse.m2e.core.internal.Bundles - 	Entry: /home/matheusreynard/.p2/pool/plugins/org.eclipse.m2e.maven.runtime_3.9.900.20240824-1409/jars/plexus-classworlds-2.8.0.jar
+2025-03-09 10:18:38,874 [Worker-11: Launching ApiProdutos] INFO  o.eclipse.m2e.core.internal.Bundles - 	Entry: /home/matheusreynard/.p2/pool/plugins/org.eclipse.m2e.maven.runtime_3.9.900.20240824-1409/jars/plexus-component-annotations-2.1.0.jar
+2025-03-09 10:18:38,874 [Worker-11: Launching ApiProdutos] INFO  o.eclipse.m2e.core.internal.Bundles - 	Entry: /home/matheusreynard/.p2/pool/plugins/org.eclipse.m2e.maven.runtime_3.9.900.20240824-1409/jars/plexus-interpolation-1.27.jar
+2025-03-09 10:18:38,874 [Worker-11: Launching ApiProdutos] INFO  o.eclipse.m2e.core.internal.Bundles - 	Entry: /home/matheusreynard/.p2/pool/plugins/org.eclipse.m2e.maven.runtime_3.9.900.20240824-1409/jars/plexus-sec-dispatcher-2.0.jar
+2025-03-09 10:18:38,874 [Worker-11: Launching ApiProdutos] INFO  o.eclipse.m2e.core.internal.Bundles - 	Entry: /home/matheusreynard/.p2/pool/plugins/org.eclipse.m2e.maven.runtime_3.9.900.20240824-1409/jars/plexus-utils-3.5.1.jar
+2025-03-09 10:18:38,874 [Worker-11: Launching ApiProdutos] INFO  o.eclipse.m2e.core.internal.Bundles - 	Entry: /home/matheusreynard/.p2/pool/plugins/org.eclipse.m2e.maven.runtime_3.9.900.20240824-1409/jars/plexus-xml-3.0.1.jar
+2025-03-09 10:18:38,874 [Worker-11: Launching ApiProdutos] INFO  o.eclipse.m2e.core.internal.Bundles - 	Entry: /home/matheusreynard/.p2/pool/plugins/org.eclipse.m2e.maven.runtime_3.9.900.20240824-1409/jars/wagon-file-3.5.3.jar
+2025-03-09 10:18:38,874 [Worker-11: Launching ApiProdutos] INFO  o.eclipse.m2e.core.internal.Bundles - 	Entry: /home/matheusreynard/.p2/pool/plugins/org.eclipse.m2e.maven.runtime_3.9.900.20240824-1409/jars/wagon-http-3.5.3.jar
+2025-03-09 10:18:38,874 [Worker-11: Launching ApiProdutos] INFO  o.eclipse.m2e.core.internal.Bundles - 	Entry: /home/matheusreynard/.p2/pool/plugins/org.eclipse.m2e.maven.runtime_3.9.900.20240824-1409/jars/wagon-http-shared-3.5.3.jar
+2025-03-09 10:18:38,874 [Worker-11: Launching ApiProdutos] INFO  o.eclipse.m2e.core.internal.Bundles - 	Entry: /home/matheusreynard/.p2/pool/plugins/org.eclipse.m2e.maven.runtime_3.9.900.20240824-1409/jars/wagon-provider-api-3.5.3.jar
+2025-03-09 10:18:38,881 [Worker-11: Launching ApiProdutos] INFO  o.eclipse.m2e.core.internal.Bundles - getClasspathEntries(Bundle=com.google.guava_33.3.0.jre [10])
+2025-03-09 10:18:38,881 [Worker-11: Launching ApiProdutos] INFO  o.eclipse.m2e.core.internal.Bundles - 	Entry: /home/matheusreynard/.p2/pool/plugins/com.google.guava_33.3.0.jre.jar
+2025-03-09 10:18:38,881 [Worker-11: Launching ApiProdutos] INFO  o.eclipse.m2e.core.internal.Bundles - getClasspathEntries(Bundle=slf4j.api_2.0.16 [517])
+2025-03-09 10:18:38,881 [Worker-11: Launching ApiProdutos] INFO  o.eclipse.m2e.core.internal.Bundles - 	Entry: /home/matheusreynard/.p2/pool/plugins/slf4j.api_2.0.16.jar
+2025-03-09 10:18:38,881 [Worker-11: Launching ApiProdutos] INFO  o.eclipse.m2e.core.internal.Bundles - getClasspathEntries(Bundle=jakarta.inject.jakarta.inject-api_1.0.5 [22])
+2025-03-09 10:18:38,881 [Worker-11: Launching ApiProdutos] INFO  o.eclipse.m2e.core.internal.Bundles - 	Entry: /home/matheusreynard/.p2/pool/plugins/jakarta.inject.jakarta.inject-api_1.0.5.jar
+2025-03-09 10:18:38,881 [Worker-11: Launching ApiProdutos] INFO  o.eclipse.m2e.core.internal.Bundles - getClasspathEntries(Bundle=jakarta.annotation-api_1.3.5 [20])
+2025-03-09 10:18:38,881 [Worker-11: Launching ApiProdutos] INFO  o.eclipse.m2e.core.internal.Bundles - 	Entry: /home/matheusreynard/.p2/pool/plugins/jakarta.annotation-api_1.3.5.jar
+2025-03-09 10:18:38,881 [Worker-11: Launching ApiProdutos] INFO  o.eclipse.m2e.core.internal.Bundles - getClasspathEntries(Bundle=org.apache.commons.cli_1.9.0 [47])
+2025-03-09 10:18:38,881 [Worker-11: Launching ApiProdutos] INFO  o.eclipse.m2e.core.internal.Bundles - 	Entry: /home/matheusreynard/.p2/pool/plugins/org.apache.commons.cli_1.9.0.jar
+2025-03-09 10:18:38,881 [Worker-11: Launching ApiProdutos] INFO  o.eclipse.m2e.core.internal.Bundles - getClasspathEntries(Bundle=org.apache.commons.commons-codec_1.16.0 [50])
+2025-03-09 10:18:38,881 [Worker-11: Launching ApiProdutos] INFO  o.eclipse.m2e.core.internal.Bundles - 	Entry: /home/matheusreynard/.p2/pool/plugins/org.apache.commons.commons-codec_1.16.0.jar
+2025-03-09 10:18:38,881 [Worker-11: Launching ApiProdutos] INFO  o.eclipse.m2e.core.internal.Bundles - getClasspathEntries(Bundle=com.google.guava.failureaccess_1.0.2 [11])
+2025-03-09 10:18:38,881 [Worker-11: Launching ApiProdutos] INFO  o.eclipse.m2e.core.internal.Bundles - 	Entry: /home/matheusreynard/.p2/pool/plugins/com.google.guava.failureaccess_1.0.2.jar
+2025-03-09 10:18:38,898 [Worker-11: Launching ApiProdutos] INFO  o.e.m.i.launch.MavenLaunchDelegate - Run build in "/home/matheusreynard/eclipse-workspace/ApiProdutos":
+2025-03-09 10:18:38,902 [Worker-11: Launching ApiProdutos] INFO  o.e.m.i.launch.MavenLaunchDelegate -  mvn  -B -Dstyle.color=always clean package

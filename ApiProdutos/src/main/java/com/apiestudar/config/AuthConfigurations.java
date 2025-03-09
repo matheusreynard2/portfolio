@@ -35,6 +35,7 @@ public class AuthConfigurations implements WebMvcConfigurer {
                                 .antMatchers("/swagger-ui/**").permitAll()
                                 .antMatchers(HttpMethod.GET, "/api/usuarios/addNovoAcessoIp").permitAll()
                                 .antMatchers(HttpMethod.POST, "/api/usuarios/realizarLogin").permitAll()
+                                .antMatchers(HttpMethod.OPTIONS, "/api/usuarios/realizarLogin").permitAll()
                                 .antMatchers(HttpMethod.POST, "/api/usuarios/adicionarUsuario").permitAll()
                                 .antMatchers(HttpMethod.DELETE, "/api/usuarios/deletarUsuario/{id}").permitAll()
                                 .antMatchers(HttpMethod.GET, "/api/usuarios/listarUsuarios").permitAll()
@@ -67,7 +68,7 @@ public class AuthConfigurations implements WebMvcConfigurer {
 	            // Permite CORS 
 	            registry.addMapping("/api/**")
 	                    .allowedOrigins("http://localhost:8080", "http://www.sistemaprodify.com", "http://www.sistemaprodify.com:8080", "http://www.sistemaprodify.com:80", "http://191.252.38.22:8080", "http://191.252.38.22:80", "http://191.252.38.22")  // Endereço do frontend
-	                    .allowedMethods("GET", "POST", "PUT", "DELETE")
+	                    .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS", "HEAD")
 	                    .allowedHeaders("*")
 	                    .allowCredentials(true);
 	        }
