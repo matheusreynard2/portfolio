@@ -42,8 +42,8 @@ export class ProdutoService {
   }
 
   // ENDPOINT GET - Listar produtos pela barra de pesquisa
-  public efetuarPesquisa(tipoPesquisa: string, valorPesquisa: string): Observable<Produto[]> {
-    return this.http.get<Produto[]>(this.produtosUrl + "/efetuarPesquisa/" + tipoPesquisa + "/" + valorPesquisa).pipe(
+  public efetuarPesquisa(tipoPesquisa: string, valorPesquisa: string, idUsuario: number): Observable<Produto[]> {
+    return this.http.get<Produto[]>(this.produtosUrl + "/efetuarPesquisa/" + tipoPesquisa + "/" + valorPesquisa + "/" + idUsuario).pipe(
       // Aqui fazemos o tratamento do erro 401 para TOKEN EXPIRADO
       catchError((error: HttpErrorResponse) => {
         if (error.status === 401 && error.error.message === 'Tempo limite de conexão com o sistema excedido. TOKEN Expirado')
@@ -117,13 +117,13 @@ export class ProdutoService {
   }
 
   // ENDPOINT GET - Listar produto mais caro
-  public listarProdutoMaisCaro(): Observable<Produto[]> {
-    return this.http.get<Produto[]>(this.produtosUrl + "/produtoMaisCaro");
+  public listarProdutoMaisCaro(idUsuario: number): Observable<Produto[]> {
+    return this.http.get<Produto[]>(this.produtosUrl + "/produtoMaisCaro/" + idUsuario);
   }
 
   // ENDPOINT GET - Calcular média dos valores unitários
-  public calcularMedia(): Observable<number> {
-    return this.http.get<number>(this.produtosUrl + "/mediaPreco");
+  public calcularMedia(idUsuario: number): Observable<number> {
+    return this.http.get<number>(this.produtosUrl + "/mediaPreco/" + idUsuario);
   }
 
   // ========= OK ========= ENDPOINT GET - Calcula o valor de desconto sobre o produto

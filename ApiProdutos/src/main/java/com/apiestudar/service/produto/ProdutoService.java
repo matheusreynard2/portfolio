@@ -17,13 +17,13 @@ public interface ProdutoService {
 
 	boolean deletarProduto(long id);
 	
-	List<Produto> listarProdutoMaisCaro();
+	List<Produto> listarProdutoMaisCaro(long idUsuario);
 
-	Double obterMediaPreco();
+	Double obterMediaPreco(long idUsuario);
 	
 	Double calcularValorDesconto(double valorProduto, double valorDesconto);
 	
-	List<Produto> efetuarPesquisaById(Long valorPesquisa);
+	List<Produto> efetuarPesquisaById(Long valorPesquisa, long idUsuario);
 	
-	List<Produto> efetuarPesquisaByNome(String valorPesquisa);
+	List<Produto> efetuarPesquisaByNome(String valorPesquisa, long idUsuario);
 }

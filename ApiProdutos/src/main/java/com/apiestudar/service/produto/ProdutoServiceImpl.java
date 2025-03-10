@@ -1,14 +1,14 @@
 package com.apiestudar.service.produto;
 
-import com.apiestudar.exceptions.RetornouFalseException;
-import com.apiestudar.exceptions.RetornouNuloException;
 import com.apiestudar.model.Produto;
 import com.apiestudar.repository.ProdutoRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.Optional;
@@ -39,7 +39,7 @@ public class ProdutoServiceImpl implements ProdutoService {
 		Optional<Produto> produto = produtoRepository.findById(id);
 		// Se não encontrou o produto...
 		if (produto.isPresent() == false)
-			throw new RetornouNuloException("Registro não encontrado no banco de dados. Retorno = NULL.");
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Registro não encontrado no banco de dados.");
 		// Se encontrou o produto ele seta os novos atributos, salva e retorna pro
 		// controller.
 		else {
@@ -69,19 +69,19 @@ public class ProdutoServiceImpl implements ProdutoService {
 			produtoRepository.deleteById(id);
 			return true;
 		} else
-			throw new RetornouFalseException("Registro não encontrado no banco de dados. Retorno = FALSE.");
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Registro não encontrado no banco de dados.");
 	}
 
 	@Transactional
 	@Override
-	public List<Produto> listarProdutoMaisCaro() {
-		return produtoRepository.listarProdutoMaisCaro();
+	public List<Produto> listarProdutoMaisCaro(long idUsuario) {
+		return produtoRepository.listarProdutoMaisCaro(idUsuario);
 	}
 	
 	@Transactional
 	@Override
-	public Double obterMediaPreco() {
-		Optional<Double> valor = Optional.ofNullable(produtoRepository.obterMediaPreco());
+	public Double obterMediaPreco(long idUsuario) {
+		Optional<Double> valor = Optional.ofNullable(produtoRepository.obterMediaPreco(idUsuario));
 		return valor.orElse(0.0);
 	}
 	
@@ -95,14 +95,14 @@ public class ProdutoServiceImpl implements ProdutoService {
 	
 	@Transactional
 	@Override
-	public List<Produto> efetuarPesquisaById(Long valorPesquisa) {
-		return produtoRepository.efetuarPesquisaById(valorPesquisa);
+	public List<Produto> efetuarPesquisaById(Long valorPesquisa, long idUsuario) {
+		return produtoRepository.efetuarPesquisaById(valorPesquisa, idUsuario);
 	}
 	
 	@Transactional
 	@Override
-	public List<Produto> efetuarPesquisaByNome(String valorPesquisa) {
-		return produtoRepository.efetuarPesquisaByNome(valorPesquisa);
+	public List<Produto> efetuarPesquisaByNome(String valorPesquisa, long idUsuario) {
+		return produtoRepository.efetuarPesquisaByNome(valorPesquisa, idUsuario);
 	}
 
 }

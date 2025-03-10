@@ -2,6 +2,7 @@ package com.apiestudar.service.usuario;
 
 import java.util.List;
 
+import com.apiestudar.model.ContadorIP;
 import com.apiestudar.model.Usuario;
 
 public interface UsuarioService {
@@ -18,4 +19,9 @@ public interface UsuarioService {
 	
 	Usuario findByLogin(String login);
 	
+	ContadorIP addNovoAcessoIp(ContadorIP novoAcesso);
+	
+	int findIPRepetido(String novoAcesso);
+	
+	long getTotalAcessos();
 }

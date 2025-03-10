@@ -8,6 +8,7 @@ import { ProdutoFunctionsService } from '../../service/produto/produto-functions
 import {PorcentagemMaskDirective} from '../../directives/porcentagem-mask.directive';
 import {NgxPaginationModule} from 'ngx-pagination';
 import {MatPaginatorModule, PageEvent} from '@angular/material/paginator';
+import {AuthService} from '../../service/auth/auth.service';
 
 @Component({
   selector: 'app-produto-list',  // Corrigido para 'app-produto-list', sem a barra inicial
@@ -52,28 +53,30 @@ export class ProdutoListComponent implements OnInit {
   @ViewChild('modalAvisoToken') modalAvisoToken!: ElementRef
 
   constructor(private produtoService: ProdutoService,
-              private produtoFunctionsService: ProdutoFunctionsService) { }
+              private produtoFunctionsService: ProdutoFunctionsService,
+              private authService: AuthService) { }
 
   ngOnInit() {
     this.produtoService.listarProdutos(this.currentPage, this.pageSize).subscribe(data => {
-      this.listaDeProdutos = data.content;  // Pega os registros da página atual
-      this.totalRecords = data.totalElements;  // Total de registros no banco
+      const usuarioLogadoId = this.authService.getUsuarioLogado().id;
+      this.listaDeProdutos = data.content.filter(produto => produto.idUsuario === usuarioLogadoId); // Filtra os produtos do usuário logado
+      this.totalRecords = this.listaDeProdutos.length; // Atualiza o total de registros exibidos
     });
 
-    this.listarProdutoMaisCaro();
-    this.calcularMedia();
+    this.listarProdutoMaisCaro(this.authService.getUsuarioLogado().id);
+    this.calcularMedia(this.authService.getUsuarioLogado().id);
   }
 
   // Função que calcula a média dos valores unitários
-  calcularMedia() {
-    this.produtoService.calcularMedia().subscribe((media: number) => {
+  calcularMedia(idUsuario: number) {
+    this.produtoService.calcularMedia(idUsuario).subscribe((media: number) => {
       this.mediaPreco = media;
     });
   }
 
   // Função que busca o produto com Valor Total mais caro
-  listarProdutoMaisCaro() {
-  this.produtoService.listarProdutoMaisCaro().subscribe((produtos: Produto[]) => {
+  listarProdutoMaisCaro(idUsuario: number) {
+  this.produtoService.listarProdutoMaisCaro(idUsuario).subscribe((produtos: Produto[]) => {
     this.listaProdutoMaisCaro = produtos;
 
     // Checa se existe registro na lista para preencher a string e exibir na tela
@@ -118,11 +121,12 @@ export class ProdutoListComponent implements OnInit {
   // Função que atualiza a lista de produtos
   atualizarLista(): void {
     this.produtoService.listarProdutos(this.currentPage, this.pageSize).subscribe(data => {
-      this.listaDeProdutos = data.content;  // Pega os registros da página atual
-      this.totalRecords = data.totalElements;  // Total de registros no banco
+      const usuarioLogadoId = this.authService.getUsuarioLogado().id;
+      this.listaDeProdutos = data.content.filter(produto => produto.idUsuario === usuarioLogadoId); // Filtra os produtos do usuário logado
+      this.totalRecords = this.listaDeProdutos.length; // Atualiza o total de registros exibidos
     });
-    this.listarProdutoMaisCaro();
-    this.calcularMedia();
+    this.listarProdutoMaisCaro(this.authService.getUsuarioLogado().id);
+    this.calcularMedia(this.authService.getUsuarioLogado().id);
   }
 
   trocarPagina(event: PageEvent): void {
@@ -138,8 +142,8 @@ export class ProdutoListComponent implements OnInit {
   // Função que abre o modal - Janela de exclusão de produto
   abrirTelaExclusao(modalExcluir: any) {
     this.modalService.open(modalExcluir);
-    this.listarProdutoMaisCaro();
-    this.calcularMedia();
+    this.listarProdutoMaisCaro(this.authService.getUsuarioLogado().id);
+    this.calcularMedia(this.authService.getUsuarioLogado().id);
     this.atualizarLista();
   }
 
@@ -150,16 +154,19 @@ export class ProdutoListComponent implements OnInit {
     modal.close();
   }
 
-  // Função chamada ao clicar no botão Pesquisar
+// Função chamada ao clicar no botão Pesquisar
   efetuarPesquisa() {
     let searchBar_value = this.searchBar.nativeElement.value;
+    const usuarioLogadoId = this.authService.getUsuarioLogado().id;
 
-    this.produtoService.efetuarPesquisa(this.tipoPesquisaSelecionado, searchBar_value).subscribe(data => {
-      this.listaDeProdutos = data.sort((a, b) => a.id - b.id);
+    this.produtoService.efetuarPesquisa(this.tipoPesquisaSelecionado, searchBar_value, this.authService.getUsuarioLogado().id).subscribe(data => {
+      this.listaDeProdutos = data
+        .filter(produto => produto.idUsuario === usuarioLogadoId) // Filtra os produtos pelo usuário logado
+        .sort((a, b) => a.id - b.id); // Ordena os produtos pelo ID
     });
 
-    this.listarProdutoMaisCaro();
-    this.calcularMedia();
+    this.listarProdutoMaisCaro(usuarioLogadoId);
+    this.calcularMedia(usuarioLogadoId);
   }
 
   // Calcula os totalizadores de valor. função chamada ao clicar no botão Calcular valores
@@ -185,7 +192,7 @@ export class ProdutoListComponent implements OnInit {
 
   // Função chamada ao mudar de valor na ComboBox Tipo de Pesquisa
   trocarTipoPesquisa() {
-    if (this.tipoPesquisaSelecionado =='id') {
+    if (this.tipoPesquisaSelecionado =='id' || this.tipoPesquisaSelecionado =='nome') {
       this.tipoPesquisaSelecionado ='nome'
     } else {
       this.tipoPesquisaSelecionado ='id'

@@ -5,13 +5,17 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Lob;
+import javax.persistence.SequenceGenerator;
 
 @Entity
+@SequenceGenerator(name = "produto_seq", sequenceName = "produto_sequence", allocationSize = 1)
 public class Produto {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "produto_seq")
 	private long id;
+	
+	private long idUsuario;
 
 	private String nome;
 
@@ -35,6 +39,14 @@ public class Produto {
 	
 	private double valorDesconto;
 	
+	public long getIdUsuario() {
+		return idUsuario;
+	}
+
+	public void setIdUsuario(long idUsuario) {
+		this.idUsuario = idUsuario;
+	}
+
 	@Lob
 	private String imagem;
 	

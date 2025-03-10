@@ -26,8 +26,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.apiestudar.model.ContadorIP;
 import com.apiestudar.model.Usuario;
-import com.apiestudar.service.contador.ContadorIPService;
 import com.apiestudar.service.jwt.TokenService;
 import com.apiestudar.service.usuario.UsuarioService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -39,6 +39,7 @@ import io.swagger.annotations.ApiResponse;
 @RequestMapping("api/usuarios")
 @CrossOrigin(
 	    origins = {
+	    	"http://localhost:4200",
 	        "http://localhost:8080",
 	        "http://www.sistemaprodify.com",
 	        "http://www.sistemaprodify.com:8080",
@@ -138,20 +139,17 @@ public class UsuarioController {
 	}
 	
 	@GetMapping("/addNovoAcessoIp")
-    public int addNovoAcessoIp(HttpServletRequest req) throws IOException {
-        String ip = req.getRemoteAddr(); // Pega o IP do visitante
+    public long addNovoAcessoIp(HttpServletRequest req) throws IOException {
+		
+		String ip = req.getRemoteAddr(); // Pega o IP do visitante
+		
+		if (usuarioService.findIPRepetido(ip) < 1) {
+	        ContadorIP novoAcesso = new ContadorIP();
+	        novoAcesso.setNumeroIp(ip);
+	        usuarioService.addNovoAcessoIp(novoAcesso);
+		}
         
-        Set<String> ipsRegistrados = ContadorIPService.lerIPs();
-
-        // Verifica se o IP já foi registrado antes
-        if (!ipsRegistrados.contains(ip)) {
-            ipsRegistrados.add(ip);
-            ContadorIPService.salvarIP(ip);
-            ContadorIPService.setContador(ContadorIPService.getContador() + 1);
-            ContadorIPService.salvarAcessos(ContadorIPService.getContador());
-        }
-       
-        return ContadorIPService.getContador();
+        return usuarioService.getTotalAcessos();
     }
 	
 }

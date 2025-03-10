@@ -25,6 +25,7 @@ import java.util.List;
 @RequestMapping("api/produtos")
 @CrossOrigin(
 	    origins = {
+	    	"http://localhost:4200",
 	        "http://localhost:8080",
 	        "http://www.sistemaprodify.com",
 	        "http://www.sistemaprodify.com:8080",
@@ -40,6 +41,7 @@ public class ProdutoController {
 	@Autowired
 	private ProdutoService produtoService;
 
+	//@CrossOrigin(origins = {"http://localhost:4200"},allowedHeaders = {"*"})
 	@ApiOperation(value = "Listagem de todos os produtos cadastrados.", notes = "Faz uma busca no banco de dados retornando uma lista com todos os produtos cadastrados.")
 	@ApiResponse(code = 200, message = "Produtos encontrados.")
 	@GetMapping("/listarProdutos")
@@ -95,17 +97,17 @@ public class ProdutoController {
 
 	@ApiOperation(value = "Exibe o produto mais caro.", notes = "Exibe o valor unitário do produto mais caro entre todos os produtos registrados no banco de dados.")
 	@ApiResponse(code = 200, message = "Cálculo de preço mais caro efetuado.")
-	@GetMapping("/produtoMaisCaro")
-	public List<Produto> listarProdutoMaisCaro() {
-		List<Produto> produtoMaisCaro = produtoService.listarProdutoMaisCaro();
+	@GetMapping("/produtoMaisCaro/{idUsuario}")
+	public List<Produto> listarProdutoMaisCaro(@PathVariable long idUsuario) {
+		List<Produto> produtoMaisCaro = produtoService.listarProdutoMaisCaro(idUsuario);
 		return produtoMaisCaro;
 	}
 
 	@ApiOperation(value = "Exibe a média de preço dos produtos.", notes = "Exibe a média de preço entre os valores unitários dos produtos registrados no banco de dados.")
 	@ApiResponse(code = 200, message = "Cálculo de média de preços efetuado.")
-	@GetMapping("/mediaPreco")
-	public Double obterMediaPreco() {
-		Double media = produtoService.obterMediaPreco();
+	@GetMapping("/mediaPreco/{idUsuario}")
+	public Double obterMediaPreco(@PathVariable long idUsuario) {
+		Double media = produtoService.obterMediaPreco(idUsuario);
 		return media;
 	}
 
@@ -121,17 +123,17 @@ public class ProdutoController {
 	// front-end. Filtra por id ou por nome dependendo do que o usuário escoheu
 	@ApiOperation(value = "Pesquisar registros por 'id' ou por 'nome'.", notes = "Faz uma busca de registros no banco de dados utilizando como filtro o id do produto ou o nome do produto.")
 	@ApiResponse(code = 200, message = "Produtos encontrados.")
-	@GetMapping("/efetuarPesquisa/{tipoPesquisa}/{valorPesquisa}")
-	public List<Produto> efetuarPesquisa(@PathVariable String tipoPesquisa, @PathVariable String valorPesquisa) {
+	@GetMapping("/efetuarPesquisa/{tipoPesquisa}/{valorPesquisa}/{idUsuario}")
+	public List<Produto> efetuarPesquisa(@PathVariable String tipoPesquisa, @PathVariable String valorPesquisa, @PathVariable long idUsuario) {
 		
 		List<Produto> produtos = new ArrayList<Produto>();
 		
 		if (tipoPesquisa.equals("id")) {
 			long valorPesquisaLong = Long.parseLong(valorPesquisa);
-			produtos = produtoService.efetuarPesquisaById(valorPesquisaLong);
+			produtos = produtoService.efetuarPesquisaById(valorPesquisaLong, idUsuario);
 			
 		} else if (tipoPesquisa.equals("nome")) {
-			produtos = produtoService.efetuarPesquisaByNome(valorPesquisa);
+			produtos = produtoService.efetuarPesquisaByNome(valorPesquisa, idUsuario);
 		}
 		
 		return produtos;

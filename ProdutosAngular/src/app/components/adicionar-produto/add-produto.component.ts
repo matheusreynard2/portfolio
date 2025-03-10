@@ -7,6 +7,7 @@ import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import { ProdutoFunctionsService } from '../../service/produto/produto-functions.service';
 import {PorcentagemMaskDirective} from '../../directives/porcentagem-mask.directive';
 import {AuthService} from '../../service/auth/auth.service';
+import {UsuarioService} from '../../service/usuario/usuario.service';
 
 @Component({
   selector: 'app-add-produto',
@@ -26,6 +27,7 @@ export class AddProdutoComponent implements OnInit {
   // pelos valores inseridos no formulário, então são passadas para o service da API.
   produto: Produto = {
     id: 0,
+    idUsuario: 0,
     nome: '',
     descricao: '',
     frete: 0,
@@ -51,7 +53,8 @@ export class AddProdutoComponent implements OnInit {
 
   constructor(
     private produtoService: ProdutoService,
-    private produtoFunctionsService: ProdutoFunctionsService) {
+    private produtoFunctionsService: ProdutoFunctionsService,
+    private authService: AuthService) {
   }
 
   ngOnInit() {
@@ -62,6 +65,8 @@ export class AddProdutoComponent implements OnInit {
   // Função que é chamada ao clicar no botão Submit do formulário HTML (ngModel) ao criar um produto
   onSubmit() {
     this.calcularValores(this.produto);
+
+    this.produto.idUsuario = this.authService.getUsuarioLogado().id
 
     // Adiciona o produto no banco depois chama a mensagem de sucesso de adição de produto "msgAddProduto"
     this.produtoService.adicionarProduto(this.produto, this.imagemFile).subscribe({
