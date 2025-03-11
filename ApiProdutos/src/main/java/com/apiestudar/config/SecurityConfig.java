@@ -34,9 +34,10 @@ public class SecurityConfig implements WebMvcConfigurer {
 	@Bean
 	public CorsConfigurationSource corsConfigurationSource() {
 		CorsConfiguration config = new CorsConfiguration();
-		config.setAllowedOrigins(List.of("http://www.sistemaprodify.com:8080", "http://www.sistemaprodify.com:80",
-				"http://www.sistemaprodify.com", "http://191.252.38.22:8080", "http://localhost:8080",
-				"http://localhost:4200", "http://sistemaprodify.com"));
+		config.setAllowedOrigins(List.of("https://www.sistemaprodify.com:8080", "https://www.sistemaprodify.com:80",
+				"https://www.sistemaprodify.com", "https://191.252.38.22:8080", "http://localhost:8080",
+				"http://localhost:4200", "https://sistemaprodify.com", "http://sistemaprodify.com",
+				"http://www.sistemaprodify.com"));
 		config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
 		config.setAllowedHeaders(List.of("Content-Type", "Authorization", "X-Requested-With", "Accept", "Origin",
 				"X-CSRF-Token", "X-Auth-Token"));
