@@ -15,8 +15,12 @@ Front-end em Angular e TypeScript do sistema Prodify, parte que consome a API de
 - Upload de arquivo de imagem para relacionar com o produto
 - Swagger
 - Spring Security - JWT (Autenticação / Token / Role USER / Criptografia de senha / Expiração de token / Endpoints protegidos / Validação de credenciais / Validação login repetido)
+- Relacionamento produto X usuário
+- Contador de acessos por IP
+- Certificado SSL - Endereço HTTPS
 
 ### Funcionalidades em desenvolvimento
 - Lógica de quantidade de produtos (atualmente aceita somente 1)
 - Categoria de produtos
-- Relacionamento produto X usuário
+- Responsividade Computador X Celular
+
