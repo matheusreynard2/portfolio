@@ -32,7 +32,8 @@
       <td colspan="4">
         <input type="password" [(ngModel)]="addUsuario.senha"
                class="form-control"
-               [class.is-invalid]="senha.invalid && senha.touched"
+               [class.is-invalid]="senha.invalid && senha
+               .touched"
                id="senha"
                name="senhaUsuario"
                placeholder="Insira sua senha."
@@ -106,6 +107,7 @@
       </td>
       <td colspan="4">
         <input id="foto_perfil" type="file" (change)="onFileChange($event)" />
+        <span style="color: red"> - AVISO:</span> <span> Se estiver usando celular/tablet, NÃO selecione foto.</span>
       </td>
     </tr>
     <tr>

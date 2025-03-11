@@ -259,11 +259,18 @@
           </tr>
 
           <tr>
-            <td class="coluna_um" colspan="9">
+            <td class="coluna_um">
+              <label for="foto_produto">Foto produto:</label>
+            </td>
+            <td colspan="8">
               <input id="foto_produto" type="file" (change)="onFileChange($event)" />
             </td>
           </tr>
-
+          <tr>
+            <td colspan="9">
+              <span style="color: red">AVISO:</span> <span> Se estiver usando celular/tablet, NÃO selecione foto.</span>
+            </td>
+          </tr>
           <tr>
             <td class="coluna_um">
               <label for="somaTotalValores"><b>VALOR TOTAL: </b></label>
