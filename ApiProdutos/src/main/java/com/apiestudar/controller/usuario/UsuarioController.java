@@ -141,9 +141,32 @@ public class UsuarioController {
 	@GetMapping("/addNovoAcessoIp")
     public long addNovoAcessoIp(HttpServletRequest req) throws IOException {
 		
-		String ip = req.getRemoteAddr(); // Pega o IP do visitante
+		String ip = req.getHeader("X-Forwarded-For");
+	    
+	    if (ip == null || ip.isEmpty() || "unknown".equalsIgnoreCase(ip)) {
+	        ip = req.getHeader("Proxy-Client-IP");
+	    }
+	    if (ip == null || ip.isEmpty() || "unknown".equalsIgnoreCase(ip)) {
+	        ip = req.getHeader("WL-Proxy-Client-IP");
+	    }
+	    if (ip == null || ip.isEmpty() || "unknown".equalsIgnoreCase(ip)) {
+	        ip = req.getHeader("HTTP_CLIENT_IP");
+	    }
+	    if (ip == null || ip.isEmpty() || "unknown".equalsIgnoreCase(ip)) {
+	        ip = req.getHeader("HTTP_X_FORWARDED_FOR");
+	    }
+	    if (ip == null || ip.isEmpty() || "unknown".equalsIgnoreCase(ip)) {
+	        ip = req.getRemoteAddr();
+	    }
+
+	    // Em alguns casos, X-Forwarded-For pode conter múltiplos IPs separados por vírgula
+	    if (ip.contains(",")) {
+	        ip = ip.split(",")[0].trim(); // Pega apenas o primeiro IP (o original do cliente)
+	    }
 		
-		if (usuarioService.findIPRepetido(ip) < 1) {
+		System.out.println(usuarioService.findIPRepetido(ip));
+		System.out.println(ip);
+		if (usuarioService.findIPRepetido(ip) == 0) {
 	        ContadorIP novoAcesso = new ContadorIP();
 	        novoAcesso.setNumeroIp(ip);
 	        usuarioService.addNovoAcessoIp(novoAcesso);
