@@ -14,11 +14,15 @@
       <td colspan="4">
         <input type="text" [(ngModel)]="addUsuario.login"
                class="form-control"
+               [class.is-invalid]="login.invalid && login.touched"
                id="login"
                name="loginUsuario"
                placeholder="Insira o seu usuário."
-               required #nome="ngModel"
+               required #login="ngModel"
                maxlength="30">
+          <div *ngIf="login.invalid && login.touched" class="invalid-feedback">
+            Usuário é obrigatório.
+          </div>
       </td>
     </tr>
     <tr>
@@ -28,11 +32,15 @@
       <td colspan="4">
         <input type="password" [(ngModel)]="addUsuario.senha"
                class="form-control"
+               [class.is-invalid]="senha.invalid && senha.touched"
                id="senha"
                name="senhaUsuario"
                placeholder="Insira sua senha."
-               required #nome="ngModel"
+               required #senha="ngModel"
                maxlength="30">
+        <div *ngIf="senha.invalid && senha.touched" class="invalid-feedback">
+          Senha é obrigatório.
+        </div>
       </td>
     <tr>
       <td class="coluna-label-1">
@@ -41,11 +49,15 @@
       <td>
         <input type="text" [(ngModel)]="addUsuario.nome"
                class="form-control"
+               [class.is-invalid]="nome.invalid && nome.touched"
                id="nome"
                name="nomeUsuario"
                placeholder="Insira o seu nome verdadeiro."
                required #nome="ngModel"
                maxlength="30">
+        <div *ngIf="nome.invalid && nome.touched" class="invalid-feedback">
+          Nome é obrigatório.
+        </div>
       </td>
       <td class="coluna-label-2">
         <label for="login">LinkedIn / Rede social:</label>
@@ -66,11 +78,15 @@
       <td>
         <input type="text" [(ngModel)]="addUsuario.whatsapp"
                class="form-control"
+               [class.is-invalid]="whatsapp.invalid && whatsapp.touched"
                id="whatsapp"
                name="whatsappUsuario"
                placeholder="Insira o seu WhatsApp ou outro número para contato."
                required #whatsapp="ngModel"
                maxlength="30">
+        <div *ngIf="whatsapp.invalid && whatsapp.touched" class="invalid-feedback">
+          Nome é obrigatório.
+        </div>
       </td>
       <td class="coluna-label-2">
         <label for="endereco">Endereço:</label>

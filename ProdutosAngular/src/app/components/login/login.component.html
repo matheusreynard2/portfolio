@@ -1,5 +1,6 @@
 <form (ngSubmit)="onSubmit()" #loginForm="ngForm">
-  <table style="width: 600px; margin: 0 auto;" class="table table-bordered">
+  <div class="div-tabela">
+  <table class="table table-bordered">
     <thead>
     <tr>
       <th colspan="2" class="text-center">LOGIN</th>
@@ -35,7 +36,7 @@
       </td>
     <tr>
       <td>
-        <button type="submit" [disabled]="!loginForm.form.valid" class="btn bg-primary-subtle fw-bold" style="width: 100px">Logar</button>
+        <button type="submit" [disabled]="!loginForm.form.valid" class="btn bg-primary-subtle fw-bold" style="width: 100px">Entrar</button>
       </td>
       <td colspan="2">
         <button type="button" class="btn bg-secondary-subtle fw-bold" style="width: 100px" (click)="cadastrarNovoUsuario()">Cadastrar</button>
@@ -43,6 +44,7 @@
     </tr>
     </tbody>
   </table>
+  </div>
 </form>
 
 <!-- Janela (modal) que abre depois da msg de TOKEN expirado -->
