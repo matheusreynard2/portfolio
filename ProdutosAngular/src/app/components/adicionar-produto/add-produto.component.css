@@ -16,3 +16,9 @@
   top: 0;   /* Alinha a imagem no topo */
   opacity: 75%;
 }
+
+.div-tabela {
+  width: 100%;
+  margin: 0 auto;
+  overflow-x: auto;
+}

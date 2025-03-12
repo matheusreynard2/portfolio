@@ -128,7 +128,9 @@
             </td>
           </tr>
           <tr>
-            <td class="coluna_um"><label for="nome">Nome:</label></td>
+            <td class="coluna_um">
+              <span style="color: red">* </span>
+              <label for="nome">Nome:</label></td>
             <td colspan="3">
               <input type="text" [(ngModel)]="produtoAtualizar.nome"
                      class="form-control"
@@ -138,14 +140,13 @@
                      required #nome="ngModel"
                      maxlength="50" style="width: 200px">
             </td>
-            <td width="100px"><label for="descricao">Descrição:</label></td>
+            <td class="td-ajustada"><label for="descricao">Descrição:</label></td>
             <td colspan="4">
               <input type="text" [(ngModel)]="produtoAtualizar.descricao"
                      class="form-control"
                      id="descricao"
                      name="descricaoProduto"
                      placeholder="Insira a descrição do produto."
-                     required #descricao="ngModel"
                      maxlength="100" style="width: 250px;">
             </td>
           </tr>
@@ -160,7 +161,7 @@
                      required #quantidade="ngModel"
                      maxlength="1" style="width: 200px">
             </td>
-            <td>Desconto:</td>
+            <td class="td-ajustada">Desconto:</td>
             <td colspan="4">
               <input type="text" [(ngModel)]="produtoAtualizar.valorDesconto"
                      class="form-control"
@@ -226,7 +227,8 @@
                      name="valorTotalFreteProduto"
                      required #valorTotalFrete="ngModel"
                      maxlength="30"
-                     style="width: 100%; display: none;">
+                     style="width: 100%; display: none;"
+                     [disabled]="true">
               <div class="mt-1">{{produtoAtualizar.valorTotalFrete | currency : 'BRL'}}</div>
             </td>
           </tr>
@@ -251,7 +253,8 @@
                       id="freteAtivo"
                       name="freteAtivoProduto"
                       required #freteAtivo="ngModel"
-                      (ngModelChange)="ativarFrete($event)" style="width: 100%;">
+                      (ngModelChange)="ativarFrete($event)" style="width: 100%;"
+                      [disabled]="true">
                 <option [ngValue]="true">Sim</option>
                 <option [ngValue]="false">Não</option>
               </select>

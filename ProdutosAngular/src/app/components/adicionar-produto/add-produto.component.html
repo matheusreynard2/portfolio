@@ -1,6 +1,7 @@
 <div class="card my-5">
   <div class="card-body">
     <form (ngSubmit)="onSubmit()" #produtoForm="ngForm">
+      <div class="div-tabela">
       <table class="table table-bordered">
         <thead>
         <tr>
@@ -9,7 +10,9 @@
         </thead>
         <tbody>
         <tr>
-          <td><label for="nome">Nome:</label></td>
+          <td>
+            <span style="color: red">* </span>
+            <label for="nome">Nome:</label></td>
           <td>
             <input type="text" [(ngModel)]="produto.nome"
                    class="form-control"
@@ -20,13 +23,12 @@
                    maxlength="35">
           </td>
           <td><label for="descricao">Descrição:</label></td>
-          <td>
+          <td colspan="2">
             <input type="text" [(ngModel)]="produto.descricao"
                    class="form-control"
                    id="descricao"
                    name="descricaoProduto"
                    placeholder="Insira a descrição do produto."
-                   required #descricao="ngModel"
                    maxlength="100">
           </td>
         </tr>
@@ -40,7 +42,7 @@
                    required #quantidade="ngModel">
           </td>
           <td><label for="promocao">Promoção:</label></td>
-          <td colspan="1">
+          <td colspan="2">
             <select [(ngModel)]="produto.promocao"
                     class="form-control"
                     id="promocao"
@@ -72,7 +74,8 @@
                     id="freteAtivo"
                     name="freteAtivoProduto"
                     required #freteAtivo="ngModel"
-                    (ngModelChange)="ativarFrete($event)">
+                    (ngModelChange)="ativarFrete($event)"
+                    [disabled]="true">
               <option [ngValue]="true">Sim</option>
               <option [ngValue]="false">Não</option>
             </select>
@@ -89,7 +92,9 @@
                    required #valor="ngModel"
                    maxlength="30">
           </td>
-          <td><label for="valorTotalDesc">Valor produto c/ desconto:</label></td>
+          <td>
+            <label for="valorTotalDesc">Valor produto c/ desconto:</label></td>
+          <!-- COMBOBOX COM DISPLAY=NONE APENAS PARA FINS DE CALCULO COM O NGMODEL -->
           <input type="number" [(ngModel)]="produto.valorTotalDesc"
                  class="form-control"
                  id="valorTotalDesc"
@@ -97,7 +102,7 @@
                  required #valorTotalDesc="ngModel"
                  maxlength="30"
                  style="display: none;">
-          <td>
+          <td colspan="2">
             <div class="mt-1">{{produto.valorTotalDesc | currency : 'BRL'}}</div>
           </td>
         </tr>
@@ -110,6 +115,7 @@
           <td>
             <label for="valorTotalFrete">Valor total com frete:</label>
           </td>
+          <!-- COMBOBOX COM DISPLAY=NONE APENAS PARA FINS DE CALCULO COM O NGMODEL -->
           <input type="number" [(ngModel)]="produto.valorTotalFrete"
                  class="form-control"
                  id="valorTotalFrete"
@@ -117,7 +123,7 @@
                  required #valorTotalFrete="ngModel"
                  maxlength="30"
                  style="display: none;">
-          <td>
+          <td colspan="2">
             <div class="mt-1">{{produto.valorTotalFrete | currency : 'BRL'}}</div>
           </td>
         </tr>
@@ -134,21 +140,22 @@
           <td>
             <label for="foto_produto">Foto produto: </label><br>
           </td>
+          <td colspan="2">
             <input id="foto_produto" type="file" (change)="onFileChange($event)" />
+          </td>
         </tr>
         <tr>
-          <td>
+          <td rowspan="2">
           </td>
-          <td>
+          <td rowspan="2">
           </td>
-          <td rowspan="2" colspan="2">
+          <td rowspan="2" colspan="3">
             <span style="font-size: 13px; color: red">AVISO:</span> <span style="font-size: 12px;"> Se estiver usando celular/tablet, NÃO selecione foto. - </span>
             <span style="font-size: 13px">E não selecione uma imagem grande pois atrapalha na visualização.</span>
           </td>
         </tr>
         <tr>
           <td colspan="6">
-            <hr style="border: 2px solid #000; width: 100%;">
           </td>
         </tr>
         <tr>
@@ -174,6 +181,7 @@
         </tr>
         </tbody>
       </table>
+      </div>
     </form>
   </div>
 </div>

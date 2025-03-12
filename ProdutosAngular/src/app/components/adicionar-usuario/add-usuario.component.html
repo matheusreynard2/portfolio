@@ -9,7 +9,8 @@
     <tbody>
     <tr>
       <td class="coluna-label-1">
-        <label for="login">Usuário:</label>
+        <span style="color: red">* </span>
+        <label for="login"> Usuário:</label>
       </td>
       <td colspan="4">
         <input type="text" [(ngModel)]="addUsuario.login"
@@ -27,7 +28,8 @@
     </tr>
     <tr>
       <td>
-        <label for="senha">Senha:</label>
+        <span style="color: red">* </span>
+        <label for="senha"> Senha:</label>
       </td>
       <td colspan="4">
         <input type="password" [(ngModel)]="addUsuario.senha"
@@ -45,7 +47,8 @@
       </td>
     <tr>
       <td class="coluna-label-1">
-        <label for="nome">Nome:</label>
+        <span style="color: red">* </span>
+        <label for="nome"> Nome:</label>
       </td>
       <td>
         <input type="text" [(ngModel)]="addUsuario.nome"
@@ -79,15 +82,10 @@
       <td>
         <input type="text" [(ngModel)]="addUsuario.whatsapp"
                class="form-control"
-               [class.is-invalid]="whatsapp.invalid && whatsapp.touched"
                id="whatsapp"
                name="whatsappUsuario"
                placeholder="Insira o seu WhatsApp ou outro número para contato."
-               required #whatsapp="ngModel"
                maxlength="30">
-        <div *ngIf="whatsapp.invalid && whatsapp.touched" class="invalid-feedback">
-          Nome é obrigatório.
-        </div>
       </td>
       <td class="coluna-label-2">
         <label for="endereco">Endereço:</label>

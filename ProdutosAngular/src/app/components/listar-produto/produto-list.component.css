@@ -10,10 +10,10 @@
   width: 200px;
 }
 
-.div-tabela {
-  width: 100%;
-  margin: 0 auto;
-  overflow-x: auto;
+.td-ajustada {
+  width: auto !important;
+  min-width: fit-content !important;
+  white-space: nowrap; /* Mantém tudo em uma linha */
 }
 
 /* Garantir que a largura das colunas seja fixa ou proporcional */
@@ -95,8 +95,10 @@
 }
 
 .table_editar {
-  table-layout: fixed; /* Tabela com layout fixo */
-  width: 100%;         /* Garantir que a tabela ocupe toda a largura disponível */
+  table-layout: auto !important; /* Tabela com layout fixo */
+  width: 100%;
+  margin: 0 auto;
+  overflow-x: auto;/* Garantir que a tabela ocupe toda a largura disponível */
 }
 
 .coluna_um {
