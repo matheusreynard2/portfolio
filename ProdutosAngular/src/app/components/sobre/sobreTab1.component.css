@@ -1,0 +1,21 @@
+.table-no-border {
+  border: none;
+  width: auto; /* Permite que a tabela tenha a largura do conteúdo */
+}
+
+.table-no-border th, .table-no-border td {
+  border: none;
+  padding: 0.5rem; /* Padding menor para que as células não ocupem muito espaço */
+  margin: 6px;
+  white-space: nowrap; /* Impede que o texto quebre em múltiplas linhas */
+}
+
+.table-no-border th {
+  text-align: left; /* Alinha o texto à esquerda */
+}
+
+.div-tabela {
+  width: 100%;
+  margin: 0 auto;
+  overflow-x: auto;
+}

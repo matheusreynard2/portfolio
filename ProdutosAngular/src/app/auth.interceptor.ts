@@ -9,7 +9,7 @@ export class AuthInterceptor implements HttpInterceptor {
     const token = localStorage.getItem('bearerToken');
 
     // Verifica as requisições que não precisam de headers
-    if (req.url.includes('/realizarLogin') || req.url.includes('/adicionarUsuario')) {
+    if (req.url.includes('/realizarLogin') || req.url.includes('/adicionarUsuario') || req.url.includes('/sobreTab1') || req.url.includes('/sobreTab2')) {
       return next.handle(req);
     }
 

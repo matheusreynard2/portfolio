@@ -105,3 +105,9 @@
   width: 200px;         /* Largura fixa de 50px para as colunas que contém os labels */
   overflow: hidden;    /* Esconde o conteúdo que ultrapassar o limite */
 }
+
+.div-tabela {
+  width: 100%;
+  margin: 0 auto;
+  overflow-x: auto;
+}

@@ -1,0 +1,6 @@
+.table-no-border {
+  border: none;
+}
+.table-no-border th, .table-no-border td {
+  border: none;
+}
