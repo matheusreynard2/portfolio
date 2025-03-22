@@ -11,21 +11,26 @@ import {UsuarioService} from './service/usuario/usuario.service';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, RouterLink, FormsModule, HttpClientModule, NgbModule, NgIf, NgClass, NgOptimizedImage],
+  imports: [RouterOutlet, RouterLink, FormsModule, HttpClientModule, NgbModule, NgIf, NgClass],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
 })
 export class AppComponent implements OnInit {
   title = 'Sistema de Produtos';
 
-  constructor(private authService: AuthService, private router: Router, private usuarioService: UsuarioService) { }
+  constructor(private authService: AuthService,
+              private router: Router,
+              private usuarioService: UsuarioService) {
+  }
 
   mostrarPerfil: boolean = false;
   usuarioLogado!: Usuario;
   numeroVisitas: number = 0;
   private observableVisitas: Observable<number> = of(0)
+  temaEscuro: boolean = false;
 
   ngOnInit() {
+    this.carregarTema();
     this.observableVisitas = this.usuarioService.addNovoAcessoIp()
     this.numeroVisitas
     this.observableVisitas.subscribe((valor: number) => {
@@ -47,6 +52,32 @@ export class AppComponent implements OnInit {
       }
     });
   }
+
+  carregarTema() {
+    const temaEscuro = localStorage.getItem('temaEscuro');
+    if (temaEscuro === 'true') {
+      this.temaEscuro = true;
+      document.body.classList.add('dark-mode');
+      console.log('carregou escuro')
+    } else {
+      this.temaEscuro = false;
+      document.body.classList.remove('dark-mode');
+      console.log('carregou claro')
+    }
+  }
+
+  alternarTema() {
+    this.temaEscuro = !this.temaEscuro
+    localStorage.setItem('temaEscuro', this.temaEscuro.toString());
+    if (this.temaEscuro) {
+      document.body.classList.add('dark-mode');
+      console.log('aplicou escuro')
+    } else {
+      document.body.classList.remove('dark-mode');
+      console.log('aplicou claro')
+    }
+  }
+
 
   logout() {
     this.authService.logout()

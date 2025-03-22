@@ -1,5 +1,5 @@
 <div class="container">
-  <div class="bg-dark border border-5 border-secondary rounded-top-5 my-2 d-flex bg-gradient" style="height: 180px;">
+  <div class="div-banner bg-dark border border-5 border-secondary rounded-top-5 d-flex bg-gradient" style="height: 180px;">
 
     <div
       *ngIf="mostrarPerfil; else divVazia"
@@ -7,7 +7,7 @@
       style="width: 13%; height: 100%;"
     >
       <!-- Botão de logout -->
-      <button type="button" class="btn btn-danger mt-2" (click)="logout()" style="font-size: 12px;">SAIR</button>
+      <button type="button" class="btn btn-danger mt-2 logout-button" (click)="logout()">SAIR</button>
       <!-- Foto e nome do usuário -->
       <div class="d-flex flex-column align-items-center">
         <img [src]="usuarioLogado.imagem ? 'data:image/jpeg;base64,' + usuarioLogado.imagem : '/foto_perfil.png'" alt="Foto do usuário" width="100" height="100">
@@ -44,22 +44,39 @@
         </ul>
       </div>
     </div>
+    <div class="border-secondary rounded-top-5">
+    <button id="trocarTema" (click)="alternarTema()" class="btn btn-outline-secondary fw-bold">⚪️⚫️</button>
+    </div>
   </div>
 
   <router-outlet></router-outlet>
 
-  <div class="bg-dark border border-5 border-secondary">
-    <div class="card-body position-relative text-center text-white">
+  <div class="bg-dark border border-5 border-secondary position-relative">
+    <div class="card-body text-center text-white">
       <div class="bg-gradient p-3 d-flex flex-column align-items-start">
         <div class="d-flex align-items-center">
           <div class="text-start">
-            <span style="font-size: 12px; display: block;">MATHEUS REYNARD<br> Conheça o Desenvolvedor!</span>
-            <a href="https://www.linkedin.com/in/matheus-reynard" target="_blank" style="font-size: 13px;">CLIQUE AQUI!</a>
+          <span style="font-size: 11px; display: block;">
+            Acessos: {{numeroVisitas}} | MATHEUS REYNARD -
+            <a href="https://www.linkedin.com/in/matheus-reynard" target="_blank" style="font-size: 13px;">Conheça o Desenvolvedor!</a>
+          </span>
+            <br>
           </div>
-          <img src="/foto_dev.png" height="60" width="60" />
         </div>
-        <span style="font-size: 13px; margin-top: 8px; text-align: left;">Acessos: {{numeroVisitas}}</span>
       </div>
+
+      <!-- Contêiner da notícia rolante -->
+      <div class="news-container">
+          <div class="news-marquee">
+            <marquee behavior="scroll" scrollamount="10" direction="left">
+            <span>ÚLTIMOS RECURSOS LANÇADOS NO SISTEMA: </span>
+            <span> 1 - Página SOBRE: Tenha informações detalhadas sobre o Dev e sobre a utilização do Sistema sem precisar criar conta e entrar.</span>
+            <span> 2 - Barra de notícias no rodapé. Saiba os últimos recursos lançados no sistema de maneira prática e rápida.</span>
+            <span> 3 - Modo claro/escuro. Escolha qual usar!</span>
+            </marquee>
+          </div>
+      </div>
+
       <img src="/logo_sacolas.png" alt="Logo" class="position-absolute end-0 bottom-0" width="190" height="150">
     </div>
   </div>

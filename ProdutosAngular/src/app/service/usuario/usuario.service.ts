@@ -14,9 +14,7 @@ export class UsuarioService {
 
   private usuariosUrl: string;
   private apiUrl = environment.API_URL;
-  private loginExistente = new BehaviorSubject<boolean>(false);
   private numeroAcesso: number = 0
-  loginObservable = this.loginExistente.asObservable();
 
   constructor(private http: HttpClient, private router: Router) {
     // URL DO REST CONTROLLER

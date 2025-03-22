@@ -4,8 +4,7 @@ import {RouterLink, RouterLinkActive} from '@angular/router';
 @Component({
   selector: 'app-sobre1',
   imports: [
-    RouterLink,
-    RouterLinkActive
+    RouterLink
   ],
   templateUrl: './sobreTab2.component.html',
   styleUrl: './sobreTab2.component.css'

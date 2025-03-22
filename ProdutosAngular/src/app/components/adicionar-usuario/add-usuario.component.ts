@@ -43,28 +43,20 @@ export class AddUsuarioComponent implements OnInit {
   }
 
   onSubmit() {
-    this.usuarioService.loginObservable.subscribe((loginExistente) => {
-      if (loginExistente) {
-        setTimeout(() => {
-          this.modalService.open(this.modalMsgLoginExistente, { size: 'sm' });
-        }, 100);
-      } else if (!loginExistente) {
-        // Adiciona no banco depois chama a mensagem de sucesso de adição de usuario "msgAddUsuario"
-        this.usuarioService.adicionarUsuario(this.addUsuario, this.imagemFile).subscribe({
-          next: (usuarioAdicionado: any) => {
-            this.usuarioNovo = usuarioAdicionado
-            this.adicionouUsuario = true
-            this.msgAddUsuario(this.modalMsgAddUser)
-          },
-          error: (error) => {
-            // Se o erro for de login repetido, exibe a mensagem de erro.
-            if (error.status === 409 && error.error.message === 'Login já cadastrado no banco de dados.') {
-              setTimeout(() => {
-                this.modalService.open(this.modalMsgLoginExistente, {size: 'sm'});
-              }, 100);
-            }
-          }
-        })
+    // Adiciona no banco depois chama a mensagem de sucesso de adição de usuario "msgAddUsuario"
+    this.usuarioService.adicionarUsuario(this.addUsuario, this.imagemFile).subscribe({
+      next: (usuarioAdicionado: any) => {
+        this.usuarioNovo = usuarioAdicionado
+        this.adicionouUsuario = true
+        this.msgAddUsuario(this.modalMsgAddUser)
+      },
+      error: (error) => {
+        // Se o erro for de login repetido, exibe a mensagem de erro.
+        if (error.status === 409 && error.error.message === 'Login já cadastrado no banco de dados.') {
+          setTimeout(() => {
+            this.modalService.open(this.modalMsgLoginExistente, {size: 'sm'});
+          }, 100);
+        }
       }
     })
   }

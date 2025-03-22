@@ -39,14 +39,24 @@
   width: 100%;  /* Garante que o modal ocupe toda a largura */
 }
 
+p {
+  font-size: 16px;
+  color: black;
+}
+
+h5 {
+  font-size: 20px;
+  color: black;
+}
+
 .modal-title {
   margin-right: 160px; /* Ajusta para o espaço da imagem */
 }
 
 .img-right {
   position: absolute;
-  right: 0; /* Coloca a imagem totalmente no lado direito */
-  top: 0;   /* Alinha a imagem no topo */
+  right: 0;
+  top: 0;
   opacity: 75%;
 }
 
