@@ -1,6 +1,49 @@
-.table-no-border {
-  border: none;
+.container {
+  width: 100%;
+  margin: 0 auto;
+  overflow-x: auto;
 }
-.table-no-border th, .table-no-border td {
-  border: none;
+
+.profile-card {
+  margin: 20px auto; /* Centraliza o cartão */
+  padding: 20px; /* Espaçamentos dentro do cartão */
+  text-align: justify;
+}
+
+.mat-card-subtitle {
+  font-size: 16px; /* Tamanho da fonte do subtítulo */
+  color: black;
+}
+
+.mat-card-content {
+  color: black;
+}
+
+.profile-card {
+  width: 100%; /* Ocupar 100% da largura disponível */
+  height: auto; /* Altura automática, ajusta-se ao conteúdo */
+  margin: 0; /* Remove margens automáticas */
+  padding: 20px; /* Você pode ajustar conforme necessário */
+  box-shadow: none; /* Remover sombra, se necessário, para um visual mais limpo */
+}
+
+/* Definindo a cor do texto */
+.profile-card label {
+  color: black;
+}
+.profile-card p {
+  font-size: 16px;
+  color: black;
+}
+.profile-card #titulo {
+  font-size: 24px;
+  color: black;
+}
+.profile-card h1,
+.profile-card h2,
+.profile-card h3,
+.profile-card h4,
+.profile-card h5,
+.profile-card h6 {
+  color: black; /* Define que todas as escritas sejam pretas */
 }
