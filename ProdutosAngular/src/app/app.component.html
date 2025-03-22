@@ -4,8 +4,7 @@
     <div
       *ngIf="mostrarPerfil; else divVazia"
       class="perfil-div d-flex flex-column justify-content-between align-items-center border border-2 border-secondary rounded-top-5"
-      style="width: 13%; height: 100%;"
-    >
+      style="width: 13%; height: 100%;">
       <!-- Botão de logout -->
       <button type="button" class="btn btn-danger mt-2 logout-button" (click)="logout()">SAIR</button>
       <!-- Foto e nome do usuário -->
@@ -23,7 +22,7 @@
     </ng-template>
 
     <!-- Coluna para o título e botões de navegação (80%) -->
-    <div class="w-100 ps-3 d-flex flex-column justify-content-center" style="height: 100%; margin-left: -165px;" [ngClass]="{'centralizado': !mostrarPerfil}">
+    <div class="w-100 ps-3 d-flex flex-column justify-content-center" style="height: 100%; margin-left: -90px;" [ngClass]="{'centralizado': !mostrarPerfil}">
       <div id="div_banner_menu">
         <h2 class="text-center text-white position-relative" style="font-size: 18px; line-height: 1.2;">
           <span style="font-size: 36px"><a style="color: red;">PRO</a><a>DIFY</a></span>
@@ -44,8 +43,8 @@
         </ul>
       </div>
     </div>
-    <div class="border-secondary rounded-top-5">
-    <button id="trocarTema" (click)="alternarTema()" class="btn btn-outline-secondary fw-bold">⚪️⚫️</button>
+    <div>
+    <button id="btnTrocarTema" (click)="alternarTema()" class="btn btn-outline-secondary fw-bold">⬛️⬜️</button>
     </div>
   </div>
 
