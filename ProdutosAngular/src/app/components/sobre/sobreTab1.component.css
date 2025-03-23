@@ -4,12 +4,6 @@
   overflow-x: auto;
 }
 
-.profile-card {
-  margin: 20px auto; /* Centraliza o cartão */
-  padding: 20px; /* Espaçamentos dentro do cartão */
-  text-align: justify;
-}
-
 .mat-card-subtitle {
   font-size: 16px; /* Tamanho da fonte do subtítulo */
   color: black;
@@ -22,9 +16,9 @@
 .profile-card {
   width: 100%; /* Ocupar 100% da largura disponível */
   height: auto; /* Altura automática, ajusta-se ao conteúdo */
-  margin: 0; /* Remove margens automáticas */
   padding: 20px; /* Você pode ajustar conforme necessário */
   box-shadow: none; /* Remover sombra, se necessário, para um visual mais limpo */
+  text-align: justify;
 }
 
 /* Definindo a cor do texto */

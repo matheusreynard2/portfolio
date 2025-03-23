@@ -1,76 +1,89 @@
-<form (ngSubmit)="onSubmit()" #loginForm="ngForm">
-  <div class="div-tabela">
-  <table class="table table-bordered">
-    <thead>
-    <tr>
-      <th colspan="2" class="text-center">LOGIN</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr>
-      <td class="coluna-1">
-        <label for="login">Usuário:</label>
-      </td>
-      <td>
-        <input type="text" [(ngModel)]="usuario.login"
-               class="form-control"
-               id="login"
-               name="loginUsuario"
-               placeholder="Insira o seu usuário."
-               required #nome="ngModel"
-               maxlength="30">
-      </td>
-    </tr>
-    <tr>
-      <td>
-        <label for="senha">Senha:</label>
-      </td>
-      <td>
-        <input type="password" [(ngModel)]="usuario.senha"
-               class="form-control"
-               id="senha"
-               name="senhaUsuario"
-               placeholder="Insira sua senha."
-               required #nome="ngModel"
-               maxlength="30">
-      </td>
-    <tr>
-      <td>
-        <button type="submit" [disabled]="!loginForm.form.valid" class="btn bg-primary-subtle fw-bold" style="width: 100px">Entrar</button>
-      </td>
-      <td colspan="2">
-        <button type="button" class="btn bg-secondary-subtle fw-bold" style="width: 100px" (click)="cadastrarNovoUsuario()">Cadastrar</button>
-      </td>
-    </tr>
-    </tbody>
-  </table>
-  </div>
-</form>
+<div class="container d-flex flex-column my-5">
+  <mat-card class="profile-card">
+    <mat-card-content>
+      <div class="div-form-login">
+        <form (ngSubmit)="onSubmit()" #loginForm="ngForm">
+          <div class="div-tabela">
+          <table class="table table-bordered">
+            <thead>
+            <tr>
+              <th colspan="4" class="text-center">LOGIN</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+              <td class="coluna-1">
+                <label for="login">Usuário:</label>
+              </td>
+              <td colspan="4" class="coluna-2">
+                <input type="text" [(ngModel)]="usuario.login"
+                       class="form-control"
+                       id="login"
+                       name="loginUsuario"
+                       placeholder="Insira o seu usuário."
+                       required #nome="ngModel"
+                       maxlength="30"
+                       style="width: 200px">
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <label for="senha">Senha:</label>
+              </td>
+              <td colspan="4" class="coluna-2">
+                <input type="password" [(ngModel)]="usuario.senha"
+                       class="form-control"
+                       id="senha"
+                       name="senhaUsuario"
+                       placeholder="Insira sua senha."
+                       required #nome="ngModel"
+                       maxlength="30"
+                       style="width: 200px">
+              </td>
+            <tr>
+              <td>
+                <button type="submit" [disabled]="!loginForm.form.valid" class="btn bg-primary-subtle fw-bold" style="width: 100px">Entrar</button>
+              </td>
+              <td colspan="2" class="coluna-2">
+                <button type="button" class="btn bg-secondary-subtle fw-bold" style="width: 100px" (click)="cadastrarNovoUsuario()">Cadastrar</button>
+              </td>
+              <td style="text-align: center; vertical-align: middle;">
+                <p><u>Trocar senha</u><br><span style="font-size: 8px; color: red">em construção</span></p>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+          </div>
+        </form>
+      </div>
+    </mat-card-content>
+  </mat-card>
 
-<!-- Janela (modal) que abre depois da msg de TOKEN expirado -->
-<ng-template #modalMsgToken let-modal class="modal">
-  <div class="modal-header">
-    <h5 class="modal-title">AVISO</h5>
-    <img ngSrc="/codigo_barras.png" height="60" width="60" class="img-right"/>
-  </div>
-  <div class="modal-body">
-    <a>Você atingiu o tempo limite de conexão com o sistema. Por favor, faça login novamente.</a>
-  </div>
-  <div class="modal-footer">
-    <button type="button" class="btn btn-secondary" (click)="modal.close()">Fechar</button>
-  </div>
-</ng-template>
+  <!-- Janela (modal) que abre depois da msg de TOKEN expirado -->
+  <ng-template #modalMsgToken let-modal class="modal">
+    <div class="modal-header">
+      <h5 class="modal-title">AVISO</h5>
+      <img ngSrc="/codigo_barras.png" height="60" width="60" class="img-right"/>
+    </div>
+    <div class="modal-body">
+      <a>Você atingiu o tempo limite de conexão com o sistema. Por favor, faça login novamente.</a>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" (click)="modal.close()">Fechar</button>
+    </div>
+  </ng-template>
 
-<!-- Janela (modal) que abre depois de inserir credenciais inválidas -->
-<ng-template #modalMsgCredenciais let-modal class="modal">
-  <div class="modal-header">
-    <h4 class="modal-title">Erro</h4>
-    <img ngSrc="/codigo_barras.png" height="60" width="60" class="img-right"/>
-  </div>
-  <div class="modal-body">
-    <a>Nome de usuário e/ou senha inválidos.</a>
-  </div>
-  <div class="modal-footer">
-    <button type="button" class="btn btn-secondary" (click)="modal.close()">Fechar</button>
-  </div>
-</ng-template>
+  <!-- Janela (modal) que abre depois de inserir credenciais inválidas -->
+  <ng-template #modalMsgCredenciais let-modal class="modal">
+    <div class="modal-header">
+      <h4 class="modal-title">Erro</h4>
+      <img ngSrc="/codigo_barras.png" height="60" width="60" class="img-right"/>
+    </div>
+    <div class="modal-body">
+      <a>Nome de usuário e/ou senha inválidos.</a>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" (click)="modal.close()">Fechar</button>
+    </div>
+  </ng-template>
+</div>

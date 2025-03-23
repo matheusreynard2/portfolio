@@ -22,15 +22,21 @@
     </ng-template>
 
     <!-- Coluna para o título e botões de navegação (80%) -->
-    <div class="w-100 ps-3 d-flex flex-column justify-content-center" style="height: 100%; margin-left: -90px;" [ngClass]="{'centralizado': !mostrarPerfil}">
+    <div class="w-100 ps-3 d-flex flex-column justify-content-center" style="height: 100%; margin-left: -85px;" [ngClass]="{'centralizado': !mostrarPerfil}">
       <div id="div_banner_menu">
-        <h2 class="text-center text-white position-relative" style="font-size: 18px; line-height: 1.2;">
-          <span style="font-size: 36px"><a style="color: red;">PRO</a><a>DIFY</a></span>
+        <h2 class="text-center text-white position-relative" style="line-height: 1.2;">
+          <span style="color: red; font-size: 60px; font-family: 'Leckerli One', cursive;">P<span style="color: red; font-size: 30px; font-family: 'Arial Black', cursive">RO</span>
+          <span style="color: white; font-size: 30px; font-family: 'Arial Black', cursive">DIFY</span>
+          </span>
         </h2>
+
         <img src="/logo_produtos.png" alt="Logo" class="position-absolute" width="165" height="120" style="right: 60px;">
 
         <!-- Botões de navegação -->
         <ul class="text-center list-inline py-1" style="font-size: 14px;">
+          <li class="list-inline-item">
+            <a routerLink="/login" class="btn btn-outline-secondary fw-bold">Início</a>
+          </li>
           <li class="list-inline-item">
             <a routerLink="/produtos" class="btn btn-outline-secondary fw-bold">Lista de produtos</a>
           </li>

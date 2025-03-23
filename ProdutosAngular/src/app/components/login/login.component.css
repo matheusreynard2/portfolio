@@ -1,5 +1,33 @@
-.coluna-1 {
-  width: 50px;
+p {
+  font-size: 13px;
+}
+
+.container {
+  width: 100%;
+  margin: 0 auto;
+  overflow-x: auto;
+}
+
+.profile-card {
+  width: 100%; /* Ocupar 100% da largura disponível */
+  height: auto; /* Altura automática, ajusta-se ao conteúdo */
+  padding: 20px; /* Você pode ajustar conforme necessário */
+  box-shadow: none; /* Remover sombra, se necessário, para um visual mais limpo */
+  text-align: justify;
+}
+
+.container {
+  width: 100%;
+  margin: 0 auto;
+  overflow-x: auto;
+}
+
+.div-form-login {
+  display: flex;            /* Ativa o flexbox */
+  flex-direction: column;   /* Alinha os elementos em coluna */
+  justify-content: center;  /* Centraliza o conteúdo verticalmente */
+  align-items: center;      /* Centraliza o conteúdo horizontalmente */
+  height: 100%;             /* Faz com que a div ocupe 100% da altura do mat-card */
 }
 
 .img-right {
@@ -10,6 +38,15 @@
 }
 
 .div-tabela {
-  width: 100%;
   overflow-x: auto;
+}
+
+.table {
+  width: auto; /* Permite que a tabela se ajuste ao conteúdo */
+  table-layout: auto; /* Usa layout automático */
+}
+
+.table td {
+  white-space: nowrap; /* Evita quebra de linha dentro da célula */
+  vertical-align: middle; /* Alinha o conteúdo verticalmente */
 }

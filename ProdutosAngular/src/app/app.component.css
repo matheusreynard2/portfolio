@@ -7,16 +7,6 @@ img {
   transform: translateX(40px) translateY(5px);
 }
 
-h2 {
-  font-size: 30px;
-  font-family: "Arial Black";
-}
-
-h1 {
-  font-size: 20px;
-  font-family: "Arial Black";
-}
-
 p {
   font-size: 12px;
   color: black;
@@ -28,7 +18,7 @@ p {
 }
 
 .perfil-div {
-  position: relative; !important;
+  position: relative;;
   text-align: center;
   background-color: #333; /* Para destacar a área do perfil */
 }

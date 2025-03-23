@@ -5,13 +5,15 @@ import {Router} from '@angular/router';
 import {NgbModal, NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {NgOptimizedImage} from '@angular/common';
 import {AuthService} from '../../service/auth/auth.service';
+import { MatCardModule } from '@angular/material/card';
 
 @Component({
   selector: 'app-login',
   imports: [
     FormsModule,
     NgbModule,
-    NgOptimizedImage
+    NgOptimizedImage,
+    MatCardModule
   ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css'

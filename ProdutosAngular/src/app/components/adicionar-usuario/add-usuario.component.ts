@@ -3,14 +3,15 @@ import {FormsModule} from '@angular/forms';
 import {Usuario} from '../../model/usuario';
 import {Router} from '@angular/router';
 import {UsuarioService} from '../../service/usuario/usuario.service';
-import {NgOptimizedImage} from '@angular/common';
+import {NgIf, NgOptimizedImage} from '@angular/common';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-add-usuario',
   imports: [
     FormsModule,
-    NgOptimizedImage
+    NgOptimizedImage,
+    NgIf
   ],
   templateUrl: './add-usuario.component.html',
   styleUrl: './add-usuario.component.css'
