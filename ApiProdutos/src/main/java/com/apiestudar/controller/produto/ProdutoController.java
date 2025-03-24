@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
@@ -54,7 +55,7 @@ public class ProdutoController {
 	@ApiOperation(value = "Adiciona/cadastra um novo produto.", notes = "Cria um novo registro de produto no banco de dados.")
 	@ApiResponse(code = 200, message = "Produto cadastrado.")
 	@PostMapping("/adicionarProduto")
-	public Produto adicionarProduto(@RequestParam String produtoJSON, @RequestParam MultipartFile imagemFile) throws IOException {
+	public Produto adicionarProduto(@RequestParam String produtoJSON, @RequestParam MultipartFile imagemFile) throws IOException, SQLException {
 		
 	    // Converter o JSON de volta para um objeto Produto
         Produto produto = new ObjectMapper().readValue(produtoJSON, Produto.class);
@@ -63,6 +64,12 @@ public class ProdutoController {
         String imagemStringBase64 = Base64.getEncoder().encodeToString(imagemFile.getBytes());
         
         produto.setImagem(imagemStringBase64);
+        
+        // Gera o OID do Lob
+        Long oid = produtoService.gerarOIDfromBase64(imagemStringBase64);
+        
+        // Garante permissão para acessar o Lob para o Usuário Owner do Banco de Dados
+        produtoService.garantirPermissaoLob(oid);
 		
 		Produto produtoAdicionado = (Produto) produtoService.adicionarProduto(produto);
 		

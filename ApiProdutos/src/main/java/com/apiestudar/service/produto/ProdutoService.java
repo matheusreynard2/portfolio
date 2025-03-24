@@ -1,5 +1,6 @@
 package com.apiestudar.service.produto;
 
+import java.sql.SQLException;
 import java.util.List;
 
 import org.springframework.data.domain.Page;
@@ -26,4 +27,9 @@ public interface ProdutoService {
 	List<Produto> efetuarPesquisaById(Long valorPesquisa, long idUsuario);
 	
 	List<Produto> efetuarPesquisaByNome(String valorPesquisa, long idUsuario);
-}
+	
+	void garantirPermissaoLob(Long oid);
+	
+	Long gerarOIDfromBase64(String base64) throws SQLException
+
+;}

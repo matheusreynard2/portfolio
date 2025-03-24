@@ -39,6 +39,9 @@ public class Produto {
 	
 	private double valorDesconto;
 	
+	@Lob
+	private String imagem;
+	
 	public long getIdUsuario() {
 		return idUsuario;
 	}
@@ -46,9 +49,6 @@ public class Produto {
 	public void setIdUsuario(long idUsuario) {
 		this.idUsuario = idUsuario;
 	}
-
-	@Lob
-	private String imagem;
 	
 	public String getImagem() {
 		return imagem;
