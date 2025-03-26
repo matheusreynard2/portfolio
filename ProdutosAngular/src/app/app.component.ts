@@ -8,6 +8,7 @@ import {NgClass, NgIf, NgOptimizedImage} from '@angular/common';
 import {filter, firstValueFrom, Observable, of} from 'rxjs';
 import {Usuario} from './model/usuario';
 import {UsuarioService} from './service/usuario/usuario.service';
+import {BreakpointObserver, Breakpoints} from '@angular/cdk/layout';
 
 @Component({
   selector: 'app-root',
@@ -20,7 +21,8 @@ export class AppComponent implements OnInit {
 
   constructor(private authService: AuthService,
               private router: Router,
-              private usuarioService: UsuarioService) {
+              private usuarioService: UsuarioService,
+              private breakpointObserver: BreakpointObserver) {
   }
 
   mostrarPerfil: boolean = false;
@@ -28,15 +30,31 @@ export class AppComponent implements OnInit {
   numeroVisitas: number = 0;
   private observableVisitas: Observable<number> = of(0)
   temaEscuro: boolean = false;
+  isMobileOrTablet: boolean = false;
+  menuOpen: boolean = false;
 
   ngOnInit() {
+
+    // OBSERVER DE SELEÇÃO DO MENU PARA SABER SE ESTÁ ACESSANDO POR CELULAR/COMPUTADOR
+    this.breakpointObserver.observe([
+      Breakpoints.Handset,
+      Breakpoints.Tablet
+    ]).subscribe(result => {
+      this.isMobileOrTablet = result.matches;
+      // Se voltar para desktop, garante que o menu mobile seja fechado.
+      if (!this.isMobileOrTablet) {
+        this.menuOpen = false;
+      }
+    });
+
+    // CARREGAR MODO CLAR/ESCURO E ACESSAR ENDPOINT DE CONTADOR DE IPs
     this.carregarTema();
     this.observableVisitas = this.usuarioService.addNovoAcessoIp()
-    this.numeroVisitas
     this.observableVisitas.subscribe((valor: number) => {
       this.numeroVisitas = valor;
     });
 
+    // CHECA SE HÁ USUÁRIO LOGADO PARA REDIRECIONAR PARA AS ROTAS AUTENTICADAS OU NÃO
     this.usuarioLogado = this.authService.getUsuarioLogado()
     this.router.events.pipe(
       filter((event)  => event instanceof NavigationEnd)
@@ -48,11 +66,13 @@ export class AppComponent implements OnInit {
       if (!this.authService.existeToken()) {
           this.mostrarPerfil = false;
       } else if (this.authService.existeToken()) {
-        this.mostrarPerfil = !(rotaAtual.includes('login') || rotaAtual.includes('cadastrar-usuario'));
+        this.mostrarPerfil = !(rotaAtual.includes('login') || rotaAtual.includes('cadastrar-usuario')
+        || rotaAtual.includes('sobreTab1') || rotaAtual.includes('sobreTab2'));
       }
     });
   }
 
+  // CARREGAR TEMA CLARO/ESCURO
   carregarTema() {
     const temaEscuro = localStorage.getItem('temaEscuro');
     if (temaEscuro === 'true') {
@@ -66,20 +86,25 @@ export class AppComponent implements OnInit {
     }
   }
 
+  // ALTERNA ENTRE TEMAS CLARO/ESCURO
   alternarTema() {
     this.temaEscuro = !this.temaEscuro
     localStorage.setItem('temaEscuro', this.temaEscuro.toString());
     if (this.temaEscuro) {
       document.body.classList.add('dark-mode');
-      console.log('aplicou escuro')
     } else {
       document.body.classList.remove('dark-mode');
-      console.log('aplicou claro')
     }
   }
 
-
+  // FAZ LOGOUT DO USUÁRIO
   logout() {
     this.authService.logout()
   }
+
+
+  abrirFecharMenu() {
+    this.menuOpen = !this.menuOpen;
+  }
+
 }

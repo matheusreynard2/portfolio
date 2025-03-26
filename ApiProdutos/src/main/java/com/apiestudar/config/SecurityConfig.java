@@ -37,7 +37,7 @@ public class SecurityConfig implements WebMvcConfigurer {
 		config.setAllowedOrigins(List.of("https://www.sistemaprodify.com:8080", "https://www.sistemaprodify.com:80",
 				"https://www.sistemaprodify.com", "https://191.252.38.22:8080", "http://localhost:8080",
 				"http://localhost:4200", "https://sistemaprodify.com", "http://sistemaprodify.com",
-				"http://www.sistemaprodify.com"));
+				"http://www.sistemaprodify.com", "http://localhost:5173"));
 		config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
 		config.setAllowedHeaders(List.of("Content-Type", "Authorization", "X-Requested-With", "Accept", "Origin",
 				"X-CSRF-Token", "X-Auth-Token"));
@@ -61,6 +61,7 @@ public class SecurityConfig implements WebMvcConfigurer {
 								.antMatchers(HttpMethod.POST, "/api/usuarios/adicionarUsuario").permitAll()
 								.antMatchers(HttpMethod.DELETE, "/api/usuarios/deletarUsuario/{id}").permitAll()
 								.antMatchers(HttpMethod.GET, "/api/usuarios/listarUsuarios").permitAll()
+								.antMatchers(HttpMethod.GET, "/api/produtos/listarProdutosReact").permitAll()
 								.antMatchers(HttpMethod.POST, "/api/produtos/adicionarProduto").hasRole("USER")
 								.antMatchers(HttpMethod.GET, "/api/produtos/listarProdutos").hasRole("USER")
 								.antMatchers(HttpMethod.PUT, "/api/produtos/atualizarProduto/{id}").hasRole("USER")

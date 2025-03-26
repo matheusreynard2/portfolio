@@ -111,6 +111,12 @@ h5 {
   overflow-x: auto;/* Garantir que a tabela ocupe toda a largura disponível */
 }
 
+/* Contêiner que envolve a tabela de edição para permitir scroll horizontal */
+.div-tabela-editar {
+  width: 100%;
+  overflow-x: auto;
+}
+
 .coluna_um {
   width: 200px;         /* Largura fixa de 50px para as colunas que contém os labels */
   overflow: hidden;    /* Esconde o conteúdo que ultrapassar o limite */

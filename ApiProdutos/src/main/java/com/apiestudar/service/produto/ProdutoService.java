@@ -13,6 +13,8 @@ public interface ProdutoService {
 	Produto adicionarProduto(Produto produto);
 
 	Page<Produto> listarProdutos(Pageable pageable);
+	
+	List<Produto> listarProdutosReact();
 
 	Produto atualizarProduto(long id, Produto produtoAtualizado);
 

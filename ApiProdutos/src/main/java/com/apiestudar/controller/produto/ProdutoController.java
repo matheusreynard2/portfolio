@@ -51,6 +51,12 @@ public class ProdutoController {
 		Page<Produto> produtos = produtoService.listarProdutos(pageable);
 		return produtos;
 	}
+	
+	@GetMapping("/listarProdutosReact")
+	public List<Produto> listarProdutosReact() {
+		List<Produto> produtos = produtoService.listarProdutosReact();
+		return produtos;
+	}
 
 	@ApiOperation(value = "Adiciona/cadastra um novo produto.", notes = "Cria um novo registro de produto no banco de dados.")
 	@ApiResponse(code = 200, message = "Produto cadastrado.")
