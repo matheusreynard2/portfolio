@@ -67,16 +67,16 @@
             <div *ngIf="menuOpen" class="mobile-menu-options" style="position: absolute; right: 0; top: 40px; width: 200px; background: rgba(255, 255, 255, 0.95); font-size: 12px; padding: 10px; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); z-index: 1000;">
               <ul class="mdc-list" style="list-style: none; margin: 0; padding: 0;">
                 <li>
-                  <a routerLink="/login" (click)="abrirFecharMenu()" style="color: inherit; text-decoration: none; display: block; padding: 5px 10px;">Início</a>
+                  <a routerLink="/login" (click)="abrirFecharMenu()" style="display: block; padding: 5px 10px;">Início</a>
                 </li>
                 <li>
-                  <a routerLink="/produtos" (click)="abrirFecharMenu()" style="color: inherit; text-decoration: none; display: block; padding: 5px 10px;">Lista de produtos</a>
+                  <a routerLink="/produtos" (click)="abrirFecharMenu()" style="display: block; padding: 5px 10px;">Lista de produtos</a>
                 </li>
                 <li>
-                  <a routerLink="/addproduto" (click)="abrirFecharMenu()" style="color: inherit; text-decoration: none; display: block; padding: 5px 10px;">Cadastrar produto</a>
+                  <a routerLink="/addproduto" (click)="abrirFecharMenu()" style="display: block; padding: 5px 10px;">Cadastrar produto</a>
                 </li>
                 <li>
-                  <a routerLink="/sobreTab1" (click)="abrirFecharMenu()" style="color: inherit; text-decoration: none; display: block; padding: 5px 10px;">Sobre</a>
+                  <a routerLink="/sobreTab1" (click)="abrirFecharMenu()" style="display: block; padding: 5px 10px;">Sobre</a>
                 </li>
               </ul>
             </div>
@@ -109,10 +109,7 @@
       <div class="news-container">
           <div class="news-marquee">
             <marquee behavior="scroll" scrollamount="10" direction="left">
-            <span>ÚLTIMOS RECURSOS LANÇADOS NO SISTEMA: </span>
-            <span> 1 - Página SOBRE: Tenha informações detalhadas sobre o Dev e sobre a utilização do Sistema sem precisar criar conta e entrar.</span>
-            <span> 2 - Barra de notícias no rodapé. Saiba os últimos recursos lançados no sistema de maneira prática e rápida.</span>
-            <span> 3 - Modo claro/escuro. Escolha qual usar!</span>
+            <span>PRODIFY - Gestão de produtos - Desenvolvido por Matheus Reynard - WhatsApp: (41) 99539-7044 | LinkedIn: www.linkedin.com/in/matheus-reynard</span>
             </marquee>
           </div>
       </div>

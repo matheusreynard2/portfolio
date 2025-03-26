@@ -106,7 +106,7 @@ p {
 }
 
 .mobile-menu-options a {
-  color: inherit;       /* herda a cor do elemento pai (pode ser definida em outro lugar) */
+  color: black;       /* herda a cor do elemento pai (pode ser definida em outro lugar) */
   text-decoration: none; /* remove sublinhado */
   display: block;
   padding: 5px 10px;
