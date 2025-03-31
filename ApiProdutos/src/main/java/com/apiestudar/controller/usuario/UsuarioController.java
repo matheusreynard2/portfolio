@@ -27,7 +27,10 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.apiestudar.model.ContadorIP;
+import com.apiestudar.model.Curso;
+import com.apiestudar.model.Produto;
 import com.apiestudar.model.Usuario;
+import com.apiestudar.model.UsuarioCurso;
 import com.apiestudar.service.jwt.TokenService;
 import com.apiestudar.service.usuario.UsuarioService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -101,6 +104,43 @@ public class UsuarioController {
 			
 			return ResponseEntity.status(HttpStatus.CREATED).body(response);
         }
+	}
+	
+	@PostMapping("/adicionarUsuarioReact")
+	public ResponseEntity<Map<String, Object>> adicionarUsuarioReact(@RequestBody Usuario usuario) throws IOException {
+
+        Usuario user = usuario;
+        
+        Map<String, Object> response = new HashMap<>();
+		
+		if (usuarioService.findLoginRepetido(user.getLogin()) >= 1) {
+					
+	        response.put("message", "Login já cadastrado no banco de dados.");
+	        
+	        return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
+	        
+        } else {	
+        	        	
+        	Usuario usuarioAdicionado;
+		    
+			usuarioAdicionado = usuarioService.adicionarUsuario(user);
+		    
+		    response.put("usuario", usuarioAdicionado);
+			
+			return ResponseEntity.status(HttpStatus.CREATED).body(response);
+        }
+	}
+	
+    @PostMapping("/adicionarUsuarioCurso")
+    public ResponseEntity<UsuarioCurso> adicionarUsuarioCurso(@RequestBody UsuarioCurso userCurso) throws IOException {
+		UsuarioCurso novoUserCurso = usuarioService.adicionarUsuarioCurso(userCurso);
+        return ResponseEntity.status(HttpStatus.CREATED).body(novoUserCurso);
+	}
+	
+	@GetMapping("/listarUsuariosReact")
+	public ResponseEntity<List<Usuario>> listarUsuariosReact() {
+		List<Usuario> usuarios = usuarioService.listarUsuariosReact();
+		return ResponseEntity.status(HttpStatus.OK).body(usuarios);
 	}
 
 	@ApiOperation(value = "Deleta/exclui um usuário.", notes = "Faz a exclusão de um usuário do banco de dados de acordo com o número de id passado como parâmetro.")

@@ -1,0 +1,11 @@
+.navbar {
+    padding: 10px;
+}
+
+.navbar .navbar-brand, .navbar .nav-link {
+    color: white;
+}
+
+.navbar .nav-link:hover {
+    color: lightgray;
+}

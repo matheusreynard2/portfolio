@@ -1,21 +1,30 @@
 package com.apiestudar.model;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinTable;
+import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
+import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 @Entity
+@Table(name = "usuario")
 @SequenceGenerator(name = "usuario_seq", sequenceName = "usuario_sequence", allocationSize = 1)
 public class Usuario implements UserDetails {
 
@@ -40,6 +49,30 @@ public class Usuario implements UserDetails {
 	
 	private String endereco;
 	
+    // Relacionamento com a entidade de associação UsuarioCurso
+    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<UsuarioCurso> usuarioCursoList = new ArrayList<>();
+    
+    
+ // Métodos auxiliares para manter a integridade do relacionamento
+    public void addUsuarioCurso(UsuarioCurso usuarioCurso) {
+    	usuarioCursoList.add(usuarioCurso);
+        usuarioCurso.setUsuario(this);
+    }
+
+    public void removeUsuarioCurso(UsuarioCurso usuarioCurso) {
+    	usuarioCursoList.remove(usuarioCurso);
+        usuarioCurso.setUsuario(null);
+    }
+
+	public List<UsuarioCurso> getUsuarioCursoList() {
+		return usuarioCursoList;
+	}
+
+	public void setUsuarioCursoList(List<UsuarioCurso> usuarioCursoList) {
+		this.usuarioCursoList = usuarioCursoList;
+	}
+
 	public String getNome() {
 		return nome;
 	}

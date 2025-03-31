@@ -9,7 +9,9 @@ import org.springframework.web.server.ResponseStatusException;
 
 import com.apiestudar.model.ContadorIP;
 import com.apiestudar.model.Usuario;
+import com.apiestudar.model.UsuarioCurso;
 import com.apiestudar.repository.ContadorIPRepository;
+import com.apiestudar.repository.UsuarioCursoRepository;
 import com.apiestudar.repository.UsuarioRepository;
 
 @Service
@@ -21,6 +23,9 @@ public class UsuarioServiceImpl implements UsuarioService {
 	@Autowired
 	private ContadorIPRepository contadorIPRepository;
 	
+	@Autowired
+	private UsuarioCursoRepository usuarioCursoRepository;
+	
 	@Override
 	public ContadorIP addNovoAcessoIp(ContadorIP novoAcesso) {
 		return contadorIPRepository.save(novoAcesso);
@@ -30,9 +35,24 @@ public class UsuarioServiceImpl implements UsuarioService {
 	public Usuario adicionarUsuario(Usuario usuario) {
 		return usuarioRepository.save(usuario);
 	}
+	
+	@Override
+	public UsuarioCurso adicionarUsuarioCurso(UsuarioCurso userCurso) {
+		return usuarioCursoRepository.save(userCurso);
+	}
+	
+	@Override
+	public Usuario adicionarUsuarioReact(Usuario usuario) {
+		return usuarioRepository.save(usuario);
+	}
 
 	@Override
 	public List<Usuario> listarUsuarios() {
+		return usuarioRepository.findAll();
+	}
+	
+	@Override
+	public List<Usuario> listarUsuariosReact() {
 		return usuarioRepository.findAll();
 	}
 
