@@ -18,9 +18,9 @@ Front-end em Angular e TypeScript do sistema Prodify, parte que consome a API de
 - Relacionamento produto X usuário
 - Contador de acessos por IP
 - Certificado SSL - Endereço HTTPS
+- Responsividade Computador X Celular
 
 ### Funcionalidades em desenvolvimento
 - Lógica de quantidade de produtos (atualmente aceita somente 1)
 - Categoria de produtos
-- Responsividade Computador X Celular
 
