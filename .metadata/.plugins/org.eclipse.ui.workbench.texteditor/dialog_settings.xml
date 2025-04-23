@@ -3,6 +3,8 @@
 	<item key="hasShownOverlayPopupBefore" value="true"/>
 	<item key="replaceBarOpen" value="true"/>
 	<list key="searchhistory">
+		<item value="jakarta.persistence."/>
+		<item value="javax.persistence."/>
 		<item value="filter"/>
 	</list>
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
@@ -11,8 +13,10 @@
 		<item key="wholeword" value="false"/>
 		<item key="incremental" value="false"/>
 		<item key="isRegEx" value="false"/>
-		<item key="selection" value="sequence"/>
+		<item key="selection" value="Queue"/>
 		<list key="findhistory">
+			<item value="Queue"/>
+			<item value="Rabbit"/>
 			<item value="sequence"/>
 			<item value="caiu"/>
 		</list>
