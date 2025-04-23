@@ -1,4 +1,4 @@
-package com.apiestudar.controller.curso;
+package com.apiestudar.controller;
 
 import java.io.IOException;
 import java.util.Base64;
@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -31,57 +32,45 @@ import com.apiestudar.model.Curso;
 import com.apiestudar.model.Produto;
 import com.apiestudar.model.Usuario;
 import com.apiestudar.model.UsuarioCurso;
-import com.apiestudar.service.curso.CursoService;
+import com.apiestudar.model.dto.UsuarioCursoDTO;
 import com.apiestudar.service.jwt.TokenService;
 import com.apiestudar.service.usuario.UsuarioService;
+import com.apiestudar.service.usuariocurso.UsuarioCursoService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 
 @RestController
-@RequestMapping("api/cursos")
-@CrossOrigin(
-	    origins = {
-	    	"http://localhost:4200",
-	        "http://localhost:8080",
-	        "https://www.sistemaprodify.com",
-	        "https://www.sistemaprodify.com:8080",
-	        "https://www.sistemaprodify.com:80",
-	        "https://191.252.38.22:8080",
-	        "https://191.252.38.22:80",
-	        "https://191.252.38.22"
-	    },
-	    allowedHeaders = {"*"}
-)
-public class CursoController {
-	
+@RequestMapping("api/usuariocurso")
+@CrossOrigin(origins = { "http://localhost:4200", "http://localhost:8080", "https://www.sistemaprodify.com",
+		"https://www.sistemaprodify.com:8080", "https://www.sistemaprodify.com:80", "https://191.252.38.22:8080",
+		"https://191.252.38.22:80", "https://191.252.38.22" }, allowedHeaders = { "*" })
+
+public class UsuarioCursoController {
+
 	@Autowired
-	private CursoService cursoService;
+	private UsuarioCursoService usuarioCursoService;
+
+	@PostMapping("/adicionarUsuarioCurso")
+	public ResponseEntity<UsuarioCurso> adicionarUsuarioCurso(@RequestBody UsuarioCurso userCurso) throws IOException {
+		UsuarioCurso novoUserCurso = usuarioCursoService.adicionarUsuarioCurso(userCurso);
+		return ResponseEntity.status(HttpStatus.CREATED).body(novoUserCurso);
+	}
+
+	@GetMapping("/listarUsuarioCurso")
+	public List<UsuarioCursoDTO> listarUsuarioCurso() {
+		
+		List<UsuarioCurso> userCursoList = usuarioCursoService.listarUsuarioCurso();
+		
+		return userCursoList.stream()
+		        .map(userCurso -> new UsuarioCursoDTO(
+		            userCurso.getId(),
+		            userCurso.getUsuario().getLogin(),
+		            userCurso.getCurso().getNomeCurso()
+		        ))
+		        .collect(Collectors.toList());		
+		
+	}
 	
-
-	@GetMapping("/listarCursos")
-	public ResponseEntity<List<Curso>> listarCursos() {
-		List<Curso> cursos = cursoService.listarCursos();
-		return ResponseEntity.status(HttpStatus.OK).body(cursos);
-	}
-
-	@PostMapping("/adicionarCurso")
-    public ResponseEntity<Curso> adicionarCurso(@RequestBody Curso curso) throws IOException {
-        Curso cursoAdicionado = cursoService.adicionarCurso(curso);
-        return ResponseEntity.status(HttpStatus.CREATED).body(cursoAdicionado);
-    }
-
-	@DeleteMapping("/deletarCurso/{id}")
-	public ResponseEntity<?> deletarCurso(@PathVariable long id) {
-		boolean estaDeletado = false;
-		
-		if (cursoService.findByCursoId(id) == 0) {
-			estaDeletado = cursoService.deletarCurso(id);
-			return ResponseEntity.status(HttpStatus.OK).body(estaDeletado);
-		}
-		
-		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(estaDeletado);
-		
-	}
 }

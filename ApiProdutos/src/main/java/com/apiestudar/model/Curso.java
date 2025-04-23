@@ -2,7 +2,6 @@ package com.apiestudar.model;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -12,6 +11,15 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 @SequenceGenerator(name = "curso_seq", sequenceName = "curso_sequence", allocationSize = 1)
 public class Curso {
@@ -38,55 +46,5 @@ public class Curso {
     public void removeUsuarioCurso(UsuarioCurso usuarioCurso) {
         usuarioCursos.remove(usuarioCurso);
         usuarioCurso.setCurso(null);
-    }
-
-    // Getters and Setters
-
-    public Long getId() {
-        return id;
-    }
-
-    public List<UsuarioCurso> getUsuarioCursos() {
-		return usuarioCursos;
-	}
-
-	public void setUsuarioCursos(List<UsuarioCurso> usuarioCursos) {
-		this.usuarioCursos = usuarioCursos;
-	}
-
-	public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getNomeCurso() {
-        return nomeCurso;
-    }
-
-    public void setNomeCurso(String nomeCurso) {
-        this.nomeCurso = nomeCurso;
-    }
-
-    public String getPeriodo() {
-        return periodo;
-    }
-
-    public void setPeriodo(String periodo) {
-        this.periodo = periodo;
-    }
-
-    public int getQtdeMaterias() {
-        return qtdeMaterias;
-    }
-
-    public void setQtdeMaterias(int qtdeMaterias) {
-        this.qtdeMaterias = qtdeMaterias;
-    }
-
-    public double getValorMensalidade() {
-        return valorMensalidade;
-    }
-
-    public void setValorMensalidade(double valorMensalidade) {
-        this.valorMensalidade = valorMensalidade;
     }
 }

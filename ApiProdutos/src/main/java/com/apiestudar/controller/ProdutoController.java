@@ -1,26 +1,32 @@
-package com.apiestudar.controller.produto;
-
-import com.apiestudar.model.Produto;
-import com.apiestudar.service.produto.ProdutoService;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
+package com.apiestudar.controller;
 
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Base64;
 import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
+
+import com.apiestudar.model.Produto;
+import com.apiestudar.service.produto.ProdutoService;
+
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
 
 @RestController
 @RequestMapping("api/produtos")
@@ -62,23 +68,7 @@ public class ProdutoController {
 	@ApiResponse(code = 200, message = "Produto cadastrado.")
 	@PostMapping("/adicionarProduto")
 	public Produto adicionarProduto(@RequestParam String produtoJSON, @RequestParam MultipartFile imagemFile) throws IOException, SQLException {
-		
-	    // Converter o JSON de volta para um objeto Produto
-        Produto produto = new ObjectMapper().readValue(produtoJSON, Produto.class);
-        
-        // Converter MultipartFile para String Base 64
-        String imagemStringBase64 = Base64.getEncoder().encodeToString(imagemFile.getBytes());
-        
-        produto.setImagem(imagemStringBase64);
-        
-        // Gera o OID do Lob
-        Long oid = produtoService.gerarOIDfromBase64(imagemStringBase64);
-        
-        // Garante permissão para acessar o Lob para o Usuário Owner do Banco de Dados
-        produtoService.garantirPermissaoLob(oid);
-		
-		Produto produtoAdicionado = (Produto) produtoService.adicionarProduto(produto);
-		
+		Produto produtoAdicionado = produtoService.adicionarProduto(produtoJSON, imagemFile);
 		return produtoAdicionado;
 	}
 
@@ -86,26 +76,18 @@ public class ProdutoController {
 	@ApiResponse(code = 200, message = "Produto atualizado.")
 	@PutMapping("/atualizarProduto/{id}")
 	public Produto atualizarProduto(@PathVariable long id, @RequestParam String produtoJSON, @RequestParam MultipartFile imagemFile) throws IOException {
-		
-	    // Converter o JSON de volta para um objeto Produto
-        Produto produto = new ObjectMapper().readValue(produtoJSON, Produto.class);
-        
-        // Converter MultipartFile para String Base 64
-        String imagemStringBase64 = Base64.getEncoder().encodeToString(imagemFile.getBytes());
-        
-        produto.setImagem(imagemStringBase64);
-		
-		Produto produtoAtualizado = produtoService.atualizarProduto(id, produto);
-		
+		Produto produtoAtualizado = produtoService.atualizarProduto(id, produtoJSON, imagemFile);
 		return produtoAtualizado;
 	}
 
 	@ApiOperation(value = "Deleta/exclui um produto.", notes = "Faz a exclusão de um produto do banco de dados de acordo com o número de id passado como parâmetro.")
 	@ApiResponse(code = 200, message = "Produto excluído.")
 	@DeleteMapping("/deletarProduto/{id}")
-	public boolean deletarProduto(@PathVariable int id) {
-		boolean estaDeletado = produtoService.deletarProduto(id);
-		return estaDeletado;
+	public ResponseEntity<?> deletarProduto(@PathVariable int id) {
+		if (produtoService.deletarProduto(id))
+			return ResponseEntity.status(HttpStatus.OK).body("Deletou com sucesso");
+		else
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Produto não encontrado");
 	}
 
 	@ApiOperation(value = "Exibe o produto mais caro.", notes = "Exibe o valor unitário do produto mais caro entre todos os produtos registrados no banco de dados.")
@@ -138,17 +120,12 @@ public class ProdutoController {
 	@ApiResponse(code = 200, message = "Produtos encontrados.")
 	@GetMapping("/efetuarPesquisa/{tipoPesquisa}/{valorPesquisa}/{idUsuario}")
 	public List<Produto> efetuarPesquisa(@PathVariable String tipoPesquisa, @PathVariable String valorPesquisa, @PathVariable long idUsuario) {
-		
 		List<Produto> produtos = new ArrayList<Produto>();
-		
 		if (tipoPesquisa.equals("id")) {
 			long valorPesquisaLong = Long.parseLong(valorPesquisa);
 			produtos = produtoService.efetuarPesquisaById(valorPesquisaLong, idUsuario);
-			
-		} else if (tipoPesquisa.equals("nome")) {
-			produtos = produtoService.efetuarPesquisaByNome(valorPesquisa, idUsuario);
-		}
-		
+		} else if (tipoPesquisa.equals("nome"))
+			produtos = produtoService.efetuarPesquisaByNome(valorPesquisa, idUsuario);	
 		return produtos;
 	}
 	

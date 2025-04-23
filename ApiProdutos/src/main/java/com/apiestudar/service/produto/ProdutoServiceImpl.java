@@ -2,17 +2,21 @@ package com.apiestudar.service.produto;
 
 import com.apiestudar.model.Produto;
 import com.apiestudar.repository.ProdutoRepository;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.postgresql.PGConnection;
 import org.postgresql.largeobject.LargeObject;
 import org.postgresql.largeobject.LargeObjectManager;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -25,15 +29,35 @@ import javax.transaction.Transactional;
 @Service
 public class ProdutoServiceImpl implements ProdutoService {
 
-	final String jdbcUrl = "jdbc:postgresql://localhost:5432/prodify";
-	final String username = "matheuspostgres";
-	final String password = "@@m159753123R@@";
+	@Value("${spring.datasource.url}")
+	private String jdbcUrl;
+
+	@Value("${spring.datasource.username}")
+	private String username;
+
+	@Value("${spring.datasource.password}")
+	private String password;
 
 	@Autowired
 	private ProdutoRepository produtoRepository;
 
 	@Transactional
-	public Produto adicionarProduto(Produto produto) {
+	public Produto adicionarProduto(String produtoJSON, MultipartFile imagemFile) throws SQLException, IOException {
+		
+		// Converter o JSON de volta para um objeto Produto
+        Produto produto = new ObjectMapper().readValue(produtoJSON, Produto.class);
+        
+        // Converter MultipartFile para String Base 64
+        String imagemStringBase64 = Base64.getEncoder().encodeToString(imagemFile.getBytes());
+        
+        produto.setImagem(imagemStringBase64);
+        
+        // Gera o OID do Lob
+        Long oid = gerarOIDfromBase64(imagemStringBase64);
+        
+        // Garante permissão para acessar o Lob para o Usuário Owner do Banco de Dados
+        garantirPermissaoLob(oid);
+		
 		return produtoRepository.save(produto);
 	}
 
@@ -49,7 +73,16 @@ public class ProdutoServiceImpl implements ProdutoService {
 
 	@Transactional
 	@Override
-	public Produto atualizarProduto(long id, Produto produtoAtualizado) {
+	public Produto atualizarProduto(long id, String produtoJSON, MultipartFile imagemFile) throws IOException {
+		
+		 // Converter o JSON de volta para um objeto Produto
+        Produto produtoAtualizado = new ObjectMapper().readValue(produtoJSON, Produto.class);
+        
+        // Converter MultipartFile para String Base 64
+        String imagemStringBase64 = Base64.getEncoder().encodeToString(imagemFile.getBytes());
+        
+        produtoAtualizado.setImagem(imagemStringBase64);
+		
 		// Chama o método e busca o produto pelo id no repositório
 		Optional<Produto> produto = produtoRepository.findById(id);
 		// Se não encontrou o produto...
@@ -80,11 +113,11 @@ public class ProdutoServiceImpl implements ProdutoService {
 	public boolean deletarProduto(long id) {
 		// Procura o produto pelo id, se encontrar e for != false ele deleta e retorna
 		// "true" para o controller
-		if (produtoRepository.findById(id).isPresent() == true) {
+		if (produtoRepository.findById(id).isPresent()) {
 			produtoRepository.deleteById(id);
 			return true;
 		} else
-			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Registro não encontrado no banco de dados.");
+			return false;
 	}
 
 	@Transactional

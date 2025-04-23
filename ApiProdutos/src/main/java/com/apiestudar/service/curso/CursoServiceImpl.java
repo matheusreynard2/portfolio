@@ -36,11 +36,11 @@ public class CursoServiceImpl implements CursoService {
 	public boolean deletarCurso(long id) {
 		// Procura o registro pelo id, se encontrar e for != false ele deleta e retorna
 		// "true" para o controller
-		if (cursoRepository.findById(id).isPresent() == true) {
+		if (cursoRepository.findById(id).isPresent()) {
 			cursoRepository.deleteById(id);
 			return true;
 		} else
-			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Registro não encontrado no banco de dados.");
+			return false;
 	}
 	
 	public int findByCursoId(long id) {

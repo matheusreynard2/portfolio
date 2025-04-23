@@ -4,6 +4,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.mockito.Mockito.when;
 
+import java.io.IOException;
+import java.sql.SQLException;
 import java.util.Optional;
 
 import org.junit.jupiter.api.Test;
@@ -27,11 +29,13 @@ public class ProdutoServiceTests {
 	
 	// Teste que valida o método do service de adicionar um produto no banco de dados
 	@Test
-	public void testAdicionarProduto() {
+	public void testAdicionarProduto() throws SQLException, IOException {
+		
+		// TESTE PRECISA SER REFEITO
 
 		Produto produtoTeste = new Produto();
 		produtoTeste.setId(1);
-		produtoTeste.setNome("Produto teste");
+		produtoTeste.setNome("hahaha");
 		produtoTeste.setDescricao("Descricao");
 		produtoTeste.setFrete(10.0);
 		produtoTeste.setPromocao(false);
@@ -45,7 +49,7 @@ public class ProdutoServiceTests {
 		
 		when(produtoRepository.save(produtoTeste)).thenReturn(produtoTeste);
 		
-		Produto produtoRetornadoService = produtoService.adicionarProduto(produtoTeste);
+		Produto produtoRetornadoService = produtoService.adicionarProduto("hahaha", null);
 
 		assertEquals(produtoRetornadoService, produtoTeste);
 		
@@ -59,11 +63,11 @@ public class ProdutoServiceTests {
 	
 		// Teste que valida o método do service de editar um produto no banco de dados
 		@Test
-		public void testAtualizarProduto() {
+		public void testAtualizarProduto() throws IOException {
 
 			Produto produtoTeste = new Produto();
 			produtoTeste.setId(1L);
-			produtoTeste.setNome("Produto teste");
+			produtoTeste.setNome("hahaha");
 			produtoTeste.setDescricao("Descricao");
 			produtoTeste.setFrete(10.0);
 			produtoTeste.setPromocao(false);
@@ -78,7 +82,7 @@ public class ProdutoServiceTests {
 			
 			when(produtoRepository.findById(1L)).thenReturn(Optional.of(produtoTeste));
 
-			Produto produtoRetornadoService = produtoService.atualizarProduto(1, produtoTeste);
+			Produto produtoRetornadoService = produtoService.atualizarProduto(1, "hahaha", null);
 
 			assertEquals(produtoRetornadoService, produtoTeste);
 			

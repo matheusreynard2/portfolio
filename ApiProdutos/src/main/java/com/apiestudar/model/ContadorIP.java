@@ -6,6 +6,15 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 @SequenceGenerator(name = "contadorip_seq", sequenceName = "contadorip_sequence", allocationSize = 1)
 public class ContadorIP {
@@ -15,21 +24,5 @@ public class ContadorIP {
 	private long id;
 	
 	private String numeroIp;
-
-	public long getId() {
-		return id;
-	}
-
-	public void setId(long id) {
-		this.id = id;
-	}
-
-	public String getNumeroIp() {
-		return numeroIp;
-	}
-
-	public void setNumeroIp(String numeroIp) {
-		this.numeroIp = numeroIp;
-	}
-
+	
 }
