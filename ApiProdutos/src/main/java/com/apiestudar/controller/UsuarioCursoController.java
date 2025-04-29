@@ -27,15 +27,15 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.apiestudar.model.ContadorIP;
-import com.apiestudar.model.Curso;
-import com.apiestudar.model.Produto;
-import com.apiestudar.model.Usuario;
-import com.apiestudar.model.UsuarioCurso;
-import com.apiestudar.model.dto.UsuarioCursoDTO;
-import com.apiestudar.service.jwt.TokenService;
-import com.apiestudar.service.usuario.UsuarioService;
-import com.apiestudar.service.usuariocurso.UsuarioCursoService;
+import com.apiestudar.entity.ContadorIP;
+import com.apiestudar.entity.Curso;
+import com.apiestudar.entity.Produto;
+import com.apiestudar.entity.Usuario;
+import com.apiestudar.entity.UsuarioCurso;
+import com.apiestudar.entity.dto.UsuarioCursoDTO;
+import com.apiestudar.service.TokenService;
+import com.apiestudar.service.UsuarioCursoService;
+import com.apiestudar.service.UsuarioService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import io.swagger.annotations.ApiOperation;

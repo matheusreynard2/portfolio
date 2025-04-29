@@ -6,9 +6,9 @@ import java.time.LocalDateTime;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.stereotype.Controller;
 
-import com.apiestudar.model.ChatMessage;
+import com.apiestudar.entity.ChatMessage;
 import com.apiestudar.rabbitmq.RabbitMQService;
-import com.apiestudar.service.chatmessage.ChatMessageService;
+import com.apiestudar.service.ChatMessageService;
 
 @Controller
 public class WebSocketMessageController {

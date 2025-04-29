@@ -5,7 +5,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.data.repository.query.Param;
 
-import com.apiestudar.model.ContadorIP;
+import com.apiestudar.entity.ContadorIP;
 
 @EnableJpaRepositories
 public interface ContadorIPRepository extends JpaRepository<ContadorIP, Long> {

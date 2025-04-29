@@ -9,8 +9,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 
-
-import com.apiestudar.model.Produto;
+import com.apiestudar.entity.Produto;
 
 @EnableJpaRepositories
 public interface ProdutoRepository extends JpaRepository<Produto, Long> {

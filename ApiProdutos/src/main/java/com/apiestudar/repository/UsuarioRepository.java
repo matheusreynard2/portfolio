@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.apiestudar.model.Usuario;
+import com.apiestudar.entity.Usuario;
 
 @EnableJpaRepositories
 public interface UsuarioRepository extends JpaRepository<Usuario, Long> {

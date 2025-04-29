@@ -3,13 +3,15 @@ package com.apiestudar.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.apiestudar.model.ChatMessage;
-import com.apiestudar.service.chatmessage.ChatMessageService;
+import com.apiestudar.entity.ChatMessage;
+import com.apiestudar.service.ChatMessageService;
 
 @RestController
 @RequestMapping("api/chat")
@@ -32,7 +34,8 @@ public class ChatMessageController {
 	private ChatMessageService cursoService;
 
     @GetMapping("/mensagens")
-    public List<ChatMessage> getRecentMessages() {
-        return cursoService.findTop50MessagesOrderByTimeStampDesc();
+    public ResponseEntity<List<ChatMessage>> getRecentMessages() {
+		List<ChatMessage> msgs = cursoService.findTop50MessagesOrderByTimeStampDesc();
+		return ResponseEntity.status(HttpStatus.OK).body(msgs);
     }
 }

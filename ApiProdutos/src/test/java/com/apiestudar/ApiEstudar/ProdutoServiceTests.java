@@ -12,9 +12,9 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 
-import com.apiestudar.model.Produto;
+import com.apiestudar.entity.Produto;
 import com.apiestudar.repository.ProdutoRepository;
-import com.apiestudar.service.produto.ProdutoServiceImpl;
+import com.apiestudar.service.impl.ProdutoServiceImpl;
 
 import org.springframework.boot.test.context.SpringBootTest;
 

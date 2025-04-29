@@ -21,9 +21,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.apiestudar.model.Usuario;
-import com.apiestudar.model.UsuarioCurso;
-import com.apiestudar.service.usuario.UsuarioService;
+import com.apiestudar.entity.Usuario;
+import com.apiestudar.entity.UsuarioCurso;
+import com.apiestudar.service.UsuarioService;
 
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;

@@ -3,6 +3,8 @@ package com.apiestudar.controller;
 import java.io.IOException;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,8 +17,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.apiestudar.model.Curso;
-import com.apiestudar.service.curso.CursoService;
+import com.apiestudar.entity.Curso;
+import com.apiestudar.exceptions.ParametroInformadoNullException;
+import com.apiestudar.exceptions.RegistroNaoEncontradoException;
+import com.apiestudar.service.CursoService;
 
 @RestController
 @RequestMapping("api/cursos")
@@ -38,6 +42,7 @@ public class CursoController {
 	@Autowired
 	private CursoService cursoService;
 	
+	private static final Logger log = LoggerFactory.getLogger(CursoController.class);
 
 	@GetMapping("/listarCursos")
 	public ResponseEntity<List<Curso>> listarCursos() {
@@ -46,16 +51,25 @@ public class CursoController {
 	}
 
 	@PostMapping("/adicionarCurso")
-    public ResponseEntity<Curso> adicionarCurso(@RequestBody Curso curso) throws IOException {
-        Curso cursoAdicionado = cursoService.adicionarCurso(curso);
-        return ResponseEntity.status(HttpStatus.CREATED).body(cursoAdicionado);
+    public ResponseEntity<Object> adicionarCurso(@RequestBody Curso curso) throws IOException {
+        try {
+        	Curso cursoAdicionado = cursoService.adicionarCurso(curso);
+        	return ResponseEntity.status(HttpStatus.CREATED).body(cursoAdicionado);
+		} catch (ParametroInformadoNullException exc) {
+			log.error("Erro ao adicionar curso: {}", exc);
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exc.getMessage());
+		}
     }
 
 	@DeleteMapping("/deletarCurso/{id}")
-	public ResponseEntity<?> deletarCurso(@PathVariable long id) {	
-		if (cursoService.deletarCurso(id))
+	public ResponseEntity<Object> deletarCurso(@PathVariable long id) {	
+		try {
+			cursoService.deletarCurso(id);
 			return ResponseEntity.status(HttpStatus.OK).body("Deletou com sucesso");
-		else
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Curso não encontrado");
+		} catch (RegistroNaoEncontradoException exc) {
+			log.error("Erro ao deletar curso: {}", exc);
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exc.getMessage());
+		}
 	}
+	
 }

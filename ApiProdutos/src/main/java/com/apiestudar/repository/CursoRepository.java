@@ -5,7 +5,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.data.repository.query.Param;
 
-import com.apiestudar.model.Curso;
+import com.apiestudar.entity.Curso;
 
 @EnableJpaRepositories
 public interface CursoRepository extends JpaRepository<Curso, Long> {
