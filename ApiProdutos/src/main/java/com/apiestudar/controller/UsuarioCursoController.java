@@ -12,6 +12,8 @@ import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -33,6 +35,7 @@ import com.apiestudar.entity.Produto;
 import com.apiestudar.entity.Usuario;
 import com.apiestudar.entity.UsuarioCurso;
 import com.apiestudar.entity.dto.UsuarioCursoDTO;
+import com.apiestudar.exceptions.ParametroInformadoNullException;
 import com.apiestudar.service.TokenService;
 import com.apiestudar.service.UsuarioCursoService;
 import com.apiestudar.service.UsuarioService;
@@ -51,11 +54,18 @@ public class UsuarioCursoController {
 
 	@Autowired
 	private UsuarioCursoService usuarioCursoService;
+	
+	private static final Logger log = LoggerFactory.getLogger(CursoController.class);
 
 	@PostMapping("/adicionarUsuarioCurso")
-	public ResponseEntity<UsuarioCurso> adicionarUsuarioCurso(@RequestBody UsuarioCurso userCurso) throws IOException {
-		UsuarioCurso novoUserCurso = usuarioCursoService.adicionarUsuarioCurso(userCurso);
-		return ResponseEntity.status(HttpStatus.CREATED).body(novoUserCurso);
+	public ResponseEntity<Object> adicionarUsuarioCurso(@RequestBody UsuarioCurso userCurso) throws IOException {
+		try {
+			UsuarioCurso novoUserCurso = usuarioCursoService.adicionarUsuarioCurso(userCurso);
+			return ResponseEntity.status(HttpStatus.CREATED).body(novoUserCurso);
+		} catch (ParametroInformadoNullException exc) {
+			log.error("Erro ao adicionar UsuarioCurso - Param não informado: {}", exc);
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exc.getMessage());
+		}
 	}
 
 	@GetMapping("/listarUsuarioCurso")

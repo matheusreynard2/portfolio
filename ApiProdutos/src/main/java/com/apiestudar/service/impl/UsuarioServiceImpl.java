@@ -6,10 +6,13 @@ import java.util.Base64;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -17,6 +20,8 @@ import org.springframework.web.multipart.MultipartFile;
 import com.apiestudar.entity.ContadorIP;
 import com.apiestudar.entity.Usuario;
 import com.apiestudar.entity.UsuarioCurso;
+import com.apiestudar.exceptions.ParametroInformadoNullException;
+import com.apiestudar.exceptions.RegistroNaoEncontradoException;
 import com.apiestudar.pattern.HeaderIpExtractor;
 import com.apiestudar.pattern.IpExtractorManager;
 import com.apiestudar.repository.ContadorIPRepository;
@@ -30,50 +35,63 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Service
 public class UsuarioServiceImpl implements UsuarioService {
-	
+
 	@Autowired
 	private TokenService tokenService;
 
 	@Autowired
 	private UsuarioRepository usuarioRepository;
-	
+
 	@Autowired
 	private ContadorIPRepository contadorIPRepository;
-	
+
 	@Autowired
 	private UsuarioCursoRepository usuarioCursoRepository;
-	
+
 	private final static int NR_MAX_REPETICOES = 0;
-	
+	private final static int MAX_NUMBER_REGISTERED_LOGIN = 1;
+
 	@Override
 	public ContadorIP addNovoAcessoIp(ContadorIP novoAcesso) {
 		return contadorIPRepository.save(novoAcesso);
 	}
 	
-	@Override
-	public Usuario adicionarUsuario(String usuarioJSON, MultipartFile imagemFile) throws IOException {
-		
-		Usuario user = new ObjectMapper().readValue(usuarioJSON, Usuario.class);
-		
-		// Converter MultipartFile para String Base 64
-        String imagemStringBase64 = Base64.getEncoder().encodeToString(imagemFile.getBytes());
-        
-        user.setImagem(imagemStringBase64);
-    	
-		String senhaCriptografada = new BCryptPasswordEncoder().encode(user.getSenha());
-		
-		user.setSenha(senhaCriptografada);
-				
-		return usuarioRepository.save(user);
+	private void verificarNull(Object parametro) {
+		Optional.ofNullable(parametro)
+        .orElseThrow(() -> new ParametroInformadoNullException());
 	}
-	
+
+	@Override
+	public Map<String, Object> adicionarUsuario(String usuarioJSON, MultipartFile imagemFile) throws IOException {
+
+		verificarNull(usuarioJSON);
+		
+		Map<String, Object> response = new HashMap<>();
+
+		if (findLoginRepetido(usuarioJSON) >= MAX_NUMBER_REGISTERED_LOGIN) {
+			response.put("errorMessage", "Login já cadastrado no banco de dados.");
+			return response;
+		} else {
+			Usuario user = new ObjectMapper().readValue(usuarioJSON, Usuario.class);
+			String imagemStringBase64 = Base64.getEncoder().encodeToString(imagemFile.getBytes());
+			user.setImagem(imagemStringBase64);
+			String senhaCriptografada = new BCryptPasswordEncoder().encode(user.getSenha());
+			user.setSenha(senhaCriptografada);
+			response.put("usuario", user);
+			usuarioRepository.save(user);
+			return response;
+		}
+	}
+
 	@Override
 	public UsuarioCurso adicionarUsuarioCurso(UsuarioCurso userCurso) {
+		verificarNull(userCurso);
 		return usuarioCursoRepository.save(userCurso);
 	}
-	
+
 	@Override
 	public Usuario adicionarUsuarioReact(Usuario usuario) {
+		verificarNull(usuario);
 		return usuarioRepository.save(usuario);
 	}
 
@@ -81,7 +99,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 	public List<Usuario> listarUsuarios() {
 		return usuarioRepository.findAll();
 	}
-	
+
 	@Override
 	public List<Usuario> listarUsuariosReact() {
 		return usuarioRepository.findAll();
@@ -89,81 +107,67 @@ public class UsuarioServiceImpl implements UsuarioService {
 
 	@Override
 	public boolean deletarUsuario(long id) {
-		// Procura o usuário pelo id, se encontrar e for != false ele deleta e retorna
-		// "true" para o controller
-		if (usuarioRepository.findById(id).isPresent()) {
+		if (usuarioRepository.findById(id).isEmpty()) {
+			throw new RegistroNaoEncontradoException();
+		} else {
 			usuarioRepository.deleteById(id);
 			return true;
-		} else
-			return false;
+		}
 	}
 
-	
 	public String getSenhaByLogin(String loginUsuario) {
 		return usuarioRepository.getSenhaByLogin(loginUsuario);
 	}
-	
-	
+
 	public int findLoginRepetido(String usuarioJSON) throws JsonMappingException, JsonProcessingException {
 		// Converter o JSON de volta para um objeto Produto
-        Usuario user = new ObjectMapper().readValue(usuarioJSON, Usuario.class);
+		Usuario user = new ObjectMapper().readValue(usuarioJSON, Usuario.class);
 		return usuarioRepository.findLoginRepetido(user.getLogin());
 	}
-	
+
 	public Usuario findByLogin(String login) {
 		return usuarioRepository.findByLogin(login);
 	}
-	
+
 	public int findIPRepetido(String novoAcesso) {
 		return contadorIPRepository.findIPRepetido(novoAcesso);
 	}
-	
+
 	public long getTotalAcessos() {
 		return contadorIPRepository.getTotalAcessos();
 	}
-	
+
 	public Map<String, Object> realizarLogin(Usuario usuario) {
 		
+		verificarNull(usuario);
 		Map<String, Object> response = new HashMap<>();
-		
 		BCryptPasswordEncoder senhaCriptografada = new BCryptPasswordEncoder();
-
 		String senhaArmazenada = getSenhaByLogin(usuario.getLogin());
-
+		
 		if (senhaCriptografada.matches(usuario.getSenha(), senhaArmazenada)) {
-			
 			Usuario usuarioLogado = findByLogin(usuario.getLogin());
-			
 			String token = tokenService.gerarToken(usuario);
-			
 			usuarioLogado.setToken(token);
-			
-	        response.put("usuario", usuarioLogado);
-	        
+			response.put("usuario", usuarioLogado);
 		} else {
 			response.put("message", "Credenciais inválidas");
 		}
-		
 		return response;
 	}
-	
+
 	public long acessar(HttpServletRequest req) {
-	 IpExtractorManager ipExtractor = new IpExtractorManager(Arrays.asList(
-	        new HeaderIpExtractor("X-Forwarded-For"),
-	        new HeaderIpExtractor("Proxy-Client-IP"),
-	        new HeaderIpExtractor("WL-Proxy-Client-IP"),
-	        new HeaderIpExtractor("HTTP_CLIENT_IP"),
-	        new HeaderIpExtractor("HTTP_X_FORWARDED_FOR")
-	    ));
+		IpExtractorManager ipExtractor = new IpExtractorManager(Arrays.asList(new HeaderIpExtractor("X-Forwarded-For"),
+				new HeaderIpExtractor("Proxy-Client-IP"), new HeaderIpExtractor("WL-Proxy-Client-IP"),
+				new HeaderIpExtractor("HTTP_CLIENT_IP"), new HeaderIpExtractor("HTTP_X_FORWARDED_FOR")));
 
-	    String ip = ipExtractor.extractIp(req);
+		String ip = ipExtractor.extractIp(req);
 
-	    if (findIPRepetido(ip) == NR_MAX_REPETICOES) {
-	        ContadorIP novoAcesso = new ContadorIP();
-	        novoAcesso.setNumeroIp(ip);
-	        addNovoAcessoIp(novoAcesso);
-	    }
+		if (findIPRepetido(ip) == NR_MAX_REPETICOES) {
+			ContadorIP novoAcesso = new ContadorIP();
+			novoAcesso.setNumeroIp(ip);
+			addNovoAcessoIp(novoAcesso);
+		}
 
-	    return getTotalAcessos();
+		return getTotalAcessos();
 	}
 }

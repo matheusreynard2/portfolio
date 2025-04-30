@@ -43,7 +43,6 @@ public class ProdutoController {
 
 	private static final Logger log = LoggerFactory.getLogger(CursoController.class);
 
-	// @CrossOrigin(origins = {"http://localhost:4200"},allowedHeaders = {"*"})
 	@ApiOperation(value = "Listagem de todos os produtos cadastrados.", notes = "Faz uma busca no banco de dados retornando uma lista com todos os produtos cadastrados.")
 	@ApiResponse(code = 200, message = "Produtos encontrados.")
 	@GetMapping("/listarProdutos")
@@ -95,9 +94,6 @@ public class ProdutoController {
 		try {
 			produtoService.deletarProduto(id);
 			return ResponseEntity.status(HttpStatus.OK).body("Deletou com sucesso");
-		} catch (ParametroInformadoNullException exc) {
-			log.error("Erro ao deletar produto - Parametro nao informado: {}", exc);
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exc.getMessage());
 		} catch (RegistroNaoEncontradoException exc) {
 			log.error("Erro ao deletar produto - Registro nao encontrado: {}", exc);
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exc.getMessage());

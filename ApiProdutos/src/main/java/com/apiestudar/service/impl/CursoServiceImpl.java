@@ -18,11 +18,16 @@ public class CursoServiceImpl implements CursoService {
 	@Autowired
 	private CursoRepository cursoRepository;
 	
+	private void verificarNull(Object parametro) {
+		Optional.ofNullable(parametro)
+        .orElseThrow(() -> new ParametroInformadoNullException());
+	}
+	
+	
 	@Override
 	public Curso adicionarCurso(Curso curso) {
-	    return Optional.ofNullable(curso)
-	            .map(cur -> cursoRepository.save(cur))
-	            .orElseThrow(() -> new ParametroInformadoNullException());
+		verificarNull(curso);
+	    return cursoRepository.save(curso);
 	}
 
 	@Override
