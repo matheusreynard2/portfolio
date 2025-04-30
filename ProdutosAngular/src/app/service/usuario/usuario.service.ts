@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import {catchError, Observable, of, throwError} from 'rxjs';
+import {catchError, Observable, of, switchMap, throwError} from 'rxjs';
 import { BehaviorSubject } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Router } from '@angular/router';
@@ -25,18 +25,10 @@ export class UsuarioService {
     const formData = new FormData();
     const headers = new HttpHeaders();
 
-    // Adiciona o objeto usuario como JSON no FormData
     formData.append('usuarioJSON', JSON.stringify(usuario));
-    // Adiciona a imagem ao FormData
     formData.append('imagemFile', imagem);
 
-    // Envia a requisição POST com o FormData
-    return this.http.post<Map<string, any>>(this.usuariosUrl + "/adicionarUsuario", formData, {headers}).pipe(
-      map(response => {
-        // Converte a resposta em um Map
-        return new Map<string, any>(Object.entries(response));
-      })
-    );
+    return this.http.post<any>(this.usuariosUrl + "/adicionarUsuario", formData, {headers});
   }
 
   public addNovoAcessoIp(): Observable<number> {

@@ -53,7 +53,7 @@ export class AddUsuarioComponent implements OnInit {
       },
       error: (error) => {
         // Se o erro for de login repetido, exibe a mensagem de erro.
-        if (error.status === 409 && error.error.message === 'Login já cadastrado no banco de dados.') {
+        if (error.status === 409 && error.error === 'Login já cadastrado no banco de dados.') {
           setTimeout(() => {
             this.modalService.open(this.modalMsgLoginExistente, {size: 'sm'});
           }, 100);

@@ -9,6 +9,7 @@ import {PorcentagemMaskDirective} from '../../directives/porcentagem-mask.direct
 import {NgxPaginationModule} from 'ngx-pagination';
 import {MatPaginatorModule, PageEvent} from '@angular/material/paginator';
 import {AuthService} from '../../service/auth/auth.service';
+import {HttpResponse} from '@angular/common/http';
 
 @Component({
   selector: 'app-produto-list',  // Corrigido para 'app-produto-list', sem a barra inicial
@@ -91,12 +92,13 @@ export class ProdutoListComponent implements OnInit {
   deletarProduto(modalDeletar: any, id: number, produto: Produto) {
     this.produtoService.deletarProduto(id).subscribe({
       next: (response) => {
-        if (response == true) {
+        if (response.status === 200) {
           this.produtoExcluido = produto;
           this.abrirTelaExclusao(modalDeletar);
         }
       }
-    })
+    });
+    this.atualizarLista();
   }
 
   // Função para atualizar um produto através do id

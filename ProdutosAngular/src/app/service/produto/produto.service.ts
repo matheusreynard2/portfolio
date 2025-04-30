@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {HttpClient, HttpErrorResponse, HttpHeaders, HttpParams} from '@angular/common/http';
+import {HttpClient, HttpErrorResponse, HttpHeaders, HttpParams, HttpResponse} from '@angular/common/http';
 import { Produto } from '../../model/produto';
 import {BehaviorSubject, catchError, Observable, throwError} from 'rxjs';
 import {AuthService} from '../auth/auth.service';
@@ -88,13 +88,17 @@ export class ProdutoService {
   }
 
   // ========= OK ========= ENDPOINT DELETE - Deletar / Excluir um produto
-  public deletarProduto(id: number) {
-    return this.http.delete(this.produtosUrl + "/deletarProduto/" + id).pipe(
+  public deletarProduto(id: number): Observable<HttpResponse<any>> {
+    return this.http.delete(
+      this.produtosUrl + "/deletarProduto/" + id,
+      { observe: 'response',
+        responseType: 'text'} // Configuração para receber a resposta HTTP completa
+    ).pipe(
       // Aqui fazemos o tratamento do erro 401 para TOKEN EXPIRADO
       catchError((error: HttpErrorResponse) => {
         if (error.status === 401 && error.error.message === 'Tempo limite de conexão com o sistema excedido. TOKEN Expirado')
           this.verificarRedirecionar()
-        return throwError(error);
+        return throwError(() => error);
       })
     );
   }

@@ -48,14 +48,17 @@
             <li class="list-inline-item">
               <a routerLink="/sobreTab1" class="btn btn-outline-secondary fw-bold">Sobre</a>
             </li>
+            <li class="list-inline-item">
+              <a href="http://localhost:8080/swagger-ui/index.html" target="_blank" class="btn btn-outline-secondary fw-bold">Swagger</a>
+            </li>
           </ul>
         </div>
 
         <!-- Menu para mobile/tablet -->
         <div *ngIf="isMobileOrTablet" class="mobile-menu">
           <h2 class="text-center text-white position-relative" style="line-height: 1.2;">
-          <span style="color: red; font-size: 40px; font-family: 'Leckerli One', cursive;">P<span style="color: red; font-size: 20px; font-family: 'Merienda', cursive">RO</span>
-          <span style="color: white; font-size: 20px; font-family: 'Merienda', cursive">DIFY</span>
+          <span style="color: red; font-size: 60px; font-family: 'Leckerli One', cursive;">P<span style="color: red; font-size: 40px; font-family: 'Merienda', cursive">RO</span>
+          <span style="color: white; font-size: 40px; font-family: 'Merienda', cursive">DIFY</span>
           </span>
           </h2>
           <!-- Botão de hambúrguer para abrir/fechar o menu -->
@@ -77,6 +80,9 @@
                 </li>
                 <li>
                   <a routerLink="/sobreTab1" (click)="abrirFecharMenu()" style="display: block; padding: 5px 10px;">Sobre</a>
+                </li>
+                <li>
+                  <a href="http://localhost:8080/swagger-ui/index.html" target="_blank" (click)="abrirFecharMenu()" style="display: block; padding: 5px 10px;">Swagger</a>
                 </li>
               </ul>
             </div>
