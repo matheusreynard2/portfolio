@@ -17,7 +17,7 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 
 public interface UsuarioService {
 
-	Map<String, Object> adicionarUsuario(String usuarioJSON, MultipartFile imagemFile) throws IOException;
+	Object adicionarUsuario(String usuarioJSON, MultipartFile imagemFile) throws IOException;
 	
 	Usuario adicionarUsuarioReact(Usuario usuario);
 	

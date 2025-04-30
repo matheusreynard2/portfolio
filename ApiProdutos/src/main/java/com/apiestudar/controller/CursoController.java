@@ -22,6 +22,9 @@ import com.apiestudar.exceptions.ParametroInformadoNullException;
 import com.apiestudar.exceptions.RegistroNaoEncontradoException;
 import com.apiestudar.service.CursoService;
 
+import springfox.documentation.annotations.ApiIgnore;
+
+@ApiIgnore
 @RestController
 @RequestMapping("api/cursos")
 @CrossOrigin(

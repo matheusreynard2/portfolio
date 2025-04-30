@@ -30,6 +30,7 @@ import com.apiestudar.service.ProdutoService;
 
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
+import springfox.documentation.annotations.ApiIgnore;
 
 @RestController
 @RequestMapping("api/produtos")
@@ -53,6 +54,7 @@ public class ProdutoController {
 		return produtos;
 	}
 
+	@ApiIgnore
 	@GetMapping("/listarProdutosReact")
 	public List<Produto> listarProdutosReact() {
 		List<Produto> produtos = produtoService.listarProdutosReact();

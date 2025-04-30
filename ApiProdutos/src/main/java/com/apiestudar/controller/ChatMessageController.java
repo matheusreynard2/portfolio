@@ -13,6 +13,9 @@ import org.springframework.web.bind.annotation.RestController;
 import com.apiestudar.entity.ChatMessage;
 import com.apiestudar.service.ChatMessageService;
 
+import springfox.documentation.annotations.ApiIgnore;
+
+@ApiIgnore
 @RestController
 @RequestMapping("api/chat")
 @CrossOrigin(

@@ -31,29 +31,20 @@ import com.apiestudar.service.UsuarioService;
 
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
+import springfox.documentation.annotations.ApiIgnore;
 
 @RestController
 @RequestMapping("api/usuarios")
-@CrossOrigin(
-	    origins = {
-	    	"http://localhost:4200",
-	        "http://localhost:8080",
-	        "https://www.sistemaprodify.com",
-	        "https://www.sistemaprodify.com:8080",
-	        "https://www.sistemaprodify.com:80",
-	        "https://191.252.38.22:8080",
-	        "https://191.252.38.22:80",
-	        "https://191.252.38.22"
-	    },
-	    allowedHeaders = {"*"}
-)
+@CrossOrigin(origins = { "http://localhost:4200", "http://localhost:8080", "https://www.sistemaprodify.com",
+		"https://www.sistemaprodify.com:8080", "https://www.sistemaprodify.com:80", "https://191.252.38.22:8080",
+		"https://191.252.38.22:80", "https://191.252.38.22" }, allowedHeaders = { "*" })
 public class UsuarioController {
-	
+
 	private static final Logger log = LoggerFactory.getLogger(CursoController.class);
-	
+
 	@Autowired
 	private UsuarioService usuarioService;
-	
+
 	@ApiOperation(value = "Listagem de todos os usuários cadastrados.", notes = "Faz uma busca no banco de dados retornando uma lista com todos os usuários cadastrados.")
 	@ApiResponse(code = 200, message = "Usuários encontrados.")
 	@GetMapping("/listarUsuarios")
@@ -65,19 +56,19 @@ public class UsuarioController {
 	@ApiOperation(value = "Adiciona/cadastra um novo usuário.", notes = "Cria um novo registro de usuário no banco de dados.")
 	@ApiResponse(code = 200, message = "Usuário cadastrado.")
 	@PostMapping("/adicionarUsuario")
-	public ResponseEntity<Object> adicionarUsuario(@RequestParam String usuarioJSON, @RequestParam MultipartFile imagemFile) throws IOException {       
+	public ResponseEntity<Object> adicionarUsuario(@RequestParam String usuarioJSON,
+			@RequestParam MultipartFile imagemFile) throws IOException {
 		try {
-			Map<String, Object> usuarioAdicionado = usuarioService.adicionarUsuario(usuarioJSON, imagemFile);
-			return Optional.ofNullable(usuarioAdicionado.get("message"))
-			    .map(mensagem -> ResponseEntity.status(HttpStatus.BAD_REQUEST).body(mensagem))
-			    .orElseGet(() -> ResponseEntity.status(HttpStatus.CREATED).body(usuarioAdicionado.get("usuario")));
+			Object response = usuarioService.adicionarUsuario(usuarioJSON, imagemFile);
+			return response instanceof String ? ResponseEntity.status(HttpStatus.CONFLICT).body(response)
+					: ResponseEntity.status(HttpStatus.CREATED).body(response);
 		} catch (ParametroInformadoNullException exc) {
 			log.error("Erro ao adicionar usuário - Param não informado: {}", exc);
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exc.getMessage());
-		}   	
-		
+		}
 	}
-	
+
+	@ApiIgnore
 	@PostMapping("/adicionarUsuarioReact")
 	public ResponseEntity<Object> adicionarUsuarioReact(@RequestBody Usuario usuario) throws IOException {
 		try {
@@ -86,20 +77,22 @@ public class UsuarioController {
 		} catch (ParametroInformadoNullException exc) {
 			log.error("Erro ao adicionar usuário - Param não informado: {}", exc);
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exc.getMessage());
-		}   
+		}
 	}
-	
-    @PostMapping("/adicionarUsuarioCurso")
-    public ResponseEntity<Object> adicionarUsuarioCurso(@RequestBody UsuarioCurso userCurso) throws IOException {
+
+	@ApiIgnore
+	@PostMapping("/adicionarUsuarioCurso")
+	public ResponseEntity<Object> adicionarUsuarioCurso(@RequestBody UsuarioCurso userCurso) throws IOException {
 		try {
 			UsuarioCurso novoUserCurso = usuarioService.adicionarUsuarioCurso(userCurso);
 			return ResponseEntity.status(HttpStatus.CREATED).body(novoUserCurso);
 		} catch (ParametroInformadoNullException exc) {
 			log.error("Erro ao adicionar usuário - Param não informado: {}", exc);
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exc.getMessage());
-		}  
+		}
 	}
-	
+
+	@ApiIgnore
 	@GetMapping("/listarUsuariosReact")
 	public ResponseEntity<List<Usuario>> listarUsuariosReact() {
 		List<Usuario> usuarios = usuarioService.listarUsuariosReact();
@@ -120,21 +113,23 @@ public class UsuarioController {
 	}
 
 	@ApiOperation(value = "Realiza um login com auntenticação JWT.", notes = "Realiza uma operação de login com autenticação de token via Spring Security - JWT e com senha criptografada.")
-	@ApiResponse(code = 200, message = "Login realizado.")	
+	@ApiResponse(code = 200, message = "Login realizado.")
 	@PostMapping("/realizarLogin")
-	public ResponseEntity<Object> realizarLogin(@RequestBody Usuario usuario) {		
+	public ResponseEntity<Object> realizarLogin(@RequestBody Usuario usuario) {
 		try {
 			Map<String, Object> response = usuarioService.realizarLogin(usuario);
 			return ResponseEntity.ok(response);
 		} catch (ParametroInformadoNullException exc) {
 			log.error("Erro ao Logar - Param não informado: {}", exc);
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exc.getMessage());
-		}  
+		}
 	}
-	
+
+	@ApiOperation(value = "Adiciona novo acesso e contabiliza o total.", notes = "Quando um novo usuário acessa o site, ele registra o IP no banco, e também faz a somatória de todos os IPs que já acessaram o site e exibe no rodapé.")
+	@ApiResponse(code = 200, message = "IP registrado, total contabilizado.")
 	@GetMapping("/addNovoAcessoIp")
 	public long addNovoAcessoIp(HttpServletRequest req) throws IOException {
 		return usuarioService.acessar(req);
 	}
-	
+
 }

@@ -100,11 +100,11 @@
 	  	<version>4.4.0</version>
 	</dependency>
     
-    <dependency>
+   <!-- <dependency>
 	  <groupId>org.springdoc</groupId>
 	  <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
 	  <version>2.2.0</version>
-	</dependency>
+	</dependency> -->
     
      <!-- Dependência do JUnit 5 e do Spring Boot Test -->
      
@@ -134,12 +134,22 @@
 	    <artifactId>mockito-junit-jupiter</artifactId>
 	</dependency>
 	
-	<!-- Dependência do Springfox Swagger -->
-    <dependency>
-        <groupId>io.springfox</groupId>
-        <artifactId>springfox-boot-starter</artifactId>
-        <version>3.0.0</version>
-    </dependency>
+<!-- SpringFox Swagger -->
+<dependency>
+    <groupId>io.springfox</groupId>
+    <artifactId>springfox-swagger2</artifactId>
+    <version>3.0.0</version>
+</dependency>
+<dependency>
+    <groupId>io.springfox</groupId>
+    <artifactId>springfox-swagger-ui</artifactId>
+    <version>3.0.0</version>
+</dependency>
+<dependency>
+    <groupId>io.springfox</groupId>
+    <artifactId>springfox-boot-starter</artifactId>
+    <version>3.0.0</version>
+</dependency>
 	
 	<dependency>
     <groupId>commons-io</groupId>

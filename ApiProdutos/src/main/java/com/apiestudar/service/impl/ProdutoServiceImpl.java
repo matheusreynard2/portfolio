@@ -25,6 +25,7 @@ import com.apiestudar.entity.Produto;
 import com.apiestudar.exceptions.ParametroInformadoNullException;
 import com.apiestudar.exceptions.RegistroNaoEncontradoException;
 import com.apiestudar.repository.ProdutoRepository;
+import com.apiestudar.repository.UsuarioRepository;
 import com.apiestudar.service.ProdutoService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -42,6 +43,9 @@ public class ProdutoServiceImpl implements ProdutoService {
 
 	@Autowired
 	private ProdutoRepository produtoRepository;
+	
+	@Autowired
+	private UsuarioRepository usuarioRepository;
 
 	private Produto addImage(String produtoJSON, MultipartFile imagemFile) throws IOException {
 		
@@ -128,22 +132,14 @@ public class ProdutoServiceImpl implements ProdutoService {
 	@Override
 	public List<Produto> listarProdutoMaisCaro(long idUsuario) {
 		verificarNull(idUsuario);
-		if (produtoRepository.findById(idUsuario).isEmpty())
-			throw new RegistroNaoEncontradoException();
-		else
-			return produtoRepository.listarProdutoMaisCaro(idUsuario);
+		return produtoRepository.listarProdutoMaisCaro(idUsuario);
 	}
 
 	@Transactional
 	@Override
 	public Double obterMediaPreco(long idUsuario) {
 		verificarNull(idUsuario);
-		Double valor;
-		if (produtoRepository.findById(idUsuario).isEmpty())
-			throw new RegistroNaoEncontradoException();
-		else
-			valor = produtoRepository.obterMediaPreco(idUsuario);
-		
+		Double valor = produtoRepository.obterMediaPreco(idUsuario);
 		return Optional.ofNullable(valor)
 			       .filter(v -> v > 0)
 			       .orElse(0.0);
@@ -171,10 +167,11 @@ public class ProdutoServiceImpl implements ProdutoService {
 		return produtoRepository.efetuarPesquisaByNome(valorPesquisa, idUsuario);
 	}
 	
+	@Transactional
 	public List<Produto> efetuarPesquisa(String tipoPesquisa, String valorPesquisa, long idUsuario) {	
 		verificarNull(idUsuario);
 		verificarNull(tipoPesquisa);
-		if (produtoRepository.findById(idUsuario).isEmpty())
+		if (usuarioRepository.findById(idUsuario).isEmpty())
 			throw new RegistroNaoEncontradoException();
 		else {
 			List<Produto> produtos = new ArrayList<Produto>();

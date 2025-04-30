@@ -66,7 +66,8 @@ public class SecurityConfig {
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(requests -> requests
                 // Libera endpoints públicos
-                .antMatchers("/swagger-ui/**").permitAll()
+                .antMatchers("/api/swagger-ui/**", "/api/swagger-ui.html", "/api/v2/api-docs/**", "api/webjars/**", "api/swagger-resources/**").permitAll()
+                .antMatchers("/swagger-ui/**", "/swagger-ui.html", "/v2/api-docs/**", "/webjars/**", "/swagger-resources/**").permitAll()
                 .antMatchers("/chat").permitAll() // Libera o endpoint WebSocket
                 .antMatchers("/chat/**").permitAll() // Libera o endpoint WebSocket
                 .antMatchers("/app/sendMessage").permitAll() // Libera o destino de envio de mensagens
@@ -78,6 +79,7 @@ public class SecurityConfig {
                 .antMatchers(HttpMethod.GET, "/api/cursos/listarCursos").permitAll()
                 .antMatchers(HttpMethod.POST, "/api/cursos/adicionarCurso").permitAll()
                 .antMatchers(HttpMethod.POST, "/api/usuarios/adicionarUsuarioReact").permitAll()
+                .antMatchers(HttpMethod.POST, "/api/usuarios/adicionarUsuario").permitAll()
                 .antMatchers(HttpMethod.POST, "/api/usuariocurso/adicionarUsuarioCurso").permitAll()
                 .antMatchers(HttpMethod.GET, "/api/usuariocurso/listarUsuarioCurso").permitAll()
                 .antMatchers(HttpMethod.DELETE, "/api/usuarios/deletarUsuario/{id}").permitAll()

@@ -62,24 +62,21 @@ public class UsuarioServiceImpl implements UsuarioService {
 	}
 
 	@Override
-	public Map<String, Object> adicionarUsuario(String usuarioJSON, MultipartFile imagemFile) throws IOException {
+	public Object adicionarUsuario(String usuarioJSON, MultipartFile imagemFile) throws IOException {
 
 		verificarNull(usuarioJSON);
-		
-		Map<String, Object> response = new HashMap<>();
 
 		if (findLoginRepetido(usuarioJSON) >= MAX_NUMBER_REGISTERED_LOGIN) {
-			response.put("errorMessage", "Login já cadastrado no banco de dados.");
-			return response;
+			String errorMessage = "Login já cadastrado no banco de dados.";
+			return errorMessage;
 		} else {
 			Usuario user = new ObjectMapper().readValue(usuarioJSON, Usuario.class);
 			String imagemStringBase64 = Base64.getEncoder().encodeToString(imagemFile.getBytes());
 			user.setImagem(imagemStringBase64);
 			String senhaCriptografada = new BCryptPasswordEncoder().encode(user.getSenha());
 			user.setSenha(senhaCriptografada);
-			response.put("usuario", user);
 			usuarioRepository.save(user);
-			return response;
+			return user;
 		}
 	}
 

@@ -1,5 +1,5 @@
 package com.apiestudar.config;
-import org.springdoc.core.models.GroupedOpenApi;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -9,15 +9,19 @@ import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.service.ApiInfo;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
+import springfox.documentation.swagger.web.UiConfiguration;
+import springfox.documentation.swagger.web.UiConfigurationBuilder;
+import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
-@Configuration("swaggerConfig")
+@Configuration
+@EnableSwagger2
 public class SwaggerConfig {
-	
-	// URL SWAGGER: http://localhost:8080/swagger-ui/index.html
-
+    
+    // URL SWAGGER: http://localhost:8080/swagger-ui.html/index.html
     @Bean
     public Docket api() {
         return new Docket(DocumentationType.SWAGGER_2)
+                .host("localhost:8080")
                 .select()
                 .apis(RequestHandlerSelectors.basePackage("com.apiestudar"))
                 .paths(PathSelectors.any())
@@ -25,29 +29,20 @@ public class SwaggerConfig {
                 .apiInfo(apiInfo());
     }
     
-    // Personalize as informações da API, incluindo título, descrição, versão, etc.
+    // Personalize as informações da API
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
-                .title("PRODIFY API")  // Define o título da API
-                .description("API do sistema de gerenciamento de proutos Prodify")  // Descrição da API
-                .version("1.0.0")  // Versão da API
+                .title("PRODIFY API")
+                .description("API do sistema de gerenciamento de produtos Prodify")
+                .version("1.0.0")
                 .build();
     }
     
     @Bean
-    public GroupedOpenApi usuario() {
-        return GroupedOpenApi.builder()
-                .group("Usuário endpoints")  // Nome do grupo que aparecerá no Swagger UI
-                .pathsToMatch("api/usuarios/**") // Define que os endpoints com /usuarios/** serão do grupo "User operations"
-                .build();
+    public UiConfiguration uiConfiguration() {
+        return UiConfigurationBuilder
+            .builder()
+            .defaultModelsExpandDepth(-1)
+            .build();
     }
-    
-    @Bean
-    public GroupedOpenApi produto() {
-        return GroupedOpenApi.builder()
-                .group("Produto endpoints")  // Nome do grupo para os produtos
-                .pathsToMatch("api/produtos/**") // Define que os endpoints com /produtos/** serão do grupo "Product operations"
-                .build();
-    }
-    
 }
