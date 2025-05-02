@@ -1,5 +1,5 @@
 <div class="container d-flex flex-column">
-    <ul class="nav nav-tabs flex-grow-0">
+  <ul class="nav nav-tabs flex-grow-0">
     <li class="nav-item">
       <a class="nav-link" routerLink="/sobreTab1">SOBRE O DEV</a>
     </li>
@@ -7,37 +7,41 @@
       <a class="nav-link disabled">INFOS SISTEMA</a>
     </li>
   </ul>
-<div class="flex-grow-1"> <!-- Usa flex-grow para ocupar o espaço restante -->
-  <mat-card class="profile-card">
-    <mat-card-header>
-      <mat-card-title><p id="titulo">SISTEMA PRODIFY - GERENCIAMENTO DE PRODUTOS</p></mat-card-title>
-    </mat-card-header>
-    <mat-card-content>
-      <p>
-        Este sistema basicamente consiste em cadastro, atualização, exclusão e consulta de produtos.
-        Na página "Cadastrar produto", é possível fazer o cadastro de um produto com as informações fornecidas.
-        Na página "Lista de produtos", é possível listar todos os produtos cadastrados, consultar um por um através
-        do número do ID ou do nome em um campo de busca, atualizar as informações do produto e excluir um produto
-        já existente. Dentre as funcionalidades do sistema estão inclusas: colocar um produto em promoção e aplicar
-        sobre ele um desconto de 0 a 100%, vincular uma imagem ao produto, calcular a média de preço dos produtos
-        já cadastrados e calcular qual o preço do produto mais caro. De maneiras mais técnica, estão detalhadas
-        abaixo as funcionalidades do Sistema PRODIFY:</p><br>
-      <p><strong>Funcionalidades</strong><br>
-        <br>- CRUD de produtos
-        <br>- Cálculo de produto cadastrado com valor mais caro
-        <br>- Cálculo da média de preço entre os produtos cadastrados
-        <br>- Cálculo de desconto aplicado de 0 a 100% (não aceita decimais) sobre o preço do produto
-        <br>- Campo de buscar produtos por ID e Nome
-        <br>- Upload de arquivo de imagem para relacionar com o produto
-        <br>- Swagger (Link acessível EM BREVE)
-        <br>- Spring Security - JWT (Autenticação / Token / Role USER / Criptografia de senha / Expiração de token)
-        <br>- Cadastro de usuários / Login / Verificação de login já cadastrado
-        <br>- Relacionamento produto X usuário
-        <br>- Contador de acessos por IP
-        <br>- Certificado SSL - Endereço HTTPS
-        <br>- Totalmente responsivo
-        <br>- Layout Modo Dark ON/OFF
-    </mat-card-content>
-  </mat-card>
-</div>
+  <div class="div-tabela">
+    <div class="flex-grow-1"> <!-- Usa flex-grow para ocupar o espaço restante -->
+      <mat-card class="profile-card">
+        <mat-card-header>
+          <mat-card-title><p id="titulo">SISTEMA PRODIFY - GERENCIAMENTO DE PRODUTOS</p></mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <p>
+            Este sistema basicamente consiste em cadastro, atualização, exclusão e consulta de produtos.
+            Na página "Cadastrar produto", é possível fazer o cadastro de um produto com as informações fornecidas.
+            Na página "Lista de produtos", é possível listar todos os produtos cadastrados, consultar um por um através
+            do número do ID ou do nome em um campo de busca, atualizar as informações do produto e excluir um produto
+            já existente. Dentre as funcionalidades do sistema estão inclusas: colocar um produto em promoção e aplicar
+            sobre ele um desconto de 0 a 100%, calcular frete, vincular uma imagem ao produto, calcular a média de preço dos produtos
+            já cadastrados e calcular qual o preço do produto mais caro. De maneiras mais técnica, estão detalhadas
+            abaixo as funcionalidades do Sistema PRODIFY:</p><br>
+          <p><strong>Funcionalidades</strong><br>
+            <br>- CRUD de produtos
+            <br>- Cálculo de produto cadastrado com valor mais caro
+            <br>- Cálculo da média de preço entre os produtos cadastrados
+            <br>- Cálculo de desconto aplicado de 0 a 100% (não aceita decimais) sobre o preço do produto
+            <br>- Cálculo de frete
+            <br>- Campo de buscar produtos por ID e Nome
+            <br>- Upload de arquivo de imagem para relacionar com o produto
+            <br>- Swagger (Link acessível EM BREVE)
+            <br>- Spring Security - JWT (Autenticação / Token / Role USER / Criptografia de senha / Expiração de token)
+            <br>- Cadastro de usuários / Login / Verificação de login já cadastrado
+            <br>- Relacionamento produto X usuário
+            <br>- Contador de acessos por IP
+            <br>- Certificado SSL - Endereço HTTPS
+            <br>- Totalmente responsivo
+            <br>- Layout Modo Dark ON/OFF
+          </p>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
 </div>

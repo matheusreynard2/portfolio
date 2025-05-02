@@ -49,7 +49,7 @@
               <a routerLink="/sobreTab1" class="btn btn-outline-secondary fw-bold">Sobre</a>
             </li>
             <li class="list-inline-item">
-              <a href="http://localhost:8080/swagger-ui/index.html" target="_blank" class="btn btn-outline-secondary fw-bold">Swagger</a>
+              <a href="https://www.sistemaprodify.com/swagger-ui/index.html" target="_blank" class="btn btn-outline-secondary fw-bold">Swagger</a>
             </li>
           </ul>
         </div>
@@ -82,7 +82,7 @@
                   <a routerLink="/sobreTab1" (click)="abrirFecharMenu()" style="display: block; padding: 5px 10px;">Sobre</a>
                 </li>
                 <li>
-                  <a href="http://localhost:8080/swagger-ui/index.html" target="_blank" (click)="abrirFecharMenu()" style="display: block; padding: 5px 10px;">Swagger</a>
+                  <a href="https://www.sistemaprodify.com/swagger-ui/index.html" target="_blank" (click)="abrirFecharMenu()" style="display: block; padding: 5px 10px;">Swagger</a>
                 </li>
               </ul>
             </div>
@@ -99,25 +99,25 @@
 
   <div class="bg-dark border border-5 border-secondary position-relative">
     <div class="card-body text-center text-white">
-      <div class="bg-gradient p-3 d-flex flex-column align-items-start">
+      <div class="bg-gradient p-3">
         <div class="d-flex align-items-center">
-          <div class="text-start">
-          <span style="font-size: 11px; display: block;">
-            Acessos: {{numeroVisitas}} | MATHEUS REYNARD -
-            <a href="https://www.linkedin.com/in/matheus-reynard" target="_blank" style="font-size: 13px;">Conheça o Desenvolvedor!</a>
-          </span>
-            <br>
+          <img src="/whatsapp-logo.png" height="30" width="30" id="img-whats" class="ms-n2 me-3" />
+          <div class="d-flex flex-wrap align-items-center">
+            <span class="me-2 fonte-rodape">(41) 99539-7044 |</span>
+            <span class="me-2 fonte-rodape">Acessos: {{numeroVisitas}} |</span>
+            <span class="me-2 fonte-rodape">MATHEUS REYNARD - </span>
+            <span class="me-1 fonte-rodape"><a href="https://www.linkedin.com/in/matheus-reynard" target="_blank">Conheça o Desenvolvedor!</a></span>
           </div>
         </div>
       </div>
 
       <!-- Contêiner da notícia rolante -->
       <div class="news-container">
-          <div class="news-marquee">
-            <marquee behavior="scroll" scrollamount="10" direction="left">
-            <span>PRODIFY - Gestão de produtos - Desenvolvido por Matheus Reynard - WhatsApp: (41) 99539-7044 | LinkedIn: www.linkedin.com/in/matheus-reynard</span>
-            </marquee>
-          </div>
+        <div class="news-marquee">
+          <marquee behavior="scroll" scrollamount="10" direction="left">
+            <span>PRODIFY - Sistema de gerenciamento de produtos - Desenvolvido em Java, Spring e Angular por Matheus Reynard. Saiba mais sobre mim, minha carreira e projetos em www.linkedin.com/in/matheus-reynard</span>
+          </marquee>
+        </div>
       </div>
 
       <img src="/logo_sacolas.png" alt="Logo" class="position-absolute end-0 bottom-0" width="190" height="150">

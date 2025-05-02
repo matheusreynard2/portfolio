@@ -1,3 +1,32 @@
+.fonte-rodape {
+  font-size: 13px;
+}
+
+#img-whats {
+  margin-right: 8px;
+  position: relative;
+  left: -35px; /* Ajuste esse valor para mover mais para a esquerda conforme necessário */
+  margin-bottom: 18px;
+}
+
+.card-body .d-flex.align-items-center {
+  justify-content: flex-start;
+  width: 100%;
+  text-align: left;
+  margin-bottom: 8px;
+}
+
+@media (max-width: 768px) {
+  .d-flex.flex-wrap {
+    flex-direction: column;
+    align-items: flex-start !important;
+  }
+}
+
+.ms-n2 {
+  margin-left: -0.5rem !important;
+}
+
 .container {
   margin-top: 12px;
   margin-bottom: 50px;
@@ -56,6 +85,7 @@ p {
 
 .news-container {
   position: absolute;
+  margin-top: 10px;
   bottom: 0px; /* Ajuste a altura conforme necessário */
   left: 3px; /* Ajuste a posição inicial da notícia */
   right: 100px; /* Para não ultrapassar a logo */
