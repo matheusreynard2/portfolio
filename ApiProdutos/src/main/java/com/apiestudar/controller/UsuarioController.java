@@ -128,8 +128,8 @@ public class UsuarioController {
 	@ApiOperation(value = "Adiciona novo acesso e contabiliza o total.", notes = "Quando um novo usuário acessa o site, ele registra o IP no banco, e também faz a somatória de todos os IPs que já acessaram o site e exibe no rodapé.")
 	@ApiResponse(code = 200, message = "IP registrado, total contabilizado.")
 	@GetMapping("/addNovoAcessoIp")
-	public long addNovoAcessoIp(HttpServletRequest req) throws IOException {
-		return usuarioService.acessar(req);
+	public ResponseEntity<Long> addNovoAcessoIp(HttpServletRequest req) throws IOException {
+		return ResponseEntity.status(HttpStatus.OK).body(usuarioService.acessar(req));
 	}
 
 }
