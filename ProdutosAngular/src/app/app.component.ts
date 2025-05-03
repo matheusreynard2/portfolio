@@ -9,6 +9,7 @@ import {filter, firstValueFrom, Observable, of} from 'rxjs';
 import {Usuario} from './model/usuario';
 import {UsuarioService} from './service/usuario/usuario.service';
 import {BreakpointObserver, Breakpoints} from '@angular/cdk/layout';
+import {DeviceService} from './service/device/device.service';
 
 @Component({
   selector: 'app-root',
@@ -22,7 +23,7 @@ export class AppComponent implements OnInit {
   constructor(private authService: AuthService,
               private router: Router,
               private usuarioService: UsuarioService,
-              private breakpointObserver: BreakpointObserver) {
+              private deviceService: DeviceService) {
   }
 
   mostrarPerfil: boolean = false;
@@ -36,11 +37,8 @@ export class AppComponent implements OnInit {
   ngOnInit() {
 
     // OBSERVER DE SELEÇÃO DO MENU PARA SABER SE ESTÁ ACESSANDO POR CELULAR/COMPUTADOR
-    this.breakpointObserver.observe([
-      Breakpoints.Handset,
-      Breakpoints.Tablet
-    ]).subscribe(result => {
-      this.isMobileOrTablet = result.matches;
+    this.deviceService.isMobileOrTablet.subscribe(isMobile => {
+      this.isMobileOrTablet = isMobile;
       // Se voltar para desktop, garante que o menu mobile seja fechado.
       if (!this.isMobileOrTablet) {
         this.menuOpen = false;

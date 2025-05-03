@@ -109,7 +109,7 @@ p {
 #btnTrocarTema {
   border: 2px solid rgba(255, 255, 255, 0.2); /* Borda quase invisível (branca com opacidade) */
   border-top-right-radius: 25px; /* Arredonda apenas o canto superior direito */
-  font-size: 20px;
+  font-size: 16px;
 }
 
 .mobile-menu-options {
@@ -145,4 +145,10 @@ p {
 /* Opcional: efeito hover para os itens */
 .mobile-menu-options a:hover {
   background: #f0f0f0;
+}
+
+/*///////////////////////////////////// */
+
+.btn-light-dark {
+  opacity: 0.65;
 }

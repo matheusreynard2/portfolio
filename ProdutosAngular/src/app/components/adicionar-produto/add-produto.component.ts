@@ -8,6 +8,7 @@ import { ProdutoFunctionsService } from '../../service/produto/produto-functions
 import {PorcentagemMaskDirective} from '../../directives/porcentagem-mask.directive';
 import {AuthService} from '../../service/auth/auth.service';
 import {UsuarioService} from '../../service/usuario/usuario.service';
+import {DeviceService} from '../../service/device/device.service';
 
 @Component({
   selector: 'app-add-produto',
@@ -50,16 +51,21 @@ export class AddProdutoComponent implements OnInit {
   // Services
   private modalService: NgbModal = new NgbModal();
   @ViewChild('modalMsgAddProduto') modalMsgAddProduto: any
+  isMobileOrTablet: boolean = false;
 
   constructor(
     private produtoService: ProdutoService,
     private produtoFunctionsService: ProdutoFunctionsService,
-    private authService: AuthService) {
+    private authService: AuthService,
+    private deviceService: DeviceService) {
   }
 
   ngOnInit() {
     this.adicionouProduto = false;
     this.produtoService.acessarPaginaCadastro().subscribe();
+    this.deviceService.isMobileOrTablet.subscribe(isMobile => {
+      this.isMobileOrTablet = isMobile;
+    });
   }
 
   // Função que é chamada ao clicar no botão Submit do formulário HTML (ngModel) ao criar um produto

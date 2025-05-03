@@ -34,6 +34,7 @@ export class LoginComponent implements OnInit {
 
   @ViewChild('modalMsgToken') modalMsgToken: any
   @ViewChild('modalMsgCredenciais') modalMsgCredenciais: any
+  mostrarSenha = false;
 
   constructor(private authService: AuthService, private router: Router,
               private modalService: NgbModal) {}
@@ -73,6 +74,10 @@ export class LoginComponent implements OnInit {
         }
       }
     })
+  }
+
+  toggleSenha() {
+    this.mostrarSenha = !this.mostrarSenha;
   }
 
   cadastrarNovoUsuario() {

@@ -3,7 +3,7 @@
   <table class="table table-bordered">
     <thead>
     <tr>
-      <th colspan="4" class="text-center">CADASTRAR NOVO USUÁRIO</th>
+      <th colspan="2" class="text-center">CADASTRAR NOVO USUÁRIO</th>
     </tr>
     </thead>
     <tbody>
@@ -12,7 +12,7 @@
         <span style="color: red">* </span>
         <label for="login"> Usuário:</label>
       </td>
-      <td colspan="4">
+      <td>
         <input type="text" [(ngModel)]="addUsuario.login"
                class="form-control"
                [class.is-invalid]="login.invalid && login.touched"
@@ -27,11 +27,11 @@
       </td>
     </tr>
     <tr>
-      <td>
+      <td class="coluna-label-1">
         <span style="color: red">* </span>
         <label for="senha"> Senha:</label>
       </td>
-      <td colspan="4">
+      <td>
         <input type="password" [(ngModel)]="addUsuario.senha"
                class="form-control"
                [class.is-invalid]="senha.invalid && senha
@@ -48,65 +48,30 @@
     <tr>
       <td class="coluna-label-1">
         <span style="color: red">* </span>
-        <label for="nome"> Nome:</label>
-      </td>
-      <td>
-        <input type="text" [(ngModel)]="addUsuario.nome"
-               class="form-control"
-               [class.is-invalid]="nome.invalid && nome.touched"
-               id="nome"
-               name="nomeUsuario"
-               placeholder="Insira o seu nome verdadeiro."
-               required #nome="ngModel"
-               maxlength="30">
-        <div *ngIf="nome.invalid && nome.touched" class="invalid-feedback">
-          Nome é obrigatório.
-        </div>
-      </td>
-      <td class="coluna-label-2">
-        <label for="login">LinkedIn / Rede social:</label>
-      </td>
-      <td>
-        <input type="text" [(ngModel)]="addUsuario.linkedin"
-               class="form-control"
-               id="linkedin"
-               name="linkedinUsuario"
-               placeholder="Insira o link do seu perfil do Linkedin ou outra rede."
-               maxlength="50">
-      </td>
-    </tr>
-    <tr>
-      <td>
-        <label for="whatsapp">WhatsApp / Contato:</label>
+        <label for="whatsapp">WhatsApp / E-mail:</label>
       </td>
       <td>
         <input type="text" [(ngModel)]="addUsuario.whatsapp"
                class="form-control"
+               [class.is-invalid]="whatsapp.invalid && whatsapp
+               .touched"
                id="whatsapp"
                name="whatsappUsuario"
-               placeholder="Insira o seu WhatsApp ou outro número para contato."
+               required #whatsapp="ngModel"
+               placeholder="Insira o seu WhatsApp/Telefone ou E-mail."
                maxlength="30">
-      </td>
-      <td class="coluna-label-2">
-        <label for="endereco">Endereço:</label>
-      </td>
-      <td>
-        <input type="text" [(ngModel)]="addUsuario.endereco"
-               class="form-control"
-               id="endereco"
-               name="enderecoUsuario"
-               placeholder="Insira o seu endereço residencial."
-               maxlength="60">
+        <div *ngIf="whatsapp.invalid && whatsapp.touched" class="invalid-feedback">
+          whatsapp é obrigatório.
+        </div>
       </td>
     </tr>
     <tr>
-      <td>
+      <td class="coluna-label-1">
         <span>Foto perfil:</span>
       </td>
-      <td colspan="4">
-        <input id="foto_perfil" type="file" (change)="onFileChange($event)" />
-        <span style="color: red"> - AVISO:</span> <span> Se estiver usando celular/tablet, NÃO selecione foto.</span>
-      </td>
+      <td>
+        <input id="foto_perfil" type="file" (change)="onFileChange($event)" [disabled]="isMobileOrTablet"/>
+       </td>
     </tr>
     <tr>
       <td>

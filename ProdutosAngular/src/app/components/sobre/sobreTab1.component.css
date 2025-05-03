@@ -1,11 +1,15 @@
 .div-tabela {
-  overflow-x: auto;
+  overflow-y: auto; /* Mantém o scroll vertical */
+  height: calc(100vh - 50px); /* Define uma altura dinâmica com base no viewport */
 }
 
 .container {
   width: 100%;
   margin: 0 auto;
-  overflow-x: auto;
+  overflow-x: auto; /* Permite rolagem horizontal, se necessário */
+  display: flex;
+  flex-direction: column; /* Garante layout em coluna */
+  height: 100vh; /* Garante que a altura do container seja 100% da viewport */
 }
 
 .mat-card-subtitle {
@@ -15,14 +19,16 @@
 
 .mat-card-content {
   color: black;
+  overflow-y: auto; /* Barra de rolagem vertical, se necessário */
+  height: 100%; /* Use 100% da altura do contêiner pai */
 }
 
 .profile-card {
   width: 100%; /* Ocupar 100% da largura disponível */
-  height: auto; /* Altura automática, ajusta-se ao conteúdo */
   padding: 20px; /* Você pode ajustar conforme necessário */
   box-shadow: none; /* Remover sombra, se necessário, para um visual mais limpo */
   text-align: justify;
+  overflow-y: auto;
 }
 
 /* Definindo a cor do texto */

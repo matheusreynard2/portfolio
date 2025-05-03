@@ -5,6 +5,7 @@ import {Router} from '@angular/router';
 import {UsuarioService} from '../../service/usuario/usuario.service';
 import {NgIf, NgOptimizedImage} from '@angular/common';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {DeviceService} from '../../service/device/device.service';
 
 @Component({
   selector: 'app-add-usuario',
@@ -35,12 +36,17 @@ export class AddUsuarioComponent implements OnInit {
   adicionouUsuario: boolean = false;
   @ViewChild('modalMsgLoginExistente') modalMsgLoginExistente: any
   @ViewChild('modalMsgAddUser') modalMsgAddUser: any
+  @ViewChild('foto-perfil') fotoPerfil: any
   imagemFile: File = new File([], '', {})
+  isMobileOrTablet: boolean = false;
 
-  constructor(private usuarioService: UsuarioService, private router: Router) {}
+  constructor(private usuarioService: UsuarioService, private router: Router, private deviceService: DeviceService) {}
 
   ngOnInit() {
     this.adicionouUsuario = false;
+    this.deviceService.isMobileOrTablet.subscribe(isMobile => {
+      this.isMobileOrTablet = isMobile;
+    });
   }
 
   onSubmit() {
