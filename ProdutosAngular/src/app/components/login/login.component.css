@@ -16,12 +16,6 @@ p {
   text-align: justify;
 }
 
-.container {
-  width: 100%;
-  margin: 0 auto;
-  overflow-x: auto;
-}
-
 .div-form-login {
   display: flex;            /* Ativa o flexbox */
   flex-direction: column;   /* Alinha os elementos em coluna */

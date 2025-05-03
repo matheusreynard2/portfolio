@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import {HttpClient, HttpHeaders, HttpResponse} from '@angular/common/http';
 import {catchError, Observable, of, switchMap, throwError} from 'rxjs';
 import { BehaviorSubject } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -28,21 +28,27 @@ export class UsuarioService {
     formData.append('usuarioJSON', JSON.stringify(usuario));
     formData.append('imagemFile', imagem);
 
-    return this.http.post<any>(this.usuariosUrl + "/adicionarUsuario", formData, {headers});
+    return this.http.post<any>(this.usuariosUrl + "/adicionarUsuario", formData, { headers });
   }
 
-  public addNovoAcessoIp(): Observable<number> {
-    return this.http.get<number>(this.usuariosUrl + "/addNovoAcessoIp")
-      .pipe(
-        map((valorRetornado: number) => {
-          this.numeroAcesso = valorRetornado;
-          return this.numeroAcesso;
-        }),
-        catchError((error) => {
-          console.error("Erro ao obter número:", error);
-          return throwError(error);
-        })
-      );
+  public addNovoAcessoIp(): Observable<HttpResponse<number>> {
+    return this.http.get<number>(this.usuariosUrl + "/addNovoAcessoIp", {
+      observe: 'response',
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      })
+    }).pipe(
+      map((response: HttpResponse<number>) => {
+        if (response.body !== null) {
+          this.numeroAcesso = response.body;
+        }
+        return response;
+      }),
+      catchError((error) => {
+        console.error("Erro ao obter número:", error);
+        return throwError(() => error);
+      })
+    );
   }
-
 }

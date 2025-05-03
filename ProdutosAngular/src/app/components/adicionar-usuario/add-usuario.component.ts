@@ -6,13 +6,16 @@ import {UsuarioService} from '../../service/usuario/usuario.service';
 import {NgIf, NgOptimizedImage} from '@angular/common';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {DeviceService} from '../../service/device/device.service';
+import {MatCard, MatCardContent} from '@angular/material/card';
 
 @Component({
   selector: 'app-add-usuario',
   imports: [
     FormsModule,
     NgOptimizedImage,
-    NgIf
+    NgIf,
+    MatCard,
+    MatCardContent
   ],
   templateUrl: './add-usuario.component.html',
   styleUrl: './add-usuario.component.css'
@@ -39,6 +42,7 @@ export class AddUsuarioComponent implements OnInit {
   @ViewChild('foto-perfil') fotoPerfil: any
   imagemFile: File = new File([], '', {})
   isMobileOrTablet: boolean = false;
+  mostrarSenha = false;
 
   constructor(private usuarioService: UsuarioService, private router: Router, private deviceService: DeviceService) {}
 
@@ -84,6 +88,10 @@ export class AddUsuarioComponent implements OnInit {
 
   onFileChange(event: any) {
     this.imagemFile = event.target.files[0];
+  }
+
+  toggleSenha() {
+    this.mostrarSenha = !this.mostrarSenha;
   }
 
 }

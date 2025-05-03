@@ -1,7 +1,7 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {NavigationEnd, Router, RouterLink, RouterOutlet} from '@angular/router';
 import {FormsModule} from '@angular/forms';
-import {HttpClientModule} from '@angular/common/http';
+import {HttpClientModule, HttpResponse} from '@angular/common/http';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {AuthService} from './service/auth/auth.service';
 import {NgClass, NgIf, NgOptimizedImage} from '@angular/common';
@@ -29,7 +29,7 @@ export class AppComponent implements OnInit {
   mostrarPerfil: boolean = false;
   usuarioLogado!: Usuario;
   numeroVisitas: number = 0;
-  private observableVisitas: Observable<number> = of(0)
+  private observableVisitas: Observable<HttpResponse<number>> = of(new HttpResponse<number>({body: 0}));
   temaEscuro: boolean = false;
   isMobileOrTablet: boolean = false;
   menuOpen: boolean = false;
@@ -48,8 +48,8 @@ export class AppComponent implements OnInit {
     // CARREGAR MODO CLAR/ESCURO E ACESSAR ENDPOINT DE CONTADOR DE IPs
     this.carregarTema();
     this.observableVisitas = this.usuarioService.addNovoAcessoIp()
-    this.observableVisitas.subscribe((valor: number) => {
-      this.numeroVisitas = valor;
+    this.observableVisitas.subscribe((response: HttpResponse<number>) => {
+      this.numeroVisitas = response.body !== null ? response.body : 0;
     });
 
     // CHECA SE HÁ USUÁRIO LOGADO PARA REDIRECIONAR PARA AS ROTAS AUTENTICADAS OU NÃO

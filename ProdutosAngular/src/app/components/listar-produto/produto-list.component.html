@@ -119,12 +119,12 @@
             <tr>
               <td class="coluna_um"><label for="id" style="font-size: 30px">#ID</label></td>
               <td colspan="8"><input type="text" [(ngModel)]="produtoAtualizar.id"
-                         class="form-control"
-                         id="id"
-                         name="idProduto"
-                         required #id="ngModel"
-                         maxlength="50" style="width: 100px"
-                         [disabled]="true">
+                                     class="form-control"
+                                     id="id"
+                                     name="idProduto"
+                                     required #id="ngModel"
+                                     maxlength="50" style="width: 100px"
+                                     [disabled]="true">
               </td>
             </tr>
             <tr>
@@ -168,15 +168,23 @@
                        id="valorDesconto"
                        name="valorDescontoProduto"
                        required #valorDesconto="ngModel"
-                       appPorcentagemMask style="width: 250px;">
+                       appPorcentagemMask style="width: 250px;"
+                       [disabled] = !produtoAtualizar.promocao>
               </td>
             </tr>
 
             <tr>
               <td class="coluna_um"><label>Valor do frete:</label></td>
-              <td colspan="8">
-                <!-- Div para exibir o valor formatado -->
-                <div class="mt-1">{{produtoAtualizar.frete | currency : 'BRL'}}</div>
+              <td colspan="4">
+                <input type="number" [(ngModel)]="produtoAtualizar.frete"
+                       class="form-control"
+                       id="frete"
+                       name="freteProduto"
+                       required #frete="ngModel"
+                       maxlength="30"
+                       [disabled]="!produtoAtualizar.freteAtivo"
+                       style="width: 200px; display: inline-block;">
+                <!-- Input hidden mantido para compatibilidade -->
                 <input type="number" [(ngModel)]="produtoAtualizar.frete"
                        class="form-control"
                        id="freteTrue"
@@ -186,11 +194,14 @@
                        [disabled]="!produtoAtualizar.freteAtivo"
                        style="width: 100%; display: none;">
               </td>
+              <td colspan="4">
+                <div class="mt-1">{{produtoAtualizar.frete | currency : 'BRL'}}</div>
+              </td>
             </tr>
 
             <tr>
               <td class="coluna_um"><label for="valor">Valor unitário:</label></td>
-              <td colspan="3" style="width: 200px;">
+              <td colspan="4" style="width: 200px;">
                 <input type="number" [(ngModel)]="produtoAtualizar.valor"
                        class="form-control"
                        id="valor"
@@ -253,8 +264,7 @@
                         id="freteAtivo"
                         name="freteAtivoProduto"
                         required #freteAtivo="ngModel"
-                        (ngModelChange)="ativarFrete($event)" style="width: 100%;"
-                        [disabled]="true">
+                        (ngModelChange)="ativarFrete($event)" style="width: 100%;">
                   <option [ngValue]="true">Sim</option>
                   <option [ngValue]="false">Não</option>
                 </select>
@@ -266,12 +276,12 @@
                 <label for="foto_produto">Foto produto:</label>
               </td>
               <td colspan="8">
-                <input id="foto_produto" type="file" (change)="onFileChange($event)" />
+                <input id="foto_produto" type="file" (change)="onFileChange($event)" [disabled]="isMobileOrTablet"/>
               </td>
             </tr>
             <tr>
               <td colspan="9">
-                <span style="color: red">AVISO:</span> <span> Se estiver usando celular/tablet, NÃO selecione foto.</span>
+                <span style="color: red">AVISO:</span> <span> Não selecione uma imagem grande pois atrapalha na visualização.</span>
               </td>
             </tr>
             <tr>

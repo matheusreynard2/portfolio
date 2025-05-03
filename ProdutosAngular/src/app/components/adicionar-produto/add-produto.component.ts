@@ -47,7 +47,6 @@ export class AddProdutoComponent implements OnInit {
   novoProduto!: Produto;
   imagemFile: File = new File([], '', {})
   adicionouProduto: boolean = false;
-  valorDefaultForm = 0;
 
   // Services
   private modalService: NgbModal = new NgbModal();

@@ -10,6 +10,7 @@ import {NgxPaginationModule} from 'ngx-pagination';
 import {MatPaginatorModule, PageEvent} from '@angular/material/paginator';
 import {AuthService} from '../../service/auth/auth.service';
 import {HttpResponse} from '@angular/common/http';
+import {DeviceService} from '../../service/device/device.service';
 
 @Component({
   selector: 'app-produto-list',  // Corrigido para 'app-produto-list', sem a barra inicial
@@ -52,16 +53,21 @@ export class ProdutoListComponent implements OnInit {
   private modalService: NgbModal = new NgbModal();
   @ViewChild('searchBar') searchBar!: ElementRef
   @ViewChild('modalAvisoToken') modalAvisoToken!: ElementRef
+  isMobileOrTablet: boolean = false;
 
   constructor(private produtoService: ProdutoService,
               private produtoFunctionsService: ProdutoFunctionsService,
-              private authService: AuthService) { }
+              private authService: AuthService, private deviceService: DeviceService) { }
 
   ngOnInit() {
     this.produtoService.listarProdutos(this.currentPage, this.pageSize).subscribe(data => {
       const usuarioLogadoId = this.authService.getUsuarioLogado().id;
       this.listaDeProdutos = data.content.filter(produto => produto.idUsuario === usuarioLogadoId); // Filtra os produtos do usuário logado
       this.totalRecords = this.listaDeProdutos.length; // Atualiza o total de registros exibidos
+    });
+
+    this.deviceService.isMobileOrTablet.subscribe(isMobile => {
+      this.isMobileOrTablet = isMobile;
     });
 
     this.listarProdutoMaisCaro(this.authService.getUsuarioLogado().id);
