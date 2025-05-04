@@ -1,0 +1,105 @@
+<!-- src/app/components/geolocalizacao/geolocalizacao.component.html -->
+<div class="container mt-4" *ngIf="consentimentoFornecido">
+
+  <div *ngIf="carregando" class="d-flex justify-content-center">
+    <div class="spinner-border" role="status">
+      <span class="visually-hidden">Carregando...</span>
+    </div>
+  </div>
+
+  <div *ngIf="erro" class="alert alert-danger">
+    {{ erro }}
+  </div>
+
+  <div *ngIf="!carregando && !erro && geoInfo && mapsCarregado" class="row">
+    <div class="col-md-6">
+      <!-- Card com informações do IP -->
+      <div class="card mb-4">
+        <div class="card-header bg-primary text-white">
+          Informações Básicas (ipinfo.io)
+        </div>
+        <div class="card-body">
+          <p><strong>IP:</strong> {{ geoInfo.ip }}</p>
+          <p><strong>Cidade:</strong> {{ geoInfo.city }}</p>
+          <p><strong>Estado/Região:</strong> {{ geoInfo.region }}</p>
+          <p><strong>País:</strong> {{ geoInfo.country }}</p>
+          <p><strong>CEP/Código Postal:</strong> {{ geoInfo.postal }}</p>
+          <p><strong>Organização:</strong> {{ geoInfo.org }}</p>
+          <p><strong>Fuso Horário:</strong> {{ geoInfo.timezone }}</p>
+          <p><strong>Coordenadas:</strong> {{ geoInfo.loc }}</p>
+        </div>
+      </div>
+
+      <!-- Card com informações detalhadas do Google Maps -->
+      <div class="card">
+        <div class="card-header bg-success text-white">
+          Endereço Detalhado (Google Maps)
+        </div>
+        <div class="card-body">
+          <div *ngIf="carregandoEndereco" class="text-center">
+            <div class="spinner-border spinner-border-sm" role="status">
+              <span class="visually-hidden">Carregando endereço...</span>
+            </div>
+            <p class="mt-2">Obtendo informações detalhadas do endereço...</p>
+          </div>
+
+          <div *ngIf="!carregandoEndereco && enderecoGeolocalizacao">
+            <p><strong>Endereço Completo:</strong> {{ enderecoGeolocalizacao.formatted_address }}</p>
+            <hr>
+            <h5>Componentes do Endereço:</h5>
+            <p><strong>Número:</strong> {{ getAddressComponent('street_number') }}</p>
+            <p><strong>Rua:</strong> {{ getAddressComponent('route') }}</p>
+            <p><strong>Bairro:</strong> {{ getAddressComponent('sublocality') || getAddressComponent('sublocality_level_1') }}</p>
+            <p><strong>Cidade:</strong> {{ getAddressComponent('administrative_area_level_2') }}</p>
+            <p><strong>Estado:</strong> {{ getAddressComponent('administrative_area_level_1') }}</p>
+            <p><strong>País:</strong> {{ getAddressComponent('country') }}</p>
+            <p><strong>CEP:</strong> {{ getAddressComponent('postal_code') }}</p>
+            <p><strong>Place ID:</strong> <small>{{ enderecoGeolocalizacao.place_id }}</small></p>
+          </div>
+
+          <div *ngIf="!carregandoEndereco && !enderecoGeolocalizacao">
+            <p class="text-danger">Não foi possível obter informações detalhadas do endereço.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-6">
+      <div class="card">
+        <div class="card-header bg-info text-white">
+          Mapa da Localização
+        </div>
+        <div class="card-body">
+          <google-map
+            height="600px"
+            width="100%"
+            [center]="center"
+            [zoom]="zoom"
+            [options]="mapOptions">
+            <map-marker
+              [position]="marker.position"
+              [title]="marker.title"
+              [options]="marker.options">
+            </map-marker>
+          </google-map>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Template do Modal de Consentimento -->
+<ng-template #modalConsent let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title">Permissão de Localização</h4>
+  </div>
+  <div class="modal-body">
+    <p>PRODIFY quer acessar sua localização aproximada baseada no seu endereço IP.</p>
+    <p>Essas informações serão usadas apenas dentro do site e não serão compartilhadas com terceiros.</p>
+    <p><strong>Você concorda em fornecer suas informações de localização?</strong></p>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-primary" (click)="fornecerConsentimento()">Concordo</button>
+    <button type="button" class="btn btn-secondary" (click)="recusarConsentimento()">Não Concordo</button>
+  </div>
+</ng-template>

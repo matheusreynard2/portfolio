@@ -8,8 +8,9 @@ import {NgClass, NgIf, NgOptimizedImage} from '@angular/common';
 import {filter, firstValueFrom, Observable, of} from 'rxjs';
 import {Usuario} from './model/usuario';
 import {UsuarioService} from './service/usuario/usuario.service';
-import {BreakpointObserver, Breakpoints} from '@angular/cdk/layout';
 import {DeviceService} from './service/device/device.service';
+import {environment} from '../environments/environment';
+import {GoogleMapsModule} from '@angular/google-maps';
 
 @Component({
   selector: 'app-root',
@@ -35,6 +36,8 @@ export class AppComponent implements OnInit {
   menuOpen: boolean = false;
 
   ngOnInit() {
+
+    //this.carregarGoogleMapsScript();
 
     // OBSERVER DE SELEÇÃO DO MENU PARA SABER SE ESTÁ ACESSANDO POR CELULAR/COMPUTADOR
     this.deviceService.isMobileOrTablet.subscribe(isMobile => {
@@ -100,9 +103,16 @@ export class AppComponent implements OnInit {
     this.authService.logout()
   }
 
-
   abrirFecharMenu() {
     this.menuOpen = !this.menuOpen;
+  }
+
+  carregarGoogleMapsScript() {
+    const script = document.createElement('script');
+    script.src = `https://maps.googleapis.com/maps/api/js?key=${environment.googleMapsApiKey}`;
+    script.async = true;
+    script.defer = true;
+    document.head.appendChild(script);
   }
 
 }

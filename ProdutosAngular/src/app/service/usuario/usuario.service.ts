@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import {HttpClient, HttpHeaders, HttpResponse} from '@angular/common/http';
-import {catchError, Observable, of, switchMap, throwError} from 'rxjs';
-import { BehaviorSubject } from 'rxjs';
+import {catchError, Observable, throwError} from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import {Usuario} from '../../model/usuario';
@@ -13,12 +12,14 @@ import {environment} from '../../../environments/environment';
 export class UsuarioService {
 
   private usuariosUrl: string;
+  private localizacaoUrl: string;
   private apiUrl = environment.API_URL;
   private numeroAcesso: number = 0
 
   constructor(private http: HttpClient, private router: Router) {
     // URL DO REST CONTROLLER
     this.usuariosUrl = this.apiUrl + '/usuarios';
+    this.localizacaoUrl = this.apiUrl + '/localizacao';
   }
 
   adicionarUsuario(usuario: Usuario, imagem: File): Observable<Map<string, any>> {
@@ -32,7 +33,7 @@ export class UsuarioService {
   }
 
   public addNovoAcessoIp(): Observable<HttpResponse<number>> {
-    return this.http.get<number>(this.usuariosUrl + "/addNovoAcessoIp", {
+    return this.http.get<number>(this.localizacaoUrl + "/addNovoAcessoIp", {
       observe: 'response',
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
