@@ -5,11 +5,12 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Geolocalizacao } from '../../model/geolocalizacao';
 import { EnderecoGeolocalizacao, GeocodingResult } from '../../model/endereco-geolocalizacao';
 import { GeolocalizacaoService } from '../../service/geolocalizacao/geolocalizacao.service';
-import { GoogleMapsLoaderService } from './google-maps-loader.service';
+import { GoogleMapsLoaderService } from '../../service/geolocalizacao/google-maps-loader.service';
 import { GoogleMap, MapMarker } from '@angular/google-maps';
-import { NgIf } from '@angular/common';
+import {NgIf, NgOptimizedImage} from '@angular/common';
 import { catchError, finalize, switchMap } from 'rxjs/operators';
 import { of } from 'rxjs';
+import {MatCard, MatCardContent} from '@angular/material/card';
 
 @Component({
   selector: 'app-geolocalizacao',
@@ -17,7 +18,10 @@ import { of } from 'rxjs';
   imports: [
     MapMarker,
     GoogleMap,
-    NgIf
+    NgIf,
+    MatCard,
+    MatCardContent,
+    NgOptimizedImage
   ],
   styleUrl: './geolocalizacao.component.css'
 })
@@ -61,27 +65,43 @@ export class GeolocalizacaoComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    // Já tenta carregar o Google Maps no início
-    this.carregarGoogleMaps();
+
+    const isMobile = this.isMobileDevice();
+    if (isMobile) {
+      console.log('Dispositivo móvel detectado, ajustando configurações do mapa');
+      // Ajustar configurações específicas para mobile
+      this.mapOptions = {
+        ...this.mapOptions,
+        gestureHandling: 'cooperative',
+        zoomControl: false,
+      };
+    }
 
     // Abre o modal de consentimento ao inicializar o componente
     this.exibirModalConsentimento();
+    // Já tenta carregar o Google Maps no início
+    //this.carregarGoogleMaps();
   }
 
-  carregarGoogleMaps(): void {
+  isMobileDevice(): boolean {
+    return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+  }
+
+  async carregarGoogleMaps(): Promise<void> {
     // Vamos verificar se o Google Maps já está disponível
     if (window.google && window.google.maps) {
       this.mapsCarregado = true;
-      return;
+      return Promise.resolve();
     }
 
     // Se não estiver disponível, carregamos explicitamente
-    this.mapsLoaderService.loadGoogleMaps()
+    return this.mapsLoaderService.loadGoogleMaps()
       .then(() => {
         this.mapsCarregado = true;
       })
       .catch(error => {
         this.erro = `Erro ao carregar o Google Maps: ${error}`;
+        return Promise.reject(error);
       });
   }
 
@@ -97,8 +117,16 @@ export class GeolocalizacaoComponent implements OnInit {
     this.consentimentoFornecido = true;
     this.modalService.dismissAll();
 
-    // Agora já podemos carregar as informações de geolocalização
-    this.carregarGeolocalizacao();
+    // Primeiro garantir que o Maps esteja carregado, depois carregar dados de localização
+    this.carregarGoogleMaps()
+      .then(() => {
+        // Só carrega a geolocalização após confirmar que o Maps está pronto
+        this.carregarGeolocalizacao();
+      })
+      .catch(() => {
+        // Se falhar, ainda tenta carregar os dados básicos sem o mapa
+        this.carregarGeolocalizacao();
+      });
   }
 
   recusarConsentimento(): void {
@@ -169,4 +197,6 @@ export class GeolocalizacaoComponent implements OnInit {
 
     return component ? component.long_name : 'N/A';
   }
+
+  protected readonly window = window;
 }

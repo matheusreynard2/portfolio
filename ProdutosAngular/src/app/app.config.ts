@@ -23,7 +23,7 @@ function initGoogleMaps(): () => Promise<any> {
 
       // Carrega de forma assíncrona
       const script = document.createElement('script');
-      script.src = `https://maps.googleapis.com/maps/api/js?key=${environment.googleMapsApiKey}`;
+      script.src = `https://maps.googleapis.com/maps/api/js?key=${environment.googleMapsApiKey}&loading=async`;
       script.async = true;
       script.defer = true;
 

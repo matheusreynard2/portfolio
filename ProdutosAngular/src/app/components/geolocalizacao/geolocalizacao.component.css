@@ -12,3 +12,24 @@
   border-top: 1px solid #dee2e6;
   padding: 1rem;
 }
+
+.container {
+  width: 100%;
+  margin: 0 auto;
+  overflow-x: auto;
+}
+
+.profile-card {
+  width: 100%; /* Ocupar 100% da largura disponível */
+  height: auto; /* Altura automática, ajusta-se ao conteúdo */
+  padding: 20px; /* Você pode ajustar conforme necessário */
+  box-shadow: none; /* Remover sombra, se necessário, para um visual mais limpo */
+  text-align: justify;
+}
+
+.img-right {
+  position: absolute;
+  right: 0; /* Coloca a imagem totalmente no lado direito */
+  top: 0;   /* Alinha a imagem no topo */
+  opacity: 75%;
+}

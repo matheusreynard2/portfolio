@@ -30,7 +30,7 @@ export class GoogleMapsLoaderService {
       const apiKey = this.API_KEY ? `?key=${this.API_KEY}` : '';
 
       script.id = 'googleMaps';
-      script.src = `${this.API_URL}${apiKey}`;
+      script.src = `${this.API_URL}${apiKey}&loading=async`;
       script.async = true;
       script.defer = true;
 

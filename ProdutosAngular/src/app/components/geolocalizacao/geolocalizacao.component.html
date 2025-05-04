@@ -1,90 +1,108 @@
-<!-- src/app/components/geolocalizacao/geolocalizacao.component.html -->
-<div class="container mt-4" *ngIf="consentimentoFornecido">
+<div class="container my-5">
+  <!-- Container principal com scroll vertical em dispositivos pequenos -->
+  <div class="d-flex flex-column flex-md-row" style="max-height: 85vh; overflow-y: auto;">
 
-  <div *ngIf="carregando" class="d-flex justify-content-center">
-    <div class="spinner-border" role="status">
-      <span class="visually-hidden">Carregando...</span>
-    </div>
-  </div>
-
-  <div *ngIf="erro" class="alert alert-danger">
-    {{ erro }}
-  </div>
-
-  <div *ngIf="!carregando && !erro && geoInfo && mapsCarregado" class="row">
-    <div class="col-md-6">
-      <!-- Card com informações do IP -->
-      <div class="card mb-4">
-        <div class="card-header bg-primary text-white">
-          Informações Básicas (ipinfo.io)
-        </div>
-        <div class="card-body">
-          <p><strong>IP:</strong> {{ geoInfo.ip }}</p>
-          <p><strong>Cidade:</strong> {{ geoInfo.city }}</p>
-          <p><strong>Estado/Região:</strong> {{ geoInfo.region }}</p>
-          <p><strong>País:</strong> {{ geoInfo.country }}</p>
-          <p><strong>CEP/Código Postal:</strong> {{ geoInfo.postal }}</p>
-          <p><strong>Organização:</strong> {{ geoInfo.org }}</p>
-          <p><strong>Fuso Horário:</strong> {{ geoInfo.timezone }}</p>
-          <p><strong>Coordenadas:</strong> {{ geoInfo.loc }}</p>
-        </div>
-      </div>
-
-      <!-- Card com informações detalhadas do Google Maps -->
-      <div class="card">
-        <div class="card-header bg-success text-white">
-          Endereço Detalhado (Google Maps)
-        </div>
-        <div class="card-body">
-          <div *ngIf="carregandoEndereco" class="text-center">
-            <div class="spinner-border spinner-border-sm" role="status">
-              <span class="visually-hidden">Carregando endereço...</span>
+    <!-- Card de informações básicas (ipinfo.io) -->
+    <mat-card class="profile-card me-md-3 mb-3 mb-md-0" style="flex: 1; min-width: 300px;">
+      <mat-card-content>
+        <div *ngIf="consentimentoFornecido">
+          <div *ngIf="carregando" class="d-flex justify-content-center">
+            <div class="spinner-border" role="status">
+              <span class="visually-hidden">Carregando...</span>
             </div>
-            <p class="mt-2">Obtendo informações detalhadas do endereço...</p>
           </div>
 
-          <div *ngIf="!carregandoEndereco && enderecoGeolocalizacao">
-            <p><strong>Endereço Completo:</strong> {{ enderecoGeolocalizacao.formatted_address }}</p>
-            <hr>
-            <h5>Componentes do Endereço:</h5>
-            <p><strong>Número:</strong> {{ getAddressComponent('street_number') }}</p>
-            <p><strong>Rua:</strong> {{ getAddressComponent('route') }}</p>
-            <p><strong>Bairro:</strong> {{ getAddressComponent('sublocality') || getAddressComponent('sublocality_level_1') }}</p>
-            <p><strong>Cidade:</strong> {{ getAddressComponent('administrative_area_level_2') }}</p>
-            <p><strong>Estado:</strong> {{ getAddressComponent('administrative_area_level_1') }}</p>
-            <p><strong>País:</strong> {{ getAddressComponent('country') }}</p>
-            <p><strong>CEP:</strong> {{ getAddressComponent('postal_code') }}</p>
-            <p><strong>Place ID:</strong> <small>{{ enderecoGeolocalizacao.place_id }}</small></p>
+          <div *ngIf="erro" class="alert alert-danger">
+            {{ erro }}
           </div>
 
-          <div *ngIf="!carregandoEndereco && !enderecoGeolocalizacao">
-            <p class="text-danger">Não foi possível obter informações detalhadas do endereço.</p>
+          <div *ngIf="!carregando && !erro && geoInfo">
+            <div class="card mb-4">
+              <div class="card-header bg-primary text-white">
+                Informações Básicas (ipinfo.io)
+              </div>
+              <div class="card-body">
+                <p><strong>IP:</strong> {{ geoInfo.ip }}</p>
+                <p><strong>Cidade:</strong> {{ geoInfo.city }}</p>
+                <p><strong>Estado/Região:</strong> {{ geoInfo.region }}</p>
+                <p><strong>País:</strong> {{ geoInfo.country }}</p>
+                <p><strong>CEP/Código Postal:</strong> {{ geoInfo.postal }}</p>
+                <p><strong>Organização:</strong> {{ geoInfo.org }}</p>
+                <p><strong>Fuso Horário:</strong> {{ geoInfo.timezone }}</p>
+                <p><strong>Coordenadas:</strong> {{ geoInfo.loc }}</p>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
-    </div>
+      </mat-card-content>
+    </mat-card>
 
-    <div class="col-md-6">
-      <div class="card">
-        <div class="card-header bg-info text-white">
-          Mapa da Localização
+    <!-- Card de endereço detalhado -->
+    <mat-card class="profile-card me-md-3 mb-3 mb-md-0" style="flex: 1; min-width: 300px;">
+      <mat-card-content>
+        <div *ngIf="consentimentoFornecido && !carregando && !erro && geoInfo">
+          <div class="card">
+            <div class="card-header bg-success text-white">
+              Endereço Detalhado (Google Maps)
+            </div>
+            <div class="card-body">
+              <div *ngIf="carregandoEndereco" class="text-center">
+                <div class="spinner-border spinner-border-sm" role="status">
+                  <span class="visually-hidden">Carregando endereço...</span>
+                </div>
+                <p class="mt-2">Obtendo informações detalhadas do endereço...</p>
+              </div>
+
+              <div *ngIf="!carregandoEndereco && enderecoGeolocalizacao">
+                <p><strong>Endereço Completo:</strong> {{ enderecoGeolocalizacao.formatted_address }}</p>
+                <hr>
+                <h5>Componentes do Endereço:</h5>
+                <p><strong>Número:</strong> {{ getAddressComponent('street_number') }}</p>
+                <p><strong>Rua:</strong> {{ getAddressComponent('route') }}</p>
+                <p><strong>Bairro:</strong> {{ getAddressComponent('sublocality') || getAddressComponent('sublocality_level_1') }}</p>
+                <p><strong>Cidade:</strong> {{ getAddressComponent('administrative_area_level_2') }}</p>
+                <p><strong>Estado:</strong> {{ getAddressComponent('administrative_area_level_1') }}</p>
+                <p><strong>País:</strong> {{ getAddressComponent('country') }}</p>
+                <p><strong>CEP:</strong> {{ getAddressComponent('postal_code') }}</p>
+                <p><strong>Place ID:</strong> <small>{{ enderecoGeolocalizacao.place_id }}</small></p>
+              </div>
+
+              <div *ngIf="!carregandoEndereco && !enderecoGeolocalizacao">
+                <p class="text-danger">Não foi possível obter informações detalhadas do endereço.</p>
+              </div>
+            </div>
+          </div>
         </div>
-        <div class="card-body">
-          <google-map
-            height="600px"
-            width="100%"
-            [center]="center"
-            [zoom]="zoom"
-            [options]="mapOptions">
-            <map-marker
-              [position]="marker.position"
-              [title]="marker.title"
-              [options]="marker.options">
-            </map-marker>
-          </google-map>
+      </mat-card-content>
+    </mat-card>
+
+    <!-- Card do mapa -->
+    <mat-card class="profile-card" style="flex: 1; min-width: 300px;">
+      <mat-card-content>
+        <div *ngIf="consentimentoFornecido && !carregando && !erro && geoInfo && mapsCarregado">
+          <div class="card">
+            <div class="card-header bg-info text-white">
+              Mapa da Localização
+            </div>
+            <div class="card-body">
+              <google-map
+                height="500px"
+                width="100%"
+                [center]="center"
+                [zoom]="zoom"
+                [options]="mapOptions">
+                <map-marker
+                  [position]="marker.position"
+                  [title]="marker.title"
+                  [options]="marker.options">
+                </map-marker>
+              </google-map>
+            </div>
+          </div>
         </div>
-      </div>
-    </div>
+      </mat-card-content>
+    </mat-card>
+
   </div>
 </div>
 
@@ -92,6 +110,7 @@
 <ng-template #modalConsent let-modal>
   <div class="modal-header">
     <h4 class="modal-title">Permissão de Localização</h4>
+    <img ngSrc="/codigo_barras.png" height="60" width="60" class="img-right"/>
   </div>
   <div class="modal-body">
     <p>PRODIFY quer acessar sua localização aproximada baseada no seu endereço IP.</p>

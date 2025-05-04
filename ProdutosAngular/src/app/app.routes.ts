@@ -16,7 +16,7 @@ export const routes: Routes = [
   { path: 'cadastrar-usuario', component: AddUsuarioComponent },
   { path: 'sobreTab1', component: SobreTab1Component },
   { path: 'sobreTab2', component: SobreTab2Component },
-  { path: 'maps', component: GeolocalizacaoComponent },
+  { path: 'maps', component: GeolocalizacaoComponent, canActivate: [AuthGuard]  },
   { path: '', redirectTo: '/login', pathMatch: 'full' }
 ];
 
