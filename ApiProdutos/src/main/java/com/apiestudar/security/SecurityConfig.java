@@ -73,8 +73,6 @@ public class SecurityConfig {
                 .antMatchers("/app/sendMessage").permitAll() // Libera o destino de envio de mensagens
                 .antMatchers("/topic/chat").permitAll()
                 .antMatchers("/api/chat/mensagens").permitAll()
-                .antMatchers(HttpMethod.GET, "/api/localizacao/enderecoDetalhado").permitAll()
-                .antMatchers(HttpMethod.GET, "/api/localizacao/localizarIp").permitAll()
                 .antMatchers(HttpMethod.GET, "/api/localizacao/addNovoAcessoIp").permitAll()
                 .antMatchers(HttpMethod.POST, "/api/usuarios/realizarLogin").permitAll()
                 .antMatchers(HttpMethod.OPTIONS, "/api/usuarios/realizarLogin").permitAll()
@@ -92,6 +90,8 @@ public class SecurityConfig {
                 .antMatchers(HttpMethod.OPTIONS, "/api/cursos/deletarCurso/{id}").permitAll()
 
                 // Protege endpoints específicos
+                .antMatchers(HttpMethod.GET, "/api/localizacao/enderecoDetalhado").hasRole("USER")
+                .antMatchers(HttpMethod.GET, "/api/localizacao/localizarIp").hasRole("USER")
                 .antMatchers(HttpMethod.POST, "/api/produtos/adicionarProduto").hasRole("USER")
                 .antMatchers(HttpMethod.GET, "/api/produtos/listarProdutos").hasRole("USER")
                 .antMatchers(HttpMethod.PUT, "/api/produtos/atualizarProduto/{id}").hasRole("USER")
