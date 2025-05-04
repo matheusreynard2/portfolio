@@ -1,4 +1,4 @@
-package com.apiestudar.service;
+package com.apiestudar.service.impl;
 
 import java.util.List;
 import java.util.Optional;
@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.apiestudar.entity.ChatMessage;
 import com.apiestudar.exceptions.ParametroInformadoNullException;
 import com.apiestudar.repository.ChatMessageRepository;
+import com.apiestudar.service.ChatMessageService;
 
 @Service
 public class ChatMessageServiceImpl implements ChatMessageService {

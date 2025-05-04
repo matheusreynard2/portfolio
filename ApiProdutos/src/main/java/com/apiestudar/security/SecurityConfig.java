@@ -73,7 +73,9 @@ public class SecurityConfig {
                 .antMatchers("/app/sendMessage").permitAll() // Libera o destino de envio de mensagens
                 .antMatchers("/topic/chat").permitAll()
                 .antMatchers("/api/chat/mensagens").permitAll()
-                .antMatchers(HttpMethod.GET, "/api/usuarios/addNovoAcessoIp").permitAll()
+                .antMatchers(HttpMethod.GET, "/api/localizacao/enderecoDetalhado").permitAll()
+                .antMatchers(HttpMethod.GET, "/api/localizacao/localizarIp").permitAll()
+                .antMatchers(HttpMethod.GET, "/api/localizacao/addNovoAcessoIp").permitAll()
                 .antMatchers(HttpMethod.POST, "/api/usuarios/realizarLogin").permitAll()
                 .antMatchers(HttpMethod.OPTIONS, "/api/usuarios/realizarLogin").permitAll()
                 .antMatchers(HttpMethod.GET, "/api/cursos/listarCursos").permitAll()

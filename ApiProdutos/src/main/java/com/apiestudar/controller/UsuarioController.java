@@ -3,9 +3,6 @@ package com.apiestudar.controller;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
-
-import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -44,7 +41,7 @@ public class UsuarioController {
 
 	@Autowired
 	private UsuarioService usuarioService;
-
+	
 	@ApiOperation(value = "Listagem de todos os usuários cadastrados.", notes = "Faz uma busca no banco de dados retornando uma lista com todos os usuários cadastrados.")
 	@ApiResponse(code = 200, message = "Usuários encontrados.")
 	@GetMapping("/listarUsuarios")
@@ -124,12 +121,4 @@ public class UsuarioController {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exc.getMessage());
 		}
 	}
-
-	@ApiOperation(value = "Adiciona novo acesso e contabiliza o total.", notes = "Quando um novo usuário acessa o site, ele registra o IP no banco, e também faz a somatória de todos os IPs que já acessaram o site e exibe no rodapé.")
-	@ApiResponse(code = 200, message = "IP registrado, total contabilizado.")
-	@GetMapping("/addNovoAcessoIp")
-	public ResponseEntity<Long> addNovoAcessoIp(HttpServletRequest req) throws IOException {
-		return ResponseEntity.status(HttpStatus.OK).body(usuarioService.acessar(req));
-	}
-
 }
