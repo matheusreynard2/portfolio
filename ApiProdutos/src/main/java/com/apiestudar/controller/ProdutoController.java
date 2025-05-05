@@ -42,7 +42,7 @@ public class ProdutoController {
 	@Autowired
 	private ProdutoService produtoService;
 
-	private static final Logger log = LoggerFactory.getLogger(CursoController.class);
+	private static final Logger log = LoggerFactory.getLogger(ProdutoController.class);
 
 	@ApiOperation(value = "Listagem de todos os produtos cadastrados.", notes = "Faz uma busca no banco de dados retornando uma lista com todos os produtos cadastrados.")
 	@ApiResponse(code = 200, message = "Produtos encontrados.")

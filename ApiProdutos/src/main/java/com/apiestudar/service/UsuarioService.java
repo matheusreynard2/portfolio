@@ -6,12 +6,10 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.apiestudar.entity.ContadorIP;
 import com.apiestudar.entity.Usuario;
-import com.apiestudar.entity.UsuarioCurso;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 
@@ -20,8 +18,6 @@ public interface UsuarioService {
 	Object adicionarUsuario(String usuarioJSON, MultipartFile imagemFile) throws IOException;
 	
 	Usuario adicionarUsuarioReact(Usuario usuario);
-	
-	UsuarioCurso adicionarUsuarioCurso(UsuarioCurso userCurso);
 
 	List<Usuario> listarUsuarios();
 	

@@ -21,7 +21,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.apiestudar.entity.Usuario;
-import com.apiestudar.entity.UsuarioCurso;
 import com.apiestudar.exceptions.ParametroInformadoNullException;
 import com.apiestudar.exceptions.RegistroNaoEncontradoException;
 import com.apiestudar.service.UsuarioService;
@@ -37,7 +36,7 @@ import springfox.documentation.annotations.ApiIgnore;
 		"https://191.252.38.22:80", "https://191.252.38.22" }, allowedHeaders = { "*" })
 public class UsuarioController {
 
-	private static final Logger log = LoggerFactory.getLogger(CursoController.class);
+	private static final Logger log = LoggerFactory.getLogger(UsuarioController.class);
 
 	@Autowired
 	private UsuarioService usuarioService;
@@ -71,18 +70,6 @@ public class UsuarioController {
 		try {
 			Usuario usuarioAdicionado = usuarioService.adicionarUsuarioReact(usuario);
 			return ResponseEntity.status(HttpStatus.CREATED).body(usuarioAdicionado);
-		} catch (ParametroInformadoNullException exc) {
-			log.error("Erro ao adicionar usuário - Param não informado: {}", exc);
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exc.getMessage());
-		}
-	}
-
-	@ApiIgnore
-	@PostMapping("/adicionarUsuarioCurso")
-	public ResponseEntity<Object> adicionarUsuarioCurso(@RequestBody UsuarioCurso userCurso) throws IOException {
-		try {
-			UsuarioCurso novoUserCurso = usuarioService.adicionarUsuarioCurso(userCurso);
-			return ResponseEntity.status(HttpStatus.CREATED).body(novoUserCurso);
 		} catch (ParametroInformadoNullException exc) {
 			log.error("Erro ao adicionar usuário - Param não informado: {}", exc);
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exc.getMessage());

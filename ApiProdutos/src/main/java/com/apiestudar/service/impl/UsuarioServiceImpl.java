@@ -11,21 +11,17 @@ import java.util.Optional;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.apiestudar.entity.ContadorIP;
 import com.apiestudar.entity.Usuario;
-import com.apiestudar.entity.UsuarioCurso;
 import com.apiestudar.exceptions.ParametroInformadoNullException;
 import com.apiestudar.exceptions.RegistroNaoEncontradoException;
 import com.apiestudar.pattern.HeaderIpExtractor;
 import com.apiestudar.pattern.IpExtractorManager;
 import com.apiestudar.repository.ContadorIPRepository;
-import com.apiestudar.repository.UsuarioCursoRepository;
 import com.apiestudar.repository.UsuarioRepository;
 import com.apiestudar.service.TokenService;
 import com.apiestudar.service.UsuarioService;
@@ -44,9 +40,6 @@ public class UsuarioServiceImpl implements UsuarioService {
 
 	@Autowired
 	private ContadorIPRepository contadorIPRepository;
-
-	@Autowired
-	private UsuarioCursoRepository usuarioCursoRepository;
 
 	private final static int NR_MAX_REPETICOES = 0;
 	private final static int MAX_NUMBER_REGISTERED_LOGIN = 1;
@@ -78,12 +71,6 @@ public class UsuarioServiceImpl implements UsuarioService {
 			usuarioRepository.save(user);
 			return user;
 		}
-	}
-
-	@Override
-	public UsuarioCurso adicionarUsuarioCurso(UsuarioCurso userCurso) {
-		verificarNull(userCurso);
-		return usuarioCursoRepository.save(userCurso);
 	}
 
 	@Override

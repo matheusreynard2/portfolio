@@ -58,22 +58,6 @@ public class Usuario implements UserDetails {
 	
 	@Lob
 	private String imagem;
-	
-    // Relacionamento com a entidade de associação UsuarioCurso
-    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<UsuarioCurso> usuarioCursoList = new ArrayList<>();
-    
-    
- // Métodos auxiliares para manter a integridade do relacionamento
-    public void addUsuarioCurso(UsuarioCurso usuarioCurso) {
-    	usuarioCursoList.add(usuarioCurso);
-        usuarioCurso.setUsuario(this);
-    }
-
-    public void removeUsuarioCurso(UsuarioCurso usuarioCurso) {
-    	usuarioCursoList.remove(usuarioCurso);
-        usuarioCurso.setUsuario(null);
-    }
 
 	public static long getSerialversionuid() {
 		return serialVersionUID;
