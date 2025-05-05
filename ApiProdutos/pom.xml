@@ -208,7 +208,7 @@
             <artifactId>spring-boot-maven-plugin</artifactId>
             <version>2.5.0</version><!--$NO-MVN-MAN-VER$--> <!-- Adicionar versão diretamente ou usar a versão configurada em <properties> -->
             <configuration>
-                <mainClass>com.apiestudar.ApiEstudarApplication</mainClass>
+                <mainClass>com.apiestudar.api_prodify.ApiEstudarApplication</mainClass>
                 <excludes>
                     <exclude>
                         <groupId>org.projectlombok</groupId>
