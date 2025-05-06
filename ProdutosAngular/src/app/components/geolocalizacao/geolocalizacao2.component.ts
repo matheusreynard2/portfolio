@@ -15,23 +15,23 @@ import {DeviceService} from '../../service/device/device.service';
 import { FormsModule } from '@angular/forms';
 
 @Component({
-  selector: 'app-geolocalizacao',
-  templateUrl: './geolocalizacao.component.html',
+  selector: 'app-geolocalizacao2',
+  templateUrl: './geolocalizacao2.component.html',
   imports: [
-    MapMarker,
-    GoogleMap,
-    NgIf,
-    MatCard,
-    MatCardContent,
-    NgOptimizedImage,
+    //MapMarker,
+    //GoogleMap,
+    //NgIf,
+    //MatCard,
+    //MatCardContent,
+    //NgOptimizedImage,
     RouterLink,
     FormsModule
   ],
-  styleUrl: './geolocalizacao.component.css'
+  styleUrl: './geolocalizacao2.component.css'
 })
-export class GeolocalizacaoComponent implements OnInit {
+export class Geolocalizacao2Component implements OnInit {
 
-  @ViewChild('modalConsent', { static: true }) modalConsent!: TemplateRef<any>;
+  @ViewChild('modalConsent', {static: true}) modalConsent!: TemplateRef<any>;
 
   // Nova propriedade para armazenar o IP digitado pelo usuário
   ipDigitado: string = '';
@@ -73,7 +73,8 @@ export class GeolocalizacaoComponent implements OnInit {
     private router: Router,
     private mapsLoaderService: GoogleMapsLoaderService,
     private deviceService: DeviceService
-  ) { }
+  ) {
+  }
 
   ngOnInit(): void {
     this.deviceService.isMobileOrTablet.subscribe(isMobile => {
@@ -81,9 +82,10 @@ export class GeolocalizacaoComponent implements OnInit {
     });
 
     // Abre o modal de consentimento ao inicializar o componente
-    this.exibirModalConsentimento();
+    //this.exibirModalConsentimento();
   }
-
+}
+/*
   async carregarGoogleMaps(): Promise<void> {
     // Vamos verificar se o Google Maps já está disponível
     if (window.google && window.google.maps) {
@@ -201,3 +203,4 @@ export class GeolocalizacaoComponent implements OnInit {
 
   protected readonly window = window;
 }
+*/

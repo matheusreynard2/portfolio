@@ -64,14 +64,14 @@ export class LoginComponent implements OnInit {
           console.log("getUsuarioLogado realizarLogin: " + this.authService.getUsuarioLogado().login)
           this.router.navigate(['/produtos'])
 
-        }
-      },
-      error: (error) => {
-        if (error.status === 401 && error.error.message === 'Credenciais inválidas.') {
+        } else if (response.has('msgCredenciaisInvalidas')) {
           setTimeout(() => {
             this.modalService.open(this.modalMsgCredenciais, {size: 'lg'});
           }, 100);
         }
+      },
+      error: (error) => {
+        console.log(error.error.message);
       }
     })
   }

@@ -1,15 +1,17 @@
 <div class="container d-flex flex-column">
   <ul class="nav nav-tabs flex-grow-0">
     <li class="nav-item">
-      <a class="nav-link disabled">LOCALIZAR POR IP</a>
+      <a class="nav-link" routerLink="/geoloc">LOCALIZAR POR IP</a>
     </li>
     <li class="nav-item">
-      <a class="nav-link" routerLink="/geoloc2">LOCALIZAR POR CEP</a>
+      <a class="nav-link disabled">LOCALIZAR POR CEP</a>
     </li>
   </ul>
   <div class="container my-5">
+    <p> PÁGINA EM CONSTRUÇÃO </p>
+  </div>
     <!-- Formulário para inserção do IP -->
-    <div class="card mb-4" *ngIf="consentimentoFornecido">
+    <!-- <div class="card mb-4" *ngIf="consentimentoFornecido">
       <div class="card-header bg-primary text-white">
         Digite o Endereço IP para Localizar
       </div>
@@ -31,12 +33,12 @@
         </div>
         <small class="text-muted">Informe um endereço IP válido para obter informações de localização.</small>
       </div>
-    </div>
+    </div> -->
 
-    <!-- Container principal com scroll vertical em dispositivos pequenos -->
+    <!-- Container principal com scroll vertical em dispositivos pequenos
     <div class="d-flex flex-column flex-md-row" style="max-height: 85vh; overflow-y: auto;">
 
-      <!-- Card de informações básicas (ipinfo.io) -->
+       Card de informações básicas (ipinfo.io)
       <mat-card class="profile-card me-md-3 mb-3 mb-md-0" style="flex: 1; min-width: 300px;">
         <mat-card-content>
           <div *ngIf="consentimentoFornecido">
@@ -69,9 +71,9 @@
             </div>
           </div>
         </mat-card-content>
-      </mat-card>
+      </mat-card> -->
 
-      <!-- Card de endereço detalhado -->
+      <!-- Card de endereço detalhado
       <mat-card class="profile-card me-md-3 mb-3 mb-md-0" style="flex: 1; min-width: 300px;">
         <mat-card-content>
           <div *ngIf="consentimentoFornecido && !carregando && !erro && geoInfo">
@@ -108,9 +110,9 @@
             </div>
           </div>
         </mat-card-content>
-      </mat-card>
+      </mat-card> -->
 
-      <!-- Card do mapa -->
+      <!-- Card do mapa
       <mat-card class="profile-card" style="flex: 1; min-width: 300px;" *ngIf="!isMobileOrTablet">
         <mat-card-content>
           <div *ngIf="consentimentoFornecido && !carregando && !erro && geoInfo && mapsCarregado">
@@ -139,16 +141,16 @@
 
     </div>
   </div>
-</div>
+</div> -->
 
-<!-- Template do Modal de Consentimento -->
+<!-- Template do Modal de Consentimento
 <ng-template #modalConsent let-modal>
   <div class="modal-header">
     <h4 class="modal-title">AVISO!</h4>
     <img ngSrc="/codigo_barras.png" height="60" width="60" class="img-right"/>
   </div>
   <div class="modal-body">
-    <p>PRODIFY fornecerá informações aproximadas de localização baseado no endereço IP fornecido.</p>
+    <p>PRODIFY fornecerá informações aproximadas de localização baseado no CEP fornecido.</p>
     <p>Essas informações serão usadas apenas dentro do site e não serão compartilhadas com terceiros.</p>
     <p><strong>Você concorda?</strong></p>
   </div>
@@ -156,4 +158,4 @@
     <button type="button" class="btn btn-primary" (click)="fornecerConsentimento()">Concordo</button>
     <button type="button" class="btn btn-secondary" (click)="recusarConsentimento()">Não Concordo</button>
   </div>
-</ng-template>
+</ng-template> -->

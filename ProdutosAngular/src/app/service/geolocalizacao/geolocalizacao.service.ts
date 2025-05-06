@@ -29,8 +29,8 @@ export class GeolocalizacaoService {
     }
   }
 
-  obterGeolocalizacaoUsuario(): Observable<Geolocalizacao> {
-    return this.http.get<Geolocalizacao>(this.localizacaoUrl + "/localizarIp").pipe(
+  obterGeolocalizacaoPorIP(ipAddress: string): Observable<Geolocalizacao> {
+    return this.http.get<Geolocalizacao>(this.localizacaoUrl + "/localizarIp/" + ipAddress).pipe(
       // Aqui fazemos o tratamento do erro 401 para TOKEN EXPIRADO
       catchError((error: HttpErrorResponse) => {
         if (error.status === 401 && error.error.message === 'Tempo limite de conexão com o sistema excedido. TOKEN Expirado')
