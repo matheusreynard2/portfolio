@@ -61,17 +61,19 @@ export class LoginComponent implements OnInit {
           this.authService.removerToken()
           this.authService.adicionarToken(usuario.token)
           this.authService.removerTokenExpirado()
-          console.log("getUsuarioLogado realizarLogin: " + this.authService.getUsuarioLogado().login)
           this.router.navigate(['/produtos'])
 
-        } else if (response.has('msgCredenciaisInvalidas')) {
-          setTimeout(() => {
-            this.modalService.open(this.modalMsgCredenciais, {size: 'lg'});
-          }, 100);
         }
       },
       error: (error) => {
-        console.log(error.error.message);
+        // Tratamento do erro 401 CREDENCIAIS INVALIDAS
+        if (error.status === 401 && error.error && error.error.msgCredenciaisInvalidas) {
+          setTimeout(() => {
+            this.modalService.open(this.modalMsgCredenciais, {size: 'lg'});
+          }, 100);
+        } else {
+          console.error('Erro ao realizar login:', error);
+        }
       }
     })
   }
