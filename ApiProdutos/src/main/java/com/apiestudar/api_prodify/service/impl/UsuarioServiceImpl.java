@@ -112,19 +112,13 @@ public class UsuarioServiceImpl implements UsuarioService {
 
 	public Map<String, Object> realizarLogin(Usuario usuario) {
 		
-		Map<String, Object> response = new HashMap<>();
-		
-		try {
-			verificarNull(usuario);
-		} catch (ParametroInformadoNullException exc) {
-			response.put("error", exc.getMessage());
-			return response;
-		}
+		verificarNull(usuario);
 
 		BCryptPasswordEncoder senhaCriptografada = new BCryptPasswordEncoder();
 		String senhaArmazenada = getSenhaByLogin(usuario.getLogin());
-		
+		Map<String, Object> response = new HashMap<>();
 		if (senhaCriptografada.matches(usuario.getSenha(), senhaArmazenada)) {
+			
 			Usuario usuarioLogado = findByLogin(usuario.getLogin());
 			String token = tokenService.gerarToken(usuario);
 			usuarioLogado.setToken(token);

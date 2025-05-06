@@ -69,6 +69,8 @@ public class UsuarioController {
 	@PostMapping("/realizarLogin")
 	public ResponseEntity<Map<String, Object>> realizarLogin(@RequestBody Usuario usuario) {
 		Map<String, Object> response = usuarioService.realizarLogin(usuario);
-		return ResponseEntity.ok(response);
+		return response.containsKey("msgCredenciaisInvalidas") 
+		    ? ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response)
+		    : ResponseEntity.status(HttpStatus.OK).body(response);
 	}
 }
