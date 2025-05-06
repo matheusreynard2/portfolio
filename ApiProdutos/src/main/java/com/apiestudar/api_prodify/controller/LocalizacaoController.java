@@ -11,11 +11,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.apiestudar.api_prodify.entity.Geolocation;
+import com.apiestudar.api_prodify.exceptions.GeoLocationException;
 import com.apiestudar.api_prodify.pattern.HeaderIpExtractor;
 import com.apiestudar.api_prodify.pattern.IpExtractorManager;
 import com.apiestudar.api_prodify.service.GeolocationService;
@@ -46,21 +48,9 @@ public class LocalizacaoController {
 
     @ApiOperation(value = "Localiza informações de endereço do usuário.", notes = "Fornece informações de localização do usuário de acordo com seu IP público.")
     @ApiResponse(code = 200, message = "IP localizado, informações fornecidas.")
-    @GetMapping("/localizarIp")
-    public ResponseEntity<Geolocation> obterGeolocalizacaoUsuario(HttpServletRequest request) {
-        // IP TESTE: 191.252.38.22
-        IpExtractorManager ipExtractor = new IpExtractorManager(Arrays.asList(
-            new HeaderIpExtractor("X-Forwarded-For"),
-            new HeaderIpExtractor("Proxy-Client-IP"), 
-            new HeaderIpExtractor("WL-Proxy-Client-IP"),
-            new HeaderIpExtractor("HTTP_CLIENT_IP"), 
-            new HeaderIpExtractor("HTTP_X_FORWARDED_FOR")
-        ));
-
-        String ipAddress = ipExtractor.extractIp(request);
-        
-        // Usando IP fixo para testes, mas você pode trocar por ipAddress na produção
-        Geolocation infoLocalizacao = geolocationService.obterGeolocation(ipAddress);
+    @GetMapping("/localizarIp/{ipAddress}")
+    public ResponseEntity<Geolocation> obterGeolocalizacaoUsuario(@PathVariable String ipAddress) throws GeoLocationException {
+        Geolocation infoLocalizacao = geolocationService.obterGeolocationByIP(ipAddress);
         return ResponseEntity.ok(infoLocalizacao);
     }
     

@@ -15,8 +15,6 @@ public interface ProdutoService {
 	Produto adicionarProduto(String produto, MultipartFile imagemFile) throws SQLException, IOException;
 
 	Page<Produto> listarProdutos(Pageable pageable);
-	
-	List<Produto> listarProdutosReact();
 
 	Produto atualizarProduto(long id, String produtoJSON, MultipartFile imagemFile) throws IOException;
 

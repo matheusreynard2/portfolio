@@ -80,10 +80,6 @@ public class ProdutoServiceImpl implements ProdutoService {
 	public Page<Produto> listarProdutos(Pageable pageable) {
 		return produtoRepository.findAll(pageable);
 	}
-	
-	public List<Produto> listarProdutosReact() {
-		return produtoRepository.findAll();
-	}
 
 	@Transactional
 	@Override

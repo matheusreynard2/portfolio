@@ -4,10 +4,14 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import com.apiestudar.api_prodify.controller.LocalizacaoController;
 import com.apiestudar.api_prodify.entity.Geolocation;
+import com.apiestudar.api_prodify.exceptions.GeoLocationException;
 import com.apiestudar.api_prodify.service.GeolocationService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -16,22 +20,23 @@ import kong.unirest.Unirest;
 @Service
 public class GeolocationServiceImpl implements GeolocationService {
 
+	// VARIÁVEIS
 	@Value("${ipinfo.token}")
 	private String ipinfoToken;
-
 	@Value("${google.maps.api.key}")
 	private String googleMapsApiKey;
-
 	private final ObjectMapper objectMapper = new ObjectMapper();
+	private final static String API_GOOGLE_MAPS_URL = "https://maps.googleapis.com/maps/api/geocode/json?";
+	private static final Logger log = LoggerFactory.getLogger(LocalizacaoController.class);
 
 	@Override
-	public Geolocation obterGeolocation(String ipAddress) {
+	public Geolocation obterGeolocationByIP(String ipAddress) throws GeoLocationException {
 		try {
 			String response = Unirest.get("https://ipinfo.io/" + ipAddress).header("Accept", "application/json")
 					.queryString("token", ipinfoToken).asString().getBody();
 			return objectMapper.readValue(response, Geolocation.class);
 		} catch (Exception e) {
-			throw new RuntimeException("Erro ao obter geolocalização: " + e.getMessage());
+			throw new GeoLocationException(ipAddress);
 		}
 	}
 
@@ -42,12 +47,11 @@ public class GeolocationServiceImpl implements GeolocationService {
 	        // Formatação mais cuidadosa das coordenadas
 	        String coordenadas = String.format(Locale.US, "%f,%f", lat, lng);
 	        
-	        String url = String.format(
-	            "https://maps.googleapis.com/maps/api/geocode/json?latlng=%s&key=%s", 
+	        String url = String.format(API_GOOGLE_MAPS_URL + "latlng=%s&key=%s", 
 	            coordenadas, googleMapsApiKey
 	        );
 	        
-	        System.out.println("URL de geocodificação: " + url); // Log para depuração
+	        log.info("URL de geocodificação: {}", url);
 	        
 	        String response = Unirest.get(url)
 	                .header("Accept", "application/json")

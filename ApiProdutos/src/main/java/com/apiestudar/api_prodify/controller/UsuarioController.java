@@ -21,13 +21,10 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.apiestudar.api_prodify.entity.Usuario;
-import com.apiestudar.api_prodify.exceptions.ParametroInformadoNullException;
-import com.apiestudar.api_prodify.exceptions.RegistroNaoEncontradoException;
 import com.apiestudar.api_prodify.service.UsuarioService;
 
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
-import springfox.documentation.annotations.ApiIgnore;
 
 @RestController
 @RequestMapping("api/usuarios")
@@ -40,7 +37,7 @@ public class UsuarioController {
 
 	@Autowired
 	private UsuarioService usuarioService;
-	
+
 	@ApiOperation(value = "Listagem de todos os usuários cadastrados.", notes = "Faz uma busca no banco de dados retornando uma lista com todos os usuários cadastrados.")
 	@ApiResponse(code = 200, message = "Usuários encontrados.")
 	@GetMapping("/listarUsuarios")
@@ -54,58 +51,24 @@ public class UsuarioController {
 	@PostMapping("/adicionarUsuario")
 	public ResponseEntity<Object> adicionarUsuario(@RequestParam String usuarioJSON,
 			@RequestParam MultipartFile imagemFile) throws IOException {
-		try {
-			Object response = usuarioService.adicionarUsuario(usuarioJSON, imagemFile);
-			return response instanceof String ? ResponseEntity.status(HttpStatus.CONFLICT).body(response)
-					: ResponseEntity.status(HttpStatus.CREATED).body(response);
-		} catch (ParametroInformadoNullException exc) {
-			log.error("Erro ao adicionar usuário - Param não informado: {}", exc);
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exc.getMessage());
-		}
-	}
-
-	@ApiIgnore
-	@PostMapping("/adicionarUsuarioReact")
-	public ResponseEntity<Object> adicionarUsuarioReact(@RequestBody Usuario usuario) throws IOException {
-		try {
-			Usuario usuarioAdicionado = usuarioService.adicionarUsuarioReact(usuario);
-			return ResponseEntity.status(HttpStatus.CREATED).body(usuarioAdicionado);
-		} catch (ParametroInformadoNullException exc) {
-			log.error("Erro ao adicionar usuário - Param não informado: {}", exc);
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exc.getMessage());
-		}
-	}
-
-	@ApiIgnore
-	@GetMapping("/listarUsuariosReact")
-	public ResponseEntity<List<Usuario>> listarUsuariosReact() {
-		List<Usuario> usuarios = usuarioService.listarUsuariosReact();
-		return ResponseEntity.status(HttpStatus.OK).body(usuarios);
+		Object response = usuarioService.adicionarUsuario(usuarioJSON, imagemFile);
+		return response instanceof String ? ResponseEntity.status(HttpStatus.CONFLICT).body(response)
+				: ResponseEntity.status(HttpStatus.CREATED).body(response);
 	}
 
 	@ApiOperation(value = "Deleta/exclui um usuário.", notes = "Faz a exclusão de um usuário do banco de dados de acordo com o número de id passado como parâmetro.")
 	@ApiResponse(code = 200, message = "Usuário excluído.")
 	@DeleteMapping("/deletarUsuario/{id}")
 	public ResponseEntity<Object> deletarUsuario(@PathVariable int id) {
-		try {
-			usuarioService.deletarUsuario(id);
-			return ResponseEntity.status(HttpStatus.OK).body("Deletou com sucesso");
-		} catch (RegistroNaoEncontradoException exc) {
-			log.error("Erro ao deletar usuário - Registro nao encontrado: {}", exc);
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exc.getMessage());
-		}
+		usuarioService.deletarUsuario(id);
+		return ResponseEntity.status(HttpStatus.OK).body("Deletou com sucesso");
 	}
 
 	@ApiOperation(value = "Realiza um login com auntenticação JWT.", notes = "Realiza uma operação de login com autenticação de token via Spring Security - JWT e com senha criptografada.")
 	@ApiResponse(code = 200, message = "Login realizado.")
 	@PostMapping("/realizarLogin")
-	public ResponseEntity<Object> realizarLogin(@RequestBody Usuario usuario) {
-		try {
-			Map<String, Object> response = usuarioService.realizarLogin(usuario);
-			return ResponseEntity.ok(response);
-		} catch (ParametroInformadoNullException exc) {
-			log.error("Erro ao Logar - Param não informado: {}", exc);
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exc.getMessage());
-		}
+	public ResponseEntity<Map<String, Object>> realizarLogin(@RequestBody Usuario usuario) {
+		Map<String, Object> response = usuarioService.realizarLogin(usuario);
+		return ResponseEntity.ok(response);
 	}
 }

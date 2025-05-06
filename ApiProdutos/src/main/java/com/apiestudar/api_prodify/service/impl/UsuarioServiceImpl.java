@@ -74,21 +74,10 @@ public class UsuarioServiceImpl implements UsuarioService {
 	}
 
 	@Override
-	public Usuario adicionarUsuarioReact(Usuario usuario) {
-		verificarNull(usuario);
-		return usuarioRepository.save(usuario);
-	}
-
-	@Override
 	public List<Usuario> listarUsuarios() {
 		return usuarioRepository.findAll();
 	}
-
-	@Override
-	public List<Usuario> listarUsuariosReact() {
-		return usuarioRepository.findAll();
-	}
-
+	
 	@Override
 	public boolean deletarUsuario(long id) {
 		if (usuarioRepository.findById(id).isEmpty()) {
@@ -123,8 +112,15 @@ public class UsuarioServiceImpl implements UsuarioService {
 
 	public Map<String, Object> realizarLogin(Usuario usuario) {
 		
-		verificarNull(usuario);
 		Map<String, Object> response = new HashMap<>();
+		
+		try {
+			verificarNull(usuario);
+		} catch (ParametroInformadoNullException exc) {
+			response.put("error", exc.getMessage());
+			return response;
+		}
+
 		BCryptPasswordEncoder senhaCriptografada = new BCryptPasswordEncoder();
 		String senhaArmazenada = getSenhaByLogin(usuario.getLogin());
 		
@@ -134,7 +130,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 			usuarioLogado.setToken(token);
 			response.put("usuario", usuarioLogado);
 		} else {
-			response.put("message", "Credenciais inválidas");
+			response.put("msgCredenciaisInvalidas", "Credenciais inválidas");
 		}
 		return response;
 	}

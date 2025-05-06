@@ -17,11 +17,7 @@ public interface UsuarioService {
 
 	Object adicionarUsuario(String usuarioJSON, MultipartFile imagemFile) throws IOException;
 	
-	Usuario adicionarUsuarioReact(Usuario usuario);
-
 	List<Usuario> listarUsuarios();
-	
-	List<Usuario> listarUsuariosReact();
 
 	boolean deletarUsuario(long id);
 	

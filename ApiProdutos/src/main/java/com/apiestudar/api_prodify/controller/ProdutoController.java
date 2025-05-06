@@ -54,25 +54,13 @@ public class ProdutoController {
 		return produtos;
 	}
 
-	@ApiIgnore
-	@GetMapping("/listarProdutosReact")
-	public List<Produto> listarProdutosReact() {
-		List<Produto> produtos = produtoService.listarProdutosReact();
-		return produtos;
-	}
-
 	@ApiOperation(value = "Adiciona/cadastra um novo produto.", notes = "Cria um novo registro de produto no banco de dados.")
 	@ApiResponse(code = 200, message = "Produto cadastrado.")
 	@PostMapping("/adicionarProduto")
 	public ResponseEntity<Object> adicionarProduto(@RequestParam String produtoJSON,
 			@RequestParam MultipartFile imagemFile) throws IOException, SQLException {
-		try {
-			Produto produtoAdicionado = produtoService.adicionarProduto(produtoJSON, imagemFile);
-			return ResponseEntity.status(HttpStatus.CREATED).body(produtoAdicionado);
-		} catch (ParametroInformadoNullException exc) {
-			log.error("Erro ao adicionar produto - Param não informado: {}", exc);
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exc.getMessage());
-		}
+		Produto produtoAdicionado = produtoService.adicionarProduto(produtoJSON, imagemFile);
+		return ResponseEntity.status(HttpStatus.CREATED).body(produtoAdicionado);
 	}
 
 	@ApiOperation(value = "Atualiza as informações de um produto.", notes = "Atualiza as informações registradas no banco de dados de um produto de acordo com o número de id passado como parâmetro.")
@@ -80,58 +68,35 @@ public class ProdutoController {
 	@PutMapping("/atualizarProduto/{id}")
 	public ResponseEntity<Object> atualizarProduto(@PathVariable long id, @RequestParam String produtoJSON,
 			@RequestParam MultipartFile imagemFile) throws IOException {
-		try {
-			Produto produtoAtualizado = produtoService.atualizarProduto(id, produtoJSON, imagemFile);
-			return ResponseEntity.status(HttpStatus.CREATED).body(produtoAtualizado);
-		} catch (RegistroNaoEncontradoException exc) {
-			log.error("Erro ao atualizar produto - Registro não encontrado: {}", exc);
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exc.getMessage());
-		}
+		Produto produtoAtualizado = produtoService.atualizarProduto(id, produtoJSON, imagemFile);
+		return ResponseEntity.status(HttpStatus.CREATED).body(produtoAtualizado);
 	}
 
 	@ApiOperation(value = "Deleta/exclui um produto.", notes = "Faz a exclusão de um produto do banco de dados de acordo com o número de id passado como parâmetro.")
 	@ApiResponse(code = 200, message = "Produto excluído.")
 	@DeleteMapping("/deletarProduto/{id}")
 	public ResponseEntity<Object> deletarProduto(@PathVariable int id) {
-		try {
-			produtoService.deletarProduto(id);
-			return ResponseEntity.status(HttpStatus.OK).body("Deletou com sucesso");
-		} catch (RegistroNaoEncontradoException exc) {
-			log.error("Erro ao deletar produto - Registro nao encontrado: {}", exc);
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exc.getMessage());
-		}
+		produtoService.deletarProduto(id);
+		return ResponseEntity.status(HttpStatus.OK).body("Deletou com sucesso");
+
 	}
 
 	@ApiOperation(value = "Exibe o produto mais caro.", notes = "Exibe o valor unitário do produto mais caro entre todos os produtos registrados no banco de dados.")
 	@ApiResponse(code = 200, message = "Cálculo de preço mais caro efetuado.")
 	@GetMapping("/produtoMaisCaro/{idUsuario}")
 	public ResponseEntity<Object> listarProdutoMaisCaro(@PathVariable long idUsuario) {
-		try {
-			List<Produto> produtoMaisCaro = produtoService.listarProdutoMaisCaro(idUsuario);
-			return ResponseEntity.status(HttpStatus.OK).body(produtoMaisCaro);
-		} catch (ParametroInformadoNullException exc) {
-			log.error("Erro ao calcular mais caro - Parametro nao informado: {}", exc);
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exc.getMessage());
-		} catch (RegistroNaoEncontradoException exc) {
-			log.error("Erro ao calcular mais caro - Registro nao encontrado: {}", exc);
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exc.getMessage());
-		}
+		List<Produto> produtoMaisCaro = produtoService.listarProdutoMaisCaro(idUsuario);
+		return ResponseEntity.status(HttpStatus.OK).body(produtoMaisCaro);
+
 	}
 
 	@ApiOperation(value = "Exibe a média de preço dos produtos.", notes = "Exibe a média de preço entre os valores unitários dos produtos registrados no banco de dados.")
 	@ApiResponse(code = 200, message = "Cálculo de média de preços efetuado.")
 	@GetMapping("/mediaPreco/{idUsuario}")
 	public ResponseEntity<Object> obterMediaPreco(@PathVariable long idUsuario) {
-		try {
-			Double media = produtoService.obterMediaPreco(idUsuario);
-			return ResponseEntity.status(HttpStatus.OK).body(media);
-		} catch (ParametroInformadoNullException exc) {
-			log.error("Erro ao calcular media - Parametro nao informado: {}", exc);
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exc.getMessage());
-		} catch (RegistroNaoEncontradoException exc) {
-			log.error("Erro ao calcular media - Registro nao encontrado: {}", exc);
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exc.getMessage());
-		}
+		Double media = produtoService.obterMediaPreco(idUsuario);
+		return ResponseEntity.status(HttpStatus.OK).body(media);
+
 	}
 
 	@ApiOperation(value = "Cálculo de valor de desconto.", notes = "Calcula o valor que será reduzido do preço do produto de acordo com a porcentagem de desconto passada pelo usuário.")
@@ -139,30 +104,19 @@ public class ProdutoController {
 	@GetMapping("/calcularDesconto/{valorProduto}/{valorDesconto}")
 	public ResponseEntity<Object> calcularValorDesconto(@PathVariable double valorProduto,
 			@PathVariable double valorDesconto) {
-		try {
-			Double valorComDesconto = produtoService.calcularValorDesconto(valorProduto, valorDesconto);
-			return ResponseEntity.status(HttpStatus.OK).body(valorComDesconto);
-		} catch (ParametroInformadoNullException exc) {
-			log.error("Erro ao calcular desconto: {}", exc);
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exc.getMessage());
-		}
+		Double valorComDesconto = produtoService.calcularValorDesconto(valorProduto, valorDesconto);
+		return ResponseEntity.status(HttpStatus.OK).body(valorComDesconto);
 	}
 
 	// Método responsável por retornar o resultado da barra de pesquisa do
-	// front-end. Filtra por id ou por nome dependendo do que o usuário escoheu
+	// front-end. Filtra por id ou por nome dependendo do que o usuário escolheu
 	@ApiOperation(value = "Pesquisar registros por 'id' ou por 'nome'.", notes = "Faz uma busca de registros no banco de dados utilizando como filtro o id do produto ou o nome do produto.")
 	@ApiResponse(code = 200, message = "Produtos encontrados.")
 	@GetMapping("/efetuarPesquisa/{tipoPesquisa}/{valorPesquisa}/{idUsuario}")
 	public ResponseEntity<Object> efetuarPesquisa(@PathVariable String tipoPesquisa, @PathVariable String valorPesquisa,
 			@PathVariable long idUsuario) {
-		try {
-			List<Produto> produtos = produtoService.efetuarPesquisa(tipoPesquisa, valorPesquisa, idUsuario);
-			return ResponseEntity.status(HttpStatus.OK).body(produtos);
-		} catch (ParametroInformadoNullException exc) {
-			log.error("Erro ao calcular desconto: {}", exc);
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exc.getMessage());
-		}
-
+		List<Produto> produtos = produtoService.efetuarPesquisa(tipoPesquisa, valorPesquisa, idUsuario);
+		return ResponseEntity.status(HttpStatus.OK).body(produtos);
 	}
 
 	@SuppressWarnings("rawtypes")
