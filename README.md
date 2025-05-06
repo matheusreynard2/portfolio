@@ -31,7 +31,6 @@ Front-end em Angular e TypeScript do sistema Prodify, parte que consome a API de
   
 =================================================
 
-### react-app
-- Aplicação em React.js que consome partes da ApiProdutos. (CURSO e CHAT)
-- Uso de conceitos como WebSocket, integração com RabbitMQ, React Context e comunicação assíncrona.
+### react-app e reactApi
+- Uso de conceitos de WebSocket, integração com RabbitMQ, React Context e comunicação assíncrona.
 
