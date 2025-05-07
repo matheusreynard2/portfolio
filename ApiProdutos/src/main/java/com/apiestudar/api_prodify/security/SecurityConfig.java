@@ -82,6 +82,8 @@ public class SecurityConfig {
 
             	
             	// Protege endpoints específicos
+            	.antMatchers(HttpMethod.GET, "/api/fornecedores/acessarPaginaFornecedor").hasRole("USER")
+            	.antMatchers(HttpMethod.GET, "/api/fornecedores/adicionarFornecedor").hasRole("USER")
         		.antMatchers(HttpMethod.GET, "/api/localizacao/consultarCEP/{cep}").hasRole("USER")
             	.antMatchers(HttpMethod.GET, "/api/localizacao/enderecoDetalhado").hasRole("USER")
             	.antMatchers(HttpMethod.GET, "/api/localizacao/localizarIp").hasRole("USER")
