@@ -10,9 +10,12 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.apiestudar.api_prodify.controller.LocalizacaoController;
+import com.apiestudar.api_prodify.entity.EnderecoFornecedor;
 import com.apiestudar.api_prodify.entity.Geolocation;
 import com.apiestudar.api_prodify.exceptions.GeoLocationException;
 import com.apiestudar.api_prodify.service.GeolocationService;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import kong.unirest.Unirest;
@@ -27,8 +30,17 @@ public class GeolocationServiceImpl implements GeolocationService {
 	private String googleMapsApiKey;
 	private final ObjectMapper objectMapper = new ObjectMapper();
 	private final static String API_GOOGLE_MAPS_URL = "https://maps.googleapis.com/maps/api/geocode/json?";
+	private final static String API_VIA_CEP = "https://viacep.com.br/ws/";
 	private static final Logger log = LoggerFactory.getLogger(LocalizacaoController.class);
 
+	@Override
+	public EnderecoFornecedor obterEnderecoViaCEP(String cep) throws JsonMappingException, JsonProcessingException {
+		 String response = Unirest.get(API_VIA_CEP + cep + "/json/")
+	                .header("Accept", "application/json")
+	                .asString().getBody();
+		 return objectMapper.readValue(response, EnderecoFornecedor.class);
+	}
+	
 	@Override
 	public Geolocation obterGeolocationByIP(String ipAddress) throws GeoLocationException {
 		try {

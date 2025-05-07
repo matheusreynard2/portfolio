@@ -80,7 +80,9 @@ public class SecurityConfig {
             	.antMatchers(HttpMethod.DELETE, "/api/usuarios/deletarUsuario/{id}").permitAll()
             	.antMatchers(HttpMethod.GET, "/api/usuarios/listarUsuarios").permitAll()
 
+            	
             	// Protege endpoints específicos
+        		.antMatchers(HttpMethod.GET, "/api/localizacao/consultarCEP/{cep}").hasRole("USER")
             	.antMatchers(HttpMethod.GET, "/api/localizacao/enderecoDetalhado").hasRole("USER")
             	.antMatchers(HttpMethod.GET, "/api/localizacao/localizarIp").hasRole("USER")
             	.antMatchers(HttpMethod.POST, "/api/produtos/adicionarProduto").hasRole("USER")

@@ -1,7 +1,6 @@
 package com.apiestudar.api_prodify.controller;
 
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -16,12 +15,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.apiestudar.api_prodify.entity.EnderecoFornecedor;
 import com.apiestudar.api_prodify.entity.Geolocation;
 import com.apiestudar.api_prodify.exceptions.GeoLocationException;
-import com.apiestudar.api_prodify.pattern.HeaderIpExtractor;
-import com.apiestudar.api_prodify.pattern.IpExtractorManager;
 import com.apiestudar.api_prodify.service.GeolocationService;
 import com.apiestudar.api_prodify.service.UsuarioService;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
 
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -64,4 +64,13 @@ public class LocalizacaoController {
     	Map<String, Object> endereco = geolocationService.obterEnderecoDetalhado(lat, lng);
         return ResponseEntity.ok(endereco);
     }
+    
+    @ApiOperation(value = "Obtém endereço a partir do CEP.", notes = "Utiliza a API ViaCEP para obter informações detalhadas de endereço.")
+    @ApiResponse(code = 200, message = "CEP consultado.")
+    @GetMapping("/consultarCEP/{cep}")
+    public ResponseEntity<EnderecoFornecedor> obterEnderecoViaCEP(@PathVariable String cep) throws JsonMappingException, JsonProcessingException {
+    	EnderecoFornecedor endereco = geolocationService.obterEnderecoViaCEP(cep);
+        return ResponseEntity.ok(endereco);
+    }
+    
 }

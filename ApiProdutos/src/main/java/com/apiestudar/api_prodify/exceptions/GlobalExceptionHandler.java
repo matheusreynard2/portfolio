@@ -1,11 +1,14 @@
 package com.apiestudar.api_prodify.exceptions;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
@@ -39,6 +42,18 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(GeoLocationException.class)
     public ResponseEntity<Object> handleGeoLocationException(GeoLocationException ex) {
     	log.error("Erro ao obter geolocalizacao pelo IP: {}", ex);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
+    }
+    
+    @ExceptionHandler(JsonMappingException.class)
+    public ResponseEntity<Object> handleJsonMappingException(JsonMappingException ex) {
+    	log.error("Erro ao utilizar Mapper com JSON: {}", ex);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
+    }
+    
+    @ExceptionHandler(JsonProcessingException.class)
+    public ResponseEntity<Object> handleJsonProcessingException(JsonProcessingException ex) {
+    	log.error("Erro ao processar JSON: {}", ex);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
     }
 }
