@@ -23,15 +23,22 @@
                      required
                      maxlength="50">
             </td>
-            <td><label for="cep">CEP:</label></td>
             <td>
-              <input type="text" [(ngModel)]="endereco.cep"
-                     class="form-control"
-                     id="cep"
-                     name="cepFornecedor"
-                     placeholder="Insira o CEP."
-                     required #cep="ngModel"
-                     maxlength="9">
+              <div class="form-group">
+                <label for="cep">CEP</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="cep"
+                  name="cep"
+                  [(ngModel)]="endereco.cep"
+                  mask="00000-000"
+                  [showMaskTyped]="true"
+                  placeholder="00000-000"
+                  (blur)="buscarEnderecoPorCep(endereco.cep)"
+                  required
+                />
+              </div>
             </td>
             <td colspan="2">
               <button type="button" class="btn btn-secondary" (click)="buscarEnderecoPorCep(endereco.cep)">Buscar</button>
@@ -149,6 +156,12 @@
                      id="siafi"
                      name="siafiFornecedor"
                      readonly>
+            </td>
+          </tr>
+          <!-- Linha com aviso adicionada aqui -->
+          <tr>
+            <td colspan="6">
+              <span style="font-size: 14px; color: red">AVISO:</span> <span style="font-size: 13px;"> Apenas busque pelo CEP, então todos os campos serão preenchidos automaticamente. Após isso, informe o nome do fornecedor.</span>
             </td>
           </tr>
           <tr>

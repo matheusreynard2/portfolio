@@ -1,18 +1,23 @@
 import { Component, OnInit, ViewChild, TemplateRef } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import {GeolocalizacaoService} from '../../service/geolocalizacao/geolocalizacao.service';
-import {EnderecoFornecedor} from '../../model/endereco-fornecedor';
-import {FormsModule} from '@angular/forms';
-import {Fornecedor} from '../../model/fornecedor';
-import {Produto} from '../../model/produto';
-import {FornecedorService} from '../../service/fornecedor/fornecedor.service';
+import { GeolocalizacaoService } from '../../service/geolocalizacao/geolocalizacao.service';
+import { EnderecoFornecedor } from '../../model/endereco-fornecedor';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { Fornecedor } from '../../model/fornecedor';
+import { FornecedorService } from '../../service/fornecedor/fornecedor.service';
+import { NgOptimizedImage } from '@angular/common';
+import { NgxMaskDirective, provideNgxMask } from 'ngx-mask';
 
 @Component({
   selector: 'adicionar-fornecedor',
   templateUrl: './adicionar-fornecedor.component.html',
   imports: [
-    FormsModule
+    FormsModule,
+    NgOptimizedImage,
+    ReactiveFormsModule,
+    NgxMaskDirective
   ],
+  providers: [provideNgxMask()],
   styleUrls: ['./adicionar-fornecedor.component.css']
 })
 export class AdicionarFornecedorComponent implements OnInit {
@@ -45,6 +50,11 @@ export class AdicionarFornecedorComponent implements OnInit {
     enderecoFornecedor: this.endereco
   };
 
+  // Opções da máscara de CEP
+  cepMaskOptions = {
+    mask: '00000-000',
+    showMaskTyped: true
+  };
 
   constructor(
     private geolocalizacaoService: GeolocalizacaoService,
@@ -58,16 +68,16 @@ export class AdicionarFornecedorComponent implements OnInit {
   }
 
   buscarEnderecoPorCep(cep: string): void {
-    // Remove caracteres não numéricos do CEP
-    cep = cep.replace(/\D/g, '');
+    // Remover caracteres não numéricos do CEP
+    const cepLimpo = cep.replace(/\D/g, '');
 
-    if (cep.length !== 8) {
+    if (cepLimpo.length !== 8) {
       alert('CEP inválido. Por favor, digite um CEP com 8 dígitos.');
       return;
     }
 
     // Chama o serviço que se comunica com o backend
-    this.geolocalizacaoService.obterEnderecoViaCEP(cep).subscribe(
+    this.geolocalizacaoService.obterEnderecoViaCEP(cepLimpo).subscribe(
       (endereco: EnderecoFornecedor) => {
         if (!endereco || !endereco.cep) {
           alert('CEP não encontrado.');
@@ -75,6 +85,7 @@ export class AdicionarFornecedorComponent implements OnInit {
         }
 
         // Preenche os campos com os dados retornados pelo backend
+        this.endereco.cep = endereco.cep; // Preserva o CEP formatado
         this.endereco.logradouro = endereco.logradouro || '';
         this.endereco.complemento = endereco.complemento || '';
         this.endereco.unidade = endereco.unidade || '';
@@ -96,24 +107,29 @@ export class AdicionarFornecedorComponent implements OnInit {
   }
 
   onSubmit(): void {
-    this.gerarDadosFornecedor()
+    this.gerarDadosFornecedor();
     // Adiciona o produto no banco depois chama a mensagem de sucesso de adição de produto "msgAddProduto"
     this.fornecedorService.adicionarFornecedor(this.novoFornecedor).subscribe({
       next: (fornecedorAdicionado: Fornecedor) => {
-        this.novoFornecedor = fornecedorAdicionado
+        this.novoFornecedor = fornecedorAdicionado;
         this.adicionouFornecedor = true;
         this.modalService.open(this.modalMsgAddFornecedor);
       }
-    })
+    });
   }
 
   gerarDadosFornecedor() {
+    // Certifique-se de que o CEP está limpo antes de enviar
+    const cepLimpo = this.endereco.cep.replace(/\D/g, '');
+
     this.novoFornecedor = {
       id: 0,
       nome: this.nomeFornecedor,
       nrResidencia: this.nrResidenciaFornecedor,
-      enderecoFornecedor: this.endereco
-
+      enderecoFornecedor: {
+        ...this.endereco,
+        cep: cepLimpo // Garante que o CEP seja enviado apenas com números
+      }
     }
   }
 }
