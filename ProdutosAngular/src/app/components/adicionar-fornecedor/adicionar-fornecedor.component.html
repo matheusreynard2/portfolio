@@ -2,19 +2,20 @@
   <div class="card-body">
     <form (ngSubmit)="onSubmit()" #fornecedorForm="ngForm">
       <div class="div-tabela">
-        <table class="table table-bordered">
+        <table class="table table-bordered" style="width: 100%; table-layout: fixed;">
           <thead>
           <tr>
             <th colspan="6" class="text-center">Cadastrar um novo fornecedor</th>
           </tr>
           </thead>
           <tbody>
+          <!-- Linha 1: Nome do Fornecedor, CEP e botão Buscar -->
           <tr>
-            <td>
+            <td style="width: 16%;">
               <span style="color: red">* </span>
               <label for="nomeFornecedor">Nome do Fornecedor:</label>
             </td>
-            <td>
+            <td style="width: 24%;">
               <input type="text" [(ngModel)]="nomeFornecedor"
                      class="form-control"
                      id="nomeFornecedor"
@@ -23,38 +24,44 @@
                      required
                      maxlength="50">
             </td>
-            <td>
-              <div class="form-group">
-                <label for="cep">CEP</label>
-                <input
-                  type="text"
-                  class="form-control"
-                  id="cep"
-                  name="cep"
-                  [(ngModel)]="endereco.cep"
-                  mask="00000-000"
-                  [showMaskTyped]="true"
-                  placeholder="00000-000"
-                  (blur)="buscarEnderecoPorCep(endereco.cep)"
-                  required
-                />
-              </div>
+            <td style="width: 12%;">
+              <label for="cep">CEP:</label>
             </td>
-            <td colspan="2">
+            <td style="width: 16%;">
+              <input
+                type="text"
+                class="form-control"
+                id="cep"
+                name="cep"
+                [(ngModel)]="endereco.cep"
+                mask="00000-000"
+                [showMaskTyped]="true"
+                placeholder="00000-000"
+                (blur)="buscarEnderecoPorCep(endereco.cep)"
+                required
+              />
+            </td>
+            <td style="width: 12%;">
               <button type="button" class="btn btn-secondary" (click)="buscarEnderecoPorCep(endereco.cep)">Buscar</button>
             </td>
           </tr>
+
+          <!-- Linha 2: Logradouro, Nº Residência, Complemento -->
           <tr>
-            <td><label for="logradouro">Logradouro:</label></td>
-            <td>
+            <td style="width: 16%;">
+              <label for="logradouro">Logradouro:</label>
+            </td>
+            <td style="width: 24%;">
               <input type="text" [(ngModel)]="endereco.logradouro"
                      class="form-control"
                      id="logradouro"
                      name="logradouroFornecedor"
                      readonly>
             </td>
-            <td><label for="nrResidenciaFornecedor">Nº Residência:</label></td>
-            <td>
+            <td style="width: 12%;">
+              <label for="nrResidenciaFornecedor">Nº Residência:</label>
+            </td>
+            <td style="width: 16%;">
               <input type="text" [(ngModel)]="nrResidenciaFornecedor"
                      class="form-control"
                      id="nrResidenciaFornecedor"
@@ -62,25 +69,33 @@
                      placeholder="Número"
                      maxlength="10">
             </td>
-            <td><label for="complemento">Complemento:</label></td>
-            <td>
+            <td style="width: 12%;">
+              <label for="complemento">Complemento:</label>
+            </td>
+            <td style="width: 20%;">
               <input type="text" [(ngModel)]="endereco.complemento"
                      class="form-control"
                      id="complemento"
                      name="complementoFornecedor">
             </td>
           </tr>
+
+          <!-- Linha 3: Unidade e Bairro -->
           <tr>
-            <td><label for="unidade">Unidade:</label></td>
-            <td>
+            <td style="width: 16%;">
+              <label for="unidade">Unidade:</label>
+            </td>
+            <td style="width: 24%;">
               <input type="text" [(ngModel)]="endereco.unidade"
                      class="form-control"
                      id="unidade"
                      name="unidadeFornecedor"
                      readonly>
             </td>
-            <td><label for="bairro">Bairro:</label></td>
-            <td colspan="3">
+            <td style="width: 12%;">
+              <label for="bairro">Bairro:</label>
+            </td>
+            <td colspan="3" style="width: 48%;">
               <input type="text" [(ngModel)]="endereco.bairro"
                      class="form-control"
                      id="bairro"
@@ -88,25 +103,33 @@
                      readonly>
             </td>
           </tr>
+
+          <!-- Linha 4: Cidade, UF, Estado -->
           <tr>
-            <td><label for="localidade">Cidade:</label></td>
-            <td>
+            <td style="width: 16%;">
+              <label for="localidade">Cidade:</label>
+            </td>
+            <td style="width: 24%;">
               <input type="text" [(ngModel)]="endereco.localidade"
                      class="form-control"
                      id="localidade"
                      name="localidadeFornecedor"
                      readonly>
             </td>
-            <td><label for="uf">UF:</label></td>
-            <td>
+            <td style="width: 12%;">
+              <label for="uf">UF:</label>
+            </td>
+            <td style="width: 16%;">
               <input type="text" [(ngModel)]="endereco.uf"
                      class="form-control"
                      id="uf"
                      name="ufFornecedor"
                      readonly>
             </td>
-            <td><label for="estado">Estado:</label></td>
-            <td>
+            <td style="width: 12%;">
+              <label for="estado">Estado:</label>
+            </td>
+            <td style="width: 20%;">
               <input type="text" [(ngModel)]="endereco.estado"
                      class="form-control"
                      id="estado"
@@ -114,25 +137,33 @@
                      readonly>
             </td>
           </tr>
+
+          <!-- Linha 5: Região, IBGE, GIA -->
           <tr>
-            <td><label for="regiao">Região:</label></td>
-            <td>
+            <td style="width: 16%;">
+              <label for="regiao">Região:</label>
+            </td>
+            <td style="width: 24%;">
               <input type="text" [(ngModel)]="endereco.regiao"
                      class="form-control"
                      id="regiao"
                      name="regiaoFornecedor"
                      readonly>
             </td>
-            <td><label for="ibge">IBGE:</label></td>
-            <td>
+            <td style="width: 12%;">
+              <label for="ibge">IBGE:</label>
+            </td>
+            <td style="width: 16%;">
               <input type="text" [(ngModel)]="endereco.ibge"
                      class="form-control"
                      id="ibge"
                      name="ibgeFornecedor"
                      readonly>
             </td>
-            <td><label for="gia">GIA:</label></td>
-            <td>
+            <td style="width: 12%;">
+              <label for="gia">GIA:</label>
+            </td>
+            <td style="width: 20%;">
               <input type="text" [(ngModel)]="endereco.gia"
                      class="form-control"
                      id="gia"
@@ -140,17 +171,23 @@
                      readonly>
             </td>
           </tr>
+
+          <!-- Linha 6: DDD, SIAFI -->
           <tr>
-            <td><label for="ddd">DDD:</label></td>
-            <td>
+            <td style="width: 16%;">
+              <label for="ddd">DDD:</label>
+            </td>
+            <td style="width: 24%;">
               <input type="text" [(ngModel)]="endereco.ddd"
                      class="form-control"
                      id="ddd"
                      name="dddFornecedor"
                      readonly>
             </td>
-            <td><label for="siafi">SIAFI:</label></td>
-            <td colspan="3">
+            <td style="width: 12%;">
+              <label for="siafi">SIAFI:</label>
+            </td>
+            <td colspan="3" style="width: 48%;">
               <input type="text" [(ngModel)]="endereco.siafi"
                      class="form-control"
                      id="siafi"
@@ -158,14 +195,17 @@
                      readonly>
             </td>
           </tr>
-          <!-- Linha com aviso adicionada aqui -->
+
+          <!-- Linha 7: Aviso -->
           <tr>
-            <td colspan="6">
-              <span style="font-size: 14px; color: red">AVISO:</span> <span style="font-size: 13px;"> Apenas busque pelo CEP, então todos os campos serão preenchidos automaticamente. Após isso, informe o nome do fornecedor.</span>
+            <td colspan="6" style="width: 100%;">
+              <span style="font-size: 14px; color: red">AVISO:</span> <span style="font-size: 13px;">Apenas busque pelo CEP, então todos os campos serão preenchidos automaticamente. Após isso, informe o nome do fornecedor.</span>
             </td>
           </tr>
+
+          <!-- Linha 8: Botão Cadastrar -->
           <tr>
-            <td colspan="6" class="text-left">
+            <td colspan="6" class="text-left" style="width: 100%;">
               <button type="submit" [disabled]="!fornecedorForm.form.valid" class="btn bg-primary-subtle fw-bold">Cadastrar</button>
             </td>
           </tr>
