@@ -9,6 +9,7 @@ import {SobreTab1Component} from './components/sobre/sobreTab1.component';
 import {SobreTab2Component} from './components/sobre/sobreTab2.component';
 import {GeolocalizacaoComponent} from './components/geolocalizacao/geolocalizacao.component';
 import {Geolocalizacao2Component} from './components/geolocalizacao/geolocalizacao2.component';
+import {GerenciarFornecedorComponent} from './components/gerenciar-fornecedor/gerenciar-fornecedor.component';
 
 export const routes: Routes = [
   { path: 'produtos', component: ProdutoListComponent, canActivate: [AuthGuard] },
@@ -19,6 +20,7 @@ export const routes: Routes = [
   { path: 'sobreTab2', component: SobreTab2Component },
   { path: 'geoloc', component: GeolocalizacaoComponent, canActivate: [AuthGuard]  },
   { path: 'geoloc2', component: Geolocalizacao2Component, canActivate: [AuthGuard]  },
+  { path: 'fornecedor', component: GerenciarFornecedorComponent, canActivate: [AuthGuard]  },
   { path: '', redirectTo: '/login', pathMatch: 'full' }
 ];
 

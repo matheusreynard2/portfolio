@@ -1,12 +1,11 @@
-// src/app/service/geolocalizacao/geolocalizacao.service.ts
 import { Injectable } from '@angular/core';
 import {HttpClient, HttpErrorResponse, HttpParams} from '@angular/common/http';
 import {catchError, Observable, throwError} from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { Geolocalizacao } from '../../model/geolocalizacao';
-import { EnderecoGeolocalizacao } from '../../model/endereco-geolocalizacao';
 import {AuthService} from '../auth/auth.service';
 import {Router} from '@angular/router';
+import {EnderecoFornecedor} from '../../model/endereco-fornecedor';
 
 @Injectable({
   providedIn: 'root'
@@ -75,4 +74,12 @@ export class GeolocalizacaoService {
       lng: parseFloat(coords[1])
     };
   }
+
+  obterEnderecoViaCEP(cep: string): Observable<EnderecoFornecedor> {
+    // Remove caracteres não numéricos do CEP
+    cep = cep.replace(/\D/g, '');
+    // Chama o endpoint do backend que fará a integração com a API de CEP
+    return this.http.get<EnderecoFornecedor>(this.localizacaoUrl + "/consultarCEP/" + cep);
+  }
+
 }

@@ -58,7 +58,15 @@
               <a href="https://www.sistemaprodify.com/swagger-ui/index.html" target="_blank" class="btn btn-outline-secondary fw-bold">Swagger</a>
             </li>
             <li class="list-inline-item">
-              <a routerLink="/geoloc" class="btn btn-outline-secondary fw-bold">Localizar Fornecedor</a>
+              <div class="btn-group">
+                <button type="button" class="btn btn-outline-secondary fw-bold dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                  Fornecedor
+                </button>
+                <div class="dropdown-menu">
+                  <a class="dropdown-item" routerLink="/geoloc">Localizar Fornecedor</a>
+                  <a class="dropdown-item" routerLink="/fornecedor">Gerenciar Fornecedor</a>
+                </div>
+              </div>
             </li>
           </ul>
         </div>
@@ -92,6 +100,9 @@
                 </li>
                 <li>
                   <a routerLink="/geoloc" (click)="abrirFecharMenu()" style="display: block; padding: 5px 10px;">Localizar Fornecedor</a>
+                </li>
+                <li>
+                  <a routerLink="/fornecedor" (click)="abrirFecharMenu()" style="display: block; padding: 5px 10px;">Gerenciar Fornecedor</a>
                 </li>
                 <li>
                   <a href="https://www.sistemaprodify.com/swagger-ui/index.html" target="_blank" (click)="abrirFecharMenu()" style="display: block; padding: 5px 10px;">Swagger</a>
