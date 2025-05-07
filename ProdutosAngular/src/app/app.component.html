@@ -52,21 +52,21 @@
               </div>
             </li>
             <li class="list-inline-item">
+              <div class="btn-group">
+                <button type="button" class="btn btn-outline-secondary fw-bold dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                  Gerenciar fornecedores
+                </button>
+                <div class="dropdown-menu">
+                  <a class="dropdown-item" routerLink="/geoloc">Localizar fornecedor</a>
+                  <a class="dropdown-item" routerLink="/addfornecedor">Cadastrar fornecedor</a>
+                </div>
+              </div>
+            </li>
+            <li class="list-inline-item">
               <a routerLink="/sobreTab1" class="btn btn-outline-secondary fw-bold">Sobre</a>
             </li>
             <li class="list-inline-item">
               <a href="https://www.sistemaprodify.com/swagger-ui/index.html" target="_blank" class="btn btn-outline-secondary fw-bold">Swagger</a>
-            </li>
-            <li class="list-inline-item">
-              <div class="btn-group">
-                <button type="button" class="btn btn-outline-secondary fw-bold dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                  Fornecedor
-                </button>
-                <div class="dropdown-menu">
-                  <a class="dropdown-item" routerLink="/geoloc">Localizar Fornecedor</a>
-                  <a class="dropdown-item" routerLink="/fornecedor">Gerenciar Fornecedor</a>
-                </div>
-              </div>
             </li>
           </ul>
         </div>
@@ -99,10 +99,10 @@
                   <a routerLink="/sobreTab1" (click)="abrirFecharMenu()" style="display: block; padding: 5px 10px;">Sobre</a>
                 </li>
                 <li>
-                  <a routerLink="/geoloc" (click)="abrirFecharMenu()" style="display: block; padding: 5px 10px;">Localizar Fornecedor</a>
+                  <a routerLink="/geoloc" (click)="abrirFecharMenu()" style="display: block; padding: 5px 10px;">Localizar fornecedor</a>
                 </li>
                 <li>
-                  <a routerLink="/fornecedor" (click)="abrirFecharMenu()" style="display: block; padding: 5px 10px;">Gerenciar Fornecedor</a>
+                  <a routerLink="/addfornecedor" (click)="abrirFecharMenu()" style="display: block; padding: 5px 10px;">Cadastrar fornecedor</a>
                 </li>
                 <li>
                   <a href="https://www.sistemaprodify.com/swagger-ui/index.html" target="_blank" (click)="abrirFecharMenu()" style="display: block; padding: 5px 10px;">Swagger</a>

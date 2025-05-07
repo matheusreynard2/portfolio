@@ -10,7 +10,6 @@ import {Usuario} from './model/usuario';
 import {UsuarioService} from './service/usuario/usuario.service';
 import {DeviceService} from './service/device/device.service';
 import {environment} from '../environments/environment';
-import {GoogleMapsModule} from '@angular/google-maps';
 
 @Component({
   selector: 'app-root',

@@ -1,4 +1,5 @@
-// src/app/components/geolocalizacao/geolocalizacao.component.ts
+// Corrigindo o componente geolocalizacao.component.ts
+
 import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import {Router, RouterLink} from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -13,6 +14,7 @@ import { of } from 'rxjs';
 import {MatCard, MatCardContent} from '@angular/material/card';
 import {DeviceService} from '../../service/device/device.service';
 import { FormsModule } from '@angular/forms';
+import {FornecedorService} from '../../service/fornecedor/fornecedor.service';
 
 @Component({
   selector: 'app-geolocalizacao',
@@ -38,7 +40,7 @@ export class GeolocalizacaoComponent implements OnInit {
 
   geoInfo: Geolocalizacao | null = null;
   enderecoGeolocalizacao: GeocodingResult | null = null;
-  carregando = false; // Alterado para false inicialmente
+  carregando = false;
   erro: string | null = null;
   consentimentoFornecido = false;
   mapsCarregado = false;
@@ -46,8 +48,8 @@ export class GeolocalizacaoComponent implements OnInit {
   isMobileOrTablet: boolean = false;
 
   // Propriedades para o mapa
-  center: google.maps.LatLngLiteral = {lat: 0, lng: 0};
-  zoom = 16; // Zoom maior para visualizar melhor o endereço específico
+  center: google.maps.LatLngLiteral = {lat: -23.5505, lng: -46.6333}; // Coordenadas padrão (São Paulo)
+  zoom = 16;
   mapOptions: google.maps.MapOptions = {
     mapTypeId: 'roadmap',
     zoomControl: true,
@@ -56,84 +58,68 @@ export class GeolocalizacaoComponent implements OnInit {
     maxZoom: 20,
     minZoom: 4,
   };
-  marker = {
-    position: {lat: 0, lng: 0},
-    title: '',
+  marker: any = {
+    position: {lat: -23.5505, lng: -46.6333},
+    title: 'Localização',
     options: {
-      draggable: false,
-      animation: (typeof google !== 'undefined' && google.maps && google.maps.Animation)
-        ? google.maps.Animation.DROP
-        : null
+      draggable: false
+      // Não incluir a animação aqui
     }
   };
 
+  // Importante: Adicione esta propriedade para verificar se a API do Google Maps está disponível
+  apiLoaded = false;
+
   constructor(
     private geoService: GeolocalizacaoService,
-    private modalService: NgbModal,
-    private router: Router,
     private mapsLoaderService: GoogleMapsLoaderService,
-    private deviceService: DeviceService
+    private deviceService: DeviceService,
+    private fornecedorService: FornecedorService
   ) { }
 
   ngOnInit(): void {
+    // USA O ENDPOINT ABAIXO PARA VERIFICAR SE O TOKEN EXPIROU E LIBERAR ACESSO A PAGINA OU NÃO
+    this.fornecedorService.acessarPaginaFornecedor().subscribe();
+
     this.deviceService.isMobileOrTablet.subscribe(isMobile => {
       this.isMobileOrTablet = isMobile;
     });
 
-    // Abre o modal de consentimento ao inicializar o componente
-    this.exibirModalConsentimento();
+    // Carrega a API do Google Maps
+    this.carregarGoogleMaps();
   }
 
   async carregarGoogleMaps(): Promise<void> {
-    // Vamos verificar se o Google Maps já está disponível
-    if (window.google && window.google.maps) {
+    try {
+      // Verifica se o Google Maps já está disponível globalmente
+      if (typeof google === 'undefined' || !google.maps) {
+        await this.mapsLoaderService.loadGoogleMaps();
+      }
+
+      // Após o carregamento, configura a animação do marcador
       this.mapsCarregado = true;
-      this.marker.options.animation = google.maps.Animation.DROP;
-      return Promise.resolve();
-    }
+      this.apiLoaded = true;
 
-    // Se não estiver disponível, carregamos explicitamente
-    return this.mapsLoaderService.loadGoogleMaps()
-      .then(() => {
-        this.mapsCarregado = true;
+      // Só configura a animação após garantir que o Google Maps está disponível
+      if (google && google.maps && google.maps.Animation) {
         this.marker.options.animation = google.maps.Animation.DROP;
-      })
-      .catch(error => {
-        this.erro = `Erro ao carregar o Google Maps: ${error}`;
-        return Promise.reject(error);
-      });
+      }
+
+    } catch (error) {
+      console.error('Erro ao carregar o Google Maps:', error);
+      this.erro = `Erro ao carregar o Google Maps: ${error}`;
+    }
   }
 
-  exibirModalConsentimento(): void {
-    const modalRef = this.modalService.open(this.modalConsent, {
-      backdrop: 'static',
-      keyboard: false,
-      centered: true
-    });
-  }
-
-  fornecerConsentimento(): void {
-    this.consentimentoFornecido = true;
-    this.modalService.dismissAll();
-
-    // Apenas carrega o Google Maps, mas não carrega automaticamente a localização
-    this.carregarGoogleMaps()
-      .catch(error => {
-        this.erro = `Erro ao carregar o Google Maps: ${error}`;
-      });
-  }
-
-  recusarConsentimento(): void {
-    this.modalService.dismissAll();
-    this.router.navigate(['/login']);
-  }
-
-  // Novo método para buscar geolocalização pelo IP digitado
+  // Método para buscar geolocalização pelo IP digitado
   buscarGeolocalizacaoPorIP(): void {
     if (!this.ipDigitado) {
       this.erro = "Por favor, digite um endereço IP válido.";
       return;
     }
+
+    // TIRA OS ESPAÇOS
+    this.ipDigitado = this.ipDigitado.replace(/\s/g, '');
 
     this.erro = null;
     this.carregando = true;
@@ -198,6 +184,4 @@ export class GeolocalizacaoComponent implements OnInit {
 
     return component ? component.long_name : 'N/A';
   }
-
-  protected readonly window = window;
 }

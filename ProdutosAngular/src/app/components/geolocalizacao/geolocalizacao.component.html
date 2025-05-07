@@ -9,7 +9,7 @@
   </ul>
   <div class="container my-5">
     <!-- Formulário para inserção do IP -->
-    <div class="card mb-4" *ngIf="consentimentoFornecido">
+    <div class="card mb-4">
       <div class="card-header bg-primary text-white">
         Digite o Endereço IP para Localizar
       </div>
@@ -39,7 +39,7 @@
       <!-- Card de informações básicas (ipinfo.io) -->
       <mat-card class="profile-card me-md-3 mb-3 mb-md-0" style="flex: 1; min-width: 300px;">
         <mat-card-content>
-          <div *ngIf="consentimentoFornecido">
+          <div>
             <div *ngIf="carregando" class="d-flex justify-content-center">
               <div class="spinner-border" role="status">
                 <span class="visually-hidden">Carregando...</span>
@@ -74,7 +74,7 @@
       <!-- Card de endereço detalhado -->
       <mat-card class="profile-card me-md-3 mb-3 mb-md-0" style="flex: 1; min-width: 300px;">
         <mat-card-content>
-          <div *ngIf="consentimentoFornecido && !carregando && !erro && geoInfo">
+          <div *ngIf="!carregando && !erro && geoInfo">
             <div class="card">
               <div class="card-header bg-success text-white">
                 Endereço Detalhado (Google Maps)
@@ -113,7 +113,7 @@
       <!-- Card do mapa -->
       <mat-card class="profile-card" style="flex: 1; min-width: 300px;" *ngIf="!isMobileOrTablet">
         <mat-card-content>
-          <div *ngIf="consentimentoFornecido && !carregando && !erro && geoInfo && mapsCarregado">
+          <div *ngIf="!carregando && !erro && geoInfo && mapsCarregado">
             <div class="card">
               <div class="card-header bg-info text-white">
                 Mapa da Localização
@@ -140,20 +140,3 @@
     </div>
   </div>
 </div>
-
-<!-- Template do Modal de Consentimento -->
-<ng-template #modalConsent let-modal>
-  <div class="modal-header">
-    <h4 class="modal-title">AVISO!</h4>
-    <img ngSrc="/codigo_barras.png" height="60" width="60" class="img-right"/>
-  </div>
-  <div class="modal-body">
-    <p>PRODIFY fornecerá informações aproximadas de localização baseado no endereço IP fornecido.</p>
-    <p>Essas informações serão usadas apenas dentro do site e não serão compartilhadas com terceiros.</p>
-    <p><strong>Você concorda?</strong></p>
-  </div>
-  <div class="modal-footer">
-    <button type="button" class="btn btn-primary" (click)="fornecerConsentimento()">Concordo</button>
-    <button type="button" class="btn btn-secondary" (click)="recusarConsentimento()">Não Concordo</button>
-  </div>
-</ng-template>
