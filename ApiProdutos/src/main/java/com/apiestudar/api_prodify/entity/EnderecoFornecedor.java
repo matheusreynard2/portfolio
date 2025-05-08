@@ -36,6 +36,8 @@ public class EnderecoFornecedor {
 	private String ddd;
 	private String siafi;
 	
+	private String erro;
+	
 	@OneToOne(mappedBy = "enderecoFornecedor")
 	private Fornecedor fornecedor;
 

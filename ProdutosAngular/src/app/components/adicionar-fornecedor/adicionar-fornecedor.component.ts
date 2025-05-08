@@ -22,10 +22,12 @@ import { NgxMaskDirective, provideNgxMask } from 'ngx-mask';
 })
 export class AdicionarFornecedorComponent implements OnInit {
   @ViewChild('modalMsgAddFornecedor') modalMsgAddFornecedor!: TemplateRef<any>;
+  @ViewChild('modalMsgAviso') modalMsgAviso!: TemplateRef<any>;
 
   nomeFornecedor: string = '';
   nrResidenciaFornecedor: string = '';
   adicionouFornecedor: boolean = false;
+  mensagemErro: string = '';
 
   endereco: EnderecoFornecedor = {
     cep: '',
@@ -40,7 +42,8 @@ export class AdicionarFornecedorComponent implements OnInit {
     ibge: '',
     gia: '',
     ddd: '',
-    siafi: ''
+    siafi: '',
+    erro: ''
   };
 
   novoFornecedor: Fornecedor = {
@@ -51,11 +54,6 @@ export class AdicionarFornecedorComponent implements OnInit {
   };
 
   // Opções da máscara de CEP
-  cepMaskOptions = {
-    mask: '00000-000',
-    showMaskTyped: true
-  };
-
   constructor(
     private geolocalizacaoService: GeolocalizacaoService,
     private modalService: NgbModal,
@@ -69,39 +67,39 @@ export class AdicionarFornecedorComponent implements OnInit {
 
   buscarEnderecoPorCep(cep: string): void {
     // Remover caracteres não numéricos do CEP
-    const cepLimpo = cep.replace(/\D/g, '');
+    const cepFormatado = cep.replace(/\D/g, '');
 
-    if (cepLimpo.length !== 8) {
-      alert('CEP inválido. Por favor, digite um CEP com 8 dígitos.');
+    if (cepFormatado.length !== 8) {
+      this.mensagemErro = "CEP inválido. Por favor, digite um CEP com 8 dígitos.";
+      this.modalService.open(this.modalMsgAviso);
       return;
     }
 
     // Chama o serviço que se comunica com o backend
-    this.geolocalizacaoService.obterEnderecoViaCEP(cepLimpo).subscribe(
+    this.geolocalizacaoService.obterEnderecoViaCEP(cepFormatado).subscribe(
       (endereco: EnderecoFornecedor) => {
-        if (!endereco || !endereco.cep) {
-          alert('CEP não encontrado.');
+        // Verifica APENAS o campo erro, não verificar o CEP novamente
+        if (endereco.erro === "true") {
+          this.mensagemErro = "CEP não encontrado.";
+          this.modalService.open(this.modalMsgAviso);
           return;
         }
 
         // Preenche os campos com os dados retornados pelo backend
-        this.endereco.cep = endereco.cep; // Preserva o CEP formatado
-        this.endereco.logradouro = endereco.logradouro || '';
-        this.endereco.complemento = endereco.complemento || '';
-        this.endereco.unidade = endereco.unidade || '';
-        this.endereco.bairro = endereco.bairro || '';
-        this.endereco.localidade = endereco.localidade || '';
-        this.endereco.uf = endereco.uf || '';
-        this.endereco.estado = endereco.estado || '';
-        this.endereco.regiao = endereco.regiao || '';
-        this.endereco.ibge = endereco.ibge || '';
-        this.endereco.gia = endereco.gia || '';
-        this.endereco.ddd = endereco.ddd || '';
-        this.endereco.siafi = endereco.siafi || '';
+        this.endereco = {
+          ...endereco,
+          // Garantir que nenhum campo seja undefined
+          complemento: endereco.complemento || '',
+          unidade: endereco.unidade || '',
+          ibge: endereco.ibge || '',
+          gia: endereco.gia || '',
+          siafi: endereco.siafi || ''
+        };
       },
       (error: any) => {
         console.error('Erro ao buscar CEP:', error);
-        alert('Erro ao buscar o CEP. Por favor, tente novamente.');
+        this.mensagemErro = "Erro ao buscar CEP. Verifique o log.";
+        this.modalService.open(this.modalMsgAviso);
       }
     );
   }
@@ -113,6 +111,7 @@ export class AdicionarFornecedorComponent implements OnInit {
       next: (fornecedorAdicionado: Fornecedor) => {
         this.novoFornecedor = fornecedorAdicionado;
         this.adicionouFornecedor = true;
+        this.mensagemErro = "" // VOLTA A MSG DO MODAL DE ERROS PARA STRING VAZIA
         this.modalService.open(this.modalMsgAddFornecedor);
       }
     });
@@ -120,7 +119,7 @@ export class AdicionarFornecedorComponent implements OnInit {
 
   gerarDadosFornecedor() {
     // Certifique-se de que o CEP está limpo antes de enviar
-    const cepLimpo = this.endereco.cep.replace(/\D/g, '');
+    const cepFormatado = this.endereco.cep.replace(/\D/g, '');
 
     this.novoFornecedor = {
       id: 0,
@@ -128,7 +127,7 @@ export class AdicionarFornecedorComponent implements OnInit {
       nrResidencia: this.nrResidenciaFornecedor,
       enderecoFornecedor: {
         ...this.endereco,
-        cep: cepLimpo // Garante que o CEP seja enviado apenas com números
+        cep: cepFormatado // Garante que o CEP seja enviado apenas com números
       }
     }
   }

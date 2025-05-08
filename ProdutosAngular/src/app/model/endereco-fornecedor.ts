@@ -12,4 +12,5 @@ export interface EnderecoFornecedor {
   gia: string;
   ddd: string;
   siafi: string;
+  erro: string;
 }

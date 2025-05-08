@@ -37,7 +37,6 @@
                 mask="00000-000"
                 [showMaskTyped]="true"
                 placeholder="00000-000"
-                (blur)="buscarEnderecoPorCep(endereco.cep)"
                 required
               />
             </td>
@@ -226,6 +225,22 @@
   </div>
   <div class="modal-body">
     <p>Fornecedor <b>ID: {{ novoFornecedor.id }} | Nome: {{ novoFornecedor.nome }}</b> cadastrado.</p>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="modal.close()">Fechar</button>
+  </div>
+</ng-template>
+
+<!-- Janela (modal) ERROS -->
+<ng-template #modalMsgAviso let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title">
+      AVISO!
+    </h5>
+    <img ngSrc="/codigo_barras.png" height="60" width="60" class="img-right"/>
+  </div>
+  <div class="modal-body">
+    <p>{{ mensagemErro }}</p>
   </div>
   <div class="modal-footer">
     <button type="button" class="btn btn-secondary" (click)="modal.close()">Fechar</button>

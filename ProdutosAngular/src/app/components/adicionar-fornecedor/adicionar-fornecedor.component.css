@@ -4,3 +4,10 @@
   top: 0;
   opacity: 75%;
 }
+
+.div-tabela {
+  width: 100%;
+  margin: 0 auto;
+  overflow-x: auto;
+  overflow-y: auto;
+}
