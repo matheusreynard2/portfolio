@@ -11,6 +11,8 @@ import {MatPaginatorModule, PageEvent} from '@angular/material/paginator';
 import {AuthService} from '../../service/auth/auth.service';
 import {HttpResponse} from '@angular/common/http';
 import {DeviceService} from '../../service/device/device.service';
+import {Fornecedor} from '../../model/fornecedor';
+import {FornecedorService} from '../../service/fornecedor/fornecedor.service';
 
 @Component({
   selector: 'app-listar-fornecedor',  // Corrigido para 'app-produto-list', sem a barra inicial
@@ -29,12 +31,7 @@ import {DeviceService} from '../../service/device/device.service';
 
 export class ListarFornecedorComponent implements OnInit {
 
-  // Variáveis
-  tipoPesquisaSelecionado: string = 'id';
-
-  listaDeProdutos!: Produto[];
-  produtoAtualizar!: Produto;
-  produtoExcluido!: Produto;
+  listaFornecedores!: Fornecedor[];
 
   // Variáveis de paginação
   totalRecords: number = 0;
@@ -46,14 +43,14 @@ export class ListarFornecedorComponent implements OnInit {
   @ViewChild('modalAvisoToken') modalAvisoToken!: ElementRef
   isMobileOrTablet: boolean = false;
 
-  constructor(private produtoService: ProdutoService,
+  constructor(private fornecedorService: FornecedorService,
               private authService: AuthService, private deviceService: DeviceService) { }
 
   ngOnInit() {
-    this.produtoService.listarProdutos(this.currentPage, this.pageSize).subscribe(data => {
-      const usuarioLogadoId = this.authService.getUsuarioLogado().id;
-      this.listaDeProdutos = data.content.filter(produto => produto.idUsuario === usuarioLogadoId); // Filtra os produtos do usuário logado
-      this.totalRecords = this.listaDeProdutos.length; // Atualiza o total de registros exibidos
+    this.fornecedorService.listarFornecedores(this.currentPage, this.pageSize).subscribe(data => {
+      //const usuarioLogadoId = this.authService.getUsuarioLogado().id;
+      this.listaFornecedores = data.content
+      this.totalRecords = this.listaFornecedores.length; // Atualiza o total de registros exibidos
     });
 
     this.deviceService.isMobileOrTablet.subscribe(isMobile => {
@@ -85,18 +82,18 @@ export class ListarFornecedorComponent implements OnInit {
     })
   }*/
 
-  // Função que atualiza a lista de produtos
+  /*// Função que atualiza a lista de produtos
   atualizarLista(): void {
     this.produtoService.listarProdutos(this.currentPage, this.pageSize).subscribe(data => {
       const usuarioLogadoId = this.authService.getUsuarioLogado().id;
       this.listaDeProdutos = data.content.filter(produto => produto.idUsuario === usuarioLogadoId); // Filtra os produtos do usuário logado
       this.totalRecords = this.listaDeProdutos.length; // Atualiza o total de registros exibidos
     });
-  }
+  }*/
 
   trocarPagina(event: PageEvent): void {
     this.currentPage = event.pageIndex;
-    this.atualizarLista();
+    //this.atualizarLista();
   }
 
 /*

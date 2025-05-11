@@ -50,13 +50,13 @@ export class FornecedorService {
   }
 
 
-  /* public listarProdutos(page: number, size: number): Observable<PaginatedResponse<Produto>> {
+   public listarFornecedores(page: number, size: number): Observable<PaginatedResponse<Fornecedor>> {
 
      const params = new HttpParams()
        .set('page', page.toString())
        .set('size', size.toString());
 
-     return this.http.get<PaginatedResponse<Produto>>(this.fornecedorUrl + "/listarFornecedores", {params}).pipe(
+     return this.http.get<PaginatedResponse<Fornecedor>>(this.fornecedorUrl + "/listarFornecedores", {params}).pipe(
        // Aqui fazemos o tratamento do erro 401 para TOKEN EXPIRADO
        catchError((error: HttpErrorResponse) => {
          if (error.status === 401 && error.error.message === 'Tempo limite de conexão com o sistema excedido. TOKEN Expirado')
@@ -64,6 +64,6 @@ export class FornecedorService {
          return throwError(error);
        })
      );
-  }*/
+  }
 
 }

@@ -7,30 +7,27 @@
     <tr>
       <th class="text-center coluna_id"><strong>ID</strong></th>
       <th class="text-left coluna_nome"><strong>Nome</strong></th>
-      <th class="text-center"><strong>Valor unitário</strong></th>
-      <th class="text-center"><strong>Promoção</strong></th>
-      <th class="text-center"><strong>Vl un desc</strong></th>
-      <th class="text-center"><strong>Valor total</strong></th>
+      <th class="text-center"><strong>Logradouro</strong></th>
+      <th class="text-center"><strong>Bairro</strong></th>
+      <th class="text-center"><strong>Estado</strong></th>
+      <th class="text-center"><strong>CEP</strong></th>
       <th class="text-center"><strong></strong></th>
       <th class="text-center"><strong></strong></th>
     </tr>
     </thead>
     <tbody>
-    <tr *ngFor="let produto of listaDeProdutos">
-      <td class="text-center coluna_id">{{ produto.id }}</td>
-      <td class="text-center">{{ produto.valor }}</td>
+    <tr *ngFor="let fornecedor of listaFornecedores">
+      <td class="text-center coluna_id">{{ fornecedor.id }}</td>
+      <td class="text-center">{{ fornecedor.nome }}</td>
+      <td class="text-center">{{ fornecedor.enderecoFornecedor.logradouro }}</td>
+      <td class="text-center">{{ fornecedor.enderecoFornecedor.bairro }}</td>
+      <td class="text-center">{{ fornecedor.enderecoFornecedor.estado }}</td>
+      <td class="text-center">{{ fornecedor.enderecoFornecedor.cep }}</td>
       <td class="text-center">
         <button type="button" class="btn btn-info full-width-btn" id="btn_editar">Editar</button>
       </td>
       <td class="text-center">
         <button type="button" class="btn btn-danger full-width-btn" id="btn_excluir">Excluir</button>
-      </td>
-    </tr>
-
-    <!-- Label que exibe a variável do produto mais caro -->
-    <tr>
-      <td>
-        <button class="btn bg-primary-subtle fw-bold" (click)="atualizarLista()" role="button">Atualizar</button>
       </td>
     </tr>
     </tbody>
