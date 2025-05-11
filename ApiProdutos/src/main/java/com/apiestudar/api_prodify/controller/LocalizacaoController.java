@@ -28,9 +28,6 @@ import io.swagger.annotations.ApiResponse;
 
 @RestController
 @RequestMapping("api/localizacao")
-@CrossOrigin(origins = { "http://localhost:4200", "http://localhost:8080", "https://www.sistemaprodify.com",
-		"https://www.sistemaprodify.com:8080", "https://www.sistemaprodify.com:80", "https://191.252.38.22:8080",
-		"https://191.252.38.22:80", "https://191.252.38.22" }, allowedHeaders = { "*" })
 public class LocalizacaoController {
 
     @Autowired
