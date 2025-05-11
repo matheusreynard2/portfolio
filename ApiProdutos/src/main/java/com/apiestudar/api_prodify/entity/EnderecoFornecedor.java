@@ -7,6 +7,8 @@ import javax.persistence.Id;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -39,6 +41,7 @@ public class EnderecoFornecedor {
 	private String erro;
 	
 	@OneToOne(mappedBy = "enderecoFornecedor")
+	@JsonBackReference
 	private Fornecedor fornecedor;
 
 }
