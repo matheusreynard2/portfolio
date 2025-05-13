@@ -13,9 +13,9 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import com.apiestudar.api_prodify.entity.Produto;
-import com.apiestudar.api_prodify.repository.ProdutoRepository;
-import com.apiestudar.api_prodify.service.impl.ProdutoServiceImpl;
+import com.apiestudar.api_prodify.domain.model.Produto;
+import com.apiestudar.api_prodify.domain.repository.ProdutoRepository;
+import com.apiestudar.api_prodify.application.service.impl.ProdutoServiceImpl;
 
 @SpringBootTest
 public class ProdutoServiceTests {

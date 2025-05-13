@@ -1,0 +1,20 @@
+package com.apiestudar.api_prodify.infrastructure.persistence.jpa;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
+
+import com.apiestudar.api_prodify.domain.model.Usuario;
+
+@Repository
+public interface UsuarioJpaRepository extends JpaRepository<Usuario, Long> {
+
+    Usuario findByLogin(String login);
+
+    @Query(value = "SELECT senha FROM usuario WHERE login = :loginUsuario", nativeQuery = true)
+    String getSenhaByLogin(@Param("loginUsuario") String loginUsuario);
+
+    @Query(value = "SELECT COUNT(login) FROM usuario WHERE login = :usuarioLogin", nativeQuery = true)
+    int findLoginRepetido(@Param("usuarioLogin") String usuarioLogin);
+}
