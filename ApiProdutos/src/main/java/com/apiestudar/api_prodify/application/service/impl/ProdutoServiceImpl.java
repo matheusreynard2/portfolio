@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import javax.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -20,7 +20,6 @@ import com.apiestudar.api_prodify.domain.repository.ProdutoRepository;
 import com.apiestudar.api_prodify.domain.repository.UsuarioRepository;
 import com.apiestudar.api_prodify.shared.exception.ParametroInformadoNullException;
 import com.apiestudar.api_prodify.shared.exception.RegistroNaoEncontradoException;
-import com.apiestudar.api_prodify.shared.utils.Helper;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Service
@@ -34,46 +33,32 @@ public class ProdutoServiceImpl implements ProdutoService {
         this.produtoRepository = produtoRepository;
         this.usuarioRepository = usuarioRepository;
     }
-
-	private Produto addImage(String produtoJSON, MultipartFile imagemFile) throws IOException {
-		
-		// Converter o JSON de volta para um objeto Produto
-        Produto prod = new ObjectMapper().readValue(produtoJSON, Produto.class);
-        // Converter MultipartFile para String Base 64
-        String imagemStringBase64 = Helper.convertToBase64(imagemFile);
-        prod.setImagem(imagemStringBase64);
-        return prod;
-        
-	}
 	
 	private void verificarNull(Object parametro) {
 		Optional.ofNullable(parametro)
         .orElseThrow(() -> new ParametroInformadoNullException());
 	}
 	
-	@Transactional
+	@Transactional(rollbackFor = Exception.class)
 	public Produto adicionarProduto(String produtoJSON, MultipartFile imagemFile) throws SQLException, IOException {
 		
 		verificarNull(produtoJSON);
-        Produto produto = addImage(produtoJSON, imagemFile);
-        // Gera o OID do Lob
-        Long oid = Helper.gerarOIDfromBase64(produto.getImagem());
-        // Garante permissão para acessar o Lob para o Usuário Owner do Banco de Dados
-        garantirPermissaoLob(oid);
-        return produtoRepository.adicionarProduto(produto);
+		Produto prod = new ObjectMapper().readValue(produtoJSON, Produto.class);
+		prod.setImagem(imagemFile.getBytes());
+        return produtoRepository.adicionarProduto(prod);
 	}
 
-	@Transactional
+	@Transactional(rollbackFor = Exception.class)
 	@Override
 	public Page<Produto> listarProdutos(Pageable pageable) {
 		return produtoRepository.listarProdutos(pageable);
 	}
 
-	@Transactional
+	@Transactional(rollbackFor = Exception.class)
 	@Override
 	public Produto atualizarProduto(long id, String produtoJSON, MultipartFile imagemFile) throws IOException {
-	    // Adiciona a imagem e converte o JSON para objeto Produto
-	    Produto produtoAtualizado = addImage(produtoJSON, imagemFile);
+		Produto produtoAtualizado = new ObjectMapper().readValue(produtoJSON, Produto.class);
+		produtoAtualizado.setImagem(imagemFile.getBytes());
 	    // Busca o produto pelo id e lança exceção se não encontrar
 	    return produtoRepository.buscarProdutoPorId(id)
 	        .map(produtoExistente -> {
@@ -103,6 +88,7 @@ public class ProdutoServiceImpl implements ProdutoService {
 	}
 
 	@Override
+	@Transactional(rollbackFor = Exception.class)
 	public boolean deletarProduto(long id) {
 		if (produtoRepository.buscarProdutoPorId(id).isEmpty()) {
 			throw new RegistroNaoEncontradoException();
@@ -112,14 +98,14 @@ public class ProdutoServiceImpl implements ProdutoService {
 		}
 	}
 
-	@Transactional
+	@Transactional(rollbackFor = Exception.class)
 	@Override
 	public List<Produto> listarProdutoMaisCaro(long idUsuario) {
 		verificarNull(idUsuario);
 		return produtoRepository.listarProdutoMaisCaro(idUsuario);
 	}
 
-	@Transactional
+	@Transactional(rollbackFor = Exception.class)
 	@Override
 	public Double obterMediaPreco(long idUsuario) {
 		verificarNull(idUsuario);
@@ -129,7 +115,7 @@ public class ProdutoServiceImpl implements ProdutoService {
 			       .orElse(0.0);
 	}
 
-	@Transactional
+	@Transactional(rollbackFor = Exception.class)
 	@Override
 	public Double calcularValorDesconto(double valorProduto, double valorDesconto) {
 		verificarNull(valorProduto);
@@ -139,19 +125,19 @@ public class ProdutoServiceImpl implements ProdutoService {
 		return valorComDesconto;
 	}
 
-	@Transactional
+	@Transactional(rollbackFor = Exception.class)
 	@Override
 	public List<Produto> efetuarPesquisaById(Long valorPesquisa, long idUsuario) {
 		return produtoRepository.efetuarPesquisaById(valorPesquisa, idUsuario);
 	}
 
-	@Transactional
+	@Transactional(rollbackFor = Exception.class)
 	@Override
 	public List<Produto> efetuarPesquisaByNome(String valorPesquisa, long idUsuario) {
 		return produtoRepository.efetuarPesquisaByNome(valorPesquisa, idUsuario);
 	}
 	
-	@Transactional
+	@Transactional(rollbackFor = Exception.class)
 	public List<Produto> efetuarPesquisa(String tipoPesquisa, String valorPesquisa, long idUsuario) {	
 		verificarNull(idUsuario);
 		verificarNull(tipoPesquisa);
@@ -166,10 +152,6 @@ public class ProdutoServiceImpl implements ProdutoService {
 				produtos = efetuarPesquisaByNome(valorPesquisa, idUsuario);
 			return produtos;
 		}
-	}
-
-	public void garantirPermissaoLob(Long oid) {
-		produtoRepository.garantirPermissaoLob(oid);
 	}
 	
 }

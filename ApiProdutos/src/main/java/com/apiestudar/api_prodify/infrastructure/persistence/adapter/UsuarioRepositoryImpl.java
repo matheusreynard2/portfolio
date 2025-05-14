@@ -4,12 +4,14 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.apiestudar.api_prodify.domain.model.Usuario;
 import com.apiestudar.api_prodify.domain.repository.UsuarioRepository;
 import com.apiestudar.api_prodify.infrastructure.persistence.jpa.UsuarioJpaRepository;
 
 @Repository
+@Transactional
 public class UsuarioRepositoryImpl implements UsuarioRepository {
 
     private final UsuarioJpaRepository usuarioJpaRepository;

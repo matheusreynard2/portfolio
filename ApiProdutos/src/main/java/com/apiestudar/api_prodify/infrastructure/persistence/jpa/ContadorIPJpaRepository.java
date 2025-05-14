@@ -6,6 +6,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.apiestudar.api_prodify.domain.model.ContadorIP;
+import com.apiestudar.api_prodify.domain.repository.ContadorIPRepository;
 
 @Repository
 public interface ContadorIPJpaRepository extends JpaRepository<ContadorIP, Long> {

@@ -46,7 +46,7 @@ public class ProdutoServiceTests {
 		produtoTeste.setFreteAtivo(false);
 		produtoTeste.setValorDesconto(33.2);
 		
-		when(produtoRepository.save(produtoTeste)).thenReturn(produtoTeste);
+		when(produtoRepository.salvarProduto(produtoTeste)).thenReturn(produtoTeste);
 		
 		Produto produtoRetornadoService = produtoService.adicionarProduto("hahaha", null);
 
@@ -77,9 +77,9 @@ public class ProdutoServiceTests {
 			produtoTeste.setSomaTotalValores(150);
 			produtoTeste.setFreteAtivo(false);
 			produtoTeste.setValorDesconto(33.2);
-			produtoTeste.setImagem("");
+			produtoTeste.setImagem(null);
 			
-			when(produtoRepository.findById(1L)).thenReturn(Optional.of(produtoTeste));
+			when(produtoRepository.buscarProdutoPorId(1L)).thenReturn(Optional.of(produtoTeste));
 
 			Produto produtoRetornadoService = produtoService.atualizarProduto(1, "hahaha", null);
 

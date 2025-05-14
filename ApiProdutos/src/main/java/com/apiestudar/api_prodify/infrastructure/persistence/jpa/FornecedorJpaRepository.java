@@ -8,6 +8,6 @@ import com.apiestudar.api_prodify.domain.model.Fornecedor;
 import com.apiestudar.api_prodify.domain.repository.FornecedorRepository;
 
 @Repository
-public interface FornecedorJpaRepository extends JpaRepository<Fornecedor, Long>, FornecedorRepository {
+public interface FornecedorJpaRepository extends JpaRepository<Fornecedor, Long> {
 
 }

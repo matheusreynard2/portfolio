@@ -6,12 +6,14 @@ import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.apiestudar.api_prodify.domain.model.Produto;
 import com.apiestudar.api_prodify.domain.repository.ProdutoRepository;
 import com.apiestudar.api_prodify.infrastructure.persistence.jpa.ProdutoJpaRepository;
 
 @Repository
+@Transactional
 public class ProdutoRepositoryImpl implements ProdutoRepository {
 
     private final ProdutoJpaRepository produtoJpaRepository;
@@ -63,10 +65,5 @@ public class ProdutoRepositoryImpl implements ProdutoRepository {
     @Override
     public List<Produto> efetuarPesquisaByNome(String valorPesquisa, Long idUsuario) {
         return produtoJpaRepository.efetuarPesquisaByNome(valorPesquisa, idUsuario);
-    }
-
-    @Override
-    public void garantirPermissaoLob(Long numeroLob) {
-        produtoJpaRepository.garantirPermissaoLob(numeroLob);
     }
 }

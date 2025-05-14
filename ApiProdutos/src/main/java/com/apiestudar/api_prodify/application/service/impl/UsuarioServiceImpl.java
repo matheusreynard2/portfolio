@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.apiestudar.api_prodify.application.service.TokenService;
@@ -20,10 +21,8 @@ import com.apiestudar.api_prodify.domain.model.ContadorIP;
 import com.apiestudar.api_prodify.domain.model.Usuario;
 import com.apiestudar.api_prodify.domain.repository.ContadorIPRepository;
 import com.apiestudar.api_prodify.domain.repository.UsuarioRepository;
-import com.apiestudar.api_prodify.infrastructure.persistence.jpa.ContadorIPJpaRepository;
 import com.apiestudar.api_prodify.shared.exception.ParametroInformadoNullException;
 import com.apiestudar.api_prodify.shared.exception.RegistroNaoEncontradoException;
-import com.apiestudar.api_prodify.shared.utils.Helper;
 import com.apiestudar.api_prodify.shared.utils.strategypattern.HeaderIpExtractor;
 import com.apiestudar.api_prodify.shared.utils.strategypattern.IpExtractorManager;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -56,6 +55,7 @@ public class UsuarioServiceImpl implements UsuarioService {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public Object adicionarUsuario(String usuarioJSON, MultipartFile imagemFile) throws IOException {
         verificarNull(usuarioJSON);
 
@@ -63,8 +63,7 @@ public class UsuarioServiceImpl implements UsuarioService {
             return "Login já cadastrado no banco de dados.";
         } else {
             Usuario user = new ObjectMapper().readValue(usuarioJSON, Usuario.class);
-            String imagemStringBase64 = Helper.convertToBase64(imagemFile);
-            user.setImagem(imagemStringBase64);
+            user.setImagem(imagemFile.getBytes());
             String senhaCriptografada = new BCryptPasswordEncoder().encode(user.getSenha());
             user.setSenha(senhaCriptografada);
             return usuarioRepository.adicionarUsuario(user);
@@ -72,11 +71,13 @@ public class UsuarioServiceImpl implements UsuarioService {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public List<Usuario> listarUsuarios() {
         return usuarioRepository.listarUsuarios();
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public boolean deletarUsuario(long id) {
         if (usuarioRepository.buscarUsuarioPorId(id).isEmpty()) {
             throw new RegistroNaoEncontradoException();
@@ -90,11 +91,13 @@ public class UsuarioServiceImpl implements UsuarioService {
         return usuarioRepository.buscarSenhaPorLogin(loginUsuario);
     }
 
+    @Transactional(rollbackFor = Exception.class)
     public int findLoginRepetido(String usuarioJSON) throws JsonProcessingException {
         Usuario user = new ObjectMapper().readValue(usuarioJSON, Usuario.class);
         return usuarioRepository.contarLoginRepetido(user.getLogin());
     }
 
+    @Transactional(rollbackFor = Exception.class)
     public Usuario findByLogin(String login) {
         return usuarioRepository.buscarPorLogin(login);
     }
@@ -107,6 +110,7 @@ public class UsuarioServiceImpl implements UsuarioService {
         return contadorIPRepository.contarTotalAcessos();
     }
 
+    @Transactional(rollbackFor = Exception.class)
     public Map<String, Object> realizarLogin(Usuario usuario) {
         verificarNull(usuario);
 
