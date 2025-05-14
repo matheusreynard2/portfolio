@@ -63,7 +63,7 @@ export class ProdutoListComponent implements OnInit {
     this.produtoService.listarProdutos(this.currentPage, this.pageSize).subscribe(data => {
       const usuarioLogadoId = this.authService.getUsuarioLogado().id;
       this.listaDeProdutos = data.content.filter(produto => produto.idUsuario === usuarioLogadoId); // Filtra os produtos do usuário logado
-      this.totalRecords = this.listaDeProdutos.length; // Atualiza o total de registros exibidos
+      this.totalRecords = data.totalElements; // Atualiza o total de registros exibidos
     });
 
     this.deviceService.isMobileOrTablet.subscribe(isMobile => {
@@ -131,7 +131,7 @@ export class ProdutoListComponent implements OnInit {
     this.produtoService.listarProdutos(this.currentPage, this.pageSize).subscribe(data => {
       const usuarioLogadoId = this.authService.getUsuarioLogado().id;
       this.listaDeProdutos = data.content.filter(produto => produto.idUsuario === usuarioLogadoId); // Filtra os produtos do usuário logado
-      this.totalRecords = this.listaDeProdutos.length; // Atualiza o total de registros exibidos
+      this.totalRecords = data.totalElements; // Atualiza o total de registros exibidos
     });
     this.listarProdutoMaisCaro(this.authService.getUsuarioLogado().id);
     this.calcularMedia(this.authService.getUsuarioLogado().id);
@@ -139,6 +139,7 @@ export class ProdutoListComponent implements OnInit {
 
   trocarPagina(event: PageEvent): void {
     this.currentPage = event.pageIndex;
+    this.pageSize = event.pageSize;
     this.atualizarLista();
   }
 

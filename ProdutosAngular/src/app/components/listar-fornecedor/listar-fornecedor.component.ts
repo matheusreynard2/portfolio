@@ -25,7 +25,8 @@ import {FornecedorService} from '../../service/fornecedor/fornecedor.service';
     ReactiveFormsModule,
     NgIf,
     NgxPaginationModule,
-    MatPaginatorModule
+    MatPaginatorModule,
+    NgOptimizedImage
   ]
 })
 
@@ -42,6 +43,7 @@ export class ListarFornecedorComponent implements OnInit {
   @ViewChild('searchBar') searchBar!: ElementRef
   @ViewChild('modalAvisoToken') modalAvisoToken!: ElementRef
   isMobileOrTablet: boolean = false;
+  fornecedorExcluido!: Fornecedor;
 
   constructor(private fornecedorService: FornecedorService,
               private authService: AuthService, private deviceService: DeviceService) { }
@@ -50,7 +52,7 @@ export class ListarFornecedorComponent implements OnInit {
     this.fornecedorService.listarFornecedores(this.currentPage, this.pageSize).subscribe(data => {
       //const usuarioLogadoId = this.authService.getUsuarioLogado().id;
       this.listaFornecedores = data.content
-      this.totalRecords = this.listaFornecedores.length; // Atualiza o total de registros exibidos
+      this.totalRecords = data.totalElements; // Atualiza o total de registros exibidos
     });
 
     this.deviceService.isMobileOrTablet.subscribe(isMobile => {
@@ -58,18 +60,18 @@ export class ListarFornecedorComponent implements OnInit {
     });
   }
 
-  /* Função para deletar um produto através do id. Chama o endpoint, e a msg de sucesso
-  deletarProduto(modalDeletar: any, id: number, produto: Produto) {
-    this.produtoService.deletarProduto(id).subscribe({
+  // Função para deletar um produto através do id. Chama o endpoint, e a msg de sucesso
+  deletarFornecedor(modalDeletar: any, id: number, fornecedor: Fornecedor) {
+    this.fornecedorService.deletarFornecedor(id).subscribe({
       next: (response) => {
         if (response.status === 200) {
-          this.produtoExcluido = produto;
+          this.fornecedorExcluido = fornecedor;
           this.abrirTelaExclusao(modalDeletar);
         }
       }
     });
     this.atualizarLista();
-  }*/
+  }
 
   /* Função para atualizar um produto através do id
   atualizarProduto(janelaEditar: any, id: number, produto: Produto) {
@@ -82,34 +84,32 @@ export class ListarFornecedorComponent implements OnInit {
     })
   }*/
 
-  /*// Função que atualiza a lista de produtos
+  // Função que atualiza a lista de produtos
   atualizarLista(): void {
-    this.produtoService.listarProdutos(this.currentPage, this.pageSize).subscribe(data => {
-      const usuarioLogadoId = this.authService.getUsuarioLogado().id;
-      this.listaDeProdutos = data.content.filter(produto => produto.idUsuario === usuarioLogadoId); // Filtra os produtos do usuário logado
-      this.totalRecords = this.listaDeProdutos.length; // Atualiza o total de registros exibidos
+    this.fornecedorService.listarFornecedores(this.currentPage, this.pageSize).subscribe(data => {
+      this.listaFornecedores = data.content
+      this.totalRecords = data.totalElements; // Atualiza o total de registros exibidos
     });
-  }*/
+  }
 
   trocarPagina(event: PageEvent): void {
     this.currentPage = event.pageIndex;
-    //this.atualizarLista();
+    this.pageSize = event.pageSize;
+    this.atualizarLista();
   }
 
 /*
   // Função que abre o modal - Janela de edição de produto
   abrirTelaEdicao(janelaEditar: any) {
     this.modalService.open(janelaEditar, { size: 'lg', backdrop: 'static' });
-  }
+  } */
 
   // Função que abre o modal - Janela de exclusão de produto
   abrirTelaExclusao(modalExcluir: any) {
     this.modalService.open(modalExcluir);
-    this.listarProdutoMaisCaro(this.authService.getUsuarioLogado().id);
-    this.calcularMedia(this.authService.getUsuarioLogado().id);
     this.atualizarLista();
   }
-
+/*
   // Função chamada ao clicar no botão de Submit (Salvar) do formulário de Edição de produtos
   onSubmitSalvar(modal: any) {
     this.calcularValores(this.produtoAtualizar);

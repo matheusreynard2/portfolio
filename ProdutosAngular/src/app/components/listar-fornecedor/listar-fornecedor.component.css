@@ -1,0 +1,12 @@
+.div-tabela {
+  width: 100%;
+  margin: 0 auto;
+  overflow-x: auto;
+}
+
+.img-right {
+  position: absolute;
+  right: 0;
+  top: 0;
+  opacity: 75%;
+}

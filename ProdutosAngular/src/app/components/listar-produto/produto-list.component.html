@@ -69,7 +69,7 @@
             <button type="button" class="btn btn-info full-width-btn" id="btn_editar" (click)="atualizarProduto(modalEditar, produto.id, produto)">Editar</button>
           </td>
           <td class="text-center">
-            <button type="button" class="btn btn-danger full-width-btn" id="btn_excluir" (click)="deletarProduto(modalMsg, produto.id, produto)">Excluir</button>
+            <button type="button" class="btn btn-danger full-width-btn" id="btn_excluir" (click)="deletarProduto(modalMsgExcluir, produto.id, produto)">Excluir</button>
           </td>
         </tr>
 
@@ -322,7 +322,7 @@
 <!--######## FIM DO MODAL DE EDIÇÃO DE PRODUTO ######## -->
 
 <!-- Janela (modal) que abre ao clicar no botão Excluir -->
-<ng-template #modalMsg let-modal>
+<ng-template #modalMsgExcluir let-modal>
   <div class="modal-header">
     <h5 class="modal-title">
       Sucesso!

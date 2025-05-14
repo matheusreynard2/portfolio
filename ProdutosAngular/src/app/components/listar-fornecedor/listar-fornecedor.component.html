@@ -1,36 +1,56 @@
-<div class="div-tabela">
-  <table class="table table-bordered table-striped">
-    <thead class="thead-dark">
-    <tr>
-      <th colspan="11" class="text-center">Produtos</th>
-    </tr>
-    <tr>
-      <th class="text-center coluna_id"><strong>ID</strong></th>
-      <th class="text-left coluna_nome"><strong>Nome</strong></th>
-      <th class="text-center"><strong>Logradouro</strong></th>
-      <th class="text-center"><strong>Bairro</strong></th>
-      <th class="text-center"><strong>Estado</strong></th>
-      <th class="text-center"><strong>CEP</strong></th>
-      <th class="text-center"><strong></strong></th>
-      <th class="text-center"><strong></strong></th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr *ngFor="let fornecedor of listaFornecedores">
-      <td class="text-center coluna_id">{{ fornecedor.id }}</td>
-      <td class="text-center">{{ fornecedor.nome }}</td>
-      <td class="text-center">{{ fornecedor.enderecoFornecedor.logradouro }}</td>
-      <td class="text-center">{{ fornecedor.enderecoFornecedor.bairro }}</td>
-      <td class="text-center">{{ fornecedor.enderecoFornecedor.estado }}</td>
-      <td class="text-center">{{ fornecedor.enderecoFornecedor.cep }}</td>
-      <td class="text-center">
-        <button type="button" class="btn btn-info full-width-btn" id="btn_editar">Editar</button>
-      </td>
-      <td class="text-center">
-        <button type="button" class="btn btn-danger full-width-btn" id="btn_excluir">Excluir</button>
-      </td>
-    </tr>
-    </tbody>
-  </table>
+<div class="card my-5">
+  <div class="card-body">
+    <div class="div-tabela">
+      <table class="table table-bordered table-striped">
+        <thead class="thead-dark">
+        <tr>
+          <th colspan="11" class="text-center">Fornecedores</th>
+        </tr>
+        <tr>
+          <th class="text-center coluna_id"><strong>ID</strong></th>
+          <th class="text-left coluna_nome"><strong>Nome</strong></th>
+          <th class="text-center"><strong>Logradouro</strong></th>
+          <th class="text-center"><strong>Bairro</strong></th>
+          <th class="text-center"><strong>Estado</strong></th>
+          <th class="text-center"><strong>CEP</strong></th>
+          <th class="text-center"><strong></strong></th>
+          <th class="text-center"><strong></strong></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let fornecedor of listaFornecedores">
+          <td class="text-center coluna_id">{{ fornecedor.id }}</td>
+          <td class="text-center">{{ fornecedor.nome }}</td>
+          <td class="text-center">{{ fornecedor.enderecoFornecedor.logradouro }}<span *ngIf="fornecedor.nrResidencia"> - N° {{ fornecedor.nrResidencia }}</span></td>
+          <td class="text-center">{{ fornecedor.enderecoFornecedor.bairro }}</td>
+          <td class="text-center">{{ fornecedor.enderecoFornecedor.estado }}</td>
+          <td class="text-center">{{ fornecedor.enderecoFornecedor.cep }}</td>
+          <td class="text-center">
+            <button type="button" class="btn btn-info full-width-btn" id="btn_editar">Editar</button>
+          </td>
+          <td class="text-center">
+            <button type="button" class="btn btn-danger full-width-btn" id="btn_excluir" (click)="deletarFornecedor(modalMsgExcluir, fornecedor.id, fornecedor)">Excluir</button>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  <mat-paginator [length]="totalRecords" [pageSize]="pageSize" [pageIndex]="currentPage" (page)="trocarPagina($event)"></mat-paginator>
+  </div>
 </div>
-<mat-paginator [length]="totalRecords" [pageSize]="pageSize" [pageIndex]="currentPage" (page)="trocarPagina($event)"></mat-paginator>
+
+<!-- Janela (modal) que abre ao clicar no botão Excluir -->
+<ng-template #modalMsgExcluir let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title">
+      Sucesso!
+    </h5>
+    <img ngSrc="/codigo_barras.png" height="60" width="60" class="img-right"/>
+  </div>
+  <div class="modal-body">
+    <p>Produto <b>{{ fornecedorExcluido.nome }}</b> excluído.</p>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="modal.close()">Fechar</button>
+  </div>
+</ng-template>
