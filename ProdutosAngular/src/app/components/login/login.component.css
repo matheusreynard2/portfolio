@@ -76,3 +76,7 @@ p {
   font-weight: bold;
   color: #0d6efd; /* Cor primária do Bootstrap */
 }
+
+p {
+  color: black;
+}
