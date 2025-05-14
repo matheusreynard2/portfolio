@@ -11,7 +11,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -61,4 +63,12 @@ public class FornecedorController {
 		return response;
 	}
 	
+	@ApiOperation(value = "Deleta/exclui um fornecedor.", notes = "Faz a exclusão de um fornecedor do banco de dados de acordo com o número de id passado como parâmetro.")
+	@ApiResponse(code = 200, message = "Fornecedor excluído.")
+	@DeleteMapping("/deletarFornecedor/{id}")
+	public ResponseEntity<Object> deletarFornecedor(@PathVariable int id) {
+		fornecedorService.deletarFornecedor(id);
+		return ResponseEntity.status(HttpStatus.OK).body("Deletou com sucesso");
+
+	}
 }

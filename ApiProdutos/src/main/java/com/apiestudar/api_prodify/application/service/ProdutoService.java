@@ -20,11 +20,11 @@ public interface ProdutoService {
 
 	boolean deletarProduto(long id);
 	
-	List<Produto> listarProdutoMaisCaro(long idUsuario);
+	List<Produto> listarProdutoMaisCaro(Long idUsuario);
 
 	Double obterMediaPreco(long idUsuario);
 	
-	Double calcularValorDesconto(double valorProduto, double valorDesconto);
+	Double calcularValorComDesconto(Double valorProduto, Double valorDesconto);
 	
 	List<Produto> efetuarPesquisaById(Long valorPesquisa, long idUsuario);
 	

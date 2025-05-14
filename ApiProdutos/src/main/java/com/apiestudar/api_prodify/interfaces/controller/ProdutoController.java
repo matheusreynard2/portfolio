@@ -101,7 +101,7 @@ public class ProdutoController {
 	@GetMapping("/calcularDesconto/{valorProduto}/{valorDesconto}")
 	public ResponseEntity<Object> calcularValorDesconto(@PathVariable double valorProduto,
 			@PathVariable double valorDesconto) {
-		Double valorComDesconto = produtoService.calcularValorDesconto(valorProduto, valorDesconto);
+		Double valorComDesconto = produtoService.calcularValorComDesconto(valorProduto, valorDesconto);
 		return ResponseEntity.status(HttpStatus.OK).body(valorComDesconto);
 	}
 

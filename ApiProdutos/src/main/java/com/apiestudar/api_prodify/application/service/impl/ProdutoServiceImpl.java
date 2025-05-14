@@ -27,6 +27,9 @@ public class ProdutoServiceImpl implements ProdutoService {
 	
 	private final ProdutoRepository produtoRepository;
 	private final UsuarioRepository usuarioRepository;
+	
+	@Autowired
+	private ObjectMapper objectMapper;
 
 	@Autowired
 	public ProdutoServiceImpl(ProdutoRepository produtoRepository, UsuarioRepository usuarioRepository) {
@@ -43,7 +46,7 @@ public class ProdutoServiceImpl implements ProdutoService {
 	public Produto adicionarProduto(String produtoJSON, MultipartFile imagemFile) throws SQLException, IOException {
 		
 		verificarNull(produtoJSON);
-		Produto prod = new ObjectMapper().readValue(produtoJSON, Produto.class);
+		Produto prod = objectMapper.readValue(produtoJSON, Produto.class);
 		prod.setImagem(imagemFile.getBytes());
         return produtoRepository.adicionarProduto(prod);
 	}
@@ -57,7 +60,7 @@ public class ProdutoServiceImpl implements ProdutoService {
 	@Transactional(rollbackFor = Exception.class)
 	@Override
 	public Produto atualizarProduto(long id, String produtoJSON, MultipartFile imagemFile) throws IOException {
-		Produto produtoAtualizado = new ObjectMapper().readValue(produtoJSON, Produto.class);
+		Produto produtoAtualizado = objectMapper.readValue(produtoJSON, Produto.class);
 		produtoAtualizado.setImagem(imagemFile.getBytes());
 	    // Busca o produto pelo id e lança exceção se não encontrar
 	    return produtoRepository.buscarProdutoPorId(id)
@@ -100,7 +103,7 @@ public class ProdutoServiceImpl implements ProdutoService {
 
 	@Transactional(rollbackFor = Exception.class)
 	@Override
-	public List<Produto> listarProdutoMaisCaro(long idUsuario) {
+	public List<Produto> listarProdutoMaisCaro(Long idUsuario) {
 		verificarNull(idUsuario);
 		return produtoRepository.listarProdutoMaisCaro(idUsuario);
 	}
@@ -117,7 +120,7 @@ public class ProdutoServiceImpl implements ProdutoService {
 
 	@Transactional(rollbackFor = Exception.class)
 	@Override
-	public Double calcularValorDesconto(double valorProduto, double valorDesconto) {
+	public Double calcularValorComDesconto(Double valorProduto, Double valorDesconto) {
 		verificarNull(valorProduto);
 		verificarNull(valorDesconto);
 		double valorDescontoDecimal = valorDesconto / 100;

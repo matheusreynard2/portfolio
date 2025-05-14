@@ -11,4 +11,5 @@ public interface FornecedorService {
 	
 	Page<Fornecedor> listarFornecedores(Pageable pageable);
 
+	boolean deletarFornecedor(long id);
 }

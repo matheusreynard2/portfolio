@@ -1,5 +1,7 @@
 package com.apiestudar.api_prodify.infrastructure.persistence.adapter;
 
+import java.util.Optional;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
@@ -25,6 +27,16 @@ public class FornecedorRepositoryImpl implements FornecedorRepository {
 	@Override
 	public Page<Fornecedor> listarFornecedores(Pageable pageable) {
 		return fornecedorJpaRepository.findAll(pageable);
+	}
+	
+	@Override
+	public void deletarFornecedorPorId(Long id) {
+		fornecedorJpaRepository.deleteById(id);
+	}
+	
+	@Override
+	public Optional<Fornecedor> buscarFornecedorPorId(Long id) {
+		return fornecedorJpaRepository.findById(id);
 	}
 
 }
