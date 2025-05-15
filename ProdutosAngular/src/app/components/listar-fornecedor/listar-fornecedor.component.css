@@ -10,3 +10,36 @@
   top: 0;
   opacity: 75%;
 }
+
+.tabela-container {
+  max-width: 100%;
+  overflow-x: auto;
+  overflow-y: auto;
+  max-height: 500px; /* Altura máxima visível */
+  border: 1px solid #dee2e6;
+}
+
+.table-fixed {
+  table-layout: fixed;
+  width: 100%;
+  min-width: 900px; /* Define um tamanho mínimo para aparecer scroll horizontal */
+}
+
+.coluna_id {
+  width: 80px;
+  text-align: center
+}
+
+.coluna_nome {
+  width: 200px;
+  text-align: left !important;
+}
+
+.coluna_logradouro {
+  text-align: left !important;
+  width: 300px;
+}
+
+.full-width-btn {
+  width: 100%;
+}

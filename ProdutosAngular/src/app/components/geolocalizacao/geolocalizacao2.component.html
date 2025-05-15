@@ -7,155 +7,230 @@
       <a class="nav-link disabled">LOCALIZAR POR CEP</a>
     </li>
   </ul>
-  <div class="container my-5">
-    <p> PÁGINA EM CONSTRUÇÃO </p>
-  </div>
-    <!-- Formulário para inserção do IP -->
-    <!-- <div class="card mb-4" *ngIf="consentimentoFornecido">
-      <div class="card-header bg-primary text-white">
-        Digite o Endereço IP para Localizar
-      </div>
-      <div class="card-body">
-        <div class="input-group mb-3">
-          <input
-            type="text"
-            class="form-control"
-            placeholder="Ex: 192.168.1.1"
-            [(ngModel)]="ipDigitado"
-            [disabled]="carregando">
-          <button
-            class="btn btn-primary"
-            (click)="buscarGeolocalizacaoPorIP()"
-            [disabled]="!ipDigitado || carregando">
-            <span *ngIf="!carregando">Buscar</span>
-            <span *ngIf="carregando" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-          </button>
+  <div class="card my-5">
+    <div class="card-body">
+        <div class="div-tabela" [class.desabilitado-durante-carregamento]="carregando">
+          <table class="table table-bordered" style="width: 100%; table-layout: fixed;">
+            <thead>
+            <tr>
+              <th colspan="6" class="text-center">Localização através de CEP</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+              <td style="width: 12%;">
+                <label for="cep">CEP:</label>
+              </td>
+              <td style="width: 16%;">
+                <input
+                  type="text"
+                  class="form-control"
+                  id="cep"
+                  name="cep"
+                  [(ngModel)]="endereco.cep"
+                  mask="00000-000"
+                  [showMaskTyped]="true"
+                  placeholder="00000-000"
+                  required
+                />
+              <td style="width: 16%;" >
+                <label for="logradouro">Logradouro:</label>
+              </td>
+              <td style="width: 24%;">
+                <input type="text" [(ngModel)]="endereco.logradouro"
+                       class="form-control"
+                       id="logradouro"
+                       name="logradouroFornecedor"
+                       readonly>
+              </td>
+              <td style="width: 12%;">
+                <label for="complemento">Complemento:</label>
+              </td>
+              <td style="width: 20%;">
+                <input type="text" [(ngModel)]="endereco.complemento"
+                       class="form-control"
+                       id="complemento"
+                       name="complementoFornecedor">
+              </td>
+            </tr>
+
+            <!-- Linha 3: Unidade e Bairro -->
+            <tr>
+              <td style="width: 16%;">
+                <label for="unidade">Unidade:</label>
+              </td>
+              <td style="width: 24%;">
+                <input type="text" [(ngModel)]="endereco.unidade"
+                       class="form-control"
+                       id="unidade"
+                       name="unidadeFornecedor"
+                       readonly>
+              </td>
+              <td style="width: 12%;">
+                <label for="bairro">Bairro:</label>
+              </td>
+              <td colspan="3" style="width: 48%;">
+                <input type="text" [(ngModel)]="endereco.bairro"
+                       class="form-control"
+                       id="bairro"
+                       name="bairroFornecedor"
+                       readonly>
+              </td>
+            </tr>
+
+            <!-- Linha 4: Cidade, UF, Estado -->
+            <tr>
+              <td style="width: 16%;">
+                <label for="localidade">Cidade:</label>
+              </td>
+              <td style="width: 24%;">
+                <input type="text" [(ngModel)]="endereco.localidade"
+                       class="form-control"
+                       id="localidade"
+                       name="localidadeFornecedor"
+                       readonly>
+              </td>
+              <td style="width: 12%;">
+                <label for="uf">UF:</label>
+              </td>
+              <td style="width: 16%;">
+                <input type="text" [(ngModel)]="endereco.uf"
+                       class="form-control"
+                       id="uf"
+                       name="ufFornecedor"
+                       readonly>
+              </td>
+              <td style="width: 12%;">
+                <label for="estado">Estado:</label>
+              </td>
+              <td style="width: 20%;">
+                <input type="text" [(ngModel)]="endereco.estado"
+                       class="form-control"
+                       id="estado"
+                       name="estadoFornecedor"
+                       readonly>
+              </td>
+            </tr>
+
+            <!-- Linha 5: Região, IBGE, GIA -->
+            <tr>
+              <td style="width: 16%;">
+                <label for="regiao">Região:</label>
+              </td>
+              <td style="width: 24%;">
+                <input type="text" [(ngModel)]="endereco.regiao"
+                       class="form-control"
+                       id="regiao"
+                       name="regiaoFornecedor"
+                       readonly>
+              </td>
+              <td style="width: 12%;">
+                <label for="ibge">IBGE:</label>
+              </td>
+              <td style="width: 16%;">
+                <input type="text" [(ngModel)]="endereco.ibge"
+                       class="form-control"
+                       id="ibge"
+                       name="ibgeFornecedor"
+                       readonly>
+              </td>
+              <td style="width: 12%;">
+                <label for="gia">GIA:</label>
+              </td>
+              <td style="width: 20%;">
+                <input type="text" [(ngModel)]="endereco.gia"
+                       class="form-control"
+                       id="gia"
+                       name="giaFornecedor"
+                       readonly>
+              </td>
+            </tr>
+
+            <!-- Linha 6: DDD, SIAFI -->
+            <tr>
+              <td style="width: 16%;">
+                <label for="ddd">DDD:</label>
+              </td>
+              <td style="width: 24%;">
+                <input type="text" [(ngModel)]="endereco.ddd"
+                       class="form-control"
+                       id="ddd"
+                       name="dddFornecedor"
+                       readonly>
+              </td>
+              <td style="width: 12%;">
+                <label for="siafi">SIAFI:</label>
+              </td>
+              <td colspan="3" style="width: 48%;">
+                <input type="text" [(ngModel)]="endereco.siafi"
+                       class="form-control"
+                       id="siafi"
+                       name="siafiFornecedor"
+                       readonly>
+              </td>
+            </tr>
+            <tr>
+              <td colspan="2" style="width: 12%;">
+                <button type="button" class="btn btn-secondary" (click)="buscarEnderecoPorCep(endereco.cep)">Buscar</button>
+              </td>
+            </tr>
+            </tbody>
+          </table>
         </div>
-        <small class="text-muted">Informe um endereço IP válido para obter informações de localização.</small>
-      </div>
-    </div> -->
-
-    <!-- Container principal com scroll vertical em dispositivos pequenos
-    <div class="d-flex flex-column flex-md-row" style="max-height: 85vh; overflow-y: auto;">
-
-       Card de informações básicas (ipinfo.io)
-      <mat-card class="profile-card me-md-3 mb-3 mb-md-0" style="flex: 1; min-width: 300px;">
-        <mat-card-content>
-          <div *ngIf="consentimentoFornecido">
-            <div *ngIf="carregando" class="d-flex justify-content-center">
-              <div class="spinner-border" role="status">
-                <span class="visually-hidden">Carregando...</span>
-              </div>
-            </div>
-
-            <div *ngIf="erro" class="alert alert-danger">
-              {{ erro }}
-            </div>
-
-            <div *ngIf="!carregando && !erro && geoInfo">
-              <div class="card mb-4">
-                <div class="card-header bg-primary text-white">
-                  Informações Básicas (ipinfo.io)
-                </div>
-                <div class="card-body">
-                  <p><strong>IP:</strong> {{ geoInfo.ip }}</p>
-                  <p><strong>Cidade:</strong> {{ geoInfo.city }}</p>
-                  <p><strong>Estado/Região:</strong> {{ geoInfo.region }}</p>
-                  <p><strong>País:</strong> {{ geoInfo.country }}</p>
-                  <p><strong>CEP/Código Postal:</strong> {{ geoInfo.postal }}</p>
-                  <p><strong>Organização:</strong> {{ geoInfo.org }}</p>
-                  <p><strong>Fuso Horário:</strong> {{ geoInfo.timezone }}</p>
-                  <p><strong>Coordenadas:</strong> {{ geoInfo.loc }}</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </mat-card-content>
-      </mat-card> -->
-
-      <!-- Card de endereço detalhado
-      <mat-card class="profile-card me-md-3 mb-3 mb-md-0" style="flex: 1; min-width: 300px;">
-        <mat-card-content>
-          <div *ngIf="consentimentoFornecido && !carregando && !erro && geoInfo">
-            <div class="card">
-              <div class="card-header bg-success text-white">
-                Endereço Detalhado (Google Maps)
-              </div>
-              <div class="card-body">
-                <div *ngIf="carregandoEndereco" class="text-center">
-                  <div class="spinner-border spinner-border-sm" role="status">
-                    <span class="visually-hidden">Carregando endereço...</span>
-                  </div>
-                  <p class="mt-2">Obtendo informações detalhadas do endereço...</p>
-                </div>
-
-                <div *ngIf="!carregandoEndereco && enderecoGeolocalizacao">
-                  <p><strong>Endereço Completo:</strong> {{ enderecoGeolocalizacao.formatted_address }}</p>
-                  <hr>
-                  <h5>Componentes do Endereço:</h5>
-                  <p><strong>Número:</strong> {{ getAddressComponent('street_number') }}</p>
-                  <p><strong>Rua:</strong> {{ getAddressComponent('route') }}</p>
-                  <p><strong>Bairro:</strong> {{ getAddressComponent('sublocality') || getAddressComponent('sublocality_level_1') }}</p>
-                  <p><strong>Cidade:</strong> {{ getAddressComponent('administrative_area_level_2') }}</p>
-                  <p><strong>Estado:</strong> {{ getAddressComponent('administrative_area_level_1') }}</p>
-                  <p><strong>País:</strong> {{ getAddressComponent('country') }}</p>
-                  <p><strong>CEP:</strong> {{ getAddressComponent('postal_code') }}</p>
-                  <p><strong>Place ID:</strong> <small>{{ enderecoGeolocalizacao.place_id }}</small></p>
-                </div>
-
-                <div *ngIf="!carregandoEndereco && !enderecoGeolocalizacao">
-                  <p class="text-danger">Não foi possível obter informações detalhadas do endereço.</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </mat-card-content>
-      </mat-card> -->
-
-      <!-- Card do mapa
-      <mat-card class="profile-card" style="flex: 1; min-width: 300px;" *ngIf="!isMobileOrTablet">
-        <mat-card-content>
-          <div *ngIf="consentimentoFornecido && !carregando && !erro && geoInfo && mapsCarregado">
-            <div class="card">
-              <div class="card-header bg-info text-white">
-                Mapa da Localização
-              </div>
-              <div class="card-body">
-                <google-map
-                  height="500px"
-                  width="100%"
-                  [center]="center"
-                  [zoom]="zoom"
-                  [options]="mapOptions">
-                  <map-marker
-                    [position]="marker.position"
-                    [title]="marker.title"
-                    [options]="marker.options">
-                  </map-marker>
-                </google-map>
-              </div>
-            </div>
-          </div>
-        </mat-card-content>
-      </mat-card>
-
     </div>
-  </div>
-</div> -->
 
-<!-- Template do Modal de Consentimento
-<ng-template #modalConsent let-modal>
+    <!-- Card do mapa -->
+    <mat-card class="profile-card" style="flex: 1; min-width: 300px;" *ngIf="!carregando && !erro && mapsCarregado && !isMobileOrTablet && latitude && longitude">
+      <mat-card-content>
+        <div>
+          <div class="card">
+            <div class="card-header bg-primary text-white">
+              Mapa da Localização
+            </div>
+            <div class="card-body">
+              <google-map
+                height="500px"
+                width="100%"
+                [center]="center"
+                [zoom]="zoom"
+                [options]="mapOptions">
+                <map-marker
+                  [position]="marker.position"
+                  [title]="marker.title"
+                  [options]="marker.options">
+                </map-marker>
+              </google-map>
+            </div>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+  </div>
+</div>
+
+<!-- Janela (modal) ERROS -->
+<ng-template #modalMsgAviso let-modal>
   <div class="modal-header">
-    <h4 class="modal-title">AVISO!</h4>
-    <img ngSrc="/codigo_barras.png" height="60" width="60" class="img-right"/>
+    <h5 class="modal-title">
+      Sucesso!
+    </h5>
+    <img ngSrc="/google-maps.png" height="80" width="100" class="img-right"/>
   </div>
   <div class="modal-body">
-    <p>PRODIFY fornecerá informações aproximadas de localização baseado no CEP fornecido.</p>
-    <p>Essas informações serão usadas apenas dentro do site e não serão compartilhadas com terceiros.</p>
-    <p><strong>Você concorda?</strong></p>
+    <p>{{ mensagemModal }}</p>
   </div>
   <div class="modal-footer">
-    <button type="button" class="btn btn-primary" (click)="fornecerConsentimento()">Concordo</button>
-    <button type="button" class="btn btn-secondary" (click)="recusarConsentimento()">Não Concordo</button>
+    <button type="button" class="btn btn-secondary" (click)="modal.close()">Fechar</button>
   </div>
-</ng-template> -->
+</ng-template>
+
+<!-- Exibir durante o carregamento -->
+<div *ngIf="carregando" class="overlay-carregando">
+  <div class="spinner-wrapper">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Carregando...</span>
+    </div>
+    <p class="mt-2">{{carregandoTexto}}</p>
+  </div>
+</div>

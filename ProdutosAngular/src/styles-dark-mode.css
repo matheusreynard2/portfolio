@@ -62,3 +62,13 @@ body.dark-mode {
   background-color: white !important;
   color: black !important;
 }
+
+/* Para NgBootstrap Modal (que você parece estar usando) */
+.modal-content {
+  color: black !important;
+}
+
+/* Se estiver usando Angular Material Dialog */
+.mat-dialog-container {
+  color: black !important;
+}

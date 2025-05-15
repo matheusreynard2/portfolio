@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import {HttpClient, HttpErrorResponse, HttpParams} from '@angular/common/http';
-import {catchError, Observable, throwError} from 'rxjs';
+import {catchError, map, Observable, pipe, throwError, timeout} from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { Geolocalizacao } from '../../model/geolocalizacao';
 import {AuthService} from '../auth/auth.service';
@@ -46,7 +46,7 @@ export class GeolocalizacaoService {
       .set('lat', lat.toString())
       .set('lng', lng.toString());
 
-    return this.http.get<any>(this.localizacaoUrl + "/enderecoDetalhado", { params }).pipe(
+    return this.http.get<any>(this.localizacaoUrl + "/enderecoDetalhado", {params}).pipe(
       // Aqui fazemos o tratamento do erro 401 para TOKEN EXPIRADO
       catchError((error: HttpErrorResponse) => {
         if (error.status === 401 && error.error.message === 'Tempo limite de conexão com o sistema excedido. TOKEN Expirado')
@@ -59,7 +59,7 @@ export class GeolocalizacaoService {
   }
 
   // Método auxiliar para extrair coordenadas do campo 'loc'
-  extrairCoordenadas(loc: string): {lat: number, lng: number} {
+  extrairCoordenadas(loc: string): { lat: number, lng: number } {
     if (!loc) {
       return {lat: 0, lng: 0};
     }
@@ -75,11 +75,33 @@ export class GeolocalizacaoService {
     };
   }
 
+  // OBTEM ENDEREÇO DETALHADO DE LOCALIZAÇÃO ATRAVÉS DO CEP
   obterEnderecoViaCEP(cep: string): Observable<EnderecoFornecedor> {
     // Remove caracteres não numéricos do CEP
     cep = cep.replace(/\D/g, '');
     // Chama o endpoint do backend que fará a integração com a API de CEP
-    return this.http.get<EnderecoFornecedor>(this.localizacaoUrl + "/consultarCEP/" + cep);
+    return this.http.get<EnderecoFornecedor>(this.localizacaoUrl + "/consultarCEP/" + cep).pipe(
+      // Aqui fazemos o tratamento do erro 401 para TOKEN EXPIRADO
+      catchError((error: HttpErrorResponse) => {
+        if (error.status === 401 && error.error.message === 'Tempo limite de conexão com o sistema excedido. TOKEN Expirado')
+          this.verificarRedirecionar()
+        return throwError(error);
+      })
+    );
   }
 
+  // OBTEM LATITUDE/LONGITUDE ATRAVÉS DO CEP
+  obterCoordenadasPorCEP(cep: string): Observable<{ latitude: number, longitude: number }> {
+    return this.http.get<{ latitude: number, longitude: number }>(this.localizacaoUrl + "/obterCoordenadas/" + cep, {
+        params: {cep: cep.replace(/\D/g, '')}
+      }
+    ).pipe(
+      // Aqui fazemos o tratamento do erro 401 para TOKEN EXPIRADO
+      catchError((error: any) => {
+        if (error.status === 401 && error.error.message === 'Tempo limite de conexão com o sistema excedido. TOKEN Expirado')
+          this.verificarRedirecionar()
+        return throwError(error);
+      })
+    );
+  }
 }

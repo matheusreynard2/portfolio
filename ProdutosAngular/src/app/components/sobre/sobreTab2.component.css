@@ -50,3 +50,67 @@
 .profile-card h6 {
   color: black; /* Define que todas as escritas sejam pretas */
 }
+
+/* /////////////// ABAS //////////////////////// */
+.nav-tabs {
+  border-bottom: 2px solid #dee2e6; /* Borda inferior das abas */
+}
+
+.nav-tabs .nav-link {
+  color: #6c757d; /* Texto cinza escuro */
+  background-color: #f8f9fa; /* Fundo cinza claro */
+  border: none;
+  border-radius: 0.375rem 0.375rem 0 0; /* Canto arredondado superior */
+  margin-right: 5px;
+  padding: 0.75rem 1.5rem;
+  transition: all 0.3s ease;
+}
+
+.nav-tabs .nav-link:hover:not(.active):not(.disabled) {
+  background-color: #e9ecef; /* Cinza no hover */
+  color: #343a40; /* Texto mais escuro no hover */
+}
+
+.nav-tabs .nav-link.active {
+  color: #fff;
+  background-color: #212529; /* Aba ativa preta */
+  border-bottom: 2px solid transparent; /* Some a borda inferior ativa */
+}
+
+.nav-tabs .nav-link.disabled {
+  color: #adb5bd; /* Cinza claro desabilitado */
+  background-color: #f1f3f5; /* Fundo cinza mais claro */
+  cursor: not-allowed;
+}
+
+/* ///////////////DARK MODE ABAS //////////////////////// */
+
+.nav-tabs.dark-mode {
+  border-bottom: 2px solid #333;
+}
+
+.nav-tabs.dark-mode .nav-link {
+  color: #ced4da; /* Texto cinza claro */
+  background-color: #212529; /* Fundo preto */
+  border: none;
+  border-radius: 0.375rem 0.375rem 0 0;
+  margin-right: 5px;
+  padding: 0.75rem 1.5rem;
+}
+
+.nav-tabs.dark-mode .nav-link:hover:not(.active):not(.disabled) {
+  background-color: #343a40; /* Cinza escuro no hover */
+  color: #fff; /* Texto branco */
+}
+
+.nav-tabs.dark-mode .nav-link.active {
+  color: #212529; /* Texto preto */
+  background-color: #f8f9fa; /* Fundo cinza claro */
+  border-bottom: 2px solid transparent;
+}
+
+.nav-tabs.dark-mode .nav-link.disabled {
+  color: #6c757d;
+  background-color: #343a40;
+  cursor: not-allowed;
+}

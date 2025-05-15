@@ -1,6 +1,6 @@
-<div class="card my-5">
-  <div class="card-body">
-    <div class="div-tabela">
+<div class="tabela-container">
+  <table class="table table-bordered table-striped table-fixed">
+    <thead class="thead-dark">
       <table class="table table-bordered table-striped">
         <thead class="thead-dark">
         <tr>
@@ -9,7 +9,7 @@
         <tr>
           <th class="text-center coluna_id"><strong>ID</strong></th>
           <th class="text-left coluna_nome"><strong>Nome</strong></th>
-          <th class="text-center"><strong>Logradouro</strong></th>
+          <th class="text-left coluna_logradouro"><strong>Logradouro</strong></th>
           <th class="text-center"><strong>Bairro</strong></th>
           <th class="text-center"><strong>Estado</strong></th>
           <th class="text-center"><strong>CEP</strong></th>
@@ -19,9 +19,9 @@
         </thead>
         <tbody>
         <tr *ngFor="let fornecedor of listaFornecedores">
-          <td class="text-center coluna_id">{{ fornecedor.id }}</td>
-          <td class="text-center">{{ fornecedor.nome }}</td>
-          <td class="text-center">{{ fornecedor.enderecoFornecedor.logradouro }}<span *ngIf="fornecedor.nrResidencia"> - N° {{ fornecedor.nrResidencia }}</span></td>
+          <td class="coluna_id">{{ fornecedor.id }}</td>
+          <td class="coluna_nome">{{ fornecedor.nome }}</td>
+          <td class="coluna_logradouro">{{ fornecedor.enderecoFornecedor.logradouro }}<span *ngIf="fornecedor.nrResidencia"> - N° {{ fornecedor.nrResidencia }}</span></td>
           <td class="text-center">{{ fornecedor.enderecoFornecedor.bairro }}</td>
           <td class="text-center">{{ fornecedor.enderecoFornecedor.estado }}</td>
           <td class="text-center">{{ fornecedor.enderecoFornecedor.cep }}</td>
@@ -34,10 +34,8 @@
         </tr>
         </tbody>
       </table>
-    </div>
   <mat-paginator [length]="totalRecords" [pageSize]="pageSize" [pageIndex]="currentPage" (page)="trocarPagina($event)"></mat-paginator>
-  </div>
-</div>
+
 
 <!-- Janela (modal) que abre ao clicar no botão Excluir -->
 <ng-template #modalMsgExcluir let-modal>

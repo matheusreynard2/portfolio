@@ -3,3 +3,27 @@
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
+/* Para NgBootstrap Modal (que você parece estar usando) */
+.modal-content {
+  color: black !important;
+}
+
+/* Se estiver usando Angular Material Dialog */
+.mat-dialog-container {
+  color: black !important;
+}
+
+/* Em styles.scss */
+:root {
+  --modal-text-color: black !important;
+}
+
+/* Seletor genérico para pegar a maioria dos modais */
+[class*="modal"],
+[class*="dialog"],
+[class*="popup"],
+[class*="modal"] *,
+[class*="dialog"] *,
+[class*="popup"] * {
+  color: var(--modal-text-color);
+}

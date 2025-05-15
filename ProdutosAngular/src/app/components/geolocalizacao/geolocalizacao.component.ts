@@ -25,7 +25,6 @@ import {FornecedorService} from '../../service/fornecedor/fornecedor.service';
     NgIf,
     MatCard,
     MatCardContent,
-    NgOptimizedImage,
     RouterLink,
     FormsModule
   ],

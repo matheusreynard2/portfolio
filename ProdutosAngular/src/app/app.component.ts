@@ -106,12 +106,4 @@ export class AppComponent implements OnInit {
     this.menuOpen = !this.menuOpen;
   }
 
-  carregarGoogleMapsScript() {
-    const script = document.createElement('script');
-    script.src = `https://maps.googleapis.com/maps/api/js?key=${environment.googleMapsApiKey}`;
-    script.async = true;
-    script.defer = true;
-    document.head.appendChild(script);
-  }
-
 }

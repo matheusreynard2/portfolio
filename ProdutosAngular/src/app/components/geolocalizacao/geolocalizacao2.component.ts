@@ -3,16 +3,19 @@ import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import {Router, RouterLink} from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Geolocalizacao } from '../../model/geolocalizacao';
-import { EnderecoGeolocalizacao, GeocodingResult } from '../../model/endereco-geolocalizacao';
+import { GeocodingResult } from '../../model/endereco-geolocalizacao';
 import { GeolocalizacaoService } from '../../service/geolocalizacao/geolocalizacao.service';
 import { GoogleMapsLoaderService } from '../../service/geolocalizacao/google-maps-loader.service';
-import { GoogleMap, MapMarker } from '@angular/google-maps';
-import {NgIf, NgOptimizedImage} from '@angular/common';
-import { catchError, finalize, switchMap } from 'rxjs/operators';
-import { of } from 'rxjs';
-import {MatCard, MatCardContent} from '@angular/material/card';
 import {DeviceService} from '../../service/device/device.service';
 import { FormsModule } from '@angular/forms';
+import {NgxMaskDirective, NgxMaskPipe, provideNgxMask } from 'ngx-mask';
+import {Fornecedor} from '../../model/fornecedor';
+import {EnderecoFornecedor} from '../../model/endereco-fornecedor';
+import {NgIf, NgOptimizedImage} from '@angular/common';
+import {firstValueFrom} from 'rxjs';
+import {GoogleMap, MapMarker} from '@angular/google-maps';
+import {MatCard, MatCardContent} from '@angular/material/card';
+import {FornecedorService} from '../../service/fornecedor/fornecedor.service';
 
 @Component({
   selector: 'app-geolocalizacao2',
@@ -25,25 +28,55 @@ import { FormsModule } from '@angular/forms';
     //MatCardContent,
     //NgOptimizedImage,
     RouterLink,
-    FormsModule
+    FormsModule,
+    NgxMaskDirective,
+    NgOptimizedImage,
+    NgIf,
+    GoogleMap,
+    MapMarker,
+    MatCard,
+    MatCardContent
+  ],
+  providers: [
+    provideNgxMask() // Esta linha é essencial!
   ],
   styleUrl: './geolocalizacao2.component.css'
 })
 export class Geolocalizacao2Component implements OnInit {
 
   @ViewChild('modalConsent', {static: true}) modalConsent!: TemplateRef<any>;
+  @ViewChild('modalMsgAviso') modalMsgAviso!: TemplateRef<any>;
 
-  // Nova propriedade para armazenar o IP digitado pelo usuário
-  ipDigitado: string = '';
-
-  geoInfo: Geolocalizacao | null = null;
   enderecoGeolocalizacao: GeocodingResult | null = null;
   carregando = false; // Alterado para false inicialmente
   erro: string | null = null;
-  consentimentoFornecido = false;
   mapsCarregado = false;
   carregandoEndereco = false;
   isMobileOrTablet: boolean = false;
+  latitude: number = 0;
+  longitude: number = 0;
+  carregandoCep: boolean = false;
+  carregandoTexto: string = '';
+  apiLoaded = false;
+  mensagemModal: string = '';
+  obteveCoordenadas: boolean = false;
+
+  endereco: EnderecoFornecedor = {
+    cep: '',
+    logradouro: '',
+    complemento: '',
+    unidade: '',
+    bairro: '',
+    localidade: '',
+    uf: '',
+    estado: '',
+    regiao: '',
+    ibge: '',
+    gia: '',
+    ddd: '',
+    siafi: '',
+    erro: ''
+  };
 
   // Propriedades para o mapa
   center: google.maps.LatLngLiteral = {lat: 0, lng: 0};
@@ -72,101 +105,89 @@ export class Geolocalizacao2Component implements OnInit {
     private modalService: NgbModal,
     private router: Router,
     private mapsLoaderService: GoogleMapsLoaderService,
-    private deviceService: DeviceService
+    private deviceService: DeviceService,
+    private fornecedorService: FornecedorService
   ) {
   }
 
   ngOnInit(): void {
+    this.fornecedorService.acessarPaginaFornecedor().subscribe();
     this.deviceService.isMobileOrTablet.subscribe(isMobile => {
       this.isMobileOrTablet = isMobile;
     });
-
-    // Abre o modal de consentimento ao inicializar o componente
-    //this.exibirModalConsentimento();
+    this.carregarGoogleMaps().then(r => this.mapsCarregado = true);
   }
-}
-/*
+
   async carregarGoogleMaps(): Promise<void> {
-    // Vamos verificar se o Google Maps já está disponível
-    if (window.google && window.google.maps) {
-      this.mapsCarregado = true;
-      this.marker.options.animation = google.maps.Animation.DROP;
-      return Promise.resolve();
-    }
+    try {
+      // Verifica se o Google Maps já está disponível globalmente
+      if (typeof google === 'undefined' || !google.maps) {
+        await this.mapsLoaderService.loadGoogleMaps();
+      }
 
-    // Se não estiver disponível, carregamos explicitamente
-    return this.mapsLoaderService.loadGoogleMaps()
-      .then(() => {
-        this.mapsCarregado = true;
+      this.apiLoaded = true;
+
+      // Só configura a animação após garantir que o Google Maps está disponível
+      if (google && google.maps && google.maps.Animation) {
         this.marker.options.animation = google.maps.Animation.DROP;
-      })
-      .catch(error => {
-        this.erro = `Erro ao carregar o Google Maps: ${error}`;
-        return Promise.reject(error);
-      });
+      }
+
+    } catch (error) {
+      console.error('Erro ao carregar o Google Maps:', error);
+      this.erro = `Erro ao carregar o Google Maps: ${error}`;
+    }
   }
 
-  exibirModalConsentimento(): void {
-    const modalRef = this.modalService.open(this.modalConsent, {
-      backdrop: 'static',
-      keyboard: false,
-      centered: true
-    });
-  }
+  async buscarEnderecoPorCep(cep: string): Promise<void> {
+    // Remover caracteres não numéricos do CEP
+    const cepFormatado = cep.replace(/\D/g, '');
 
-  fornecerConsentimento(): void {
-    this.consentimentoFornecido = true;
-    this.modalService.dismissAll();
-
-    // Apenas carrega o Google Maps, mas não carrega automaticamente a localização
-    this.carregarGoogleMaps()
-      .catch(error => {
-        this.erro = `Erro ao carregar o Google Maps: ${error}`;
-      });
-  }
-
-  recusarConsentimento(): void {
-    this.modalService.dismissAll();
-    this.router.navigate(['/login']);
-  }
-
-  // Novo método para buscar geolocalização pelo IP digitado
-  buscarGeolocalizacaoPorIP(): void {
-    if (!this.ipDigitado) {
-      this.erro = "Por favor, digite um endereço IP válido.";
+    if (cepFormatado.length !== 8) {
+      this.mensagemModal = "CEP inválido. Por favor, digite um CEP com 8 dígitos.";
+      this.modalService.open(this.modalMsgAviso);
       return;
     }
 
-    this.erro = null;
+    // Ativa estado de carregamento
     this.carregando = true;
-    this.carregandoEndereco = true;
+    this.carregandoTexto = 'Buscando endereço...';
 
-    this.geoService.obterGeolocalizacaoPorIP(this.ipDigitado)
-      .pipe(
-        switchMap((dados) => {
-          this.geoInfo = dados;
+    // Primeira chamada (obter endereço)
+    this.endereco = await firstValueFrom(
+      this.geoService.obterEnderecoViaCEP(cepFormatado)
+    );
 
-          // Configurar o mapa com as coordenadas básicas primeiro
-          const coordenadas = this.geoService.extrairCoordenadas(dados.loc);
-          this.center = coordenadas;
-          this.marker.position = coordenadas;
-          this.marker.title = `${dados.city}, ${dados.region}, ${dados.country}`;
+    // Verifica erro
+    if (this.endereco.erro === "true") {
+      this.carregando = false;
+      this.mensagemModal = "CEP não encontrado.";
+      this.modalService.open(this.modalMsgAviso);
+      return;
+    }
 
-          // Agora buscar o endereço detalhado
-          return this.geoService.obterEnderecoDetalhado(coordenadas.lat, coordenadas.lng)
-            .pipe(
-              catchError(error => {
-                console.error('Erro ao obter endereço detalhado:', error);
-                return of(null as any);
-              })
-            );
-        }),
-        finalize(() => {
-          this.carregando = false;
-          this.carregandoEndereco = false;
-        })
-      )
-      .subscribe({
+    // Atualiza o endereço
+    this.endereco = {
+      ...this.endereco,
+      complemento: this.endereco.complemento || '',
+      unidade: this.endereco.unidade || '',
+      ibge: this.endereco.ibge || '',
+      gia: this.endereco.gia || '',
+      siafi: this.endereco.siafi || ''
+    };
+
+    this.carregandoTexto = 'Obtendo coordenadas geográficas...';
+
+    // Segunda chamada (obter coordenadas) - usando try/catch para gerenciar a flag
+    try {
+      const coordenadas = await firstValueFrom(
+        this.geoService.obterCoordenadasPorCEP(cepFormatado)
+      );
+      // Se chegou aqui, significa que obteve as coordenadas com sucesso
+      this.obteveCoordenadas = true;
+      this.latitude = coordenadas.latitude;
+      this.longitude = coordenadas.longitude;
+      this.mensagemModal = "Localização encontrada!"
+      this.geoService.obterEnderecoDetalhado(this.latitude, this.longitude).subscribe({
         next: (enderecoData) => {
           if (enderecoData && enderecoData.results && enderecoData.results.length > 0) {
             this.enderecoGeolocalizacao = enderecoData.results[0];
@@ -186,21 +207,14 @@ export class Geolocalizacao2Component implements OnInit {
           this.carregandoEndereco = false;
         }
       });
-  }
-
-  // Método para extrair componentes específicos do endereço
-  getAddressComponent(type: string): string {
-    if (!this.enderecoGeolocalizacao || !this.enderecoGeolocalizacao.address_components) {
-      return 'N/A';
+    } catch (coordError) {
+      // Falha ao obter coordenadas
+      this.obteveCoordenadas = false;
+      this.mensagemModal = "Não foi possível obter as coordenadas para este CEP.";
+    } finally {
+      // Desativa carregamento independentemente do resultado da segunda chamada
+      this.carregando = false;
+      this.modalService.open(this.modalMsgAviso);
     }
-
-    const component = this.enderecoGeolocalizacao.address_components.find(comp =>
-      comp.types.includes(type)
-    );
-
-    return component ? component.long_name : 'N/A';
   }
-
-  protected readonly window = window;
 }
-*/
