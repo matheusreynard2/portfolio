@@ -1,4 +1,4 @@
-package com.apiestudar.api_prodify.application.service;
+package com.apiestudar.api_prodify.application;
 
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;

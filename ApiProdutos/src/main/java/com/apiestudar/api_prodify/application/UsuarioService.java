@@ -1,4 +1,4 @@
-package com.apiestudar.api_prodify.application.service;
+package com.apiestudar.api_prodify.application;
 
 import java.io.IOException;
 import java.util.List;

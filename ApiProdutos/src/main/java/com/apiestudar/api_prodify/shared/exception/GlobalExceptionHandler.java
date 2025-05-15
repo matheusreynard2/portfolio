@@ -56,4 +56,10 @@ public class GlobalExceptionHandler {
     	log.error("Erro ao processar JSON: {}", ex);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
     }
+    
+    @ExceptionHandler(ObterCoordenadasViaCEPException.class)
+    public ResponseEntity<Object> handleObterCoordenadasViaCEPException(ObterCoordenadasViaCEPException ex) {
+    	log.error("Erro ao processar JSON: {}", ex);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
+    }
 }

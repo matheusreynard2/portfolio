@@ -1,10 +1,11 @@
-package com.apiestudar.api_prodify.application.service;
+package com.apiestudar.api_prodify.application;
 
 import java.util.Map;
 
 import com.apiestudar.api_prodify.domain.model.EnderecoFornecedor;
 import com.apiestudar.api_prodify.domain.model.Geolocation;
 import com.apiestudar.api_prodify.shared.exception.GeoLocationException;
+import com.apiestudar.api_prodify.shared.exception.ObterCoordenadasViaCEPException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 
@@ -14,4 +15,5 @@ public interface GeolocationService {
 	public Map<String, Object> obterEnderecoDetalhado(double lat, double lng);
 	public double[] extrairLatiLong(String loc);
 	public EnderecoFornecedor obterEnderecoViaCEP(String cep) throws JsonMappingException, JsonProcessingException;
+	public Map<String, Object> obterCoordenadasPorCep(String cep) throws ObterCoordenadasViaCEPException, JsonMappingException, JsonProcessingException;
 }

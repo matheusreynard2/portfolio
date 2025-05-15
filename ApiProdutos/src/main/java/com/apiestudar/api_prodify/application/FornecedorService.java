@@ -1,4 +1,4 @@
-package com.apiestudar.api_prodify.application.service;
+package com.apiestudar.api_prodify.application;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

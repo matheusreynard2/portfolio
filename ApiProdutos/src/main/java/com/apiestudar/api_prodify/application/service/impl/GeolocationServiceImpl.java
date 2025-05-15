@@ -1,6 +1,7 @@
 package com.apiestudar.api_prodify.application.service.impl;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
@@ -9,11 +10,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import com.apiestudar.api_prodify.application.GeolocationService;
 import com.apiestudar.api_prodify.domain.model.EnderecoFornecedor;
 import com.apiestudar.api_prodify.domain.model.Geolocation;
 import com.apiestudar.api_prodify.interfaces.controller.LocalizacaoController;
 import com.apiestudar.api_prodify.shared.exception.GeoLocationException;
-import com.apiestudar.api_prodify.application.service.GeolocationService;
+import com.apiestudar.api_prodify.shared.exception.ObterCoordenadasViaCEPException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -35,12 +37,11 @@ public class GeolocationServiceImpl implements GeolocationService {
 
 	@Override
 	public EnderecoFornecedor obterEnderecoViaCEP(String cep) throws JsonMappingException, JsonProcessingException {
-		 String response = Unirest.get(API_VIA_CEP + cep + "/json/")
-	                .header("Accept", "application/json")
-	                .asString().getBody();
-		 return objectMapper.readValue(response, EnderecoFornecedor.class);
+		String response = Unirest.get(API_VIA_CEP + cep + "/json/").header("Accept", "application/json").asString()
+				.getBody();
+		return objectMapper.readValue(response, EnderecoFornecedor.class);
 	}
-	
+
 	@Override
 	public Geolocation obterGeolocationByIP(String ipAddress) throws GeoLocationException {
 		try {
@@ -54,26 +55,58 @@ public class GeolocationServiceImpl implements GeolocationService {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public  Map<String, Object> obterEnderecoDetalhado(double lat, double lng) {
-	    try {        
-	        // Formatação mais cuidadosa das coordenadas
-	        String coordenadas = String.format(Locale.US, "%f,%f", lat, lng);
-	        
-	        String url = String.format(API_GOOGLE_MAPS_URL + "latlng=%s&key=%s", 
-	            coordenadas, googleMapsApiKey
-	        );
-	        
-	        log.info("URL de geocodificação: {}", url);
-	        
-	        String response = Unirest.get(url)
-	                .header("Accept", "application/json")
-	                .asString().getBody();
-	                
-	        return objectMapper.readValue(response, HashMap.class);
-	    } catch (Exception e) {
-	        e.printStackTrace(); // Mais detalhes de erro para depuração
-	        throw new RuntimeException("Erro ao obter endereço detalhado: " + e.getMessage());
-	    }
+	public Map<String, Object> obterEnderecoDetalhado(double lat, double lng) {
+		try {
+			// Formatação mais cuidadosa das coordenadas
+			String coordenadas = String.format(Locale.US, "%f,%f", lat, lng);
+
+			String url = String.format(API_GOOGLE_MAPS_URL + "latlng=%s&key=%s", coordenadas, googleMapsApiKey);
+
+			log.info("URL de geocodificação - obter endereco especifico: {}", url);
+
+			String response = Unirest.get(url).header("Accept", "application/json").asString().getBody();
+
+			return objectMapper.readValue(response, HashMap.class);
+		} catch (Exception e) {
+			e.printStackTrace(); // Mais detalhes de erro para depuração
+			throw new RuntimeException("Erro ao obter endereço detalhado: " + e.getMessage());
+		}
+	}
+
+	@SuppressWarnings("unchecked")
+	public Map<String, Object> obterCoordenadasPorCep(String cep) throws ObterCoordenadasViaCEPException, JsonMappingException, JsonProcessingException {
+		String cepFormatado = cep.replaceAll("\\D", "");
+
+		String url = String.format(API_GOOGLE_MAPS_URL + "address=%s&region=br&key=%s", cepFormatado,
+				googleMapsApiKey);
+
+		log.info("URL de geocodificação - obtendo Latitude e Longitude pelo CEP: {}", cepFormatado);
+
+		String response = Unirest.get(url).header("Accept", "application/json").asString().getBody();
+
+		@SuppressWarnings("unchecked")
+		Map<String, Object> resultMap = objectMapper.readValue(response, HashMap.class);
+
+		// Verifica se a resposta é válida
+		List<Map<String, Object>> results = (List<Map<String, Object>>) resultMap.get("results");
+		String status = (String) resultMap.get("status");
+		if (!"OK".equals(status)) {
+			resultMap.put("error", "Erro ao obter coordenadas via CEP");
+			return resultMap;
+		}
+
+		Map<String, Object> geometry = (Map<String, Object>) results.get(0).get("geometry");
+		Map<String, Object> location = (Map<String, Object>) geometry.get("location");
+		
+		Double latitude = (Double) location.get("lat");
+		Double longitude = (Double) location.get("lng");
+
+		// Retorna as coordenadas
+		Map<String, Object> coordenadas = new HashMap<>();
+		coordenadas.put("latitude", latitude);
+		coordenadas.put("longitude", longitude);
+
+		return coordenadas;
 	}
 
 	@Override

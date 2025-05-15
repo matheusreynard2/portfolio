@@ -14,7 +14,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.apiestudar.api_prodify.application.service.ProdutoService;
+import com.apiestudar.api_prodify.application.ProdutoService;
 import com.apiestudar.api_prodify.domain.model.Produto;
 import com.apiestudar.api_prodify.domain.repository.ProdutoRepository;
 import com.apiestudar.api_prodify.domain.repository.UsuarioRepository;

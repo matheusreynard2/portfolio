@@ -20,8 +20,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.apiestudar.api_prodify.application.UsuarioService;
 import com.apiestudar.api_prodify.domain.model.Usuario;
-import com.apiestudar.api_prodify.application.service.UsuarioService;
 
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;

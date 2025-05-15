@@ -23,10 +23,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.apiestudar.api_prodify.application.ProdutoService;
 import com.apiestudar.api_prodify.domain.model.Produto;
 import com.apiestudar.api_prodify.shared.exception.ParametroInformadoNullException;
 import com.apiestudar.api_prodify.shared.exception.RegistroNaoEncontradoException;
-import com.apiestudar.api_prodify.application.service.ProdutoService;
 
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;

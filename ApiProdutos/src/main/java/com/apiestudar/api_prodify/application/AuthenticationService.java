@@ -1,4 +1,4 @@
-package com.apiestudar.api_prodify.application.service;
+package com.apiestudar.api_prodify.application;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;

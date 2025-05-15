@@ -15,8 +15,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.apiestudar.api_prodify.application.service.TokenService;
-import com.apiestudar.api_prodify.application.service.UsuarioService;
+import com.apiestudar.api_prodify.application.TokenService;
+import com.apiestudar.api_prodify.application.UsuarioService;
 import com.apiestudar.api_prodify.domain.model.ContadorIP;
 import com.apiestudar.api_prodify.domain.model.Usuario;
 import com.apiestudar.api_prodify.domain.repository.ContadorIPRepository;

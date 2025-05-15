@@ -14,8 +14,8 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
+import com.apiestudar.api_prodify.application.TokenService;
 import com.apiestudar.api_prodify.domain.repository.UsuarioRepository;
-import com.apiestudar.api_prodify.application.service.TokenService;
 import com.auth0.jwt.exceptions.TokenExpiredException;
 
 // FILTRO DO TOKEN PARA O AUTHCONFIGURATIONS
