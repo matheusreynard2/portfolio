@@ -12,7 +12,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,21 +22,33 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.apiestudar.api_prodify.application.ProdutoService;
+import com.apiestudar.api_prodify.application.usecase.produto.AdicionarProdutoUseCase;
+import com.apiestudar.api_prodify.application.usecase.produto.AtualizarProdutoUseCase;
+import com.apiestudar.api_prodify.application.usecase.produto.ConsultasSobreProdutosUseCase;
+import com.apiestudar.api_prodify.application.usecase.produto.DeletarProdutoUseCase;
+import com.apiestudar.api_prodify.application.usecase.produto.ListarProdutosUseCase;
+import com.apiestudar.api_prodify.application.usecase.produto.PesquisasSearchBarUseCase;
 import com.apiestudar.api_prodify.domain.model.Produto;
-import com.apiestudar.api_prodify.shared.exception.ParametroInformadoNullException;
-import com.apiestudar.api_prodify.shared.exception.RegistroNaoEncontradoException;
 
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
-import springfox.documentation.annotations.ApiIgnore;
 
 @RestController
 @RequestMapping("api/produtos")
 public class ProdutoController {
 
 	@Autowired
-	private ProdutoService produtoService;
+	private PesquisasSearchBarUseCase pesquisasUseCase;
+	@Autowired
+	private AdicionarProdutoUseCase adicionarProduto;
+	@Autowired
+	private ListarProdutosUseCase listarProdutos;
+	@Autowired
+	private AtualizarProdutoUseCase atualizarProduto;
+	@Autowired
+	private DeletarProdutoUseCase deletarProduto;
+	@Autowired
+	private ConsultasSobreProdutosUseCase consultasProduto;
 
 	private static final Logger log = LoggerFactory.getLogger(ProdutoController.class);
 
@@ -47,7 +58,7 @@ public class ProdutoController {
 	public Page<Produto> listarProdutos(@RequestParam(defaultValue = "0") int page,
 			@RequestParam(defaultValue = "10") int size) {
 		Pageable pageable = PageRequest.of(page, size);
-		Page<Produto> produtos = produtoService.listarProdutos(pageable);
+		Page<Produto> produtos = listarProdutos.executar(pageable);
 		return produtos;
 	}
 
@@ -56,7 +67,7 @@ public class ProdutoController {
 	@PostMapping("/adicionarProduto")
 	public ResponseEntity<Object> adicionarProduto(@RequestParam String produtoJSON,
 			@RequestParam MultipartFile imagemFile) throws IOException, SQLException {
-		Produto produtoAdicionado = produtoService.adicionarProduto(produtoJSON, imagemFile);
+		Produto produtoAdicionado = adicionarProduto.executar(produtoJSON, imagemFile);
 		return ResponseEntity.status(HttpStatus.CREATED).body(produtoAdicionado);
 	}
 
@@ -65,7 +76,7 @@ public class ProdutoController {
 	@PutMapping("/atualizarProduto/{id}")
 	public ResponseEntity<Object> atualizarProduto(@PathVariable long id, @RequestParam String produtoJSON,
 			@RequestParam MultipartFile imagemFile) throws IOException {
-		Produto produtoAtualizado = produtoService.atualizarProduto(id, produtoJSON, imagemFile);
+		Produto produtoAtualizado = atualizarProduto.executar(id, produtoJSON, imagemFile);
 		return ResponseEntity.status(HttpStatus.CREATED).body(produtoAtualizado);
 	}
 
@@ -73,7 +84,7 @@ public class ProdutoController {
 	@ApiResponse(code = 200, message = "Produto excluído.")
 	@DeleteMapping("/deletarProduto/{id}")
 	public ResponseEntity<Object> deletarProduto(@PathVariable int id) {
-		produtoService.deletarProduto(id);
+		deletarProduto.executar(id);
 		return ResponseEntity.status(HttpStatus.OK).body("Deletou com sucesso");
 
 	}
@@ -82,7 +93,7 @@ public class ProdutoController {
 	@ApiResponse(code = 200, message = "Cálculo de preço mais caro efetuado.")
 	@GetMapping("/produtoMaisCaro/{idUsuario}")
 	public ResponseEntity<Object> listarProdutoMaisCaro(@PathVariable long idUsuario) {
-		List<Produto> produtoMaisCaro = produtoService.listarProdutoMaisCaro(idUsuario);
+		List<Produto> produtoMaisCaro = consultasProduto.listarProdutoMaisCaro(idUsuario);
 		return ResponseEntity.status(HttpStatus.OK).body(produtoMaisCaro);
 
 	}
@@ -91,7 +102,7 @@ public class ProdutoController {
 	@ApiResponse(code = 200, message = "Cálculo de média de preços efetuado.")
 	@GetMapping("/mediaPreco/{idUsuario}")
 	public ResponseEntity<Object> obterMediaPreco(@PathVariable long idUsuario) {
-		Double media = produtoService.obterMediaPreco(idUsuario);
+		Double media = consultasProduto.obterMediaPreco(idUsuario);
 		return ResponseEntity.status(HttpStatus.OK).body(media);
 
 	}
@@ -101,7 +112,7 @@ public class ProdutoController {
 	@GetMapping("/calcularDesconto/{valorProduto}/{valorDesconto}")
 	public ResponseEntity<Object> calcularValorDesconto(@PathVariable double valorProduto,
 			@PathVariable double valorDesconto) {
-		Double valorComDesconto = produtoService.calcularValorComDesconto(valorProduto, valorDesconto);
+		Double valorComDesconto = consultasProduto.calcularValorComDesconto(valorProduto, valorDesconto);
 		return ResponseEntity.status(HttpStatus.OK).body(valorComDesconto);
 	}
 
@@ -112,7 +123,7 @@ public class ProdutoController {
 	@GetMapping("/efetuarPesquisa/{tipoPesquisa}/{valorPesquisa}/{idUsuario}")
 	public ResponseEntity<Object> efetuarPesquisa(@PathVariable String tipoPesquisa, @PathVariable String valorPesquisa,
 			@PathVariable long idUsuario) {
-		List<Produto> produtos = produtoService.efetuarPesquisa(tipoPesquisa, valorPesquisa, idUsuario);
+		List<Produto> produtos = pesquisasUseCase.efetuarPesquisa(tipoPesquisa, valorPesquisa, idUsuario);
 		return ResponseEntity.status(HttpStatus.OK).body(produtos);
 	}
 
