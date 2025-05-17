@@ -40,6 +40,8 @@ public class Produto {
 	private double valorTotalFrete;
 
 	private double valor;
+	
+	private double valorInicial;
 
 	private int quantia;
 
