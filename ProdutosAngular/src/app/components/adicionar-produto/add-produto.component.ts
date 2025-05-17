@@ -107,6 +107,8 @@ export class AddProdutoComponent implements OnInit {
   // Calcula os totalizadores de valor. Função chamada ao clicar no botão Calcular valores
   // e antes de gravar o produto no banco de dados.
   calcularValores(produto: Produto) {
+    // Calcula o valor total do produto pela quantidade
+    produto.valor = this.produto.quantia * this.produto.valor
     this.produtoFunctionsService.calcularValores(produto);
   }
 

@@ -12,14 +12,11 @@ import {environment} from '../../../environments/environment';
 export class UsuarioService {
 
   private usuariosUrl: string;
-  private localizacaoUrl: string;
   private apiUrl = environment.API_URL;
-  private numeroAcesso: number = 0
 
   constructor(private http: HttpClient, private router: Router) {
     // URL DO REST CONTROLLER
     this.usuariosUrl = this.apiUrl + '/usuarios';
-    this.localizacaoUrl = this.apiUrl + '/localizacao';
   }
 
   adicionarUsuario(usuario: Usuario, imagem: File): Observable<Map<string, any>> {
@@ -29,27 +26,16 @@ export class UsuarioService {
     formData.append('usuarioJSON', JSON.stringify(usuario));
     formData.append('imagemFile', imagem);
 
-    return this.http.post<any>(this.usuariosUrl + "/adicionarUsuario", formData, { headers });
+    return this.http.post<any>(this.usuariosUrl + "/adicionarUsuario", formData, {headers});
   }
 
-  public addNovoAcessoIp(): Observable<HttpResponse<number>> {
-    return this.http.get<number>(this.localizacaoUrl + "/addNovoAcessoIp", {
-      observe: 'response',
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json',
-        'Accept': 'application/json'
-      })
-    }).pipe(
-      map((response: HttpResponse<number>) => {
-        if (response.body !== null) {
-          this.numeroAcesso = response.body;
-        }
-        return response;
-      }),
-      catchError((error) => {
-        console.error("Erro ao obter número:", error);
-        return throwError(() => error);
-      })
-    );
+  public addNovoAcessoIp(): Observable<boolean> {
+    return this.http.post<boolean>(this.usuariosUrl + "/addNovoAcessoIp", {})
+  }
+
+  public getAllAcessosIp(): Observable<number> {
+    return this.http.get<number>(this.usuariosUrl + "/getAllAcessosIp", {})
   }
 }
+
+

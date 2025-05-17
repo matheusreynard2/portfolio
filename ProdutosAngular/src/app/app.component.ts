@@ -29,10 +29,13 @@ export class AppComponent implements OnInit {
   mostrarPerfil: boolean = false;
   usuarioLogado!: Usuario;
   numeroVisitas: number = 0;
-  private observableVisitas: Observable<HttpResponse<number>> = of(new HttpResponse<number>({body: 0}));
   temaEscuro: boolean = false;
   isMobileOrTablet: boolean = false;
   menuOpen: boolean = false;
+
+  // Variáveis para contablização de acessos
+  carregando: boolean = false;
+  erro: string | null = null;
 
   ngOnInit() {
 
@@ -47,13 +50,10 @@ export class AppComponent implements OnInit {
       }
     });
 
-    // CARREGAR MODO CLAR/ESCURO E ACESSAR ENDPOINT DE CONTADOR DE IPs
+    // CARREGAR MODO CLARO/ESCURO E ACESSAR ENDPOINT DE CONTADOR DE IPs
     this.carregarTema();
-    this.observableVisitas = this.usuarioService.addNovoAcessoIp()
-    this.observableVisitas.subscribe((response: HttpResponse<number>) => {
-      this.numeroVisitas = response.body !== null ? response.body : 0;
-    });
-
+    // ADD NOVO IP E TRAZ QTDE TOTAL
+    this.adicionarContabilizarAcessos();
     // CHECA SE HÁ USUÁRIO LOGADO PARA REDIRECIONAR PARA AS ROTAS AUTENTICADAS OU NÃO
     this.usuarioLogado = this.authService.getUsuarioLogado()
     this.router.events.pipe(
@@ -70,6 +70,23 @@ export class AppComponent implements OnInit {
         || rotaAtual.includes('sobreTab1') || rotaAtual.includes('sobreTab2'));
       }
     });
+  }
+
+  async adicionarContabilizarAcessos() {
+    this.carregando = true;
+    this.erro = null;
+    try {
+      const acessoRegistrado = await firstValueFrom(this.usuarioService.addNovoAcessoIp());
+      // Segunda chamada somente se a primeira retornar true
+      acessoRegistrado
+        ? this.numeroVisitas = await firstValueFrom(this.usuarioService.getAllAcessosIp())
+        : this.erro = "Não foi possível registrar o acesso atual.";
+    } catch (error) {
+      console.error('Erro ao processar acessos:', error);
+      this.erro = "Ocorreu um erro ao processar os dados de acesso.";
+    } finally {
+      this.carregando = false;
+    }
   }
 
   // CARREGAR TEMA CLARO/ESCURO

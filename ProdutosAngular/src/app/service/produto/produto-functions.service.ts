@@ -10,7 +10,7 @@ export class ProdutoFunctionsService {
 
   private resultadoDesconto: number = 0
   // Essa variavel é utilizada para setar a variavel produto.valorDesconto quando envia para a API
-  private valorDescontoNumber: number = 0;
+  private valorDescontoNumber: number = 0
 
   constructor(private produtoService: ProdutoService, private zone: NgZone) {
   }
