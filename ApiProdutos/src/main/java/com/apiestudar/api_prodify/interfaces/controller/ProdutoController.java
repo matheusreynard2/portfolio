@@ -24,7 +24,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.apiestudar.api_prodify.application.usecase.produto.AdicionarProdutoUseCase;
 import com.apiestudar.api_prodify.application.usecase.produto.AtualizarProdutoUseCase;
-import com.apiestudar.api_prodify.application.usecase.produto.ConsultasSobreProdutosUseCase;
+import com.apiestudar.api_prodify.application.usecase.produto.CalculosSobreProdutosUseCase;
 import com.apiestudar.api_prodify.application.usecase.produto.DeletarProdutoUseCase;
 import com.apiestudar.api_prodify.application.usecase.produto.ListarProdutosUseCase;
 import com.apiestudar.api_prodify.application.usecase.produto.PesquisasSearchBarUseCase;
@@ -48,7 +48,7 @@ public class ProdutoController {
 	@Autowired
 	private DeletarProdutoUseCase deletarProduto;
 	@Autowired
-	private ConsultasSobreProdutosUseCase consultasProduto;
+	private CalculosSobreProdutosUseCase consultasProduto;
 
 	private static final Logger log = LoggerFactory.getLogger(ProdutoController.class);
 

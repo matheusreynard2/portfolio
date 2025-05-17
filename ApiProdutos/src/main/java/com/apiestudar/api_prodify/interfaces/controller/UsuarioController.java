@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +25,7 @@ import com.apiestudar.api_prodify.application.usecase.usuario.AdicionarUsuarioUs
 import com.apiestudar.api_prodify.application.usecase.usuario.DeletarUsuarioUseCase;
 import com.apiestudar.api_prodify.application.usecase.usuario.ListarUsuariosUseCase;
 import com.apiestudar.api_prodify.application.usecase.usuario.RealizarLoginUseCase;
+import com.apiestudar.api_prodify.application.usecase.usuario.UsuarioHelper;
 import com.apiestudar.api_prodify.domain.model.Usuario;
 
 import io.swagger.annotations.ApiOperation;
@@ -42,7 +45,23 @@ public class UsuarioController {
 	private DeletarUsuarioUseCase deletarUsuario;
 	@Autowired
 	private ListarUsuariosUseCase listarUsuarios;
-	
+	@Autowired
+	private UsuarioHelper usuarioHelper;
+
+	@ApiOperation(value = "Adiciona novo acesso pelo IP.", notes = "Quando um novo usuário acessa o site, ele registra o IP no banco.")
+	@ApiResponse(code = 200, message = "IP registrado.")
+	@PostMapping("/addNovoAcessoIp")
+	public ResponseEntity<Boolean> addNovoAcessoIp(HttpServletRequest req){
+		return ResponseEntity.status(HttpStatus.OK).body(usuarioHelper.acessoIP(req));
+	}
+
+	@ApiOperation(value = "Soma o total de acessos (IPs) que ja entraram no site.", notes = "Faz a somatória de acessos (IPs) que já entraram no site e exibe o total no rodapé.")
+	@ApiResponse(code = 200, message = "Total contabilizado.")
+	@GetMapping("/getAllAcessosIp")
+	public ResponseEntity<Long> getAllAcessosIp() throws IOException {
+		return ResponseEntity.status(HttpStatus.OK).body(usuarioHelper.getTotalAcessos());
+	}
+
 	@ApiOperation(value = "Listagem de todos os usuários cadastrados.", notes = "Faz uma busca no banco de dados retornando uma lista com todos os usuários cadastrados.")
 	@ApiResponse(code = 200, message = "Usuários encontrados.")
 	@GetMapping("/listarUsuarios")
@@ -74,8 +93,8 @@ public class UsuarioController {
 	@PostMapping("/realizarLogin")
 	public ResponseEntity<Map<String, Object>> realizarLogin(@RequestBody Usuario usuario) {
 		Map<String, Object> response = realizarLogin.executar(usuario);
-		return response.containsKey("msgCredenciaisInvalidas") 
-		    ? ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response)
-		    : ResponseEntity.status(HttpStatus.OK).body(response);
+		return response.containsKey("msgCredenciaisInvalidas")
+				? ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response)
+				: ResponseEntity.status(HttpStatus.OK).body(response);
 	}
 }

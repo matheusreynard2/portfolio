@@ -12,12 +12,12 @@ import com.apiestudar.api_prodify.domain.repository.ProdutoRepository;
 import com.apiestudar.api_prodify.shared.utils.Helper;
 
 @Service
-public class ConsultasSobreProdutosUseCase {
+public class CalculosSobreProdutosUseCase {
 
 	private final ProdutoRepository produtoRepository;
 
 	@Autowired
-	public ConsultasSobreProdutosUseCase(ProdutoRepository produtoRepository) {
+	public CalculosSobreProdutosUseCase(ProdutoRepository produtoRepository) {
 		this.produtoRepository = produtoRepository;
 	}
 	

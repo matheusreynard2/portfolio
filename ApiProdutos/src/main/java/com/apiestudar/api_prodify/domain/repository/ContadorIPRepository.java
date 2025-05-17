@@ -7,7 +7,7 @@ import com.apiestudar.api_prodify.domain.model.ContadorIP;
 
 public interface ContadorIPRepository {
 
-    ContadorIP adicionarContadorIP(ContadorIP contadorIP);
+    ContadorIP adicionarIP(ContadorIP contadorIP);
 
     List<ContadorIP> listarTodos();
 

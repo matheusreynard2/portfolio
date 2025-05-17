@@ -30,11 +30,7 @@ public class UsuarioHelper {
         this.usuarioRepository = usuarioRepository;
         this.contadorIPRepository = contadorIPRepository;
     }
-
-    public ContadorIP addNovoAcessoIp(ContadorIP novoAcesso) {
-        return contadorIPRepository.adicionarContadorIP(novoAcesso);
-    }
-
+    
     public String getSenhaByLogin(String loginUsuario) {
         return usuarioRepository.buscarSenhaPorLogin(loginUsuario);
     }
@@ -48,11 +44,15 @@ public class UsuarioHelper {
         return contadorIPRepository.contarIpRepetido(novoAcesso);
     }
 
-    public long getTotalAcessos() {
+    public Long getTotalAcessos() {
         return contadorIPRepository.contarTotalAcessos();
     }
+    
+    public int contarLoginRepetido(String login) {
+        return usuarioRepository.contarLoginRepetido(login);
+    }
 
-    public long acessoIP(HttpServletRequest req) {
+    public boolean acessoIP(HttpServletRequest req) {
         IpExtractorManager ipExtractor = new IpExtractorManager(Arrays.asList(
             new HeaderIpExtractor("X-Forwarded-For"),
             new HeaderIpExtractor("Proxy-Client-IP"),
@@ -66,9 +66,8 @@ public class UsuarioHelper {
         if (findIPRepetido(ip) == NR_MAX_REPETICOES) {
             ContadorIP novoAcesso = new ContadorIP();
             novoAcesso.setNumeroIp(ip);
-            addNovoAcessoIp(novoAcesso);
+            contadorIPRepository.adicionarIP(novoAcesso);
         }
-
-        return getTotalAcessos();
+        	return true;
     }
 }

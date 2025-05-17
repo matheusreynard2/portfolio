@@ -19,7 +19,7 @@ public class ContadorIPRepositoryImpl implements ContadorIPRepository {
     }
 
     @Override
-    public ContadorIP adicionarContadorIP(ContadorIP contadorIP) {
+    public ContadorIP adicionarIP(ContadorIP contadorIP) {
         return contadorIPJpaRepository.save(contadorIP);
     }
 
