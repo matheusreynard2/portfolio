@@ -50,6 +50,10 @@ export class ProdutoListComponent implements OnInit {
   currentPage: number = 0;
   pageSize: number = 10;
 
+  // Para calcular valor X quantia
+  private valorInicialAnterior: number = 0;
+  private quantiaAnterior: number = 1;
+
   private modalService: NgbModal = new NgbModal();
   @ViewChild('searchBar') searchBar!: ElementRef
   @ViewChild('modalAvisoToken') modalAvisoToken!: ElementRef
@@ -178,10 +182,11 @@ export class ProdutoListComponent implements OnInit {
     this.calcularMedia(usuarioLogadoId);
   }
 
-  // Calcula os totalizadores de valor. função chamada ao clicar no botão Calcular valores
-  // e antes de gravar o produto no banco de dados no onSubmit do formulário ngModel
+  // Faz os calculos gerais após calcular valor X quantia
   calcularValores(produto: Produto) {
-    this.produtoFunctionsService.calcularValores(produto);
+    this.calcularValorXQuantia(produto).then(() => {(
+      this.produtoFunctionsService.calcularValores(produto));
+    });
   }
 
   // Função chamada ao mudar de valor na ComboBox de Promoção no ngModel
@@ -222,6 +227,27 @@ export class ProdutoListComponent implements OnInit {
 
   onFileChange(event: any) {
     this.imagemFile = event.target.files[0];
+  }
+
+  // Faz o cálculo dos valores em relação a quantidade
+  async calcularValorXQuantia(produto: Produto): Promise<void> {
+    // Inicializa valorUnitario na primeira vez se não existir
+    if (!produto.valorInicial) {
+      produto.valorInicial = produto.valor;
+    }
+
+    // Só calcula se a quantidade ou o valor unitário mudaram
+    if (produto.valorInicial !== this.valorInicialAnterior ||
+      produto.quantia !== this.quantiaAnterior) {
+
+      produto.valor = produto.quantia * produto.valorInicial;
+
+      // Armazena os valores atuais para comparação futura
+      this.valorInicialAnterior = produto.valorInicial;
+      this.quantiaAnterior = produto.quantia;
+
+      return Promise.resolve();
+    }
   }
 
 }

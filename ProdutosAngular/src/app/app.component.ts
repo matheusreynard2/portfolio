@@ -76,6 +76,7 @@ export class AppComponent implements OnInit {
     this.carregando = true;
     this.erro = null;
     try {
+      console.log(this.authService.existeToken())
       const acessoRegistrado = await firstValueFrom(this.usuarioService.addNovoAcessoIp());
       // Segunda chamada somente se a primeira retornar true
       acessoRegistrado

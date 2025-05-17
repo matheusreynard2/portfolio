@@ -36,6 +36,7 @@ export class AddProdutoComponent implements OnInit {
     valorTotalDesc: 0,
     valorTotalFrete: 0,
     valor: 0,
+    valorInicial: 0,
     quantia: 1,
     somaTotalValores: 0,
     freteAtivo: false,
@@ -46,7 +47,11 @@ export class AddProdutoComponent implements OnInit {
   // Variáveis
   novoProduto!: Produto;
   imagemFile: File = new File([], '', {})
-  adicionouProduto: boolean = false;
+  adicionouProduto: boolean = false
+
+  // Para calcular valor X quantia
+  private valorInicialAnterior: number = 0;
+  private quantiaAnterior: number = 1;
 
   // Services
   private modalService: NgbModal = new NgbModal();
@@ -104,12 +109,32 @@ export class AddProdutoComponent implements OnInit {
     }
   }
 
-  // Calcula os totalizadores de valor. Função chamada ao clicar no botão Calcular valores
-  // e antes de gravar o produto no banco de dados.
+  // Faz os calculos gerais após calcular valor X quantia
   calcularValores(produto: Produto) {
-    // Calcula o valor total do produto pela quantidade
-    produto.valor = this.produto.quantia * this.produto.valor
-    this.produtoFunctionsService.calcularValores(produto);
+    this.calcularValorXQuantia(produto).then(() => {(
+      this.produtoFunctionsService.calcularValores(produto));
+    });
+  }
+
+  // Faz o cálculo dos valores em relação a quantidade
+  async calcularValorXQuantia(produto: Produto): Promise<void> {
+    // Inicializa valorUnitario na primeira vez se não existir
+    if (!produto.valorInicial) {
+      produto.valorInicial = produto.valor;
+    }
+
+    // Só calcula se a quantidade ou o valor unitário mudaram
+    if (produto.valorInicial !== this.valorInicialAnterior ||
+      produto.quantia !== this.quantiaAnterior) {
+
+      produto.valor = produto.quantia * produto.valorInicial;
+
+      // Armazena os valores atuais para comparação futura
+      this.valorInicialAnterior = produto.valorInicial;
+      this.quantiaAnterior = produto.quantia;
+
+      return Promise.resolve();
+    }
   }
 
   onFileChange(event: any) {

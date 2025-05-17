@@ -97,6 +97,8 @@
   </div>
 </div>
 
+<!--######## INICIO DO MODAL DE EDIÇÃO DE PRODUTO ######## -->
+
 <ng-template #modalEditar let-modal>
   <div class="largeTemplate">
     <div class="modal-header">
@@ -109,7 +111,7 @@
       <p>Informações do produto <b>{{ produtoAtualizar.nome }}</b></p>
     </div>
 
-    <!--######## INICIO DO FORMULÁRIO DE EDIÇÃO DE PRODUTO ######## -->
+
 
     <div class="card-body">
       <form (ngSubmit)="onSubmitSalvar(modal)" #produtoForm="ngForm" >
@@ -175,7 +177,7 @@
 
             <tr>
               <td class="coluna_um"><label>Valor do frete:</label></td>
-              <td colspan="4">
+              <td colspan="3">
                 <input type="number" [(ngModel)]="produtoAtualizar.frete"
                        class="form-control"
                        id="frete"
@@ -194,30 +196,16 @@
                        [disabled]="!produtoAtualizar.freteAtivo"
                        style="width: 100%; display: none;">
               </td>
-              <td colspan="4">
+              <td class="td-ajustada" colspan="1">
                 <div class="mt-1">{{produtoAtualizar.frete | currency : 'BRL'}}</div>
               </td>
-            </tr>
-
-            <tr>
-              <td class="coluna_um"><label for="valor">Valor unitário:</label></td>
-              <td colspan="4" style="width: 200px;">
-                <input type="number" [(ngModel)]="produtoAtualizar.valor"
-                       class="form-control"
-                       id="valor"
-                       name="valorProduto"
-                       required #valor="ngModel"
-                       maxlength="30"
-                       style="width: 200px">
-              </td>
-              <td colspan="5">
-                <div class="mt-1">{{produtoAtualizar.valor | currency : 'BRL'}}</div>
-              </td>
+              <td colspan="4"></td>
             </tr>
 
             <tr>
               <td class="coluna_um"><label for="valorTotalDesc">Valor total com desconto:</label></td>
-              <td colspan="8">
+              <td colspan="3">
+                <!-- TEXTBOX COM DISPLAY=NONE APENAS PARA FINS DE CALCULO COM O NGMODEL -->
                 <input type="number" [(ngModel)]="produtoAtualizar.valorTotalDesc"
                        class="form-control"
                        id="valorTotalDesc"
@@ -227,6 +215,35 @@
                        style="width: 100%; display: none;">
                 <div class="mt-1">{{produtoAtualizar.valorTotalDesc | currency : 'BRL'}}</div>
               </td>
+              <td class="td-ajustada" colspan="1"><label>Valor quantidade:</label></td>
+              <td colspan="4">
+                <div class="mt-1">{{produtoAtualizar.valor | currency : 'BRL'}}</div>
+              </td>
+            </tr>
+
+            <tr>
+              <td class="coluna_um"><label for="valorInicial">Valor unitário:</label></td>
+              <td colspan="3" style="width: 200px;">
+                <input type="number" [(ngModel)]="produtoAtualizar.valorInicial"
+                       class="form-control"
+                       id="valorInicial"
+                       name="valorInicialProduto"
+                       required #valorInicial="ngModel"
+                       maxlength="30"
+                       style="width: 200px">
+                <!-- TEXTBOX COM DISPLAY=NONE APENAS PARA FINS DE CALCULO COM O NGMODEL -->
+                <input type="number" [(ngModel)]="produtoAtualizar.valor"
+                       class="form-control"
+                       id="valor"
+                       name="valorProduto"
+                       required #valor="ngModel"
+                       maxlength="30"
+                       style="width: 100%; display: none;">
+              </td>
+              <td class="td-ajustada" colspan="1">
+                <div class="mt-1">{{produtoAtualizar.valorInicial | currency : 'BRL'}}</div>
+              </td>
+              <td colspan="4"></td>
             </tr>
 
             <tr>

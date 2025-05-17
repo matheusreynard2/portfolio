@@ -86,18 +86,26 @@
             <td colspan="4"></td>
           </tr>
           <tr>
-            <td><label for="valor">Valor unitário:</label></td>
+            <td><label for="valorInicial">Valor unitário:</label></td>
             <td>
+              <input type="number" [(ngModel)]="produto.valorInicial"
+                     class="form-control"
+                     id="valorInicial"
+                     name="valorInicialProduto"
+                     required #valorInicial="ngModel"
+                     maxlength="30">
+            </td>
+            <!-- TEXTBOX COM DISPLAY=NONE APENAS PARA FINS DE CALCULO COM O NGMODEL -->
               <input type="number" [(ngModel)]="produto.valor"
                      class="form-control"
                      id="valor"
                      name="valorProduto"
                      required #valor="ngModel"
-                     maxlength="30">
-            </td>
+                     maxlength="30"
+                     style="display: none;">
             <td>
               <label for="valorTotalDesc">Valor produto c/ desconto:</label></td>
-            <!-- COMBOBOX COM DISPLAY=NONE APENAS PARA FINS DE CALCULO COM O NGMODEL -->
+            <!-- TEXTBOX COM DISPLAY=NONE APENAS PARA FINS DE CALCULO COM O NGMODEL -->
             <input type="number" [(ngModel)]="produto.valorTotalDesc"
                    class="form-control"
                    id="valorTotalDesc"
@@ -110,9 +118,9 @@
             </td>
           </tr>
           <tr>
-            <td></td>
+            <td><label for="produtoValor">Valor quantidade:</label></td>
             <td>
-              <div class="mt-1">{{produto.valor || 0 | currency : 'BRL'}}</div>
+              <div id="produtoValor" class="mt-1">{{produto.valor || 0 | currency : 'BRL'}}</div>
             </td>
             <!-- Valor Total com Desconto e Valor Total do Frete na mesma linha -->
             <td>

@@ -17,6 +17,8 @@ export class Produto {
 
   public valor: number;
 
+  public valorInicial: number;
+
   public quantia: number;
 
   public somaTotalValores: number;
@@ -37,6 +39,7 @@ export class Produto {
     valorTotalDesc: number,
     valorTotalFrete: number,
     valor: number,
+    valorInicial: number,
     quantia: number,
     somaTotalValores: number,
     freteAtivo: boolean,
@@ -49,6 +52,7 @@ export class Produto {
     this.somaTotalValores = somaTotalValores;
     this.quantia = quantia;
     this.valor = valor;
+    this.valorInicial = valorInicial;
     this.valorTotalFrete = valorTotalFrete;
     this.valorTotalDesc = valorTotalDesc;
     this.promocao = promocao;

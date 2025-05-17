@@ -70,6 +70,7 @@ export class ProdutoFunctionsService {
     })
   }
 
+
   calcularValores(produto: Produto) {
     // Desconto SIM e Frete SIM
     if (produto.promocao && produto.freteAtivo) {
