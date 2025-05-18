@@ -38,9 +38,6 @@ export class AppComponent implements OnInit {
   erro: string | null = null;
 
   ngOnInit() {
-
-    //this.carregarGoogleMapsScript();
-
     // OBSERVER DE SELEÇÃO DO MENU PARA SABER SE ESTÁ ACESSANDO POR CELULAR/COMPUTADOR
     this.deviceService.isMobileOrTablet.subscribe(isMobile => {
       this.isMobileOrTablet = isMobile;
@@ -50,33 +47,35 @@ export class AppComponent implements OnInit {
       }
     });
 
-    // CARREGAR MODO CLARO/ESCURO E ACESSAR ENDPOINT DE CONTADOR DE IPs
+    // CARREGAR MODO CLARO/ESCURO
     this.carregarTema();
     // ADD NOVO IP E TRAZ QTDE TOTAL
-    this.adicionarContabilizarAcessos();
-    // CHECA SE HÁ USUÁRIO LOGADO PARA REDIRECIONAR PARA AS ROTAS AUTENTICADAS OU NÃO
-    this.usuarioLogado = this.authService.getUsuarioLogado()
-    this.router.events.pipe(
-      filter((event)  => event instanceof NavigationEnd)
-    ).subscribe(() => {
+    this.adicionarContabilizarAcessos().then(() => {
+      // CHECA SE HÁ USUÁRIO LOGADO PARA REDIRECIONAR PARA AS ROTAS AUTENTICADAS OU NÃO
       this.usuarioLogado = this.authService.getUsuarioLogado()
-      const rotaAtual = this.router.url;
+      this.router.events.pipe(
+        filter((event)  => event instanceof NavigationEnd)
+      ).subscribe(() => {
+        this.usuarioLogado = this.authService.getUsuarioLogado()
+        const rotaAtual = this.router.url;
 
-      // CHECAGEM PARA EXIBIÇÃO DO PERFIL NO CANTO SUPERIOR ESQUERDO DA TELA
-      if (!this.authService.existeToken()) {
+        // CHECAGEM PARA EXIBIÇÃO DO PERFIL NO CANTO SUPERIOR ESQUERDO DA TELA
+        if (!this.authService.existeToken()) {
           this.mostrarPerfil = false;
-      } else if (this.authService.existeToken()) {
-        this.mostrarPerfil = !(rotaAtual.includes('login') || rotaAtual.includes('cadastrar-usuario')
-        || rotaAtual.includes('sobreTab1') || rotaAtual.includes('sobreTab2'));
-      }
-    });
+        } else if (this.authService.existeToken()) {
+          this.mostrarPerfil = !(rotaAtual.includes('login') || rotaAtual.includes('cadastrar-usuario')
+            || rotaAtual.includes('sobreTab1') || rotaAtual.includes('sobreTab2'));
+        }
+      });
+    }).catch(error => {
+        console.error("Erro na contabilização de acessos: ", error);
+      });
   }
 
-  async adicionarContabilizarAcessos() {
+  async adicionarContabilizarAcessos(): Promise<void> {
     this.carregando = true;
     this.erro = null;
     try {
-      console.log(this.authService.existeToken())
       const acessoRegistrado = await firstValueFrom(this.usuarioService.addNovoAcessoIp());
       // Segunda chamada somente se a primeira retornar true
       acessoRegistrado
@@ -88,6 +87,7 @@ export class AppComponent implements OnInit {
     } finally {
       this.carregando = false;
     }
+    return Promise.resolve();
   }
 
   // CARREGAR TEMA CLARO/ESCURO
