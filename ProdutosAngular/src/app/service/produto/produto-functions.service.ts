@@ -2,6 +2,7 @@ import {Injectable, NgZone} from '@angular/core';
 import {Produto} from '../../model/produto';
 import {ProdutoService} from './produto.service';
 import {HttpClient} from '@angular/common/http';
+import {ProdutoDTO} from '../../model/dto/ProdutoDTO';
 
 @Injectable({
   providedIn: 'root'
@@ -34,13 +35,13 @@ export class ProdutoFunctionsService {
   }
 
   // CALCULO DE VALOR DE FRETE
-  calcularFrete(produto: Produto): number {
+  calcularFrete(produto: ProdutoDTO): number {
     let valorFrete = produto.frete;
     return valorFrete;
   }
 
   // Calcula o valor do desconto de acordo com a porcentagem passada pelo usuário
-  calcularDesconto(produto: Produto): Promise<void> {
+  calcularDesconto(produto: ProdutoDTO): Promise<void> {
     return new Promise<void>((resolve) => {
       if (!produto.promocao) {
         this.resultadoDesconto = 0
@@ -71,7 +72,7 @@ export class ProdutoFunctionsService {
   }
 
 
-  calcularValores(produto: Produto) {
+  calcularValores(produto: ProdutoDTO) {
     // Desconto SIM e Frete SIM
     if (produto.promocao && produto.freteAtivo) {
         this.calcularDesconto(produto).then(() => {

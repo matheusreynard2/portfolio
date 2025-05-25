@@ -6,6 +6,9 @@ import {AuthService} from '../auth/auth.service';
 import {Router} from '@angular/router';
 import {PaginatedResponse} from '../../paginated-response';
 import {environment} from '../../../environments/environment';
+import {Fornecedor} from '../../model/fornecedor';
+import {FornecedorDTO} from '../../model/dto/FornecedorDTO';
+import {ProdutoDTO} from '../../model/dto/ProdutoDTO';
 
 @Injectable({
   providedIn: 'root'  // Garante que o serviço esteja disponível globalmente em toda a aplicação
@@ -13,11 +16,13 @@ import {environment} from '../../../environments/environment';
 export class ProdutoService {
 
   private produtosUrl: string;
+  private fornecedorUrl: string;
   private apiUrl = environment.API_URL;
 
   constructor(private http: HttpClient, private authService: AuthService, private router: Router) {
     // URL DO REST CONTROLLER
     this.produtosUrl = this.apiUrl + '/produtos';
+    this.fornecedorUrl = this.apiUrl + '/fornecedores';
   }
 
   // Se o token expirou, remove o token
@@ -42,8 +47,8 @@ export class ProdutoService {
   }
 
   // ENDPOINT GET - Listar produtos pela barra de pesquisa
-  public efetuarPesquisa(tipoPesquisa: string, valorPesquisa: string, idUsuario: number): Observable<Produto[]> {
-    return this.http.get<Produto[]>(this.produtosUrl + "/efetuarPesquisa/" + tipoPesquisa + "/" + valorPesquisa + "/" + idUsuario).pipe(
+  public efetuarPesquisa(tipoPesquisa: string, valorPesquisa: string, idUsuario: number): Observable<ProdutoDTO[]> {
+    return this.http.get<ProdutoDTO[]>(this.produtosUrl + "/efetuarPesquisa/" + tipoPesquisa + "/" + valorPesquisa + "/" + idUsuario).pipe(
       // Aqui fazemos o tratamento do erro 401 para TOKEN EXPIRADO
       catchError((error: HttpErrorResponse) => {
         if (error.status === 401 && error.error.message === 'Tempo limite de conexão com o sistema excedido. TOKEN Expirado')
@@ -54,13 +59,13 @@ export class ProdutoService {
   }
 
   // ========= OK ========= ENDPOINT GET - Listar todos os produtos
-  public listarProdutos(page: number, size: number): Observable<PaginatedResponse<Produto>> {
+  public listarProdutos(page: number, size: number): Observable<PaginatedResponse<ProdutoDTO>> {
 
     const params = new HttpParams()
       .set('page', page.toString())
       .set('size', size.toString());
 
-    return this.http.get<PaginatedResponse<Produto>>(this.produtosUrl + "/listarProdutos", {params}).pipe(
+    return this.http.get<PaginatedResponse<ProdutoDTO>>(this.produtosUrl + "/listarProdutos", {params}).pipe(
     // Aqui fazemos o tratamento do erro 401 para TOKEN EXPIRADO
     catchError((error: HttpErrorResponse) => {
       if (error.status === 401 && error.error.message === 'Tempo limite de conexão com o sistema excedido. TOKEN Expirado')
@@ -71,13 +76,13 @@ export class ProdutoService {
   }
 
   // ========= OK ========= ENDPOINT POST - Adicionar / Cadastrar um novo produto
-    public adicionarProduto(produto: Produto, imagem: File) {
+    public adicionarProduto(produto: ProdutoDTO, imagem: File) {
     const formData = new FormData();
     const headers = new HttpHeaders();
     formData.append('produtoJSON', JSON.stringify(produto)); // Produto como JSON
     formData.append('imagemFile', imagem);                   // Arquivo de imagem
 
-    return this.http.post<Produto>(this.produtosUrl + "/adicionarProduto", formData, { headers }).pipe(
+    return this.http.post<ProdutoDTO>(this.produtosUrl + "/adicionarProduto", formData, { headers }).pipe(
       // Aqui fazemos o tratamento do erro 401 para TOKEN EXPIRADO
       catchError((error: HttpErrorResponse) => {
         if (error.status === 401 && error.error.message === 'Tempo limite de conexão com o sistema excedido. TOKEN Expirado')
@@ -104,13 +109,13 @@ export class ProdutoService {
   }
 
   // ========= OK =========  ENDPOINT PUT - Atualizar um produto
-  public atualizarProduto(id: number, produto: Produto, imagem: File) {
+  public atualizarProduto(id: number, produto: ProdutoDTO, imagem: File) {
     const formData = new FormData();
     const headers = new HttpHeaders();
     formData.append('produtoJSON', JSON.stringify(produto)); // Produto como JSON
     formData.append('imagemFile', imagem);                   // Arquivo de imagem
 
-    return this.http.put<Produto>(this.produtosUrl + "/atualizarProduto/" + id, formData,  { headers }).pipe(
+    return this.http.put<ProdutoDTO>(this.produtosUrl + "/atualizarProduto/" + id, formData,  { headers }).pipe(
       // Aqui fazemos o tratamento do erro 401 para TOKEN EXPIRADO
       catchError((error: HttpErrorResponse) => {
         if (error.status === 401 && error.error.message === 'Tempo limite de conexão com o sistema excedido. TOKEN Expirado')
@@ -140,6 +145,11 @@ export class ProdutoService {
         return throwError(error);
       })
     );
+  }
+
+  // Método para listar todos os fornecedores na ComboBox de Cadastrar Produto
+  public listarFornecedoresList(): Observable<FornecedorDTO[]> {
+    return this.http.get<FornecedorDTO[]>(this.fornecedorUrl + "/listarFornecedoresList");
   }
 
 }

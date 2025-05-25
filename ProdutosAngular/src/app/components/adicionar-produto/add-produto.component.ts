@@ -2,13 +2,15 @@ import {Component, OnInit, ViewChild} from '@angular/core';
 import { ProdutoService } from '../../service/produto/produto.service';
 import {FormsModule} from '@angular/forms';
 import {Produto} from '../../model/produto';
-import {CurrencyPipe, NgIf, NgOptimizedImage} from '@angular/common';
+import {CurrencyPipe, NgForOf, NgIf, NgOptimizedImage} from '@angular/common';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import { ProdutoFunctionsService } from '../../service/produto/produto-functions.service';
 import {PorcentagemMaskDirective} from '../../directives/porcentagem-mask.directive';
 import {AuthService} from '../../service/auth/auth.service';
-import {UsuarioService} from '../../service/usuario/usuario.service';
 import {DeviceService} from '../../service/device/device.service';
+import {Fornecedor} from '../../model/fornecedor';
+import {FornecedorDTO} from '../../model/dto/FornecedorDTO';
+import {ProdutoDTO} from '../../model/dto/ProdutoDTO';
 
 @Component({
   selector: 'app-add-produto',
@@ -17,7 +19,8 @@ import {DeviceService} from '../../service/device/device.service';
     FormsModule,
     CurrencyPipe,
     NgOptimizedImage,
-    PorcentagemMaskDirective
+    PorcentagemMaskDirective,
+    NgForOf
   ],
   styleUrls: ['./add-produto.component.css']
 })
@@ -26,7 +29,7 @@ export class AddProdutoComponent implements OnInit {
 
   // É criado um produto zerado para poder ser acesso pelo ngModel, mas as propriedades são alteradas
   // pelos valores inseridos no formulário, então são passadas para o service da API.
-  produto: Produto = {
+  produto: ProdutoDTO = {
     id: 0,
     idUsuario: 0,
     nome: '',
@@ -41,13 +44,16 @@ export class AddProdutoComponent implements OnInit {
     somaTotalValores: 0,
     freteAtivo: false,
     valorDesconto: 0,
-    imagem: ''
+    imagem: '',
+    fornecedor: undefined
   };
 
   // Variáveis
-  novoProduto!: Produto;
+  novoProduto!: ProdutoDTO;
   imagemFile: File = new File([], '', {})
   adicionouProduto: boolean = false
+  fornecedores: FornecedorDTO[] = [];
+  fornecedorSelecionado: FornecedorDTO | undefined = undefined;
 
   // Para calcular valor X quantia
   private valorInicialAnterior: number = 0;
@@ -66,6 +72,12 @@ export class AddProdutoComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.produtoService.listarFornecedoresList().subscribe(data => {
+      this.fornecedores = data;
+      // Garante que o fornecedor seja undefined inicialmente
+      this.produto.fornecedor = undefined;
+      this.fornecedorSelecionado = undefined;
+    });
     this.adicionouProduto = false;
     this.produtoService.acessarPaginaCadastro().subscribe();
     this.deviceService.isMobileOrTablet.subscribe(isMobile => {
@@ -81,7 +93,7 @@ export class AddProdutoComponent implements OnInit {
 
     // Adiciona o produto no banco depois chama a mensagem de sucesso de adição de produto "msgAddProduto"
     this.produtoService.adicionarProduto(this.produto, this.imagemFile).subscribe({
-      next: (produtoAdicionado: Produto) => {
+      next: (produtoAdicionado: ProdutoDTO) => {
         this.novoProduto = produtoAdicionado
         this.adicionouProduto = true;
         this.msgAddProduto(this.modalMsgAddProduto)
@@ -110,14 +122,14 @@ export class AddProdutoComponent implements OnInit {
   }
 
   // Faz os calculos gerais após calcular valor X quantia
-  calcularValores(produto: Produto) {
+  calcularValores(produto: ProdutoDTO) {
     this.calcularValorXQuantia(produto).then(() => {(
       this.produtoFunctionsService.calcularValores(produto));
     });
   }
 
   // Faz o cálculo dos valores em relação a quantidade
-  async calcularValorXQuantia(produto: Produto): Promise<void> {
+  async calcularValorXQuantia(produto: ProdutoDTO): Promise<void> {
     // Inicializa valorUnitario na primeira vez se não existir
     if (!produto.valorInicial) {
       produto.valorInicial = produto.valor;
@@ -139,5 +151,11 @@ export class AddProdutoComponent implements OnInit {
 
   onFileChange(event: any) {
     this.imagemFile = event.target.files[0];
+  }
+
+  // Função que é chamada quando o fornecedor é selecionado
+  onFornecedorChange(fornecedor: FornecedorDTO | undefined) {
+    this.fornecedorSelecionado = fornecedor;
+    this.produto.fornecedor = fornecedor;
   }
 }

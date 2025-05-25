@@ -3,10 +3,10 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { GeolocalizacaoService } from '../../service/geolocalizacao/geolocalizacao.service';
 import { EnderecoFornecedor } from '../../model/endereco-fornecedor';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { Fornecedor } from '../../model/fornecedor';
 import { FornecedorService } from '../../service/fornecedor/fornecedor.service';
 import { NgOptimizedImage } from '@angular/common';
 import { NgxMaskDirective, provideNgxMask } from 'ngx-mask';
+import {FornecedorDTO} from '../../model/dto/FornecedorDTO';
 
 @Component({
   selector: 'adicionar-fornecedor',
@@ -46,11 +46,12 @@ export class AdicionarFornecedorComponent implements OnInit {
     erro: ''
   };
 
-  novoFornecedor: Fornecedor = {
+  novoFornecedor: FornecedorDTO = {
     id: 0,
     nome: '',
     nrResidencia: '',
-    enderecoFornecedor: this.endereco
+    enderecoFornecedor: this.endereco,
+    produtos: []
   };
 
   // Opções da máscara de CEP
@@ -108,7 +109,7 @@ export class AdicionarFornecedorComponent implements OnInit {
     this.gerarDadosFornecedor();
     // Adiciona o produto no banco depois chama a mensagem de sucesso de adição de produto "msgAddProduto"
     this.fornecedorService.adicionarFornecedor(this.novoFornecedor).subscribe({
-      next: (fornecedorAdicionado: Fornecedor) => {
+      next: (fornecedorAdicionado: FornecedorDTO) => {
         this.novoFornecedor = fornecedorAdicionado;
         this.adicionouFornecedor = true;
         this.mensagemErro = "" // VOLTA A MSG DO MODAL DE ERROS PARA STRING VAZIA
@@ -128,7 +129,8 @@ export class AdicionarFornecedorComponent implements OnInit {
       enderecoFornecedor: {
         ...this.endereco,
         cep: cepFormatado // Garante que o CEP seja enviado apenas com números
-      }
+      },
+      produtos: []
     }
   }
 }

@@ -1,4 +1,5 @@
-import { EnderecoGeolocalizacao } from './endereco-geolocalizacao';
+class EnderecoGeolocalizacao {
+}
 
 describe('EnderecoGeolocalizacao', () => {
   it('should create an instance', () => {

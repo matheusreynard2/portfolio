@@ -1,6 +1,5 @@
 <div class="tabela-container">
   <table class="table table-bordered table-striped table-fixed">
-    <thead class="thead-dark">
       <table class="table table-bordered table-striped">
         <thead class="thead-dark">
         <tr>
@@ -35,7 +34,8 @@
         </tbody>
       </table>
   <mat-paginator [length]="totalRecords" [pageSize]="pageSize" [pageIndex]="currentPage" (page)="trocarPagina($event)"></mat-paginator>
-
+    </table>
+</div>
 
 <!-- Janela (modal) que abre ao clicar no botão Excluir -->
 <ng-template #modalMsgExcluir let-modal>

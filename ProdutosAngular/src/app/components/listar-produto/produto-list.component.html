@@ -36,6 +36,7 @@
       <tr>
         <th class="text-center coluna_id"><strong>ID</strong></th>
         <th class="text-left coluna_nome"><strong>Nome</strong></th>
+        <th class="text-left coluna_nome"><strong>Fornecedor</strong></th>
         <th class="text-center"><strong>Valor unitário</strong></th>
         <th class="text-center"><strong>Promoção</strong></th>
         <th class="text-center"><strong>Vl un desc</strong></th>
@@ -51,6 +52,7 @@
         <div *ngIf="popUpVisivel" class="img-popup image-container">
           <img *ngIf="imgBase64" [src]="'data:image/jpeg;base64,' + imgBase64"/>
         </div>
+        <td class="text-center">{{ produto.fornecedor?.nome }}</td>
         <td class="text-center">{{ formatarValor(produto.valor) }}</td>
           <td class="text-center">
             <img
@@ -66,10 +68,10 @@
             {{ formatarValor(produto.somaTotalValores) }}
           </td>
           <td class="text-center">
-            <button type="button" class="btn btn-info full-width-btn" id="btn_editar" (click)="atualizarProduto(modalEditar, produto.id, produto)">Editar</button>
+            <button type="button" class="btn btn-info full-width-btn" id="btn_editar" (click)="atualizarProduto(modalEditar, produto.id, produto)">✎</button>
           </td>
           <td class="text-center">
-            <button type="button" class="btn btn-danger full-width-btn" id="btn_excluir" (click)="deletarProduto(modalMsgExcluir, produto.id, produto)">Excluir</button>
+            <button type="button" class="btn btn-danger full-width-btn" id="btn_excluir" (click)="deletarProduto(modalMsgExcluir, produto.id, produto)">X</button>
           </td>
         </tr>
 
@@ -87,7 +89,7 @@
         </tr>
       <tr>
         <td>
-          <button class="btn bg-primary-subtle fw-bold" (click)="atualizarLista()" role="button">Atualizar</button>
+          <button class="btn bg-primary-subtle fw-bold" (click)="atualizarLista()" role="button" style="font-size: 25px; width: 100px">↻</button>
         </td>
       </tr>
       </tbody>
@@ -363,7 +365,7 @@
     <img ngSrc="/codigo_barras.png" height="60" width="60" class="img-right"/>
   </div>
   <div class="modal-body">
-    <a style="font-size: 15px;">Informações atualizadas! Clique em <strong>ATUALIZAR</strong> para visualizar</a><br>
+    <a style="font-size: 15px;">Informações atualizadas! Clique em <strong><span style="font-size: 30px;"> ↻ </span></strong> para visualizar</a><br>
     <a style="font-size: 15px;">as alterações!</a>
   </div>
   <div class="modal-footer">

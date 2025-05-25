@@ -13,6 +13,7 @@ import {HttpResponse} from '@angular/common/http';
 import {DeviceService} from '../../service/device/device.service';
 import {Fornecedor} from '../../model/fornecedor';
 import {FornecedorService} from '../../service/fornecedor/fornecedor.service';
+import {FornecedorDTO} from '../../model/dto/FornecedorDTO';
 
 @Component({
   selector: 'app-listar-fornecedor',  // Corrigido para 'app-produto-list', sem a barra inicial
@@ -32,18 +33,18 @@ import {FornecedorService} from '../../service/fornecedor/fornecedor.service';
 
 export class ListarFornecedorComponent implements OnInit {
 
-  listaFornecedores!: Fornecedor[];
+  listaFornecedores!: FornecedorDTO[];
 
   // Variáveis de paginação
-  totalRecords: number = 0;
   currentPage: number = 0;
   pageSize: number = 10;
+  totalRecords: number = 0;
 
   private modalService: NgbModal = new NgbModal();
   @ViewChild('searchBar') searchBar!: ElementRef
   @ViewChild('modalAvisoToken') modalAvisoToken!: ElementRef
   isMobileOrTablet: boolean = false;
-  fornecedorExcluido!: Fornecedor;
+  fornecedorExcluido!: FornecedorDTO;
 
   constructor(private fornecedorService: FornecedorService,
               private authService: AuthService, private deviceService: DeviceService) { }
@@ -61,7 +62,7 @@ export class ListarFornecedorComponent implements OnInit {
   }
 
   // Função para deletar um produto através do id. Chama o endpoint, e a msg de sucesso
-  deletarFornecedor(modalDeletar: any, id: number, fornecedor: Fornecedor) {
+  deletarFornecedor(modalDeletar: any, id: number, fornecedor: FornecedorDTO) {
     this.fornecedorService.deletarFornecedor(id).subscribe({
       next: (response) => {
         if (response.status === 200) {

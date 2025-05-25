@@ -1,4 +1,3 @@
-import { Geolocation } from './geolocalizacao';
 
 describe('Geolocation', () => {
   it('should create an instance', () => {

@@ -1,5 +1,5 @@
 #btn_excluir, #btn_editar {
-  font-size: 15px;
+  font-size: 20px;
 }
 
 .coluna_id {
@@ -23,12 +23,6 @@
 
 .table td button {
   width: 100%;        /* Faz o botão ocupar toda a célula */
-}
-
-/* Alinha todos os botões de "Editar" e "Excluir" na mesma largura */
-.full-width-btn {
-  width: 100%;
-  display: block;
 }
 
 .modal-header {

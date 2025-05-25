@@ -49,27 +49,44 @@ export class AppComponent implements OnInit {
 
     // CARREGAR MODO CLARO/ESCURO
     this.carregarTema();
-    // ADD NOVO IP E TRAZ QTDE TOTAL
-    this.adicionarContabilizarAcessos().then(() => {
-      // CHECA SE HÁ USUÁRIO LOGADO PARA REDIRECIONAR PARA AS ROTAS AUTENTICADAS OU NÃO
-      this.usuarioLogado = this.authService.getUsuarioLogado()
-      this.router.events.pipe(
-        filter((event)  => event instanceof NavigationEnd)
-      ).subscribe(() => {
-        this.usuarioLogado = this.authService.getUsuarioLogado()
-        const rotaAtual = this.router.url;
 
-        // CHECAGEM PARA EXIBIÇÃO DO PERFIL NO CANTO SUPERIOR ESQUERDO DA TELA
-        if (!this.authService.existeToken()) {
-          this.mostrarPerfil = false;
-        } else if (this.authService.existeToken()) {
-          this.mostrarPerfil = !(rotaAtual.includes('login') || rotaAtual.includes('cadastrar-usuario')
-            || rotaAtual.includes('sobreTab1') || rotaAtual.includes('sobreTab2'));
-        }
-      });
-    }).catch(error => {
-        console.error("Erro na contabilização de acessos: ", error);
-      });
+    // VERIFICAR PERFIL
+    this.inicializarVerificacaoPerfil();
+
+    // ADD NOVO IP E TRAZ QTDE TOTAL
+    this.adicionarContabilizarAcessos().catch(error => {
+      console.error("Erro na contabilização de acessos: ", error);
+    });
+  }
+
+  // Método separado para verificação do perfil
+  private inicializarVerificacaoPerfil() {
+    // Verificação inicial imediata
+    this.verificarExibicaoPerfil();
+
+    // Observer para mudanças de rota
+    this.router.events.pipe(
+      filter((event) => event instanceof NavigationEnd)
+    ).subscribe(() => {
+      this.verificarExibicaoPerfil();
+    });
+  }
+
+// Método centralizado para verificar se deve exibir o perfil
+  private verificarExibicaoPerfil() {
+    // Atualizar usuário logado
+    this.usuarioLogado = this.authService.getUsuarioLogado();
+    const rotaAtual = this.router.url;
+
+    // CHECAGEM PARA EXIBIÇÃO DO PERFIL NO CANTO SUPERIOR ESQUERDO DA TELA
+    if (!this.authService.existeToken()) {
+      this.mostrarPerfil = false;
+    } else {
+      const rotasPublicas = ['login', 'cadastrar-usuario', 'sobreTab1', 'sobreTab2'];
+      const estaEmRotaPublica = rotasPublicas.some(rota => rotaAtual.includes(rota));
+
+      this.mostrarPerfil = !estaEmRotaPublica;
+    }
   }
 
   async adicionarContabilizarAcessos(): Promise<void> {

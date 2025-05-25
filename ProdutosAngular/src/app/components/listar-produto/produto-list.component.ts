@@ -11,6 +11,7 @@ import {MatPaginatorModule, PageEvent} from '@angular/material/paginator';
 import {AuthService} from '../../service/auth/auth.service';
 import {HttpResponse} from '@angular/common/http';
 import {DeviceService} from '../../service/device/device.service';
+import {ProdutoDTO} from '../../model/dto/ProdutoDTO';
 
 @Component({
   selector: 'app-produto-list',  // Corrigido para 'app-produto-list', sem a barra inicial
@@ -40,9 +41,9 @@ export class ProdutoListComponent implements OnInit {
   popUpVisivel = false;  // Controle de visibilidade do pop-up
   imgBase64: string = ''  // Variável para armazenar a imagem do produto
 
-  listaDeProdutos!: Produto[];
-  produtoAtualizar!: Produto;
-  produtoExcluido!: Produto;
+  listaDeProdutos!: ProdutoDTO[];
+  produtoAtualizar!: ProdutoDTO;
+  produtoExcluido!: ProdutoDTO;
   imagemFile: File = new File([], 'arquivo_vazio.txt', {})
 
   // Variáveis de paginação
@@ -64,11 +65,14 @@ export class ProdutoListComponent implements OnInit {
               private authService: AuthService, private deviceService: DeviceService) { }
 
   ngOnInit() {
+
     this.produtoService.listarProdutos(this.currentPage, this.pageSize).subscribe(data => {
       const usuarioLogadoId = this.authService.getUsuarioLogado().id;
       this.listaDeProdutos = data.content.filter(produto => produto.idUsuario === usuarioLogadoId); // Filtra os produtos do usuário logado
       this.totalRecords = data.totalElements; // Atualiza o total de registros exibidos
     });
+
+    console.log(this.listaDeProdutos)
 
     this.deviceService.isMobileOrTablet.subscribe(isMobile => {
       this.isMobileOrTablet = isMobile;
@@ -99,7 +103,7 @@ export class ProdutoListComponent implements OnInit {
   })}
 
   // Função para deletar um produto através do id. Chama o endpoint, e a msg de sucesso
-  deletarProduto(modalDeletar: any, id: number, produto: Produto) {
+  deletarProduto(modalDeletar: any, id: number, produto: ProdutoDTO) {
     this.produtoService.deletarProduto(id).subscribe({
       next: (response) => {
         if (response.status === 200) {
@@ -112,9 +116,9 @@ export class ProdutoListComponent implements OnInit {
   }
 
   // Função para atualizar um produto através do id
-  atualizarProduto(janelaEditar: any, id: number, produto: Produto) {
+  atualizarProduto(janelaEditar: any, id: number, produto: ProdutoDTO) {
     this.produtoService.atualizarProduto(id, produto, this.imagemFile).subscribe({
-      next: (produtoRetornado: Produto) => {
+      next: (produtoRetornado: ProdutoDTO) => {
         this.produtoAtualizar = produtoRetornado
         this.calcularValores(this.produtoAtualizar);
         this.abrirTelaEdicao(janelaEditar)
@@ -183,7 +187,7 @@ export class ProdutoListComponent implements OnInit {
   }
 
   // Faz os calculos gerais após calcular valor X quantia
-  calcularValores(produto: Produto) {
+  calcularValores(produto: ProdutoDTO) {
     this.calcularValorXQuantia(produto).then(() => {(
       this.produtoFunctionsService.calcularValores(produto));
     });
@@ -230,7 +234,7 @@ export class ProdutoListComponent implements OnInit {
   }
 
   // Faz o cálculo dos valores em relação a quantidade
-  async calcularValorXQuantia(produto: Produto): Promise<void> {
+  async calcularValorXQuantia(produto: ProdutoDTO): Promise<void> {
     // Inicializa valorUnitario na primeira vez se não existir
     if (!produto.valorInicial) {
       produto.valorInicial = produto.valor;
@@ -250,4 +254,5 @@ export class ProdutoListComponent implements OnInit {
     }
   }
 
+  protected readonly alert = alert;
 }

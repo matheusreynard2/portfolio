@@ -1,3 +1,5 @@
+import {Fornecedor} from './fornecedor';
+
 export class Produto {
   public id: number;
 
@@ -29,6 +31,8 @@ export class Produto {
 
   public imagem: string;
 
+  public fornecedor: Fornecedor | null;
+
   constructor(
     id: number,
     idUsuario: number,
@@ -44,7 +48,8 @@ export class Produto {
     somaTotalValores: number,
     freteAtivo: boolean,
     valorDesconto: number,
-    imagem: string
+    imagem: string,
+    fornecedor: Fornecedor | null
   ) {
     this.valorDesconto = valorDesconto;
     this.idUsuario = idUsuario;
@@ -61,5 +66,6 @@ export class Produto {
     this.nome = nome;
     this.id = id;
     this.imagem = imagem;
+    this.fornecedor = fornecedor;
   }
 }

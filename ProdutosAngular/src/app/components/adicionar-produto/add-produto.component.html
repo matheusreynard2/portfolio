@@ -96,13 +96,13 @@
                      maxlength="30">
             </td>
             <!-- TEXTBOX COM DISPLAY=NONE APENAS PARA FINS DE CALCULO COM O NGMODEL -->
-              <input type="number" [(ngModel)]="produto.valor"
-                     class="form-control"
-                     id="valor"
-                     name="valorProduto"
-                     required #valor="ngModel"
-                     maxlength="30"
-                     style="display: none;">
+            <input type="number" [(ngModel)]="produto.valor"
+                   class="form-control"
+                   id="valor"
+                   name="valorProduto"
+                   required #valor="ngModel"
+                   maxlength="30"
+                   style="display: none;">
             <td>
               <label for="valorTotalDesc">Valor produto c/ desconto:</label></td>
             <!-- TEXTBOX COM DISPLAY=NONE APENAS PARA FINS DE CALCULO COM O NGMODEL -->
@@ -157,14 +157,31 @@
             </td>
           </tr>
           <tr>
-            <td></td>
-            <td></td>
+            <td>
+              <span style="color: red">* </span>
+              <label for="fornecedor">Fornecedor:</label>
+            </td>
+            <td>
+              <select [(ngModel)]="fornecedorSelecionado"
+                      class="form-control"
+                      id="fornecedor"
+                      name="fornecedorProduto"
+                      required #fornecedor="ngModel"
+                      (ngModelChange)="onFornecedorChange($event)">
+                <option [ngValue]="undefined">Selecione um fornecedor</option>
+                <option *ngFor="let fornecedor of fornecedores" [ngValue]="fornecedor">
+                  ID {{fornecedor.id}} - {{fornecedor.nome}}
+                </option>
+              </select>
+            </td>
             <td colspan="4">
               <span style="font-size: 13px; color: red">AVISO:</span> <span style="font-size: 12px;"> Não selecione uma imagem grande pois atrapalha na visualização.</span>
             </td>
           </tr>
           <tr>
-            <td colspan="6"></td>
+            <td colspan="6">
+              <hr style="margin: 10px 0; border-top: 1px solid #dee2e6;">
+            </td>
           </tr>
           <tr>
             <td colspan="1"><b>VALOR TOTAL: </b></td>

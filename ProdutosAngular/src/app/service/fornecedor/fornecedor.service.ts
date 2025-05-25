@@ -7,6 +7,7 @@ import {Fornecedor} from '../../model/fornecedor';
 import {environment} from '../../../environments/environment';
 import {AuthService} from '../auth/auth.service';
 import {Router} from '@angular/router';
+import {FornecedorDTO} from '../../model/dto/FornecedorDTO';
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +17,9 @@ export class FornecedorService {
   private fornecedorUrl: string;
   private apiUrl = environment.API_URL;
 
-  constructor(private http: HttpClient, private authService: AuthService, private router: Router) { this.fornecedorUrl = this.apiUrl + '/fornecedores'; }
+  constructor(private http: HttpClient, private authService: AuthService, private router: Router) {
+    this.fornecedorUrl = this.apiUrl + '/fornecedores';
+  }
 
   // Se o token expirou, remove o token
   public verificarRedirecionar() {
@@ -27,8 +30,8 @@ export class FornecedorService {
     }
   }
 
-  public adicionarFornecedor(fornecedor: Fornecedor) {
-    return this.http.post<Fornecedor>(this.fornecedorUrl + "/adicionarFornecedor", fornecedor).pipe(
+  public adicionarFornecedor(fornecedor: FornecedorDTO) {
+    return this.http.post<FornecedorDTO>(this.fornecedorUrl + "/adicionarFornecedor", fornecedor).pipe(
       // Aqui fazemos o tratamento do erro 401 para TOKEN EXPIRADO
       catchError((error: HttpErrorResponse) => {
         if (error.status === 401 && error.error.message === 'Tempo limite de conexão com o sistema excedido. TOKEN Expirado')
@@ -49,13 +52,13 @@ export class FornecedorService {
     )
   }
 
-   public listarFornecedores(page: number, size: number): Observable<PaginatedResponse<Fornecedor>> {
+   public listarFornecedores(page: number, size: number): Observable<PaginatedResponse<FornecedorDTO>> {
 
      const params = new HttpParams()
        .set('page', page.toString())
        .set('size', size.toString());
 
-     return this.http.get<PaginatedResponse<Fornecedor>>(this.fornecedorUrl + "/listarFornecedores", {params}).pipe(
+     return this.http.get<PaginatedResponse<FornecedorDTO>>(this.fornecedorUrl + "/listarFornecedores", {params}).pipe(
        // Aqui fazemos o tratamento do erro 401 para TOKEN EXPIRADO
        catchError((error: HttpErrorResponse) => {
          if (error.status === 401 && error.error.message === 'Tempo limite de conexão com o sistema excedido. TOKEN Expirado')
@@ -80,5 +83,4 @@ export class FornecedorService {
       })
     );
   }
-
 }
