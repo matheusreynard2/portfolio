@@ -56,7 +56,6 @@ public class Usuario implements UserDetails {
 	private String endereco;
 	
     @Lob
-    @Basic(fetch = FetchType.LAZY)
     @Column(name = "imagem")
     private byte[] imagem;
 

@@ -2,6 +2,9 @@ package com.apiestudar.api_prodify.infrastructure.persistence.jpa;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -24,5 +27,9 @@ public interface ProdutoJpaRepository extends JpaRepository<Produto, Long> {
 	@Query(value = "SELECT * FROM produto WHERE nome LIKE CONCAT('%', :valorPesquisa, '%') AND id_usuario = :idUsuario", nativeQuery = true)
 	List<Produto> efetuarPesquisaByNome(@Param("valorPesquisa") String valorPesquisa,
 			@Param("idUsuario") Long idUsuario);
+    
+	@Override
+    @EntityGraph(attributePaths = {"fornecedor"})
+    Page<Produto> findAll(Pageable pageable);
 
 }

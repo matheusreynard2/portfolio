@@ -27,4 +27,5 @@ public interface ProdutoRepository {
     List<Produto> efetuarPesquisaById(Long valorPesquisa, Long idUsuario);
 
     List<Produto> efetuarPesquisaByNome(String valorPesquisa, Long idUsuario);
+    
 }

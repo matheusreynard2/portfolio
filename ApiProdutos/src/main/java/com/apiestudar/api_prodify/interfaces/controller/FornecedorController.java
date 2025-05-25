@@ -1,6 +1,7 @@
 package com.apiestudar.api_prodify.interfaces.controller;
 
 import java.io.IOException;
+import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,6 +11,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,10 +21,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.apiestudar.api_prodify.application.mapper.FornecedorMapper;
 import com.apiestudar.api_prodify.application.usecase.fornecedor.AdicionarFornecedorUseCase;
 import com.apiestudar.api_prodify.application.usecase.fornecedor.DeletarFornecedorUseCase;
 import com.apiestudar.api_prodify.application.usecase.fornecedor.ListarFornecedoresUseCase;
 import com.apiestudar.api_prodify.domain.model.Fornecedor;
+import com.apiestudar.api_prodify.interfaces.dto.FornecedorDTO;
 
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -39,25 +43,45 @@ public class FornecedorController {
 	private ListarFornecedoresUseCase listarFornecedores;
 	@Autowired
 	private DeletarFornecedorUseCase deletarFornecedor;
+	@Autowired 
+	private FornecedorMapper fornecedorMapper;
 
+	@Transactional(readOnly = true)
 	@ApiOperation(value = "Listagem de todos os fornecedores cadastrados.", notes = "Faz uma busca no banco de dados retornando uma lista com todos os fornecedores cadastrados.")
 	@ApiResponse(code = 200, message = "Fornecedores encontrados.")
 	@GetMapping("/listarFornecedores")
-	public Page<Fornecedor> listarFornecedores(@RequestParam(defaultValue = "0") int page,
+	public Page<FornecedorDTO> listarFornecedores(@RequestParam(defaultValue = "0") int page,
 			@RequestParam(defaultValue = "10") int size) {
 		Pageable pageable = PageRequest.of(page, size);
-		Page<Fornecedor> fornecedorees = listarFornecedores.executar(pageable);
-		return fornecedorees;
+		Page<Fornecedor> fornecedoresPage = listarFornecedores.executar(pageable);
+		// Converter Page<Fornecedor> para Page<FornecedorDTO>
+		return fornecedoresPage.map(fornecedor -> fornecedorMapper.toDto(fornecedor));
 	}
 
-	@ApiOperation(value = "Adiciona/cadastra um novo fornecedor.", notes = "Cria um novo registro de fornecedor no banco de dados.")
-	@ApiResponse(code = 200, message = "Fornecedor cadastrado.")
-	@PostMapping("/adicionarFornecedor")
-	public ResponseEntity<Fornecedor> adicionarFornecedor(@RequestBody Fornecedor fornecedor) throws IOException {
-		Fornecedor response = adicionarFornecedor.executar(fornecedor);
-		return ResponseEntity.status(HttpStatus.CREATED).body(response);
+	@Transactional(readOnly = true)
+	@ApiOperation(value = "Listagem de todos os fornecedores cadastrados em uma List.", notes = "Faz uma busca no banco de dados retornando uma lista com todos os fornecedores cadastrados.")
+	@ApiResponse(code = 200, message = "Fornecedores encontrados.")
+	@GetMapping("/listarFornecedoresList")
+	public List<FornecedorDTO> listarFornecedoresList() {
+		List<Fornecedor> fornecedores = listarFornecedores.executar();
+		return fornecedorMapper.toDtoList(fornecedores);
 	}
-	
+
+	@Transactional
+	@ApiOperation(value = "Adiciona/cadastra um novo fornecedor.", notes = "Cria um novo registro de fornecedor no banco de dados.")
+	@ApiResponse(code = 201, message = "Fornecedor cadastrado.")
+	@PostMapping("/adicionarFornecedor")
+	public ResponseEntity<FornecedorDTO> adicionarFornecedor(@RequestBody FornecedorDTO fornecedorDTO)
+			throws IOException {
+		// Converter DTO para entidade
+		Fornecedor fornecedor = fornecedorMapper.toEntity(fornecedorDTO);
+		// Executar o caso de uso
+		Fornecedor fornecedorAdicionado = adicionarFornecedor.executar(fornecedor);
+		// Converter entidade de volta para DTO
+		FornecedorDTO responseDTO = fornecedorMapper.toDto(fornecedorAdicionado);
+		return ResponseEntity.status(HttpStatus.CREATED).body(responseDTO);
+	}
+
 	@SuppressWarnings("rawtypes")
 	@ApiOperation(value = "Acessar páginas relacionadas a fornecedores.", notes = "Endpoint usado para validar se o Token já expirou ao acessar páginas de fornecedores.")
 	@ApiResponse(code = 200, message = "Página retornada.")
@@ -66,13 +90,12 @@ public class FornecedorController {
 		ResponseEntity response = new ResponseEntity(HttpStatus.OK);
 		return response;
 	}
-	
+
 	@ApiOperation(value = "Deleta/exclui um fornecedor.", notes = "Faz a exclusão de um fornecedor do banco de dados de acordo com o número de id passado como parâmetro.")
 	@ApiResponse(code = 200, message = "Fornecedor excluído.")
 	@DeleteMapping("/deletarFornecedor/{id}")
-	public ResponseEntity<Object> deletarFornecedor(@PathVariable int id) {
+	public ResponseEntity<String> deletarFornecedor(@PathVariable int id) {
 		deletarFornecedor.executar(id);
-		return ResponseEntity.status(HttpStatus.OK).body("Deletou com sucesso");
-
+		return ResponseEntity.status(HttpStatus.OK).body("Fornecedor deletado com sucesso");
 	}
 }

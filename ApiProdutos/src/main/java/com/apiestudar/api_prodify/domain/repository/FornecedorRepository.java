@@ -1,5 +1,6 @@
 package com.apiestudar.api_prodify.domain.repository;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.domain.Page;
@@ -12,6 +13,8 @@ public interface FornecedorRepository {
 	Fornecedor adicionarFornecedor(Fornecedor fornecedor);
 
 	Page<Fornecedor> listarFornecedores(Pageable pageable);
+	
+	List<Fornecedor> listarFornecedores();
 	
 	void deletarFornecedorPorId(Long id);
 

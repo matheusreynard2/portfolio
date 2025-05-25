@@ -1,10 +1,13 @@
 
 package com.apiestudar.api_prodify.application.usecase.fornecedor;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.apiestudar.api_prodify.domain.model.Fornecedor;
 import com.apiestudar.api_prodify.domain.repository.FornecedorRepository;
@@ -19,7 +22,13 @@ public class ListarFornecedoresUseCase {
         this.fornecedorRepository = fornecedorRepository;
     }
 
+    @Transactional
 	public Page<Fornecedor> executar(Pageable pageable) {
 		return fornecedorRepository.listarFornecedores(pageable);
+	}
+
+	@Transactional
+	public List<Fornecedor> executar() {
+		return fornecedorRepository.listarFornecedores();
 	}
 }

@@ -1,6 +1,7 @@
 package com.apiestudar.api_prodify.domain.model;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -8,16 +9,19 @@ import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
 @SequenceGenerator(name = "end_fornecedor_seq", sequenceName = "end_fornecedor_sequence", allocationSize = 1)
+@ToString
 public class EnderecoFornecedor {
 	
 	@Id
@@ -40,7 +44,7 @@ public class EnderecoFornecedor {
 	
 	private String erro;
 	
-	@OneToOne(mappedBy = "enderecoFornecedor")
+	@OneToOne(mappedBy = "enderecoFornecedor", fetch = FetchType.EAGER)
 	@JsonBackReference
 	private Fornecedor fornecedor;
 

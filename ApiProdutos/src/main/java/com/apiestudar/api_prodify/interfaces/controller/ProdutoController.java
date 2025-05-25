@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.apiestudar.api_prodify.application.mapper.ProdutoMapper;
 import com.apiestudar.api_prodify.application.usecase.produto.AdicionarProdutoUseCase;
 import com.apiestudar.api_prodify.application.usecase.produto.AtualizarProdutoUseCase;
 import com.apiestudar.api_prodify.application.usecase.produto.CalculosSobreProdutosUseCase;
@@ -29,6 +30,7 @@ import com.apiestudar.api_prodify.application.usecase.produto.DeletarProdutoUseC
 import com.apiestudar.api_prodify.application.usecase.produto.ListarProdutosUseCase;
 import com.apiestudar.api_prodify.application.usecase.produto.PesquisasSearchBarUseCase;
 import com.apiestudar.api_prodify.domain.model.Produto;
+import com.apiestudar.api_prodify.interfaces.dto.ProdutoDTO;
 
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -49,35 +51,46 @@ public class ProdutoController {
 	private DeletarProdutoUseCase deletarProduto;
 	@Autowired
 	private CalculosSobreProdutosUseCase consultasProduto;
+	
+	private final ProdutoMapper produtoMapper;
+
+	public ProdutoController(ProdutoMapper produtoMapper) {
+		this.produtoMapper = produtoMapper;
+	}
 
 	private static final Logger log = LoggerFactory.getLogger(ProdutoController.class);
 
 	@ApiOperation(value = "Listagem de todos os produtos cadastrados.", notes = "Faz uma busca no banco de dados retornando uma lista com todos os produtos cadastrados.")
 	@ApiResponse(code = 200, message = "Produtos encontrados.")
 	@GetMapping("/listarProdutos")
-	public Page<Produto> listarProdutos(@RequestParam(defaultValue = "0") int page,
+	public Page<ProdutoDTO> listarProdutos(@RequestParam(defaultValue = "0") int page,
 			@RequestParam(defaultValue = "10") int size) {
 		Pageable pageable = PageRequest.of(page, size);
-		Page<Produto> produtos = listarProdutos.executar(pageable);
-		return produtos;
+		Page<Produto> produtosPage = listarProdutos.executar(pageable);
+		return produtoMapper.toDtoPage(produtosPage);
+
 	}
 
 	@ApiOperation(value = "Adiciona/cadastra um novo produto.", notes = "Cria um novo registro de produto no banco de dados.")
 	@ApiResponse(code = 200, message = "Produto cadastrado.")
 	@PostMapping("/adicionarProduto")
-	public ResponseEntity<Object> adicionarProduto(@RequestParam String produtoJSON,
+	public ResponseEntity<ProdutoDTO> adicionarProduto(@RequestParam String produtoJSON,
 			@RequestParam MultipartFile imagemFile) throws IOException, SQLException {
 		Produto produtoAdicionado = adicionarProduto.executar(produtoJSON, imagemFile);
-		return ResponseEntity.status(HttpStatus.CREATED).body(produtoAdicionado);
+		// Converter entidade para DTO usando o mapper
+		ProdutoDTO produtoDTO = produtoMapper.toDto(produtoAdicionado);
+		return ResponseEntity.status(HttpStatus.CREATED).body(produtoDTO);
 	}
 
 	@ApiOperation(value = "Atualiza as informações de um produto.", notes = "Atualiza as informações registradas no banco de dados de um produto de acordo com o número de id passado como parâmetro.")
 	@ApiResponse(code = 200, message = "Produto atualizado.")
 	@PutMapping("/atualizarProduto/{id}")
-	public ResponseEntity<Object> atualizarProduto(@PathVariable long id, @RequestParam String produtoJSON,
+	public ResponseEntity<ProdutoDTO> atualizarProduto(@PathVariable long id, @RequestParam String produtoJSON,
 			@RequestParam MultipartFile imagemFile) throws IOException {
 		Produto produtoAtualizado = atualizarProduto.executar(id, produtoJSON, imagemFile);
-		return ResponseEntity.status(HttpStatus.CREATED).body(produtoAtualizado);
+		// Converter entidade para DTO usando o mapper
+		ProdutoDTO produtoDTO = produtoMapper.toDto(produtoAtualizado);
+		return ResponseEntity.status(HttpStatus.OK).body(produtoDTO);
 	}
 
 	@ApiOperation(value = "Deleta/exclui um produto.", notes = "Faz a exclusão de um produto do banco de dados de acordo com o número de id passado como parâmetro.")
@@ -121,10 +134,12 @@ public class ProdutoController {
 	@ApiOperation(value = "Pesquisar registros por 'id' ou por 'nome'.", notes = "Faz uma busca de registros no banco de dados utilizando como filtro o id do produto ou o nome do produto.")
 	@ApiResponse(code = 200, message = "Produtos encontrados.")
 	@GetMapping("/efetuarPesquisa/{tipoPesquisa}/{valorPesquisa}/{idUsuario}")
-	public ResponseEntity<Object> efetuarPesquisa(@PathVariable String tipoPesquisa, @PathVariable String valorPesquisa,
-			@PathVariable long idUsuario) {
+	public ResponseEntity<List<ProdutoDTO>> efetuarPesquisa(@PathVariable String tipoPesquisa,
+			@PathVariable String valorPesquisa, @PathVariable long idUsuario) {
 		List<Produto> produtos = pesquisasUseCase.efetuarPesquisa(tipoPesquisa, valorPesquisa, idUsuario);
-		return ResponseEntity.status(HttpStatus.OK).body(produtos);
+		// Converter lista de entidades para lista de DTOs usando o mapper
+		List<ProdutoDTO> produtoDTOs = produtoMapper.toDtoList(produtos);
+		return ResponseEntity.status(HttpStatus.OK).body(produtoDTOs);
 	}
 
 	@SuppressWarnings("rawtypes")

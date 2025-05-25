@@ -1,23 +1,28 @@
 package com.apiestudar.api_prodify.domain.model;
 
-import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
+import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
+@ToString
 @SequenceGenerator(name = "produto_seq", sequenceName = "produto_sequence", allocationSize = 1)
 public class Produto {
 
@@ -28,32 +33,38 @@ public class Produto {
 	private long idUsuario;
 
 	private String nome;
-
-	private String descricao;
-
-	private double frete;
-
+	
+	@Lob
+	@Column(name = "imagem")
+	private byte[] imagem;
+	
 	private boolean promocao;
+	
+	private Double valorTotalDesc;
+	
+	private Double somaTotalValores;
+	
+	// Relação Muitos-para-Um
+	@JsonBackReference
+    @ManyToOne
+    @JoinColumn(name = "fornecedor_id")
+    private Fornecedor fornecedor;
+	
+	private Double valor;
 
-	private double valorTotalDesc;
+	private Double valorTotalFrete;
 
-	private double valorTotalFrete;
+	private String descricao; 
 
-	private double valor;
+	private Double frete; 
 	
 	private double valorInicial;
 
 	private int quantia;
 
-	private double somaTotalValores;
+	private boolean freteAtivo; 
 
-	private boolean freteAtivo;
+	private double valorDesconto; 
 
-	private double valorDesconto;
-
-	@Lob
-	@Basic(fetch = FetchType.LAZY)
-	@Column(name = "imagem")
-	private byte[] imagem;
 
 }
