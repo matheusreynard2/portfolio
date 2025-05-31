@@ -79,40 +79,66 @@
           <span style="color: white; font-size: 40px; font-family: 'Merienda', cursive">DIFY</span>
           </span>
           </h2>
+          
+          <!-- Overlay para escurecer o fundo -->
+          <div class="menu-overlay" [class.active]="menuOpen" (click)="abrirFecharMenu()"></div>
+          
           <!-- Botão de hambúrguer para abrir/fechar o menu -->
-          <div class="botao-menu-celular" style="position: absolute; top: 10px; right: 10px;">
-            <button class="btn btn-outline-secondary" (click)="abrirFecharMenu()">
+          <div class="botao-menu-celular">
+            <button class="btn menu-mobile-btn" (click)="abrirFecharMenu()">
               &#9776;
             </button>
-            <!-- Menu que é exibido ao clicar no botão -->
-            <div *ngIf="menuOpen" class="mobile-menu-options" style="position: absolute; right: 0; top: 40px; width: 200px; background: rgba(255, 255, 255, 0.95); font-size: 12px; padding: 10px; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); z-index: 1000;">
-              <ul class="mdc-list" style="list-style: none; margin: 0; padding: 0;">
-                <li>
-                  <a routerLink="/login" (click)="abrirFecharMenu()" style="display: block; padding: 5px 10px;">Início</a>
-                </li>
-                <li>
-                  <a routerLink="/produtos" (click)="abrirFecharMenu()" style="display: block; padding: 5px 10px;">Lista de produtos</a>
-                </li>
-                <li>
-                  <a routerLink="/addproduto" (click)="abrirFecharMenu()" style="display: block; padding: 5px 10px;">Cadastrar produto</a>
-                </li>
-                <li>
-                  <a routerLink="/sobreTab1" (click)="abrirFecharMenu()" style="display: block; padding: 5px 10px;">Sobre</a>
-                </li>
-                <li>
-                  <a routerLink="/geoloc" (click)="abrirFecharMenu()" style="display: block; padding: 5px 10px;">Localizar fornecedor</a>
-                </li>
-                <li>
-                  <a routerLink="/addfornecedor" (click)="abrirFecharMenu()" style="display: block; padding: 5px 10px;">Cadastrar fornecedor</a>
-                </li>
-                <li>
-                  <a routerLink="/listarfornecedores" (click)="abrirFecharMenu()" style="display: block; padding: 5px 10px;">Listar fornecedores</a>
-                </li>
-                <li>
-                  <a href="https://www.sistemaprodify.com/swagger-ui/index.html" target="_blank" (click)="abrirFecharMenu()" style="display: block; padding: 5px 10px;">Swagger</a>
-                </li>
-              </ul>
-            </div>
+          </div>
+          
+          <!-- Menu que é exibido ao clicar no botão -->
+          <div *ngIf="menuOpen" class="mobile-menu-options">
+            <ul class="mdc-list">
+              <li>
+                <a routerLink="/login" (click)="abrirFecharMenu()">Início</a>
+              </li>
+              
+              <!-- Submenu Produtos -->
+              <li class="mobile-submenu">
+                <div class="mobile-submenu-header" (click)="toggleSubmenu($event)">
+                  <span>Gerenciar Produtos</span>
+                  <span class="submenu-arrow">▼</span>
+                </div>
+                <ul class="mobile-submenu-items">
+                  <li>
+                    <a routerLink="/produtos" (click)="abrirFecharMenu()">Listar produtos</a>
+                  </li>
+                  <li>
+                    <a routerLink="/addproduto" (click)="abrirFecharMenu()">Cadastrar produto</a>
+                  </li>
+                </ul>
+              </li>
+
+              <!-- Submenu Fornecedores -->
+              <li class="mobile-submenu">
+                <div class="mobile-submenu-header" (click)="toggleSubmenu($event)">
+                  <span>Gerenciar Fornecedores</span>
+                  <span class="submenu-arrow">▼</span>
+                </div>
+                <ul class="mobile-submenu-items">
+                  <li>
+                    <a routerLink="/geoloc" (click)="abrirFecharMenu()">Localizar fornecedor</a>
+                  </li>
+                  <li>
+                    <a routerLink="/addfornecedor" (click)="abrirFecharMenu()">Cadastrar fornecedor</a>
+                  </li>
+                  <li>
+                    <a routerLink="/listarfornecedores" (click)="abrirFecharMenu()">Listar fornecedores</a>
+                  </li>
+                </ul>
+              </li>
+
+              <li>
+                <a routerLink="/sobreTab1" (click)="abrirFecharMenu()">Sobre</a>
+              </li>
+              <li>
+                <a href="https://www.sistemaprodify.com/swagger-ui/index.html" target="_blank" (click)="abrirFecharMenu()">Swagger</a>
+              </li>
+            </ul>
           </div>
         </div>
       </div>

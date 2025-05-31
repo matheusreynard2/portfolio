@@ -13,7 +13,7 @@
           <tr>
             <td style="width: 16%;">
               <span style="color: red">* </span>
-              <label for="nomeFornecedor">Nome do Fornecedor:</label>
+              <label for="nomeFornecedor" class="required">Nome do Fornecedor:</label>
             </td>
             <td style="width: 24%;">
               <input type="text" [(ngModel)]="nomeFornecedor"
@@ -22,10 +22,16 @@
                      name="nomeFornecedor"
                      placeholder="Insira o nome do fornecedor."
                      required
+                     #nomeFornecedorInput="ngModel"
+                     [ngClass]="{'is-invalid': nomeFornecedorInput.invalid && nomeFornecedorInput.touched}"
                      maxlength="50">
+              <div *ngIf="nomeFornecedorInput.invalid && nomeFornecedorInput.touched" class="invalid-feedback">
+                O nome do fornecedor é obrigatório.
+              </div>
             </td>
             <td style="width: 12%;">
-              <label for="cep">CEP:</label>
+              <span style="color: red">* </span>
+              <label for="cep" class="required">CEP:</label>
             </td>
             <td style="width: 16%;">
               <input
@@ -38,7 +44,12 @@
                 [showMaskTyped]="true"
                 placeholder="00000-000"
                 required
+                #cepInput="ngModel"
+                [ngClass]="{'is-invalid': cepInput.invalid && cepInput.touched}"
               />
+              <div *ngIf="cepInput.invalid && cepInput.touched" class="invalid-feedback">
+                O CEP é obrigatório.
+              </div>
             </td>
             <td colspan="2" style="width: 12%;">
               <button type="button" class="btn btn-secondary" (click)="buscarEnderecoPorCep(endereco.cep)">Buscar</button>

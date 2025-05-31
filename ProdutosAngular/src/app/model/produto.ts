@@ -1,4 +1,5 @@
-import {Fornecedor} from './fornecedor';
+import { Fornecedor } from "./fornecedor";
+
 
 export class Produto {
   public id: number;

@@ -1,343 +1,392 @@
 <div class="card my-5">
   <div class="card-body">
-    <table>
-      <tr>
-        <td id="searchBar_td">
-          <input *ngIf="tipoPesquisaSelecionado === 'id'"
-                 type="number"
-                 placeholder="Barra de pesquisa..."
-                 class="searchBar_input btn-outline-secondary"
-                 #searchBar/>
-          <input *ngIf="tipoPesquisaSelecionado === 'nome'"
-                 type="text"
-                 placeholder="Barra de pesquisa..."
-                 class="searchBar_input btn-outline-secondary"
-                 #searchBar/>
-        </td>
-        <td>
-          <select id="combo_tipo_pesquisa" required
-                  (change)=trocarTipoPesquisa()>
-            <option selected>ID</option>
-            <option>Nome</option>
-          </select>
-        </td>
-        <td>
-          <button class="btn btn-outline-secondary fw-bold" id="btn_pesquisar" (click)="efetuarPesquisa()">Pesquisar</button>
-        </td>
-      </tr>
-    </table>
+    <!-- Barra de pesquisa responsiva -->
+    <div class="search-container">
+      <table class="w-100">
+        <tr>
+          <td id="searchBar_td">
+            <input *ngIf="tipoPesquisaSelecionado === 'id'"
+                   type="number"
+                   placeholder="Barra de pesquisa..."
+                   class="searchBar_input btn-outline-secondary"
+                   #searchBar/>
+            <input *ngIf="tipoPesquisaSelecionado === 'nome'"
+                   type="text"
+                   placeholder="Barra de pesquisa..."
+                   class="searchBar_input btn-outline-secondary"
+                   #searchBar/>
+          </td>
+          <td>
+            <select id="combo_tipo_pesquisa" required
+                    (change)=trocarTipoPesquisa()>
+              <option selected>ID</option>
+              <option>Nome</option>
+            </select>
+          </td>
+          <td>
+            <button class="btn btn-outline-secondary fw-bold" id="btn_pesquisar" (click)="efetuarPesquisa()">Pesquisar</button>
+          </td>
+        </tr>
+      </table>
+    </div>
 
+    <!-- Container da tabela com scroll horizontal -->
     <div class="div-tabela">
-    <table class="table table-bordered table-striped">
-      <thead class="thead-dark">
-      <tr>
-        <th colspan="11" class="text-center">Produtos</th>
-      </tr>
-      <tr>
-        <th class="text-center coluna_id"><strong>ID</strong></th>
-        <th class="text-left coluna_nome"><strong>Nome</strong></th>
-        <th class="text-left coluna_nome"><strong>Fornecedor</strong></th>
-        <th class="text-center"><strong>Valor unitário</strong></th>
-        <th class="text-center"><strong>Promoção</strong></th>
-        <th class="text-center"><strong>Vl un desc</strong></th>
-        <th class="text-center"><strong>Valor total</strong></th>
-        <th class="text-center"><strong></strong></th>
-        <th class="text-center"><strong></strong></th>
-      </tr>
-      </thead>
-      <tbody>
-      <tr *ngFor="let produto of listaDeProdutos">
-        <td class="text-center coluna_id">{{ produto.id }}</td>
-        <td class="text-left coluna_nome passar_mouse"><u style=color:blue (mouseenter)="mostrarImgPopup(produto)" (mouseleave)="esconderImgPopup()">{{ produto.nome }}</u></td>
-        <div *ngIf="popUpVisivel" class="img-popup image-container">
-          <img *ngIf="imgBase64" [src]="'data:image/jpeg;base64,' + imgBase64"/>
-        </div>
-        <td class="text-center">{{ produto.fornecedor?.nome }}</td>
-        <td class="text-center">{{ formatarValor(produto.valor) }}</td>
-          <td class="text-center">
-            <img
-              [src]="produto.promocao ? '/bolinha_verde.png' : '/bolinha_vermelha.png'"
-              [alt]="produto.promocao ? 'Promoção Ativa' : 'Promoção Inativa'"
-              width="25"
-              height="25">
-          </td>
-          <td class="text-center">
-            {{ formatarValor(produto.valorTotalDesc) }}
-          </td>
-          <td class="text-center">
-            {{ formatarValor(produto.somaTotalValores) }}
-          </td>
-          <td class="text-center">
-            <button type="button" class="btn btn-info full-width-btn" id="btn_editar" (click)="atualizarProduto(modalEditar, produto.id, produto)">✎</button>
-          </td>
-          <td class="text-center">
-            <button type="button" class="btn btn-danger full-width-btn" id="btn_excluir" (click)="deletarProduto(modalMsgExcluir, produto.id, produto)">X</button>
-          </td>
+      <table class="table table-bordered table-striped">
+        <thead class="thead-dark">
+        <tr>
+          <th colspan="11" class="text-center">Produtos</th>
         </tr>
+        <tr>
+          <th class="text-center coluna_id"><strong>ID</strong></th>
+          <th class="text-left coluna_nome"><strong>Nome</strong></th>
+          <th class="text-left coluna_nome"><strong>Fornecedor</strong></th>
+          <th class="text-center"><strong>Qtde</strong></th>
+          <th class="text-center"><strong>Valor unitário</strong></th>
+          <th class="text-center"><strong>Promoção</strong></th>
+          <th class="text-center"><strong>Vl un desc</strong></th>
+          <th class="text-center"><strong>Valor total</strong></th>
+          <th class="text-center"><strong></strong></th>
+          <th class="text-center"><strong></strong></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let produto of listaDeProdutos">
+          <td class="text-center coluna_id">{{ produto.id }}</td>
+          <td class="text-left coluna_nome">
+            <div class="stat-item">
+              <span class="stat-label passar_mouse" (mouseenter)="mostrarImgPopup(produto)" (mouseleave)="esconderImgPopup()">
+                {{ produto.nome }}
+              </span>
+              <div *ngIf="popUpVisivel" class="img-popup">
+                <div class="image-container">
+                  <img *ngIf="imgBase64" [src]="'data:image/jpeg;base64,' + imgBase64" alt="Imagem do produto"/>
+                </div>
+              </div>
+            </div>
+          </td>
+          <td class="text-center">{{ produto.fornecedor?.nome }}</td>
+          <td class="text-center">{{ produto.quantia }}</td>
+          <td class="text-center">{{ formatarValor(produto.valor) }}</td>
+            <td class="text-center">
+              <img
+                [src]="produto.promocao ? '/bolinha_verde.png' : '/bolinha_vermelha.png'"
+                [alt]="produto.promocao ? 'Promoção Ativa' : 'Promoção Inativa'"
+                width="25"
+                height="25">
+            </td>
+            <td class="text-center">
+              {{ formatarValor(produto.valorTotalDesc) }}
+            </td>
+            <td class="text-center">
+              {{ formatarValor(produto.somaTotalValores) }}
+            </td>
+            <td class="text-center">
+              <button type="button" class="btn btn-info full-width-btn" id="btn_editar" (click)="atualizarProduto(modalEditar, produto.id, produto)">✎</button>
+            </td>
+            <td class="text-center">
+              <button type="button" class="btn btn-danger full-width-btn" id="btn_excluir" (click)="deletarProduto(modalMsgExcluir, produto.id, produto)">X</button>
+            </td>
+          </tr>
 
-        <!-- Label que exibe a variável do produto mais caro -->
-      <tr>
-        <td colspan="11" class="text-left">
-          <b><label style="font-size: 16px;">* <u>Produto mais caro</u> - <label style="color: green; font-size: 20px">ID: {{ stringProdutoMaisCaro }}</label></label></b> |
-          <b><label style="font-size: 16px;">* <u>Média de preço</u>: <label style="color: green; font-size: 20px">{{ formatarValor(mediaPreco) }}</label></label></b>
-        </td>
-      </tr>
-      <tr>
-        <td colspan="10" class="text-left">
-          <label style="font-size: 12px;">* <b><u>Vl un desc</u>:</b> este é o valor unitário do produto com desconto, caso esteja em promoção. </label><label style="font-size: 12px;"> <b> | <u> Valor total</u>:</b> este é o valor total do produto, com frete e com desconto, caso tenha frete e caso esteja em promoção.</label>
+          <!-- Label que exibe a variável do produto mais caro -->
+          <tr>
+            <td colspan="11" class="text-left">
+              <div class="stats-container-vertical">
+                <span class="stat-row stat-label-container stat-value-container">
+                  <span class="stat-text">PRODUTO MAIS CARO - ID:</span>
+                  <span class="stat-variable">{{ stringProdutoMaisCaro }}</span>
+                  <span class="stat-text"> | MÉDIA DE PREÇO -</span>
+                  <span class="stat-variable">{{ formatarValor(mediaPreco) }}</span>
+                </span>
+              </div>
+            </td>
+          </tr>
+        <tr>
+          <td colspan="10" class="text-left">
+            <div class="info-container">
+              <div class="info-item">
+                <span class="info-label">Vl un desc:</span>
+                <span class="info-text">este é o valor unitário do produto com desconto, caso esteja em promoção.</span>
+              </div>
+              <div class="info-divider">|</div>
+              <div class="info-item">
+                <span class="info-label">Valor total:</span>
+                <span class="info-text">este é o valor total do produto, com frete e com desconto, caso tenha frete e caso esteja em promoção.</span>
+              </div>
+            </div>
           </td>
         </tr>
-      <tr>
-        <td>
-          <button class="btn bg-primary-subtle fw-bold" (click)="atualizarLista()" role="button" style="font-size: 25px; width: 100px">↻</button>
-        </td>
-      </tr>
-      </tbody>
-    </table>
-      </div>
-    <mat-paginator [length]="totalRecords" [pageSize]="pageSize" [pageIndex]="currentPage" (page)="trocarPagina($event)"></mat-paginator>
+        <tr>
+          <td>
+            <button class="btn bg-primary-subtle fw-bold btn-atualizar-lista" (click)="atualizarLista()" role="button">Atualizar</button>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Paginação responsiva -->
+    <div class="pagination-container">
+      <mat-paginator [length]="totalRecords" 
+                     [pageSize]="pageSize" 
+                     [pageIndex]="currentPage" 
+                     (page)="trocarPagina($event)"
+                     [pageSizeOptions]="[5, 10, 25, 50]">
+      </mat-paginator>
+    </div>
   </div>
 </div>
 
 <!--######## INICIO DO MODAL DE EDIÇÃO DE PRODUTO ######## -->
 
 <ng-template #modalEditar let-modal>
-  <div class="largeTemplate">
+  <div class="modal-container">
     <div class="modal-header">
-      <h5 class="modal-title">
-        Atualizar produto
-      </h5>
+      <h5 class="modal-title">Atualizar produto</h5>
       <img ngSrc="/codigo_barras.png" height="60" width="60" class="img-right"/>
     </div>
+    
     <div class="modal-body">
-      <p>Informações do produto <b>{{ produtoAtualizar.nome }}</b></p>
-    </div>
+      <p class="produto-info">Informações do produto <b>{{ produtoAtualizar.nome }}</b> ID <b>{{ produtoAtualizar.id }}</b></p>
+      
+      <form (ngSubmit)="onSubmitSalvar(modal)" #produtoForm="ngForm" class="produto-form">
+        
+        <!-- Campo ID oculto para manter o binding -->
+        <input type="hidden" [(ngModel)]="produtoAtualizar.id" name="idProduto" #id="ngModel">
 
+        <!-- Informações Básicas -->
+        <div class="form-section">
+          <h6 class="section-title">Informações Básicas</h6>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="nome" class="required">Nome:</label>
+              <input type="text" [(ngModel)]="produtoAtualizar.nome"
+                     class="form-control"
+                     id="nome"
+                     name="nomeProduto"
+                     placeholder="Insira o nome do produto"
+                     required #nome="ngModel"
+                     maxlength="50">
+            </div>
+            <div class="form-group">
+              <label for="descricao">Descrição:</label>
+              <input type="text" [(ngModel)]="produtoAtualizar.descricao"
+                     class="form-control"
+                     id="descricao"
+                     name="descricaoProduto"
+                     placeholder="Insira a descrição do produto"
+                     maxlength="100">
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="fornecedor" class="required">
+                Fornecedor:
+              </label>
+              <select [(ngModel)]="fornecedorSelecionado"
+                      class="form-control"
+                      id="fornecedor"
+                      name="fornecedorProduto"
+                      required #fornecedor="ngModel"
+                      (ngModelChange)="onFornecedorChange($event)">
+                <option *ngFor="let fornecedor of fornecedores" [ngValue]="fornecedor">
+                  ID {{fornecedor.id}} - {{fornecedor.nome}}
+                </option>
+              </select>
+            </div>
+          </div>
+        </div>
 
-
-    <div class="card-body">
-      <form (ngSubmit)="onSubmitSalvar(modal)" #produtoForm="ngForm" >
-        <div class="div-tabela-editar">
-          <table class="table_editar table table-bordered">
-            <tbody>
-            <tr>
-              <td class="coluna_um"><label for="id" style="font-size: 30px">#ID</label></td>
-              <td colspan="8"><input type="text" [(ngModel)]="produtoAtualizar.id"
-                                     class="form-control"
-                                     id="id"
-                                     name="idProduto"
-                                     required #id="ngModel"
-                                     maxlength="50" style="width: 100px"
-                                     [disabled]="true">
-              </td>
-            </tr>
-            <tr>
-              <td class="coluna_um">
-                <span style="color: red">* </span>
-                <label for="nome">Nome:</label></td>
-              <td colspan="3">
-                <input type="text" [(ngModel)]="produtoAtualizar.nome"
+        <!-- Valores e Quantidade -->
+        <div class="form-section">
+          <h6 class="section-title">Valores e Quantidade</h6>
+          <button type="button" 
+                  class="btn-calcular-mini" 
+                  (click)="calcularValores(produtoAtualizar)"
+                  title="Calcular valores">
+            ↻
+          </button>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="valorInicial">Valor unitário:</label>
+              <div class="input-with-display">
+                <input type="number" [(ngModel)]="produtoAtualizar.valorInicial"
                        class="form-control"
-                       id="nome"
-                       name="nomeProduto"
-                       placeholder="Insira o nome do produto."
-                       required #nome="ngModel"
-                       maxlength="50" style="width: 200px">
-              </td>
-              <td class="td-ajustada"><label for="descricao">Descrição:</label></td>
-              <td colspan="4">
-                <input type="text" [(ngModel)]="produtoAtualizar.descricao"
-                       class="form-control"
-                       id="descricao"
-                       name="descricaoProduto"
-                       placeholder="Insira a descrição do produto."
-                       maxlength="100" style="width: 250px;">
-              </td>
-            </tr>
-
-            <tr>
-              <td class="coluna_um" width="100px"><label for="quantidade">Quantidade:</label></td>
-              <td colspan="3">
+                       id="valorInicial"
+                       name="valorInicialProduto"
+                       required #valorInicial="ngModel"
+                       maxlength="30">
+                <input type="number" [(ngModel)]="produtoAtualizar.valor"
+                       class="form-control hidden-input"
+                       id="valor"
+                       name="valorProduto"
+                       required #valor="ngModel"
+                       maxlength="30">
+                <div class="valor-display">{{produtoAtualizar.valorInicial | currency : 'BRL'}}</div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="quantidade">Quantidade:</label>
+              <div class="input-with-display">
                 <input type="number" [(ngModel)]="produtoAtualizar.quantia"
                        class="form-control"
                        id="quantidade"
                        name="quantidadeProduto"
                        required #quantidade="ngModel"
-                       maxlength="1" style="width: 200px">
-              </td>
-              <td class="td-ajustada">Desconto:</td>
-              <td colspan="4">
+                       maxlength="1">
+                <div class="valor-display valor-quantidade">{{produtoAtualizar.valor | currency : 'BRL'}}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Promoção e Desconto -->
+        <div class="form-section">
+          <h6 class="section-title">Promoção e Desconto</h6>
+          <button type="button" 
+                  class="btn-calcular-mini" 
+                  (click)="calcularValores(produtoAtualizar)"
+                  title="Calcular valores">
+            ↻
+          </button>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="promocao">Promoção:</label>
+              <select [(ngModel)]="produtoAtualizar.promocao"
+                      class="form-control"
+                      id="promocao"
+                      name="promocaoProduto"
+                      required #promocao="ngModel"
+                      (ngModelChange)="selecionarPromocao($event)">
+                <option [ngValue]="true">Sim</option>
+                <option [ngValue]="false">Não</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="valorDesconto">Desconto:</label>
+              <div class="input-with-display">
                 <input type="text" [(ngModel)]="produtoAtualizar.valorDesconto"
                        class="form-control"
                        id="valorDesconto"
                        name="valorDescontoProduto"
                        required #valorDesconto="ngModel"
-                       appPorcentagemMask style="width: 250px;"
-                       [disabled] = !produtoAtualizar.promocao>
-              </td>
-            </tr>
+                       appPorcentagemMask
+                       [disabled]="!produtoAtualizar.promocao">
+                <div class="valor-display">{{produtoAtualizar.valorTotalDesc | currency : 'BRL'}}</div>
+              </div>
+            </div>
+          </div>
+        </div>
 
-            <tr>
-              <td class="coluna_um"><label>Valor do frete:</label></td>
-              <td colspan="3">
+        <!-- Frete -->
+        <div class="form-section">
+          <h6 class="section-title">Frete</h6>
+          <button type="button" 
+                  class="btn-calcular-mini" 
+                  (click)="calcularValores(produtoAtualizar)"
+                  title="Calcular valores">
+            ↻
+          </button>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="freteAtivo">Frete ativo:</label>
+              <select [(ngModel)]="produtoAtualizar.freteAtivo"
+                      class="form-control"
+                      id="freteAtivo"
+                      name="freteAtivoProduto"
+                      required #freteAtivo="ngModel"
+                      (ngModelChange)="ativarFrete($event)">
+                <option [ngValue]="true">Sim</option>
+                <option [ngValue]="false">Não</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="frete">Valor do frete:</label>
+              <div class="input-with-display">
                 <input type="number" [(ngModel)]="produtoAtualizar.frete"
                        class="form-control"
                        id="frete"
                        name="freteProduto"
                        required #frete="ngModel"
                        maxlength="30"
-                       [disabled]="!produtoAtualizar.freteAtivo"
-                       style="width: 200px; display: inline-block;">
-                <!-- Input hidden mantido para compatibilidade -->
-                <input type="number" [(ngModel)]="produtoAtualizar.frete"
-                       class="form-control"
-                       id="freteTrue"
-                       name="freteProduto"
-                       required #frete="ngModel"
-                       maxlength="30"
-                       [disabled]="!produtoAtualizar.freteAtivo"
-                       style="width: 100%; display: none;">
-              </td>
-              <td class="td-ajustada" colspan="1">
-                <div class="mt-1">{{produtoAtualizar.frete | currency : 'BRL'}}</div>
-              </td>
-              <td colspan="4"></td>
-            </tr>
-
-            <tr>
-              <td class="coluna_um"><label for="valorTotalDesc">Valor total com desconto:</label></td>
-              <td colspan="3">
-                <!-- TEXTBOX COM DISPLAY=NONE APENAS PARA FINS DE CALCULO COM O NGMODEL -->
-                <input type="number" [(ngModel)]="produtoAtualizar.valorTotalDesc"
-                       class="form-control"
-                       id="valorTotalDesc"
-                       name="valorTotalDescProduto"
-                       required #valorTotalDesc="ngModel"
-                       maxlength="30"
-                       style="width: 100%; display: none;">
-                <div class="mt-1">{{produtoAtualizar.valorTotalDesc | currency : 'BRL'}}</div>
-              </td>
-              <td class="td-ajustada" colspan="1"><label>Valor quantidade:</label></td>
-              <td colspan="4">
-                <div class="mt-1">{{produtoAtualizar.valor | currency : 'BRL'}}</div>
-              </td>
-            </tr>
-
-            <tr>
-              <td class="coluna_um"><label for="valorInicial">Valor unitário:</label></td>
-              <td colspan="3" style="width: 200px;">
-                <input type="number" [(ngModel)]="produtoAtualizar.valorInicial"
-                       class="form-control"
-                       id="valorInicial"
-                       name="valorInicialProduto"
-                       required #valorInicial="ngModel"
-                       maxlength="30"
-                       style="width: 200px">
-                <!-- TEXTBOX COM DISPLAY=NONE APENAS PARA FINS DE CALCULO COM O NGMODEL -->
-                <input type="number" [(ngModel)]="produtoAtualizar.valor"
-                       class="form-control"
-                       id="valor"
-                       name="valorProduto"
-                       required #valor="ngModel"
-                       maxlength="30"
-                       style="width: 100%; display: none;">
-              </td>
-              <td class="td-ajustada" colspan="1">
-                <div class="mt-1">{{produtoAtualizar.valorInicial | currency : 'BRL'}}</div>
-              </td>
-              <td colspan="4"></td>
-            </tr>
-
-            <tr>
-              <td class="coluna_um"><label for="valorTotalFrete">Valor total com frete:</label></td>
-              <td colspan="8">
-                <input type="number" [(ngModel)]="produtoAtualizar.valorTotalFrete"
-                       class="form-control"
-                       id="valorTotalFrete"
-                       name="valorTotalFreteProduto"
-                       required #valorTotalFrete="ngModel"
-                       maxlength="30"
-                       style="width: 100%; display: none;"
-                       [disabled]="true">
-                <div class="mt-1">{{produtoAtualizar.valorTotalFrete | currency : 'BRL'}}</div>
-              </td>
-            </tr>
-
-            <tr>
-              <td class="coluna_um"><label for="promocao">Promoção:</label></td>
-              <td colspan="3">
-                <select [(ngModel)]="produtoAtualizar.promocao"
-                        class="form-control"
-                        id="promocao"
-                        name="promocaoProduto"
-                        required #promocao="ngModel"
-                        (ngModelChange)="selecionarPromocao($event)" style="width: 100%;">
-                  <option [ngValue]="true">Sim</option>
-                  <option [ngValue]="false">Não</option>
-                </select>
-              </td>
-              <td><label for="freteAtivo">Frete:</label></td>
-              <td colspan="4">
-                <select [(ngModel)]="produtoAtualizar.freteAtivo"
-                        class="form-control"
-                        id="freteAtivo"
-                        name="freteAtivoProduto"
-                        required #freteAtivo="ngModel"
-                        (ngModelChange)="ativarFrete($event)" style="width: 100%;">
-                  <option [ngValue]="true">Sim</option>
-                  <option [ngValue]="false">Não</option>
-                </select>
-              </td>
-            </tr>
-
-            <tr>
-              <td class="coluna_um">
-                <label for="foto_produto">Foto produto:</label>
-              </td>
-              <td colspan="8">
-                <input id="foto_produto" type="file" (change)="onFileChange($event)" [disabled]="isMobileOrTablet"/>
-              </td>
-            </tr>
-            <tr>
-              <td colspan="9">
-                <span style="color: red">AVISO:</span> <span> Não selecione uma imagem grande pois atrapalha na visualização.</span>
-              </td>
-            </tr>
-            <tr>
-              <td class="coluna_um">
-                <label for="somaTotalValores"><b>VALOR TOTAL: </b></label>
-              </td>
-              <td class="coluna_dois" colspan="8">
-                <input type="number" [(ngModel)]="produtoAtualizar.somaTotalValores"
-                       class="form-control"
-                       id="somaTotalValores"
-                       name="somaTotalValoresProduto"
-                       required #somaTotalValores="ngModel"
-                       maxlength="15"
-                       style="width: 100%; display: none;">
-                <div class="mt-1">{{produtoAtualizar.somaTotalValores | currency : 'BRL'}}</div>
-              </td>
-            </tr>
-
-            <tr>
-              <td class="coluna_um" colspan="2">
-                <button type="button" class="btn btn-secondary" (click)="calcularValores(produtoAtualizar)">Calcular valores</button>
-              </td>
-              <td class="coluna_dois text-left" colspan="7">
-                <button type="submit" [disabled]="!produtoForm.form.valid" class="btn bg-primary-subtle fw-bold" (click)="abrirTelaAviso(modalAviso)">Salvar</button>
-              </td>
-            </tr>
-            </tbody>
-          </table>
+                       [disabled]="!produtoAtualizar.freteAtivo">
+                <div class="valor-display">{{produtoAtualizar.frete | currency : 'BRL'}}</div>
+              </div>
+            </div>
+          </div>
         </div>
+
+        <!-- Totais -->
+        <div class="form-section">
+          <h6 class="section-title">Totais</h6>
+          <div class="totals-container">
+            <div class="total-item">
+              <label>Valor total com frete:</label>
+              <input type="number" [(ngModel)]="produtoAtualizar.valorTotalFrete"
+                     class="form-control hidden-input"
+                     id="valorTotalFrete"
+                     name="valorTotalFreteProduto"
+                     required #valorTotalFrete="ngModel"
+                     maxlength="30"
+                     [disabled]="true">
+              <div class="valor-display-large">{{produtoAtualizar.valorTotalFrete | currency : 'BRL'}}</div>
+            </div>
+            
+            <div class="total-item valor-total-principal">
+              <label class="total-label"><b>VALOR TOTAL:</b></label>
+              <input type="number" [(ngModel)]="produtoAtualizar.somaTotalValores"
+                     class="form-control hidden-input"
+                     id="somaTotalValores"
+                     name="somaTotalValoresProduto"
+                     required #somaTotalValores="ngModel"
+                     maxlength="15">
+              <div class="valor-display-final">{{produtoAtualizar.somaTotalValores | currency : 'BRL'}}</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Upload de Foto -->
+        <div class="form-section">
+          <h6 class="section-title">Foto do Produto</h6>
+          <div class="file-upload-container-compact">
+            <label for="foto_produto" class="file-label">Selecionar foto:</label>
+            <input id="foto_produto" 
+                   type="file" 
+                   class="form-control-file-compact"
+                   (change)="onFileChange($event)" 
+                   [disabled]="isMobileOrTablet">
+          </div>
+        </div>
+
+        <!-- Botões de Ação -->
+        <div class="form-section">
+          <div class="button-container">
+            <button type="button" 
+                    class="btn btn-calcular" 
+                    (click)="calcularValores(produtoAtualizar)">
+              Calcular valores
+            </button>
+            <button type="submit" 
+                    class="btn btn-salvar" 
+                    [disabled]="!produtoForm.form.valid" 
+                    (click)="abrirTelaAviso(modalAviso)">
+              Salvar produto
+            </button>
+          </div>
+        </div>
+
       </form>
     </div>
 
     <div class="modal-footer">
-      <button type="button" class="btn btn-secondary" (click)="modal.close()">Fechar</button>
+      <button type="button" class="btn btn-secondary btn-fechar" (click)="modal.close()">
+        Fechar
+      </button>
     </div>
   </div>
 </ng-template>
+
 <!--######## FIM DO MODAL DE EDIÇÃO DE PRODUTO ######## -->
 
 <!-- Janela (modal) que abre ao clicar no botão Excluir -->
@@ -365,8 +414,7 @@
     <img ngSrc="/codigo_barras.png" height="60" width="60" class="img-right"/>
   </div>
   <div class="modal-body">
-    <a style="font-size: 15px;">Informações atualizadas! Clique em <strong><span style="font-size: 30px;"> ↻ </span></strong> para visualizar</a><br>
-    <a style="font-size: 15px;">as alterações!</a>
+    <a style="font-size: 15px;">Informações atualizadas!</a><br>
   </div>
   <div class="modal-footer">
     <button type="button" class="btn btn-secondary" (click)="modal.close()">Fechar</button>

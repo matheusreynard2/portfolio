@@ -14,7 +14,7 @@
             <tr>
               <td class="coluna-label-1">
                 <span style="color: red">* </span>
-                <label for="login"> Usuário:</label>
+                <label for="login" class="required">Usuário:</label>
               </td>
               <td>
                 <div class="input-group">
@@ -35,7 +35,7 @@
             <tr>
               <td class="coluna-label-1">
                 <span style="color: red">* </span>
-                <label for="senha"> Senha:</label>
+                <label for="senha" class="required">Senha:</label>
               </td>
               <td>
                 <div class="input-group">
@@ -59,21 +59,21 @@
             <tr>
               <td class="coluna-label-1">
                 <span style="color: red">* </span>
-                <label for="whatsapp">WhatsApp / E-mail:</label>
+                <label for="whatsapp" class="required">E-mail:</label>
               </td>
               <td>
                 <div class="input-group">
-                  <input type="text" [(ngModel)]="addUsuario.whatsapp"
+                  <input type="text" [(ngModel)]="addUsuario.email"
                          class="form-control"
-                         [class.is-invalid]="whatsapp.invalid && whatsapp
+                         [class.is-invalid]="email.invalid && email
                          .touched"
-                         id="whatsapp"
-                         name="whatsappUsuario"
-                         required #whatsapp="ngModel"
-                         placeholder="Insira o seu WhatsApp/Telefone ou E-mail."
+                         id="email"
+                         name="emailUsuario"
+                         required #email="ngModel"
+                         placeholder="Insira seu E-mail."
                          maxlength="30">
-                  <div *ngIf="whatsapp.invalid && whatsapp.touched" class="invalid-feedback">
-                    whatsapp é obrigatório.
+                  <div *ngIf="email.invalid && email.touched" class="invalid-feedback">
+                    email é obrigatório.
                   </div>
                 </div>
               </td>

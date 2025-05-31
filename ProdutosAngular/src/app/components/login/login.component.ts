@@ -1,11 +1,11 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {Usuario} from '../../model/usuario';
 import {FormsModule} from '@angular/forms';
 import {Router} from '@angular/router';
 import {NgbModal, NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {NgOptimizedImage} from '@angular/common';
 import {AuthService} from '../../service/auth/auth.service';
 import { MatCardModule } from '@angular/material/card';
+import { Usuario } from '../../model/usuario';
 
 @Component({
   selector: 'app-login',
@@ -21,15 +21,12 @@ import { MatCardModule } from '@angular/material/card';
 export class LoginComponent implements OnInit {
 
   usuario: Usuario = {
-    id: 0,
+    idUsuario: 0,
     login: '',
     senha: '',
     token: '',
     imagem: '',
-    nome: '',
-    linkedin: '',
-    whatsapp: '',
-    endereco:''
+    email: '',
   };
 
   @ViewChild('modalMsgToken') modalMsgToken: any

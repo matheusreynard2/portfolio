@@ -1,14 +1,12 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import { ProdutoService } from '../../service/produto/produto.service';
 import {FormsModule} from '@angular/forms';
-import {Produto} from '../../model/produto';
-import {CurrencyPipe, NgForOf, NgIf, NgOptimizedImage} from '@angular/common';
+import {CurrencyPipe, NgForOf, NgIf, NgOptimizedImage, CommonModule} from '@angular/common';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import { ProdutoFunctionsService } from '../../service/produto/produto-functions.service';
 import {PorcentagemMaskDirective} from '../../directives/porcentagem-mask.directive';
 import {AuthService} from '../../service/auth/auth.service';
 import {DeviceService} from '../../service/device/device.service';
-import {Fornecedor} from '../../model/fornecedor';
 import {FornecedorDTO} from '../../model/dto/FornecedorDTO';
 import {ProdutoDTO} from '../../model/dto/ProdutoDTO';
 
@@ -20,7 +18,8 @@ import {ProdutoDTO} from '../../model/dto/ProdutoDTO';
     CurrencyPipe,
     NgOptimizedImage,
     PorcentagemMaskDirective,
-    NgForOf
+    NgForOf,
+    CommonModule
   ],
   styleUrls: ['./add-produto.component.css']
 })
@@ -72,7 +71,7 @@ export class AddProdutoComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.produtoService.listarFornecedoresList().subscribe(data => {
+    this.produtoService.listarFornecedoresList(this.authService.getUsuarioLogado().idUsuario).subscribe(data => {
       this.fornecedores = data;
       // Garante que o fornecedor seja undefined inicialmente
       this.produto.fornecedor = undefined;
@@ -89,7 +88,7 @@ export class AddProdutoComponent implements OnInit {
   onSubmit() {
     this.calcularValores(this.produto);
 
-    this.produto.idUsuario = this.authService.getUsuarioLogado().id
+    this.produto.idUsuario = this.authService.getUsuarioLogado().idUsuario
 
     // Adiciona o produto no banco depois chama a mensagem de sucesso de adição de produto "msgAddProduto"
     this.produtoService.adicionarProduto(this.produto, this.imagemFile).subscribe({

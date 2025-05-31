@@ -1,5 +1,5 @@
 export class Usuario {
-  public id: number;
+  public idUsuario: number;
 
   public login: string;
 
@@ -9,33 +9,21 @@ export class Usuario {
 
   public imagem: string;
 
-  public nome: string;
-
-  public linkedin: string;
-
-  public whatsapp: string;
-
-  public endereco: string;
+  public email: string;
 
   constructor(
-    id: number,
+    idUsuario: number,
     login: string,
     senha: string,
     token: string,
     imagem: string,
-    nome: string,
-    linkedin: string,
-    whatsapp: string,
-    endereco: string,
+    email: string
   ) {
-    this.id = id;
+    this.idUsuario = idUsuario;
     this.login = login;
     this.senha = senha;
     this.token = token;
     this.imagem = imagem;
-    this.nome = nome;
-    this.linkedin = linkedin;
-    this.whatsapp = whatsapp;
-    this.endereco = endereco;
+    this.email = email
   }
 }

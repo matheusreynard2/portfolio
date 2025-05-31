@@ -6,10 +6,10 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {AuthService} from './service/auth/auth.service';
 import {NgClass, NgIf, NgOptimizedImage} from '@angular/common';
 import {filter, firstValueFrom, Observable, of} from 'rxjs';
-import {Usuario} from './model/usuario';
 import {UsuarioService} from './service/usuario/usuario.service';
 import {DeviceService} from './service/device/device.service';
 import {environment} from '../environments/environment';
+import { Usuario } from './model/usuario';
 
 @Component({
   selector: 'app-root',
@@ -57,6 +57,16 @@ export class AppComponent implements OnInit {
     this.adicionarContabilizarAcessos().catch(error => {
       console.error("Erro na contabilização de acessos: ", error);
     });
+
+    // Adiciona event listeners para os sub-menus mobile
+    setTimeout(() => {
+      const submenuHeaders = document.querySelectorAll('.mobile-submenu-header');
+      submenuHeaders.forEach(header => {
+        header.addEventListener('click', (event) => {
+          this.toggleSubmenu(event);
+        });
+      });
+    }, 0);
   }
 
   // Método separado para verificação do perfil
@@ -139,6 +149,21 @@ export class AppComponent implements OnInit {
 
   abrirFecharMenu() {
     this.menuOpen = !this.menuOpen;
+    if (!this.menuOpen) {
+      // Fecha todos os sub-menus quando o menu principal é fechado
+      const submenus = document.querySelectorAll('.mobile-submenu');
+      submenus.forEach(submenu => {
+        submenu.classList.remove('active');
+      });
+    }
+  }
+
+  toggleSubmenu(event: Event) {
+    const header = event.currentTarget as HTMLElement;
+    const submenu = header.closest('.mobile-submenu');
+    if (submenu) {
+      submenu.classList.toggle('active');
+    }
   }
 
 }

@@ -1,14 +1,13 @@
 import { Injectable } from '@angular/core';
 import {HttpClient, HttpErrorResponse, HttpHeaders, HttpParams, HttpResponse} from '@angular/common/http';
-import { Produto } from '../../model/produto';
 import {BehaviorSubject, catchError, Observable, throwError} from 'rxjs';
 import {AuthService} from '../auth/auth.service';
 import {Router} from '@angular/router';
 import {PaginatedResponse} from '../../paginated-response';
 import {environment} from '../../../environments/environment';
-import {Fornecedor} from '../../model/fornecedor';
 import {FornecedorDTO} from '../../model/dto/FornecedorDTO';
 import {ProdutoDTO} from '../../model/dto/ProdutoDTO';
+import { Produto } from '../../model/produto';
 
 @Injectable({
   providedIn: 'root'  // Garante que o serviço esteja disponível globalmente em toda a aplicação
@@ -148,8 +147,19 @@ export class ProdutoService {
   }
 
   // Método para listar todos os fornecedores na ComboBox de Cadastrar Produto
-  public listarFornecedoresList(): Observable<FornecedorDTO[]> {
-    return this.http.get<FornecedorDTO[]>(this.fornecedorUrl + "/listarFornecedoresList");
+  public listarFornecedoresList(idUsuario: number): Observable<FornecedorDTO[]> {
+    return this.http.get<FornecedorDTO[]>(this.fornecedorUrl + "/listarFornecedoresList/" + idUsuario);
+  }
+
+  // ENDPOINT GET - Buscar produto por ID
+  public buscarProdutoPorId(id: number): Observable<ProdutoDTO> {
+    return this.http.get<ProdutoDTO>(this.produtosUrl + "/buscarProduto/" + id).pipe(
+      catchError((error: HttpErrorResponse) => {
+        if (error.status === 401 && error.error.message === 'Tempo limite de conexão com o sistema excedido. TOKEN Expirado')
+          this.verificarRedirecionar()
+        return throwError(error);
+      })
+    );
   }
 
 }

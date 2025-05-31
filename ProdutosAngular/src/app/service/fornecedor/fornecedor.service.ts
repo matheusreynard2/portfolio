@@ -1,9 +1,7 @@
 import { Injectable } from '@angular/core';
-import {Produto} from '../../model/produto';
 import {HttpClient, HttpErrorResponse, HttpHeaders, HttpParams, HttpResponse} from '@angular/common/http';
 import {catchError, Observable, throwError} from 'rxjs';
 import {PaginatedResponse} from '../../paginated-response';
-import {Fornecedor} from '../../model/fornecedor';
 import {environment} from '../../../environments/environment';
 import {AuthService} from '../auth/auth.service';
 import {Router} from '@angular/router';
@@ -31,7 +29,7 @@ export class FornecedorService {
   }
 
   public adicionarFornecedor(fornecedor: FornecedorDTO) {
-    return this.http.post<FornecedorDTO>(this.fornecedorUrl + "/adicionarFornecedor", fornecedor).pipe(
+    return this.http.post<FornecedorDTO>(this.fornecedorUrl + "/adicionarFornecedor/" + this.authService.getUsuarioLogado().idUsuario, fornecedor).pipe(
       // Aqui fazemos o tratamento do erro 401 para TOKEN EXPIRADO
       catchError((error: HttpErrorResponse) => {
         if (error.status === 401 && error.error.message === 'Tempo limite de conexão com o sistema excedido. TOKEN Expirado')
@@ -52,13 +50,13 @@ export class FornecedorService {
     )
   }
 
-   public listarFornecedores(page: number, size: number): Observable<PaginatedResponse<FornecedorDTO>> {
+   public listarFornecedores(page: number, size: number, idUsuario: number): Observable<PaginatedResponse<FornecedorDTO>> {
 
      const params = new HttpParams()
        .set('page', page.toString())
        .set('size', size.toString());
 
-     return this.http.get<PaginatedResponse<FornecedorDTO>>(this.fornecedorUrl + "/listarFornecedores", {params}).pipe(
+     return this.http.get<PaginatedResponse<FornecedorDTO>>(this.fornecedorUrl + "/listarFornecedores/" + idUsuario, {params}).pipe(
        // Aqui fazemos o tratamento do erro 401 para TOKEN EXPIRADO
        catchError((error: HttpErrorResponse) => {
          if (error.status === 401 && error.error.message === 'Tempo limite de conexão com o sistema excedido. TOKEN Expirado')

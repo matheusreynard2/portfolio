@@ -12,7 +12,7 @@
           <tr>
             <td>
               <span style="color: red">* </span>
-              <label for="nome">Nome:</label></td>
+              <label for="nome" class="required">Nome:</label></td>
             <td>
               <input type="text" [(ngModel)]="produto.nome"
                      class="form-control"
@@ -20,7 +20,11 @@
                      name="nomeProduto"
                      placeholder="Insira o nome do produto."
                      required #nome="ngModel"
+                     [ngClass]="{'is-invalid': nome.invalid && nome.touched}"
                      maxlength="35">
+              <div *ngIf="nome.invalid && nome.touched" class="invalid-feedback">
+                O nome do produto é obrigatório.
+              </div>
             </td>
             <td><label for="descricao">Descrição:</label></td>
             <td colspan="3">
@@ -159,7 +163,7 @@
           <tr>
             <td>
               <span style="color: red">* </span>
-              <label for="fornecedor">Fornecedor:</label>
+              <label for="fornecedor" class="required">Fornecedor:</label>
             </td>
             <td>
               <select [(ngModel)]="fornecedorSelecionado"
@@ -167,15 +171,18 @@
                       id="fornecedor"
                       name="fornecedorProduto"
                       required #fornecedor="ngModel"
+                      [ngClass]="{'is-invalid': fornecedor.invalid && fornecedor.touched}"
                       (ngModelChange)="onFornecedorChange($event)">
                 <option [ngValue]="undefined">Selecione um fornecedor</option>
                 <option *ngFor="let fornecedor of fornecedores" [ngValue]="fornecedor">
                   ID {{fornecedor.id}} - {{fornecedor.nome}}
                 </option>
               </select>
+              <div *ngIf="fornecedor.invalid && fornecedor.touched" class="invalid-feedback">
+                O fornecedor é obrigatório.
+              </div>
             </td>
             <td colspan="4">
-              <span style="font-size: 13px; color: red">AVISO:</span> <span style="font-size: 12px;"> Não selecione uma imagem grande pois atrapalha na visualização.</span>
             </td>
           </tr>
           <tr>
@@ -197,11 +204,11 @@
             </td>
           </tr>
           <tr>
-            <td>
-              <button type="button" class="btn btn-secondary" (click)="calcularValores(produto)">Calcular valores</button>
-            </td>
-            <td colspan="5" class="text-left">
-              <button type="submit" [disabled]="!produtoForm.form.valid" class="btn bg-primary-subtle fw-bold">Cadastrar</button>
+            <td colspan="6">
+              <div class="button-container">
+                <button type="button" class="btn btn-secondary" (click)="calcularValores(produto)">Calcular valores</button>
+                <button type="submit" [disabled]="!produtoForm.form.valid" class="btn bg-primary-subtle fw-bold">Cadastrar</button>
+              </div>
             </td>
           </tr>
           </tbody>

@@ -1,123 +1,1132 @@
-#btn_excluir, #btn_editar {
-  font-size: 20px;
+/* Textos estáticos em negrito */
+.stat-text {
+  font-weight: bold;
+  color: #495057;
 }
 
-.coluna_id {
-  width: 50px;
+/* Variáveis em negrito + verde */
+.stat-variable {
+  font-weight: bold;
+  color: #28a745;
+  margin-left: 5px;
+  margin-right: 5px;
 }
 
-.coluna_nome {
-  width: 200px;
+/* Container das estatísticas */
+.stats-container-vertical {
+  padding: 8px 0;
 }
 
-.td-ajustada {
-  width: auto !important;
-  min-width: fit-content !important;
-  white-space: nowrap; /* Mantém tudo em uma linha */
+.stat-row.stat-label-container.stat-value-container {
+  display: inline-block;
+  font-size: 14px;
+  line-height: 1.4;
 }
 
-/* Garantir que a largura das colunas seja fixa ou proporcional */
-.table th, .table td {
-  padding: 10px;      /* Adiciona um padding consistente */
+/* Responsividade para mobile */
+@media (max-width: 768px) {
+  .stat-row.stat-label-container.stat-value-container {
+    font-size: 12px;
+  }
+  
+  .stat-variable {
+    margin-left: 3px;
+    margin-right: 3px;
+  }
 }
 
-.table td button {
-  width: 100%;        /* Faz o botão ocupar toda a célula */
-}
-
-.modal-header {
-  position: relative;
+/* ===== MODAL CONTAINER ===== */
+.modal-container {
+  width: 100%;
+  max-width: 1100px;
+  min-height: 80vh;
+  margin: 0 auto;
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
   display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  width: 100%;  /* Garante que o modal ocupe toda a largura */
+  flex-direction: column;
 }
 
-p {
-  font-size: 16px;
-  color: black;
-}
-
-h5 {
-  font-size: 20px;
-  color: black;
+/* ===== MODAL HEADER ===== */
+.modal-header {
+  background: white;
+  color: #495057;
+  padding: 15px 20px;
+  position: relative;
+  border-bottom: 1px solid #e9ecef;
+  flex-shrink: 0;
 }
 
 .modal-title {
-  margin-right: 160px; /* Ajusta para o espaço da imagem */
+  font-size: 22px;
+  font-weight: 600;
+  margin: 0;
+  color: #495057;
+  white-space: nowrap;
 }
 
 .img-right {
   position: absolute;
-  right: 0;
-  top: 0;
-  opacity: 75%;
+  right: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  opacity: 0.4;
+  border-radius: 8px;
 }
 
-#janelaEditar {
-  width: 750px;
-  height: 750px;
-  border-radius: 15px; /* Ajuste o valor conforme desejado para o arredondamento */
+/* ===== MODAL BODY ===== */
+.modal-body {
+  padding: 0;
+  background: #f8f9fa;
+  flex: 1;
+  overflow-y: auto;
 }
 
-#combo_tipo_pesquisa {
-  width: 100px;
-  height: 30px;
+.produto-info {
+  background: white;
+  margin: 0;
+  padding: 15px 20px;
+  font-size: 15px;
+  color: #495057;
+  border-bottom: 1px solid #e9ecef;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-.searchBar_input, #searchBar_td, #btn_pesquisar {
+/* ===== FORMULÁRIO ===== */
+.produto-form {
+  padding: 15px 15px 25px 15px;
+  background: #f8f9fa;
+  height: 100%;
+}
+
+/* ===== SEÇÕES DO FORMULÁRIO ===== */
+.form-section {
+  background: white;
+  border-radius: 8px;
+  padding: 15px;
+  margin-bottom: 12px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+  border: 1px solid #e9ecef;
+  position: relative;
+}
+
+.form-section:last-child {
+  margin-bottom: 0;
+}
+
+.section-title {
+  color: #495057;
+  font-size: 15px;
+  font-weight: 600;
+  margin: 0 0 15px 0;
+  padding-bottom: 8px;
+  border-bottom: 2px solid #667eea;
+  display: inline-block;
+  white-space: nowrap;
+}
+
+/* ===== BOTÃO CALCULAR PEQUENO ===== */
+.btn-calcular-mini {
+  position: absolute;
+  top: 12px;
+  right: 15px;
+  width: 32px;
+  height: 32px;
+  border: none;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+  z-index: 10;
+}
+
+.btn-calcular-mini:hover {
+  transform: scale(1.1) rotate(180deg);
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+}
+
+.btn-calcular-mini:active {
+  transform: scale(0.95);
+}
+
+/* ===== SEÇÃO ID REMOVIDA - AGORA NO TÍTULO ===== */
+
+/* ===== LINHAS DE FORMULÁRIO ===== */
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+  align-items: start;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.form-group label {
+  font-weight: 600;
+  color: #495057;
+  font-size: 13px;
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.form-group label.required::before {
+  content: "* ";
+  color: #dc3545;
+  font-weight: bold;
+}
+
+/* ===== INPUTS ===== */
+.form-control {
+  padding: 8px 12px;
+  border: 2px solid #dee2e6;
+  border-radius: 6px;
+  font-size: 16px;
+  transition: all 0.3s ease;
+  background: white;
+  height: 36px;
+}
+
+.form-control:focus {
+  border-color: #667eea;
+  box-shadow: 0 0 0 0.15rem rgba(102, 126, 234, 0.2);
+  outline: none;
+}
+
+.form-control:disabled {
+  background-color: #f8f9fa;
+  border-color: #dee2e6;
+  color: #6c757d;
+}
+
+.hidden-input {
+  display: none !important;
+}
+
+/* ===== INPUT COM DISPLAY DE VALOR ===== */
+.input-with-display {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.input-with-display .form-control {
+  flex: 1;
+  max-width: 190px;
+}
+
+.valor-display {
+  background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+  color: white;
+  padding: 6px 12px;
+  border-radius: 5px;
+  font-weight: 600;
+  font-size: 12px;
+  min-width: 100px;
+  text-align: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  white-space: nowrap;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.valor-quantidade {
+  background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+}
+
+/* ===== CONTAINER DE TOTAIS ===== */
+.totals-container {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.total-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 15px;
+  background: #f8f9fa;
+  border-radius: 6px;
+  border: 1px solid #dee2e6;
+}
+
+.total-item label {
+  font-weight: 600;
+  color: #495057;
+  margin: 0;
+  white-space: nowrap;
+}
+
+.valor-display-large {
+  background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+  color: white;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 14px;
+  min-width: 120px;
+  text-align: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  white-space: nowrap;
+}
+
+.valor-total-principal {
+  background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+  color: white;
+  border: 2px solid #28a745;
+}
+
+.valor-total-principal label {
+  color: white;
+  font-size: 16px;
+}
+
+.valor-display-final {
+  background: white;
+  color: #28a745;
+  padding: 10px 20px;
+  border-radius: 6px;
+  font-weight: bold;
+  font-size: 18px;
+  min-width: 150px;
+  text-align: center;
+  border: 2px solid white;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  white-space: nowrap;
+}
+
+/* ===== UPLOAD DE ARQUIVO COMPACTO ===== */
+.file-upload-container-compact {
+  background: #f8f9fa;
+  border: 2px dashed #dee2e6;
+  border-radius: 6px;
+  padding: 10px;
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+.file-upload-container-compact:hover {
+  border-color: #667eea;
+  background: #f8f9fa;
+}
+
+.file-label {
+  font-weight: 600;
+  color: #495057;
+  display: block;
+  margin-bottom: 8px;
+  white-space: nowrap;
+  font-size: 13px;
+}
+
+.form-control-file-compact {
+  padding: 6px;
+  border: 2px solid #dee2e6;
+  border-radius: 5px;
+  background: white;
+  font-size: 12px;
+  width: 100%;
+  max-width: 250px;
+  margin: 0 auto;
+  height: 32px;
+}
+
+.file-warning-compact {
+  margin-top: 15px;
+  padding: 6px;
+  background: #fff3cd;
+  border: 1px solid #ffeaa7;
+  border-radius: 4px;
+  font-size: 11px;
+}
+
+.warning-text {
+  color: #856404;
+  font-weight: bold;
+}
+
+/* ===== BOTÕES ===== */
+.button-container {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+  align-items: center;
+  padding: 15px 0 5px 0;
+}
+
+.btn {
+  padding: 10px 25px;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 140px;
+  height: 40px;
+  white-space: nowrap;
+}
+
+.btn-calcular {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  box-shadow: 0 3px 12px rgba(102, 126, 234, 0.3);
+}
+
+.btn-calcular:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 5px 16px rgba(102, 126, 234, 0.4);
+}
+
+.btn-salvar {
+  background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+  color: white;
+  box-shadow: 0 3px 12px rgba(40, 167, 69, 0.3);
+}
+
+.btn-salvar:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 5px 16px rgba(40, 167, 69, 0.4);
+}
+
+.btn-salvar:disabled {
+  background: #6c757d;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+/* ===== MODAL FOOTER ===== */
+.modal-footer {
+  background: white;
+  padding: 20px 20px 15px 20px;
+  border-top: 1px solid #e9ecef;
+  display: flex;
+  justify-content: flex-end;
+  flex-shrink: 0;
+}
+
+.btn-fechar {
+  background: #6c757d;
+  color: white;
+  padding: 8px 20px;
+  border: none;
+  border-radius: 5px;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+}
+
+.btn-fechar:hover {
+  background: #5a6268;
+  transform: translateY(-1px);
+}
+
+/* ===== OTIMIZAÇÕES ESPECÍFICAS ===== */
+
+/* Labels sempre em uma linha */
+label {
+  white-space: nowrap !important;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Seção de totais mais compacta */
+.totals-container .total-item:first-child {
+  margin-bottom: 5px;
+}
+
+/* Grid mais eficiente para campos menores */
+.form-row.compact {
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 12px;
+}
+
+/* Ajustes para select elements */
+select.form-control {
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");
+  background-position: right 8px center;
+  background-repeat: no-repeat;
+  background-size: 16px;
+  padding-right: 32px;
+}
+
+/* ===== RESPONSIVIDADE OTIMIZADA ===== */
+@media (max-width: 768px) {
+  .modal-container {
+    max-width: 95%;
+    margin: 5px auto;
+    min-height: 90vh;
+  }
+  
+  .produto-form {
+    padding: 10px 10px 20px 10px;
+  }
+  
+  .form-section {
+    padding: 12px;
+    margin-bottom: 8px;
+    position: relative;
+  }
+  
+  .btn-calcular-mini {
+    width: 30px;
+    height: 30px;
+    font-size: 15px;
+    top: 10px;
+    right: 12px;
+  }
+  
+  .form-row {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+  
+  .input-with-display {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+  }
+  
+  .input-with-display .form-control {
+    max-width: 100%;
+  }
+  
+  .valor-display {
+    min-width: auto;
+    text-align: center;
+  }
+  
+  .button-container {
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .btn {
+    width: 100%;
+    min-width: auto;
+  }
+  
+  .total-item {
+    flex-direction: column;
+    gap: 8px;
+    text-align: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .modal-header {
+    padding: 12px 15px;
+}
+
+.modal-title {
+    font-size: 18px;
+}
+
+.img-right {
+    width: 45px;
+    height: 45px;
+  }
+  
+  .produto-info {
+    padding: 12px 15px;
+    font-size: 13px;
+  }
+  
+  .form-section {
+    padding: 10px;
+    position: relative;
+  }
+  
+  .btn-calcular-mini {
+    width: 28px;
+    height: 28px;
+    font-size: 14px;
+    top: 10px;
+    right: 12px;
+  }
+  
+  .section-title {
+    font-size: 14px;
+  }
+  
+  .produto-form {
+    padding: 10px 10px 20px 10px;
+  }
+  
+  .modal-footer {
+    padding: 15px 15px 12px 15px;
+  }
+}
+
+#searchBar_td {
+  width: 100%;
+  padding-right: 10px;
+}
+
+.searchBar_input {
+  width: 100%;
   height: 30px;
   font-size: 14px;
-  width: 100%;
 }
 
-.image-container {
-  max-width: 40%; /* Limita a largura */
-  max-height: 40%; /* Limita a altura */
-  background-color: black; /* Fundo preto */
-  padding: 10px; /* Espaço extra ao redor da imagem */
-  border: 3px black; /* Bordas arredondadas */
-  overflow: hidden; /* Impede que a imagem ultrapasse o container */
-  text-align: center; /* Centraliza a imagem */
+/* Estilos para as estatísticas */
+.stats-container {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 10px 0;
 }
 
-.image-container img {
-  max-width: 100%; /* Ajusta a largura da imagem */
-  max-height: 100%; /* Ajusta a altura da imagem */
-  object-fit: contain; /* A imagem se ajusta sem distorcer */
+.stat-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.stat-label {
+  font-size: 16px;
+  font-weight: 500;
+  color: #495057;
+  cursor: pointer;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.stat-value {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 4px 12px;
+  border-radius: 4px;
+  font-weight: 500;
+  font-size: 16px;
+  box-shadow: 0 2px 4px rgba(102, 126, 234, 0.2);
+}
+
+.stat-divider {
+  color: #dee2e6;
+  font-weight: 300;
+}
+
+/* Estilos para as informações */
+.info-container {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 5px 0;
+  font-size: 12px;
+}
+
+.info-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.info-label {
+  font-weight: 600;
+  color: #495057;
+}
+
+.info-text {
+  color: #6c757d;
+}
+
+.info-divider {
+  color: #dee2e6;
+  font-weight: 300;
+}
+
+/* Estilos para os modais de mensagem */
+.modal-body p {
+  padding: 0 20px;
+  margin: 0;
+  font-size: 16px;
+  color: #495057;
+}
+
+.modal-body a {
+  padding: 0 20px;
+  margin: 0;
+  display: block;
+  line-height: 1.5;
 }
 
 .passar_mouse {
-  cursor: zoom-in;
-  display: inline-block;
+  cursor: pointer;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: #495057;
+  font-weight: 500;
+}
+
+.passar_mouse::after {
+  content: "👁️";
+  font-size: 14px;
+  opacity: 0.7;
+  transition: opacity 0.2s;
+}
+
+.passar_mouse:hover::after {
+  opacity: 1;
 }
 
 .img-popup {
   position: absolute;
-  top: 10px;  /* Ajuste conforme a necessidade */
-  left: 350px; /* Ajuste conforme a necessidade */
+  bottom: 80%;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1000;
+  margin-bottom: 10px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  padding: 10px;
 }
 
-.table_editar {
-  table-layout: auto !important; /* Tabela com layout fixo */
-  width: 100%;
-  margin: 0 auto;
-  overflow-x: auto;/* Garantir que a tabela ocupe toda a largura disponível */
+.image-container {
+  width: 200px;
+  height: 200px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 6px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 4px rgba(102, 126, 234, 0.2);
 }
 
-/* Contêiner que envolve a tabela de edição para permitir scroll horizontal */
-.div-tabela-editar {
+.image-container::before {
+  content: "Imagem do Produto";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  background: rgba(255, 255, 255, 0.9);
+  color: #495057;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 4px 8px;
+  text-align: center;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.image-container img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  border-radius: 4px;
+}
+
+/* Ajustes para o modal de atualização */
+.modal-body .produto-info {
+  font-size: 18px;
+}
+
+.modal-body .section-title {
+  font-size: 18px;
+}
+
+.modal-body label {
+  font-size: 16px;
+}
+
+.modal-body .warning-text,
+.modal-body .file-label,
+.modal-body .file-warning-compact span {
+  font-size: 16px;
+}
+
+.modal-body .btn-calcular,
+.modal-body .btn-salvar,
+.modal-body .btn-fechar {
+  font-size: 16px;
+}
+
+/* Ajuste dos inputs específicos */
+.modal-body input[id="valorInicial"],
+.modal-body input[id="quantidade"],
+.modal-body input[id="valorDesconto"],
+.modal-body input[id="frete"] {
+  width: 190px !important;
+}
+
+/* Alinhamento do ComboBox de fornecedor com o input de nome */
+.modal-body input[id="nome"],
+.modal-body select[id="fornecedor"] {
+  width: 100% !important;
+  max-width: none !important;
+}
+
+/* Garantir que os inputs fiquem na mesma linha */
+.modal-body .form-row {
+  display: flex;
+  flex-wrap: nowrap;
+  margin-right: -15px;
+  margin-left: -15px;
+  white-space: nowrap;
+}
+
+.modal-body .form-group {
+  flex: 1;
+  padding-right: 15px;
+  padding-left: 15px;
+  min-width: 0; /* Evita que o conteúdo force a quebra de linha */
+}
+
+/* Ajuste para os containers de input com display */
+.modal-body .input-with-display {
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+}
+
+/* Ajustes para os elementos do formulário no modal */
+.modal-body .form-control {
+  height: calc(1.5em + 0.75rem + 1.5px) !important; /* Aumenta a altura base em 1.5px */
+  padding-top: calc(0.375rem + 0.75px) !important; /* Ajusta o padding superior */
+  padding-bottom: calc(0.375rem + 0.75px) !important; /* Ajusta o padding inferior */
+}
+
+/* Ajuste específico para o select (combobox) */
+.modal-body select.form-control {
+  height: calc(1.5em + 0.75rem + 1.5px) !important;
+  padding-top: calc(0.375rem + 0.75px) !important;
+  padding-bottom: calc(0.375rem + 0.75px) !important;
+}
+
+/* Ajuste para os inputs com display flex */
+.modal-body .input-with-display input.form-control {
+  height: calc(1.5em + 0.75rem + 1.5px) !important;
+  padding-top: calc(0.375rem + 0.75px) !important;
+  padding-bottom: calc(0.375rem + 0.75px) !important;
+}
+
+/* Ajuste para os inputs de arquivo */
+.modal-body input[type="file"].form-control-file-compact {
+  height: calc(1.5em + 0.75rem + 1.5px) !important;
+  padding-top: calc(0.375rem + 0.75px) !important;
+  padding-bottom: calc(0.375rem + 0.75px) !important;
+}
+
+/* Estilos para os botões de ação da tabela */
+.full-width-btn {
+  width: 32px !important;
+  height: 32px !important;
+  padding: 0 !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border-radius: 6px !important;
+  font-size: 14px !important;
+  min-width: unset !important;
+  margin: 0 auto !important;
+}
+
+/* Estilo para o botão de atualizar lista - Aumentando a especificidade */
+button.btn.bg-primary-subtle.fw-bold.btn-atualizar-lista {
+  width: 200px !important;
+  font-size: 16px !important;
+  height: 40px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border-radius: 6px !important;
+  transition: all 0.3s ease !important;
+  min-width: unset !important; /* Sobrescreve qualquer min-width */
+}
+
+button.btn.bg-primary-subtle.fw-bold.btn-atualizar-lista:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Removendo estilos conflitantes */
+.btn.bg-primary-subtle.fw-bold {
+  /* Removendo estilos que podem conflitar */
+  width: auto !important;
+  font-size: inherit !important;
+}
+
+td:has(.btn.bg-primary-subtle.fw-bold.btn-atualizar-lista) {
+  width: auto !important;
+  padding: 4px !important;
+}
+
+/* Estilos para o container vertical de estatísticas */
+.stats-container-vertical {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 15px;
+  background: #f8f9fa;
+  border-radius: 8px;
+  border: 1px solid #e9ecef;
+  margin: 10px 0;
+}
+
+.stat-row {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 8px 12px;
+  background: white;
+  border-radius: 6px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+}
+
+.stat-row:hover {
+  transform: translateX(5px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.stat-label-container {
+  min-width: 150px;
+  display: flex;
+  align-items: center;
+}
+
+.stat-value-container {
+  flex: 1;
+  display: flex;
+  align-items: center;
+}
+
+.stat-label {
+  font-size: 16px;
+  font-weight: 500;
+  color: #495057;
+  white-space: nowrap;
+}
+
+.stat-value {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 6px 15px;
+  border-radius: 6px;
+  font-weight: 500;
+  font-size: 16px;
+  box-shadow: 0 2px 4px rgba(102, 126, 234, 0.2);
+  white-space: nowrap;
+  min-width: 200px;
+  text-align: center;
+}
+
+/* Ajuste das larguras das colunas da tabela */
+.coluna_id {
+  width: 60px !important; /* Reduzindo a largura da coluna ID */
+  min-width: 60px !important;
+  max-width: 60px !important;
+}
+
+.coluna_nome {
+  width: 35% !important; /* Aumentando a largura da coluna Nome */
+  min-width: 250px !important;
+}
+
+/* Garantindo que o conteúdo da coluna ID fique centralizado */
+td.coluna_id {
+  text-align: center !important;
+  padding: 8px 4px !important;
+}
+
+/* Garantindo que o conteúdo da coluna Nome fique alinhado à esquerda */
+td.coluna_nome {
+  text-align: left !important;
+  padding: 8px 12px !important;
+}
+
+/* Estilos para responsividade */
+.card {
   width: 100%;
   overflow-x: auto;
-}
-
-.coluna_um {
-  width: 200px;         /* Largura fixa de 50px para as colunas que contém os labels */
-  overflow: hidden;    /* Esconde o conteúdo que ultrapassar o limite */
+  margin: 0;
+  padding: 0;
 }
 
 .div-tabela {
   width: 100%;
-  margin: 0 auto;
   overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  margin-bottom: 1rem;
+}
+
+.table {
+  min-width: 1000px; /* Largura mínima para garantir legibilidade */
+  margin-bottom: 0;
+}
+
+/* Ajustes para telas pequenas */
+@media (max-width: 768px) {
+  .card-body {
+    padding: 0.5rem;
+  }
+
+  /* Ajuste da barra de pesquisa */
+  table:first-of-type {
+    width: 100%;
+    margin-bottom: 1rem;
+  }
+
+  #searchBar_td {
+    width: 60%;
+  }
+
+  .searchBar_input {
+    width: 100%;
+    font-size: 14px;
+  }
+
+  #combo_tipo_pesquisa {
+    width: 30%;
+    font-size: 14px;
+  }
+
+  #btn_pesquisar {
+    width: 30%;
+    font-size: 14px;
+    padding: 0.25rem 0.5rem;
+  }
+
+  /* Ajuste dos botões de ação */
+  .full-width-btn {
+    padding: 0.25rem 0.5rem;
+    font-size: 14px;
+  }
+
+  /* Ajuste das estatísticas */
+  .stats-container-vertical {
+    padding: 0.5rem;
+    font-size: 14px;
+  }
+
+  .stat-row {
+    padding: 0.5rem;
+  }
+
+  /* Ajuste das informações */
+  .info-container {
+    padding: 0.5rem;
+    font-size: 12px;
+  }
+
+  .info-item {
+    margin-bottom: 0.5rem;
+  }
+
+  .info-divider {
+    display: none;
+  }
+
+  /* Ajuste do modal */
+  .modal-container {
+    width: 95%;
+    margin: 0 auto;
+  }
+
+  .modal-body {
+    padding: 0.5rem;
+  }
+
+  .form-section {
+    margin-bottom: 1rem;
+  }
+
+  .form-row {
+    flex-direction: column;
+  }
+
+  .form-group {
+    width: 100%;
+    margin-bottom: 0.5rem;
+  }
+
+  .button-container {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .btn-calcular, .btn-salvar {
+    width: 100%;
+    margin: 0;
+  }
+
+  /* Ajuste do popup de imagem */
+  .img-popup {
+    max-width: 200px;
+    max-height: 200px;
+  }
+
+  .image-container img {
+    max-width: 100%;
+    height: auto;
+  }
+}
+
+/* Ajustes para telas muito pequenas */
+@media (max-width: 480px) {
+  .table {
+    min-width: 800px;
+  }
+
+  .searchBar_input,
+  #combo_tipo_pesquisa,
+  #btn_pesquisar {
+    font-size: 12px;
+  }
+
+  .stats-container-vertical {
+    font-size: 12px;
+  }
+
+  .info-container {
+    font-size: 11px;
+  }
+}
+
+/* Ajustes para o tema escuro */
+.dark-mode .table {
+  color: #fff;
+}
+
+.dark-mode .table-striped tbody tr:nth-of-type(odd) {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+.dark-mode .table-bordered {
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+.dark-mode .table thead th {
+  border-color: rgba(255, 255, 255, 0.1);
+  background-color: rgba(0, 0, 0, 0.2);
 }

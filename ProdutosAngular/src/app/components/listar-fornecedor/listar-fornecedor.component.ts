@@ -1,5 +1,4 @@
 import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
-import { Produto } from '../../model/produto';
 import { ProdutoService } from '../../service/produto/produto.service';
 import {CurrencyPipe, NgForOf, NgIf, NgOptimizedImage} from '@angular/common';
 import {NgbModal, NgbModule} from '@ng-bootstrap/ng-bootstrap';
@@ -11,7 +10,6 @@ import {MatPaginatorModule, PageEvent} from '@angular/material/paginator';
 import {AuthService} from '../../service/auth/auth.service';
 import {HttpResponse} from '@angular/common/http';
 import {DeviceService} from '../../service/device/device.service';
-import {Fornecedor} from '../../model/fornecedor';
 import {FornecedorService} from '../../service/fornecedor/fornecedor.service';
 import {FornecedorDTO} from '../../model/dto/FornecedorDTO';
 
@@ -50,8 +48,7 @@ export class ListarFornecedorComponent implements OnInit {
               private authService: AuthService, private deviceService: DeviceService) { }
 
   ngOnInit() {
-    this.fornecedorService.listarFornecedores(this.currentPage, this.pageSize).subscribe(data => {
-      //const usuarioLogadoId = this.authService.getUsuarioLogado().id;
+    this.fornecedorService.listarFornecedores(this.currentPage, this.pageSize, this.authService.getUsuarioLogado().idUsuario).subscribe(data => {
       this.listaFornecedores = data.content
       this.totalRecords = data.totalElements; // Atualiza o total de registros exibidos
     });
@@ -87,7 +84,7 @@ export class ListarFornecedorComponent implements OnInit {
 
   // Função que atualiza a lista de produtos
   atualizarLista(): void {
-    this.fornecedorService.listarFornecedores(this.currentPage, this.pageSize).subscribe(data => {
+    this.fornecedorService.listarFornecedores(this.currentPage, this.pageSize, this.authService.getUsuarioLogado().idUsuario).subscribe(data => {
       this.listaFornecedores = data.content
       this.totalRecords = data.totalElements; // Atualiza o total de registros exibidos
     });

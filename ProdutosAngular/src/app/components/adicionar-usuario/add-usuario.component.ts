@@ -1,12 +1,12 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {FormsModule} from '@angular/forms';
-import {Usuario} from '../../model/usuario';
 import {Router} from '@angular/router';
 import {UsuarioService} from '../../service/usuario/usuario.service';
 import {NgIf, NgOptimizedImage} from '@angular/common';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {DeviceService} from '../../service/device/device.service';
 import {MatCard, MatCardContent} from '@angular/material/card';
+import { Usuario } from '../../model/usuario';
 
 @Component({
   selector: 'app-add-usuario',
@@ -23,15 +23,12 @@ import {MatCard, MatCardContent} from '@angular/material/card';
 export class AddUsuarioComponent implements OnInit {
 
   addUsuario: Usuario = {
-    id: 0,
+    idUsuario: 0,
     login: '',
     senha: '',
     token: '',
     imagem: '',
-    nome: '',
-    linkedin: '',
-    whatsapp: '',
-    endereco:''
+    email: '',
   };
 
   private modalService: NgbModal = new NgbModal();

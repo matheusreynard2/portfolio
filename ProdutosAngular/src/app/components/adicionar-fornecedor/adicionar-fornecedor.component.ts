@@ -4,9 +4,10 @@ import { GeolocalizacaoService } from '../../service/geolocalizacao/geolocalizac
 import { EnderecoFornecedor } from '../../model/endereco-fornecedor';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FornecedorService } from '../../service/fornecedor/fornecedor.service';
-import { NgOptimizedImage } from '@angular/common';
+import { NgOptimizedImage, CommonModule } from '@angular/common';
 import { NgxMaskDirective, provideNgxMask } from 'ngx-mask';
 import {FornecedorDTO} from '../../model/dto/FornecedorDTO';
+import { AuthService } from '../../service/auth/auth.service';
 
 @Component({
   selector: 'adicionar-fornecedor',
@@ -15,7 +16,8 @@ import {FornecedorDTO} from '../../model/dto/FornecedorDTO';
     FormsModule,
     NgOptimizedImage,
     ReactiveFormsModule,
-    NgxMaskDirective
+    NgxMaskDirective,
+    CommonModule
   ],
   providers: [provideNgxMask()],
   styleUrls: ['./adicionar-fornecedor.component.css']
@@ -48,6 +50,7 @@ export class AdicionarFornecedorComponent implements OnInit {
 
   novoFornecedor: FornecedorDTO = {
     id: 0,
+    idUsuario: 0,
     nome: '',
     nrResidencia: '',
     enderecoFornecedor: this.endereco,
@@ -58,12 +61,14 @@ export class AdicionarFornecedorComponent implements OnInit {
   constructor(
     private geolocalizacaoService: GeolocalizacaoService,
     private modalService: NgbModal,
-    private fornecedorService: FornecedorService
+    private fornecedorService: FornecedorService,
+    private authService: AuthService
   ) { }
 
   ngOnInit() {
     // ENDPOINT PARA VERIFICAR TOKEN E LIBERAR ACESSO
     this.fornecedorService.acessarPaginaFornecedor().subscribe();
+
   }
 
   buscarEnderecoPorCep(cep: string): void {
@@ -124,6 +129,7 @@ export class AdicionarFornecedorComponent implements OnInit {
 
     this.novoFornecedor = {
       id: 0,
+      idUsuario: this.authService.getUsuarioLogado().idUsuario,
       nome: this.nomeFornecedor,
       nrResidencia: this.nrResidenciaFornecedor,
       enderecoFornecedor: {

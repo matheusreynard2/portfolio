@@ -1,11 +1,11 @@
-import {Fornecedor} from '../fornecedor';
+import {FornecedorDTO} from './FornecedorDTO';
 
 export interface ProdutoDTO {
   id: number;
   idUsuario: number;
   nome: string;
   imagem?: string;
-  fornecedor?: Fornecedor;
+  fornecedor?: FornecedorDTO;
   valor: number;
   promocao: boolean;
   valorTotalDesc: number;
