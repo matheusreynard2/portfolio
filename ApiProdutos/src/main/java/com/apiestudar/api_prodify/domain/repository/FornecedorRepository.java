@@ -10,7 +10,7 @@ import com.apiestudar.api_prodify.domain.model.Fornecedor;
 
 public interface FornecedorRepository {
 
-	Fornecedor adicionarFornecedor(Fornecedor fornecedor);
+	Fornecedor adicionarFornecedor(Fornecedor fornecedor, Long idUsuario);
 
 	Page<Fornecedor> listarFornecedores(Pageable pageable);
 	
@@ -19,4 +19,10 @@ public interface FornecedorRepository {
 	void deletarFornecedorPorId(Long id);
 
 	Optional<Fornecedor> buscarFornecedorPorId(Long id);
+
+	Page<Fornecedor> listarFornecedoresPorUsuario(Long idUsuario, Pageable pageable);
+	
+	List<Fornecedor> listarFornecedoresPorUsuario(Long idUsuario);
+	
+	Optional<Fornecedor> buscarFornecedorPorIdEUsuario(Long id, Long idUsuario);
 }

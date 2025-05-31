@@ -23,7 +23,8 @@ public class FornecedorRepositoryImpl implements FornecedorRepository {
     }
 	
 	@Override
-	public Fornecedor adicionarFornecedor(Fornecedor fornecedor) {
+	public Fornecedor adicionarFornecedor(Fornecedor fornecedor, Long idUsuario) {
+		fornecedor.setIdUsuario(idUsuario);
 		return fornecedorJpaRepository.save(fornecedor);	
 	}
 	
@@ -45,6 +46,21 @@ public class FornecedorRepositoryImpl implements FornecedorRepository {
 	@Override
 	public List<Fornecedor> listarFornecedores() {
 		return fornecedorJpaRepository.findAll();
+	}
+
+	@Override
+	public Page<Fornecedor> listarFornecedoresPorUsuario(Long idUsuario, Pageable pageable) {
+		return fornecedorJpaRepository.findByIdUsuario(idUsuario, pageable);
+	}
+
+	@Override
+	public List<Fornecedor> listarFornecedoresPorUsuario(Long idUsuario) {
+		return fornecedorJpaRepository.findByIdUsuario(idUsuario);
+	}
+
+	@Override
+	public Optional<Fornecedor> buscarFornecedorPorIdEUsuario(Long id, Long idUsuario) {
+		return fornecedorJpaRepository.findByIdAndIdUsuario(id, idUsuario);
 	}
 
 }

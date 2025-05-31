@@ -18,6 +18,7 @@ public interface FornecedorMapper extends GenericMapper<FornecedorDTO, Fornecedo
     @Mapping(target = "id", source = "id")
     @Mapping(target = "nome", source = "nome")
     @Mapping(target = "nrResidencia", source = "nrResidencia")
+    @Mapping(target = "idUsuario", source = "idUsuario")
     @Mapping(target = "enderecoFornecedor", source = "enderecoFornecedor")
     FornecedorDTO toDto(Fornecedor entity);
 
@@ -26,6 +27,7 @@ public interface FornecedorMapper extends GenericMapper<FornecedorDTO, Fornecedo
     @Mapping(target = "id", source = "id")
     @Mapping(target = "nome", source = "nome")
     @Mapping(target = "nrResidencia", source = "nrResidencia")
+    @Mapping(target = "idUsuario", source = "idUsuario")
     @Mapping(target = "enderecoFornecedor", source = "enderecoFornecedor")
     @Mapping(target = "produtos", ignore = true)
     Fornecedor toEntity(FornecedorDTO dto);

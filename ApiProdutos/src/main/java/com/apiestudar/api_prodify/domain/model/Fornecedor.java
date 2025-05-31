@@ -34,6 +34,7 @@ public class Fornecedor {
 	private long id;
 	private String nome;
 	private String nrResidencia; 
+	private long idUsuario;
 	
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "endereco_id", referencedColumnName = "id")

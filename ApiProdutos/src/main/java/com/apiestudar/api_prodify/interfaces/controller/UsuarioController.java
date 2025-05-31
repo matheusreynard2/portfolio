@@ -27,6 +27,8 @@ import com.apiestudar.api_prodify.application.usecase.usuario.ListarUsuariosUseC
 import com.apiestudar.api_prodify.application.usecase.usuario.RealizarLoginUseCase;
 import com.apiestudar.api_prodify.application.usecase.usuario.UsuarioHelper;
 import com.apiestudar.api_prodify.domain.model.Usuario;
+import com.apiestudar.api_prodify.application.mapper.UsuarioMapper;
+import com.apiestudar.api_prodify.interfaces.dto.UsuarioDTO;
 
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -47,6 +49,8 @@ public class UsuarioController {
 	private ListarUsuariosUseCase listarUsuarios;
 	@Autowired
 	private UsuarioHelper usuarioHelper;
+	@Autowired
+	private UsuarioMapper usuarioMapper;
 
 	@ApiOperation(value = "Adiciona novo acesso pelo IP.", notes = "Quando um novo usuário acessa o site, ele registra o IP no banco.")
 	@ApiResponse(code = 200, message = "IP registrado.")
@@ -65,9 +69,9 @@ public class UsuarioController {
 	@ApiOperation(value = "Listagem de todos os usuários cadastrados.", notes = "Faz uma busca no banco de dados retornando uma lista com todos os usuários cadastrados.")
 	@ApiResponse(code = 200, message = "Usuários encontrados.")
 	@GetMapping("/listarUsuarios")
-	public List<Usuario> listarUsuarios() {
+	public List<UsuarioDTO> listarUsuarios() {
 		List<Usuario> usuarios = listarUsuarios.executar();
-		return usuarios;
+		return usuarioMapper.toDtoList(usuarios);
 	}
 
 	@ApiOperation(value = "Adiciona/cadastra um novo usuário.", notes = "Cria um novo registro de usuário no banco de dados.")
@@ -76,8 +80,11 @@ public class UsuarioController {
 	public ResponseEntity<Object> adicionarUsuario(@RequestParam String usuarioJSON,
 			@RequestParam MultipartFile imagemFile) throws IOException {
 		Object response = adicionarUsuario.executar(usuarioJSON, imagemFile);
-		return response instanceof String ? ResponseEntity.status(HttpStatus.CONFLICT).body(response)
-				: ResponseEntity.status(HttpStatus.CREATED).body(response);
+		if (response instanceof Usuario) {
+			UsuarioDTO usuarioDTO = usuarioMapper.toDto((Usuario) response);
+			return ResponseEntity.status(HttpStatus.CREATED).body(usuarioDTO);
+		}
+		return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
 	}
 
 	@ApiOperation(value = "Deleta/exclui um usuário.", notes = "Faz a exclusão de um usuário do banco de dados de acordo com o número de id passado como parâmetro.")
@@ -91,8 +98,13 @@ public class UsuarioController {
 	@ApiOperation(value = "Realiza um login com auntenticação JWT.", notes = "Realiza uma operação de login com autenticação de token via Spring Security - JWT e com senha criptografada.")
 	@ApiResponse(code = 200, message = "Login realizado.")
 	@PostMapping("/realizarLogin")
-	public ResponseEntity<Map<String, Object>> realizarLogin(@RequestBody Usuario usuario) {
+	public ResponseEntity<Map<String, Object>> realizarLogin(@RequestBody UsuarioDTO usuarioDTO) {
+		Usuario usuario = usuarioMapper.toEntity(usuarioDTO);
 		Map<String, Object> response = realizarLogin.executar(usuario);
+		if (response.containsKey("usuario")) {
+			Usuario usuarioLogado = (Usuario) response.get("usuario");
+			response.put("usuario", usuarioMapper.toDto(usuarioLogado));
+		}
 		return response.containsKey("msgCredenciaisInvalidas")
 				? ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response)
 				: ResponseEntity.status(HttpStatus.OK).body(response);

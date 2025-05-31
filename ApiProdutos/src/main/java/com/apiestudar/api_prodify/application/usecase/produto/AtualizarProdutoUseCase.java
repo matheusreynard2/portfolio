@@ -54,5 +54,6 @@ public class AtualizarProdutoUseCase {
 		produtoExistente.setFreteAtivo(produtoAtualizado.isFreteAtivo());
 		produtoExistente.setValorDesconto(produtoAtualizado.getValorDesconto());
 		produtoExistente.setImagem(produtoAtualizado.getImagem());
+		produtoExistente.setFornecedor(produtoAtualizado.getFornecedor());
 	}
 }

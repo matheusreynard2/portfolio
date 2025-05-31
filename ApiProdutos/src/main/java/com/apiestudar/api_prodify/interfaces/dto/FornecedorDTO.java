@@ -16,6 +16,7 @@ public class FornecedorDTO {
     private long id;
     private String nome;
     private String nrResidencia;
+    private long idUsuario;
     private EnderecoFornecedorDTO enderecoFornecedor;
     private List<ProdutoDTO> produtos;
 }

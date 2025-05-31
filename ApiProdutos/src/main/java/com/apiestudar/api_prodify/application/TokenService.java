@@ -17,7 +17,7 @@ public class TokenService {
 		return JWT.create()
 				.withIssuer("AppProdify")
 				.withSubject(usuario.getLogin())
-				.withClaim("id", usuario.getId())
+				.withClaim("id", usuario.getIdUsuario())
 			    .withExpiresAt(LocalDateTime.now().plusMinutes(15).toInstant(ZoneOffset.of("-03:00")))
 			    .sign(Algorithm.HMAC256("secret"));
 			    

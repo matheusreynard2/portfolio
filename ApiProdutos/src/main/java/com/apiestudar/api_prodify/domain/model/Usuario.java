@@ -39,21 +39,15 @@ public class Usuario implements UserDetails {
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "usuario_seq")
 	@Column(name="id")
-	private long id;
+	private long idUsuario;
 
 	private String login;
 	
 	private String senha;
 	
+	private String email;
+	
 	private String token;
-	
-	private String nome;
-	
-	private String linkedin;
-	
-	private String whatsapp;
-	
-	private String endereco;
 	
     @Lob
     @Column(name = "imagem")
