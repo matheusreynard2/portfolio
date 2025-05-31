@@ -10,29 +10,35 @@
 Front-end em Angular e TypeScript do sistema Prodify, parte que consome a API de produtos.
 
 ### Funcionalidades concluídas
-- CRUD de produtos
+- CRUD de produtos e fornecedores
+- Relação Produto X Fornecedor
+- Relação Produto X Usuário
+- Relação Fornecedor X Usuário
+- Calculo de quantidade X valor unitário
 - Cálculo de produto cadastrado com valor mais caro
 - Cálculo da média de preço entre os produtos cadastrados
 - Cálculo de desconto aplicado de 0 a 100% (não aceita decimais) sobre o preço do produto
+- Cálculo de frete
 - Campo de buscar produtos por ID e Nome
-- Upload de arquivo de imagem para relacionar com o produto e foto de perfil de usuário.
-- Swagger
-- Spring Security - JWT (Autenticação e verificação completa / Token / Role USER / Criptografia de senha / Expiração de token)
-- Relacionamento produto X usuário
-- Relacionamento produto X fornecedor
+- Upload de arquivo de imagem para relacionar com o produto
+- Swagger com detalhes dos endpoints
+- Spring Security - JWT (Autenticação / Token / Role USER / Criptografia de senha / Expiração de token)
+- Cadastro de usuários / Login / Verificação de login já cadastrado
 - Contador de acessos por IP
 - Certificado SSL - Endereço HTTPS
-- Responsividade Computador X Celular
-- Integração com Google Cloud APIs - Geolocalização
+- Totalmente responsivo
 - Layout Modo Dark ON/OFF
-- Buscador de endereço via CEP
+- Integração com Google Cloud APIs para informações de localização
+- Integração com Via CEP API para preenchimento automático e detalhado de endereço
 
 ### Funcionalidades em desenvolvimento
-- Lógica de quantidade de produtos (atualmente aceita somente 1)
 - Categoria de produtos
+- Relatórios com JasperReports
   
 =================================================
 
 ### react-app e reactApi
-- Uso de conceitos de WebSocket, integração com RabbitMQ, React Context e comunicação assíncrona.
+- react-app: frontend em React.js que consome a API em Java / Spring Boot.
+- reactApi: Java / Spring Boot API com relacionamento de duas entidades (curso e usuário)
+- Projetos feitos para aplicar conceitos de WebSocket, integração com RabbitMQ, React Context e comunicação assíncrona.
 
