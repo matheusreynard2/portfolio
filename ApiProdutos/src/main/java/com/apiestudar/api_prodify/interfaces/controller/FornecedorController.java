@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -24,8 +25,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.apiestudar.api_prodify.application.mapper.FornecedorMapper;
 import com.apiestudar.api_prodify.application.usecase.fornecedor.AdicionarFornecedorUseCase;
+import com.apiestudar.api_prodify.application.usecase.fornecedor.AtualizarFornecedorUseCase;
 import com.apiestudar.api_prodify.application.usecase.fornecedor.DeletarFornecedorUseCase;
 import com.apiestudar.api_prodify.application.usecase.fornecedor.ListarFornecedoresUseCase;
+import com.apiestudar.api_prodify.application.usecase.fornecedor.BuscarFornecedorUseCase;
 import com.apiestudar.api_prodify.domain.model.Fornecedor;
 import com.apiestudar.api_prodify.interfaces.dto.FornecedorDTO;
 import com.apiestudar.api_prodify.infrastructure.persistence.jpa.FornecedorJpaRepository;
@@ -45,10 +48,14 @@ public class FornecedorController {
 	private ListarFornecedoresUseCase listarFornecedores;
 	@Autowired
 	private DeletarFornecedorUseCase deletarFornecedor;
-	@Autowired 
+	@Autowired
+	private AtualizarFornecedorUseCase atualizarFornecedor;
+	@Autowired
 	private FornecedorMapper fornecedorMapper;
 	@Autowired
 	private FornecedorJpaRepository fornecedorJpaRepository;
+	@Autowired
+	private BuscarFornecedorUseCase buscarFornecedor;
 
 	@Transactional(readOnly = true)
 	@ApiOperation(value = "Listagem de todos os fornecedores cadastrados.", notes = "Faz uma busca no banco de dados retornando uma lista com todos os fornecedores cadastrados.")
@@ -86,7 +93,8 @@ public class FornecedorController {
 	@ApiOperation(value = "Adiciona/cadastra um novo fornecedor.", notes = "Cria um novo registro de fornecedor no banco de dados.")
 	@ApiResponse(code = 201, message = "Fornecedor cadastrado.")
 	@PostMapping("/adicionarFornecedor/{idUsuario}")
-	public ResponseEntity<FornecedorDTO> adicionarFornecedor(@RequestBody FornecedorDTO fornecedorDTO, @PathVariable Long idUsuario)
+	public ResponseEntity<FornecedorDTO> adicionarFornecedor(@RequestBody FornecedorDTO fornecedorDTO,
+			@PathVariable Long idUsuario)
 			throws IOException {
 		Fornecedor fornecedor = fornecedorMapper.toEntity(fornecedorDTO);
 		Fornecedor fornecedorAdicionado = adicionarFornecedor.executar(fornecedor, idUsuario);
@@ -113,5 +121,26 @@ public class FornecedorController {
 		}
 		deletarFornecedor.executar(id);
 		return ResponseEntity.status(HttpStatus.OK).body("Fornecedor deletado com sucesso");
+	}
+
+	@ApiOperation(value = "Atualiza as informações de um fornecedor.", notes = "Atualiza as informações registradas no banco de dados de um fornecedor de acordo com o número de id passado como parâmetro.")
+	@ApiResponse(code = 200, message = "Fornecedor atualizado.")
+	@PutMapping("/atualizarFornecedor/{id}/{idUsuario}")
+	public ResponseEntity<FornecedorDTO> atualizarFornecedor(
+			@PathVariable long id,
+			@PathVariable long idUsuario,
+			@RequestBody String fornecedorJSON) throws Exception {
+		Fornecedor fornecedorAtualizado = atualizarFornecedor.executar(id, fornecedorJSON, idUsuario);
+		FornecedorDTO fornecedorDTO = fornecedorMapper.toDto(fornecedorAtualizado);
+		return ResponseEntity.status(HttpStatus.OK).body(fornecedorDTO);
+	}
+
+	@ApiOperation(value = "Busca um fornecedor pelo ID.", notes = "Retorna os dados de um fornecedor específico de acordo com o ID fornecido.")
+	@ApiResponse(code = 200, message = "Fornecedor encontrado.")
+	@GetMapping("/buscarFornecedorPorId/{id}")
+	public ResponseEntity<FornecedorDTO> buscarFornecedorPorId(@PathVariable Long id) {
+		Fornecedor fornecedor = buscarFornecedor.executar(id);
+		FornecedorDTO fornecedorDTO = fornecedorMapper.toDto(fornecedor);
+		return ResponseEntity.status(HttpStatus.OK).body(fornecedorDTO);
 	}
 }

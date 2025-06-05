@@ -29,6 +29,7 @@ import com.apiestudar.api_prodify.application.usecase.produto.CalculosSobreProdu
 import com.apiestudar.api_prodify.application.usecase.produto.DeletarProdutoUseCase;
 import com.apiestudar.api_prodify.application.usecase.produto.ListarProdutosUseCase;
 import com.apiestudar.api_prodify.application.usecase.produto.PesquisasSearchBarUseCase;
+import com.apiestudar.api_prodify.application.usecase.produto.BuscarProdutoUseCase;
 import com.apiestudar.api_prodify.domain.model.Produto;
 import com.apiestudar.api_prodify.interfaces.dto.ProdutoDTO;
 
@@ -51,6 +52,8 @@ public class ProdutoController {
 	private DeletarProdutoUseCase deletarProduto;
 	@Autowired
 	private CalculosSobreProdutosUseCase consultasProduto;
+	@Autowired
+	private BuscarProdutoUseCase buscarProduto;
 	
 	private final ProdutoMapper produtoMapper;
 
@@ -149,6 +152,15 @@ public class ProdutoController {
 	public ResponseEntity acessarPaginaCadastro() {
 		ResponseEntity response = new ResponseEntity(HttpStatus.OK);
 		return response;
+	}
+
+	@ApiOperation(value = "Busca um produto pelo ID.", notes = "Retorna os dados de um produto específico de acordo com o ID fornecido.")
+	@ApiResponse(code = 200, message = "Produto encontrado.")
+	@GetMapping("/buscarProduto/{id}/{idUsuario}")
+	public ResponseEntity<ProdutoDTO> buscarProduto(@PathVariable Long id, @PathVariable Long idUsuario) {
+		Produto produto = buscarProduto.executar(id, idUsuario);
+		ProdutoDTO produtoDTO = produtoMapper.toDto(produto);
+		return ResponseEntity.status(HttpStatus.OK).body(produtoDTO);
 	}
 
 }

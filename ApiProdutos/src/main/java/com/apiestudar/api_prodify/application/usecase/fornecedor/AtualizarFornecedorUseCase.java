@@ -1,0 +1,48 @@
+package com.apiestudar.api_prodify.application.usecase.fornecedor;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.apiestudar.api_prodify.domain.model.Fornecedor;
+import com.apiestudar.api_prodify.domain.repository.FornecedorRepository;
+import com.apiestudar.api_prodify.shared.exception.RegistroNaoEncontradoException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+@Service
+public class AtualizarFornecedorUseCase {
+
+    private final FornecedorRepository fornecedorRepository;
+
+    @Autowired
+    public AtualizarFornecedorUseCase(FornecedorRepository fornecedorRepository) {
+        this.fornecedorRepository = fornecedorRepository;
+    }
+    
+    @Autowired
+    private ObjectMapper objectMapper;
+
+    @Transactional(rollbackFor = Exception.class)
+    public Fornecedor executar(long id, String fornecedorJSON, Long idUsuario) throws Exception {
+        Fornecedor fornecedorAtualizado = objectMapper.readValue(fornecedorJSON, Fornecedor.class);
+        
+        // Busca o fornecedor pelo id e idUsuario e lança exceção se não encontrar
+        return fornecedorRepository.buscarFornecedorPorIdEUsuario(id, idUsuario)
+            .map(fornecedorExistente -> {
+                // Atualiza todos os atributos do fornecedor existente
+                atualizarDadosFornecedor(fornecedorExistente, fornecedorAtualizado);
+                fornecedorExistente.setIdUsuario(idUsuario);
+
+                // Salva e retorna o fornecedor atualizado
+                return fornecedorRepository.adicionarFornecedor(fornecedorExistente, idUsuario);
+            })
+            .orElseThrow(RegistroNaoEncontradoException::new);
+    }
+
+    // Método auxiliar para atualizar todos os campos do fornecedor
+    private void atualizarDadosFornecedor(Fornecedor fornecedorExistente, Fornecedor fornecedorAtualizado) {
+        fornecedorExistente.setNome(fornecedorAtualizado.getNome());
+        fornecedorExistente.setNrResidencia(fornecedorAtualizado.getNrResidencia());
+        fornecedorExistente.setEnderecoFornecedor(fornecedorAtualizado.getEnderecoFornecedor());
+    }
+} 
