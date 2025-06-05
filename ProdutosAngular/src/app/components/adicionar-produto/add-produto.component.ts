@@ -112,10 +112,16 @@ export class AddProdutoComponent implements OnInit {
 
   // Função que abre o modal de mensagem de sucesso após cadastrar um produto
   msgAddProduto(modalMsgAddProduto: any) {
-    if (this.adicionouProduto) {
+    if (this.adicionouProduto && this.novoProduto && modalMsgAddProduto) {
       setTimeout(() => {
-        const modalRef = this.modalService.open(modalMsgAddProduto);
-        modalRef.componentInstance.produto = this.novoProduto;
+        try {
+          const modalRef = this.modalService.open(modalMsgAddProduto);
+          if (modalRef && modalRef.componentInstance) {
+            modalRef.componentInstance.produto = this.novoProduto;
+          }
+        } catch (error) {
+          console.error('Erro ao abrir modal:', error);
+        }
       }, 100);
     }
   }

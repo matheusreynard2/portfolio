@@ -124,7 +124,7 @@ export class ProdutoListComponent implements OnInit {
   // Função para atualizar um produto através do id
   atualizarProduto(janelaEditar: any, id: number, produto: ProdutoDTO) {
     // Primeiro busca o produto completo por ID
-    this.produtoService.buscarProdutoPorId(id).subscribe({
+    this.produtoService.buscarProdutoPorId(id, this.authService.getUsuarioLogado().idUsuario).subscribe({
       next: (produtoCompleto: ProdutoDTO) => {
         this.produtoAtualizar = produtoCompleto;
         
@@ -234,7 +234,6 @@ export class ProdutoListComponent implements OnInit {
     // CHAMA O ATUALIZAR PRODUTO
     this.produtoService.atualizarProduto(this.produtoAtualizar.id, this.produtoAtualizar, this.imagemFile).subscribe({
       next: (produtoAtualizado) => {
-        console.log('Produto atualizado com sucesso:', produtoAtualizado);
         modal.close();
         this.atualizarLista(); // Atualiza a lista após salvar
       },

@@ -1,75 +1,72 @@
 import { Injectable } from '@angular/core';
-import {HttpClient} from '@angular/common/http';
-import {map, Observable} from 'rxjs';
-import {Router} from '@angular/router';
-import {environment} from '../../../environments/environment';
+import { HttpClient } from '@angular/common/http';
+import { map, Observable } from 'rxjs';
+import { Router } from '@angular/router';
+import { environment } from '../../../environments/environment';
 import { Usuario } from '../../model/usuario';
+import { StorageService } from '../storage/storage.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
+  private readonly USUARIO_KEY = 'usuarioLogado';
+  private readonly TOKEN_KEY = 'bearerToken';
+  private readonly TOKEN_EXPIRADO_KEY = 'tokenExpirado';
+  private readonly usuariosUrl: string;
 
-  private usuariosUrl: string;
-  private apiUrl = environment.API_URL;
-
-  constructor(private http: HttpClient, private router: Router) {
-    // URL DO REST CONTROLLER
-    this.usuariosUrl = this.apiUrl + '/usuarios';
+  constructor(
+    private http: HttpClient,
+    private router: Router,
+    private storage: StorageService
+  ) {
+    this.usuariosUrl = environment.API_URL + '/usuarios';
   }
 
-  adicionarUsuarioLogado(usuario: Usuario) {
-    localStorage.setItem('usuarioLogado', JSON.stringify(usuario))
-  }
-
-  removerUsuarioLogado() {
-    localStorage.removeItem('usuarioLogado');
+  adicionarUsuarioLogado(usuario: Usuario): void {
+    this.storage.setItem(this.USUARIO_KEY, usuario);
   }
 
   getUsuarioLogado(): Usuario {
-    return JSON.parse(localStorage.getItem('usuarioLogado') || '{}');
+    return this.storage.getItem<Usuario>(this.USUARIO_KEY, {} as Usuario);
   }
 
-  adicionarTokenExpirado(valor: string) {
-    localStorage.setItem('tokenExpirado', valor)
+  adicionarToken(token: string): void {
+    this.storage.setItem(this.TOKEN_KEY, token);
   }
 
-  removerTokenExpirado() {
-    localStorage.removeItem('tokenExpirado');
+  removerToken(): void {
+    this.storage.removeItem(this.TOKEN_KEY);
+  }
+
+  existeToken(): boolean {
+    return this.storage.exists(this.TOKEN_KEY);
+  }
+
+  adicionarTokenExpirado(valor: string): void {
+    this.storage.setItem(this.TOKEN_EXPIRADO_KEY, valor);
+  }
+
+  removerTokenExpirado(): void {
+    this.storage.removeItem(this.TOKEN_EXPIRADO_KEY);
   }
 
   existeTokenExpirado(): boolean {
-    const estaExpirado = localStorage.getItem('tokenExpirado')
-    return !!estaExpirado
+    return this.storage.exists(this.TOKEN_EXPIRADO_KEY);
   }
 
-  adicionarToken(token: string) {
-    localStorage.setItem('bearerToken', token);
-  }
-
-  removerToken() {
-    localStorage.removeItem('bearerToken');
-  }
-
-  // Método para verificar se o token de autenticação está presente
-  existeToken(): boolean {
-    const token = localStorage.getItem('bearerToken');
-    return !!token;  // Retorna true se o token existir, caso contrário false
+  getToken(): string {
+    return this.storage.getItem<string>(this.TOKEN_KEY, '');
   }
 
   realizarLogin(usuario: Usuario): Observable<Map<string, any>> {
     return this.http.post<Map<string, any>>(this.usuariosUrl + "/realizarLogin", usuario).pipe(
-      map(response => {
-        return new Map<string, any>((Object.entries(response)))
-      })
-    )
+      map(response => new Map<string, any>(Object.entries(response)))
+    );
   }
 
-  logout() {
-    this.removerToken()
-    this.removerTokenExpirado()
-    this.removerUsuarioLogado()
+  logout(): void {
+    this.storage.clear();
     this.router.navigate(['/login']);
   }
-
 }

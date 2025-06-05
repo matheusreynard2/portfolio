@@ -1,6 +1,6 @@
 import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import { ProdutoService } from '../../service/produto/produto.service';
-import {CurrencyPipe, NgForOf, NgIf, NgOptimizedImage} from '@angular/common';
+import {CurrencyPipe, NgForOf, NgIf, NgOptimizedImage, CommonModule} from '@angular/common';
 import {NgbModal, NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { ProdutoFunctionsService } from '../../service/produto/produto-functions.service';
@@ -12,6 +12,8 @@ import {HttpResponse} from '@angular/common/http';
 import {DeviceService} from '../../service/device/device.service';
 import {FornecedorService} from '../../service/fornecedor/fornecedor.service';
 import {FornecedorDTO} from '../../model/dto/FornecedorDTO';
+import {EnderecoFornecedor} from '../../model/endereco-fornecedor';
+import {NgxMaskDirective, provideNgxMask} from 'ngx-mask';
 
 @Component({
   selector: 'app-listar-fornecedor',  // Corrigido para 'app-produto-list', sem a barra inicial
@@ -25,42 +27,83 @@ import {FornecedorDTO} from '../../model/dto/FornecedorDTO';
     NgIf,
     NgxPaginationModule,
     MatPaginatorModule,
-    NgOptimizedImage
-  ]
+    NgOptimizedImage,
+    CommonModule,
+    NgxMaskDirective
+  ],
+  providers: [provideNgxMask()]
 })
 
 export class ListarFornecedorComponent implements OnInit {
 
   listaFornecedores!: FornecedorDTO[];
+  fornecedorAtualizar!: FornecedorDTO;
+  fornecedorExcluido!: FornecedorDTO;
 
   // Variáveis de paginação
   currentPage: number = 0;
   pageSize: number = 10;
   totalRecords: number = 0;
 
-  private modalService: NgbModal = new NgbModal();
   @ViewChild('searchBar') searchBar!: ElementRef
-  @ViewChild('modalAvisoToken') modalAvisoToken!: ElementRef
+  @ViewChild('modalAviso') modalAviso!: any;
   isMobileOrTablet: boolean = false;
-  fornecedorExcluido!: FornecedorDTO;
 
-  constructor(private fornecedorService: FornecedorService,
-              private authService: AuthService, private deviceService: DeviceService) { }
+  constructor(
+    private fornecedorService: FornecedorService,
+    private authService: AuthService,
+    private deviceService: DeviceService,
+    private modalService: NgbModal
+  ) { }
 
   ngOnInit() {
-    this.fornecedorService.listarFornecedores(this.currentPage, this.pageSize, this.authService.getUsuarioLogado().idUsuario).subscribe(data => {
-      this.listaFornecedores = data.content
-      this.totalRecords = data.totalElements; // Atualiza o total de registros exibidos
-    });
-
+    this.atualizarLista();
     this.deviceService.isMobileOrTablet.subscribe(isMobile => {
       this.isMobileOrTablet = isMobile;
     });
   }
 
-  // Função para deletar um produto através do id. Chama o endpoint, e a msg de sucesso
+  // Função para atualizar um fornecedor
+  atualizarFornecedor(modalEditar: any, id: number, fornecedor: FornecedorDTO) {
+    this.fornecedorService.buscarFornecedorPorId(id).subscribe({
+      next: (fornecedorCompleto: FornecedorDTO) => {
+        this.fornecedorAtualizar = fornecedorCompleto;
+        this.abrirTelaEdicao(modalEditar);
+      },
+      error: (error) => {
+        console.error('Erro ao buscar fornecedor:', error);
+        this.fornecedorAtualizar = fornecedor;
+        this.abrirTelaEdicao(modalEditar);
+      }
+    });
+  }
+
+  // Função que abre o modal de edição
+  abrirTelaEdicao(modalEditar: any) {
+    this.modalService.open(modalEditar, { size: 'lg', backdrop: 'static' });
+  }
+
+  // Função chamada ao salvar as alterações
+  onSubmitSalvar(modal: any) {
+    this.fornecedorService.atualizarFornecedor(
+      this.fornecedorAtualizar.id, 
+      this.authService.getUsuarioLogado().idUsuario,
+      this.fornecedorAtualizar
+    ).subscribe({
+      next: () => {
+        modal.close();
+        this.atualizarLista();
+        this.modalService.open(this.modalAviso);
+      },
+      error: (error) => {
+        console.error('Erro ao atualizar fornecedor:', error);
+      }
+    });
+  }
+
+  // Função para deletar um fornecedor
   deletarFornecedor(modalDeletar: any, id: number, fornecedor: FornecedorDTO) {
-    this.fornecedorService.deletarFornecedor(id).subscribe({
+    this.fornecedorService.deletarFornecedor(id, this.authService.getUsuarioLogado().idUsuario).subscribe({
       next: (response) => {
         if (response.status === 200) {
           this.fornecedorExcluido = fornecedor;
@@ -71,74 +114,29 @@ export class ListarFornecedorComponent implements OnInit {
     this.atualizarLista();
   }
 
-  /* Função para atualizar um produto através do id
-  atualizarProduto(janelaEditar: any, id: number, produto: Produto) {
-    this.produtoService.atualizarProduto(id, produto, this.imagemFile).subscribe({
-      next: (produtoRetornado: Produto) => {
-        this.produtoAtualizar = produtoRetornado
-        this.calcularValores(this.produtoAtualizar);
-        this.abrirTelaEdicao(janelaEditar)
-      }
-    })
-  }*/
-
-  // Função que atualiza a lista de produtos
-  atualizarLista(): void {
-    this.fornecedorService.listarFornecedores(this.currentPage, this.pageSize, this.authService.getUsuarioLogado().idUsuario).subscribe(data => {
-      this.listaFornecedores = data.content
-      this.totalRecords = data.totalElements; // Atualiza o total de registros exibidos
-    });
-  }
-
-  trocarPagina(event: PageEvent): void {
-    this.currentPage = event.pageIndex;
-    this.pageSize = event.pageSize;
-    this.atualizarLista();
-  }
-
-/*
-  // Função que abre o modal - Janela de edição de produto
-  abrirTelaEdicao(janelaEditar: any) {
-    this.modalService.open(janelaEditar, { size: 'lg', backdrop: 'static' });
-  } */
-
-  // Função que abre o modal - Janela de exclusão de produto
+  // Função que abre o modal de exclusão
   abrirTelaExclusao(modalExcluir: any) {
     this.modalService.open(modalExcluir);
     this.atualizarLista();
   }
-/*
-  // Função chamada ao clicar no botão de Submit (Salvar) do formulário de Edição de produtos
-  onSubmitSalvar(modal: any) {
-    this.calcularValores(this.produtoAtualizar);
-    this.produtoService.atualizarProduto(this.produtoAtualizar.id, this.produtoAtualizar, this.imagemFile).subscribe();
-    modal.close();
-  }
 
-// Função chamada ao clicar no botão Pesquisar
-  efetuarPesquisa() {
-    let searchBar_value = this.searchBar.nativeElement.value;
-    const usuarioLogadoId = this.authService.getUsuarioLogado().id;
-
-    this.produtoService.efetuarPesquisa(this.tipoPesquisaSelecionado, searchBar_value, this.authService.getUsuarioLogado().id).subscribe(data => {
-      this.listaDeProdutos = data
-        .filter(produto => produto.idUsuario === usuarioLogadoId) // Filtra os produtos pelo usuário logado
-        .sort((a, b) => a.id - b.id); // Ordena os produtos pelo ID
+  // Função que atualiza a lista de fornecedores
+  atualizarLista(): void {
+    this.fornecedorService.listarFornecedores(
+      this.currentPage, 
+      this.pageSize, 
+      this.authService.getUsuarioLogado().idUsuario
+    ).subscribe(data => {
+      this.listaFornecedores = data.content;
+      this.totalRecords = data.totalElements;
     });
   }
 
-  // Função que abre o modal - Janel de Aviso para Atualizar List de Produtos
-  abrirTelaAviso(modalAviso: any) {
-    this.modalService.open(modalAviso);
+  // Função para trocar de página
+  trocarPagina(event: PageEvent) {
+    this.currentPage = event.pageIndex;
+    this.pageSize = event.pageSize;
+    this.atualizarLista();
   }
-
-  // Função chamada ao mudar de valor na ComboBox Tipo de Pesquisa
-  trocarTipoPesquisa() {
-    if (this.tipoPesquisaSelecionado =='id' || this.tipoPesquisaSelecionado =='nome') {
-      this.tipoPesquisaSelecionado ='nome'
-    } else {
-      this.tipoPesquisaSelecionado ='id'
-    }
-  } */
 
 }

@@ -47,19 +47,16 @@ export class LoginComponent implements OnInit {
   }
 
   onSubmit() {
-
     this.authService.realizarLogin(this.usuario).subscribe({
       next: (response: Map<string, any>) => {
         if (response.has('usuario')) {
           let usuario: Usuario;
           usuario = <Usuario>response.get('usuario');
-          this.authService.removerUsuarioLogado()
-          this.authService.adicionarUsuarioLogado(usuario)
-          this.authService.removerToken()
-          this.authService.adicionarToken(usuario.token)
-          this.authService.removerTokenExpirado()
-          this.router.navigate(['/produtos'])
-
+          this.authService.logout(); // Limpa todos os dados do storage
+          this.authService.adicionarUsuarioLogado(usuario);
+          this.authService.adicionarToken(usuario.token);
+          this.authService.removerTokenExpirado();
+          this.router.navigate(['/produtos']);
         }
       },
       error: (error) => {

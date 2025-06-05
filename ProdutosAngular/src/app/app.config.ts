@@ -2,13 +2,15 @@ import {APP_INITIALIZER, ApplicationConfig, provideZoneChangeDetection} from '@a
 import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import { provideRouter } from '@angular/router';
 import { importProvidersFrom } from '@angular/core';
+import { provideHttpClient, withInterceptors } from '@angular/common/http';
 
 import { routes } from './app.routes';
 import {AuthInterceptor} from './auth.interceptor';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import {environment} from '../environments/environment';
 import {GoogleMapsModule} from '@angular/google-maps';
-import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { httpInterceptor } from './interceptors/http.interceptor';
 
 // Função opcional para pré-carregar o Google Maps durante a inicialização da aplicação
 function initGoogleMaps(): () => Promise<any> {
@@ -54,6 +56,10 @@ export const appConfig: ApplicationConfig = {
     },
     provideRouter(routes),
     provideZoneChangeDetection({ eventCoalescing: true}),
-    importProvidersFrom(HttpClientModule), provideAnimationsAsync()
+    importProvidersFrom(HttpClientModule),
+    provideAnimationsAsync(),
+    provideHttpClient(
+      withInterceptors([httpInterceptor])
+    )
   ]
 };

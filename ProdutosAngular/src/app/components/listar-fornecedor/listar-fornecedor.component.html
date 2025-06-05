@@ -25,10 +25,15 @@
           <td class="text-center">{{ fornecedor.enderecoFornecedor.estado }}</td>
           <td class="text-center">{{ fornecedor.enderecoFornecedor.cep }}</td>
           <td class="text-center">
-            <button type="button" class="btn btn-info full-width-btn" id="btn_editar">Editar</button>
+            <button type="button" class="btn btn-info full-width-btn" id="btn_editar" (click)="atualizarFornecedor(modalEditar, fornecedor.id, fornecedor)">✎</button>
           </td>
           <td class="text-center">
-            <button type="button" class="btn btn-danger full-width-btn" id="btn_excluir" (click)="deletarFornecedor(modalMsgExcluir, fornecedor.id, fornecedor)">Excluir</button>
+            <button type="button" class="btn btn-danger full-width-btn" id="btn_excluir" (click)="deletarFornecedor(modalMsgExcluir, fornecedor.id, fornecedor)">X</button>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <button class="btn bg-primary-subtle fw-bold btn-atualizar-lista" (click)="atualizarLista()" role="button">Atualizar</button>
           </td>
         </tr>
         </tbody>
@@ -47,6 +52,155 @@
   </div>
   <div class="modal-body">
     <p>Fornecedor <b>{{ fornecedorExcluido.nome }}</b> excluído.</p>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="modal.close()">Fechar</button>
+  </div>
+</ng-template>
+
+<!-- Modal de Edição de Fornecedor -->
+<ng-template #modalEditar let-modal>
+  <div class="modal-container">
+    <div class="modal-header">
+      <h5 class="modal-title">Atualizar fornecedor</h5>
+      <img ngSrc="/codigo_barras.png" height="60" width="60" class="img-right"/>
+    </div>
+    
+    <div class="modal-body">
+      <p class="fornecedor-info">ID <b>{{ fornecedorAtualizar.id }}</b> | Informações do fornecedor <b>{{ fornecedorAtualizar.nome }}</b></p>
+      
+      <form (ngSubmit)="onSubmitSalvar(modal)" #fornecedorForm="ngForm" class="fornecedor-form">
+        <!-- Campo ID oculto -->
+        <input type="hidden" [(ngModel)]="fornecedorAtualizar.id" name="idFornecedor">
+
+        <!-- Informações Básicas -->
+        <div class="form-section">
+          <h6 class="section-title">Informações Básicas</h6>
+          <div class="form-row">
+            <div class="form-group">
+              <span style="color: red">* </span>
+              <label for="nome" class="required">Nome:</label>
+              <input type="text" [(ngModel)]="fornecedorAtualizar.nome"
+                     class="form-control"
+                     id="nome"
+                     name="nomeFornecedor"
+                     placeholder="Insira o nome do fornecedor"
+                     required #nome="ngModel"
+                     [ngClass]="{'is-invalid': nome.invalid && nome.touched}"
+                     maxlength="50">
+              <div *ngIf="nome.invalid && nome.touched" class="invalid-feedback">
+                O nome do fornecedor é obrigatório.
+              </div>
+            </div>
+            <div class="form-group">
+              <span style="color: red">* </span>
+              <label for="cep" class="required">CEP:</label>
+              <input type="text" [(ngModel)]="fornecedorAtualizar.enderecoFornecedor.cep"
+                     class="form-control"
+                     id="cep"
+                     name="cepFornecedor"
+                     mask="00000-000"
+                     [showMaskTyped]="true"
+                     placeholder="00000-000"
+                     required #cep="ngModel"
+                     [ngClass]="{'is-invalid': cep.invalid && cep.touched}">
+              <div *ngIf="cep.invalid && cep.touched" class="invalid-feedback">
+                O CEP é obrigatório.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Endereço -->
+        <div class="form-section">
+          <h6 class="section-title">Endereço</h6>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="logradouro">Logradouro:</label>
+              <input type="text" [(ngModel)]="fornecedorAtualizar.enderecoFornecedor.logradouro"
+                     class="form-control"
+                     id="logradouro"
+                     name="logradouroFornecedor"
+                     readonly>
+            </div>
+            <div class="form-group">
+              <label for="nrResidencia">Nº Residência:</label>
+              <input type="text" [(ngModel)]="fornecedorAtualizar.nrResidencia"
+                     class="form-control"
+                     id="nrResidencia"
+                     name="nrResidenciaFornecedor"
+                     placeholder="Número"
+                     maxlength="10">
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="complemento">Complemento:</label>
+              <input type="text" [(ngModel)]="fornecedorAtualizar.enderecoFornecedor.complemento"
+                     class="form-control"
+                     id="complemento"
+                     name="complementoFornecedor">
+            </div>
+            <div class="form-group">
+              <label for="bairro">Bairro:</label>
+              <input type="text" [(ngModel)]="fornecedorAtualizar.enderecoFornecedor.bairro"
+                     class="form-control"
+                     id="bairro"
+                     name="bairroFornecedor"
+                     readonly>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="cidade">Cidade:</label>
+              <input type="text" [(ngModel)]="fornecedorAtualizar.enderecoFornecedor.localidade"
+                     class="form-control"
+                     id="cidade"
+                     name="cidadeFornecedor"
+                     readonly>
+            </div>
+            <div class="form-group">
+              <label for="estado">Estado:</label>
+              <input type="text" [(ngModel)]="fornecedorAtualizar.enderecoFornecedor.estado"
+                     class="form-control"
+                     id="estado"
+                     name="estadoFornecedor"
+                     readonly>
+            </div>
+          </div>
+        </div>
+
+        <!-- Botões de Ação -->
+        <div class="form-section">
+          <div class="button-container">
+            <button type="submit" 
+                    class="btn btn-salvar" 
+                    [disabled]="!fornecedorForm.form.valid">
+              Salvar fornecedor
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary btn-fechar" (click)="modal.close()">
+        Fechar
+      </button>
+    </div>
+  </div>
+</ng-template>
+
+<!-- Modal de Aviso -->
+<ng-template #modalAviso let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title">
+      AVISO!
+    </h4>
+    <img ngSrc="/codigo_barras.png" height="60" width="60" class="img-right"/>
+  </div>
+  <div class="modal-body">
+    <a style="font-size: 15px;">Informações atualizadas!</a><br>
   </div>
   <div class="modal-footer">
     <button type="button" class="btn btn-secondary" (click)="modal.close()">Fechar</button>
