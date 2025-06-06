@@ -39,13 +39,13 @@ export class FornecedorService extends HttpBaseService {
   }
 
   adicionarFornecedor(fornecedor: FornecedorDTO): Observable<FornecedorDTO> {
-    const formData = this.createFormData(fornecedor);
+    const formData = this.createFormData(fornecedor, undefined, 'fornecedorJSON');
     return this.http.post<FornecedorDTO>(`${this.fornecedorUrl}/adicionarFornecedor/${fornecedor.idUsuario}`, formData)
       .pipe(catchError(error => this.handleError(error)));
   }
 
   atualizarFornecedor(id: number, idUsuario: number, fornecedor: FornecedorDTO): Observable<FornecedorDTO> {
-    const formData = this.createFormData(fornecedor);
+    const formData = this.createFormData(fornecedor, undefined, 'fornecedorJSON');
     return this.http.put<FornecedorDTO>(`${this.fornecedorUrl}/atualizarFornecedor/${id}/${idUsuario}`, formData)
       .pipe(catchError(error => this.handleError(error)));
   }

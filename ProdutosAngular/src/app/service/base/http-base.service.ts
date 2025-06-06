@@ -28,11 +28,11 @@ export class HttpBaseService {
     }
   }
 
-  protected createFormData(data: any, file?: File): FormData {
+  protected createFormData(data: any, file?: File, jsonParamName: string = 'json'): FormData {
     const formData = new FormData();
-    formData.append('json', JSON.stringify(data));
+    formData.append(jsonParamName, JSON.stringify(data));
     if (file) {
-      formData.append('file', file);
+      formData.append('imagemFile', file);
     }
     return formData;
   }

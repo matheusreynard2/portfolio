@@ -72,6 +72,12 @@ export class AdicionarFornecedorComponent implements OnInit {
   }
 
   buscarEnderecoPorCep(cep: string): void {
+    if (!cep) {
+      this.mensagemErro = "Por favor, digite um CEP.";
+      this.modalService.open(this.modalMsgAviso);
+      return;
+    }
+
     // Remover caracteres não numéricos do CEP
     const cepFormatado = cep.replace(/\D/g, '');
 
@@ -82,8 +88,8 @@ export class AdicionarFornecedorComponent implements OnInit {
     }
 
     // Chama o serviço que se comunica com o backend
-    this.geolocalizacaoService.obterEnderecoViaCEP(cepFormatado).subscribe(
-      (endereco: EnderecoFornecedor) => {
+    this.geolocalizacaoService.obterEnderecoViaCEP(cepFormatado).subscribe({
+      next: (endereco: EnderecoFornecedor) => {
         // Verifica APENAS o campo erro, não verificar o CEP novamente
         if (endereco.erro === "true") {
           this.mensagemErro = "CEP não encontrado.";
@@ -102,12 +108,11 @@ export class AdicionarFornecedorComponent implements OnInit {
           siafi: endereco.siafi || ''
         };
       },
-      (error: any) => {
-        console.error('Erro ao buscar CEP:', error);
-        this.mensagemErro = "Erro ao buscar CEP. Verifique o log.";
+      error: (error: any) => {
+        this.mensagemErro = "Erro ao buscar CEP. Tente novamente.";
         this.modalService.open(this.modalMsgAviso);
       }
-    );
+    });
   }
 
   onSubmit(): void {
