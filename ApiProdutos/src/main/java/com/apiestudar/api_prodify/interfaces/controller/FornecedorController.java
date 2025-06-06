@@ -32,6 +32,7 @@ import com.apiestudar.api_prodify.application.usecase.fornecedor.BuscarFornecedo
 import com.apiestudar.api_prodify.domain.model.Fornecedor;
 import com.apiestudar.api_prodify.interfaces.dto.FornecedorDTO;
 import com.apiestudar.api_prodify.infrastructure.persistence.jpa.FornecedorJpaRepository;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -56,6 +57,8 @@ public class FornecedorController {
 	private FornecedorJpaRepository fornecedorJpaRepository;
 	@Autowired
 	private BuscarFornecedorUseCase buscarFornecedor;
+	@Autowired
+	private ObjectMapper objectMapper;
 
 	@Transactional(readOnly = true)
 	@ApiOperation(value = "Listagem de todos os fornecedores cadastrados.", notes = "Faz uma busca no banco de dados retornando uma lista com todos os fornecedores cadastrados.")
@@ -93,10 +96,10 @@ public class FornecedorController {
 	@ApiOperation(value = "Adiciona/cadastra um novo fornecedor.", notes = "Cria um novo registro de fornecedor no banco de dados.")
 	@ApiResponse(code = 201, message = "Fornecedor cadastrado.")
 	@PostMapping("/adicionarFornecedor/{idUsuario}")
-	public ResponseEntity<FornecedorDTO> adicionarFornecedor(@RequestBody FornecedorDTO fornecedorDTO,
-			@PathVariable Long idUsuario)
-			throws IOException {
-		Fornecedor fornecedor = fornecedorMapper.toEntity(fornecedorDTO);
+	public ResponseEntity<FornecedorDTO> adicionarFornecedor(
+			@RequestParam String fornecedorJSON,
+			@PathVariable Long idUsuario) throws IOException {
+		Fornecedor fornecedor = fornecedorMapper.toEntity(objectMapper.readValue(fornecedorJSON, FornecedorDTO.class));
 		Fornecedor fornecedorAdicionado = adicionarFornecedor.executar(fornecedor, idUsuario);
 		FornecedorDTO responseDTO = fornecedorMapper.toDto(fornecedorAdicionado);
 		return ResponseEntity.status(HttpStatus.CREATED).body(responseDTO);
@@ -129,7 +132,7 @@ public class FornecedorController {
 	public ResponseEntity<FornecedorDTO> atualizarFornecedor(
 			@PathVariable long id,
 			@PathVariable long idUsuario,
-			@RequestBody String fornecedorJSON) throws Exception {
+			@RequestParam String fornecedorJSON) throws Exception {
 		Fornecedor fornecedorAtualizado = atualizarFornecedor.executar(id, fornecedorJSON, idUsuario);
 		FornecedorDTO fornecedorDTO = fornecedorMapper.toDto(fornecedorAtualizado);
 		return ResponseEntity.status(HttpStatus.OK).body(fornecedorDTO);

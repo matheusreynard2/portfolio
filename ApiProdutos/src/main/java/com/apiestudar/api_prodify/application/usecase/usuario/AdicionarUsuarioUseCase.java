@@ -1,4 +1,3 @@
-
 package com.apiestudar.api_prodify.application.usecase.usuario;
 
 import java.io.IOException;
@@ -31,10 +30,11 @@ public class AdicionarUsuarioUseCase {
     public Object executar(String usuarioJSON, MultipartFile imagemFile) throws IOException {
         Helper.verificarNull(usuarioJSON);
 
-        if (usuarioHelper.contarLoginRepetido(usuarioJSON) >= MAX_NUMBER_REGISTERED_LOGIN) {
+        Usuario user = new ObjectMapper().readValue(usuarioJSON, Usuario.class);
+        
+        if (usuarioHelper.contarLoginRepetido(user.getLogin()) >= MAX_NUMBER_REGISTERED_LOGIN) {
             return "Login já cadastrado no banco de dados.";
         } else {
-            Usuario user = new ObjectMapper().readValue(usuarioJSON, Usuario.class);
             user.setImagem(imagemFile.getBytes());
             String senhaCriptografada = new BCryptPasswordEncoder().encode(user.getSenha());
             user.setSenha(senhaCriptografada);
