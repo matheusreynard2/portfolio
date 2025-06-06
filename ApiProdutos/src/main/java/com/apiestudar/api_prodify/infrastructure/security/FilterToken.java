@@ -5,8 +5,6 @@ import java.io.IOException;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -37,7 +35,9 @@ public class FilterToken extends OncePerRequestFilter implements Filter {
 
 		// Adicione todos os endpoints públicos que devem ignorar a verificação de token
 		return path.startsWith("/api/usuarios/addNovoAcessoIp") ||
-				path.startsWith("/api/usuarios/getAllAcessosIp");
+				path.startsWith("/api/usuarios/getAllAcessosIp") ||
+				path.startsWith("/api/usuarios/realizarLogin") ||
+				path.startsWith("/api/usuarios/adicionarUsuario");
 	}
 
 	@Override
