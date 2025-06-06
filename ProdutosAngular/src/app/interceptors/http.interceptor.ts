@@ -12,16 +12,9 @@ export const httpInterceptor: HttpInterceptorFn = (
   const authService = inject(AuthService);
   const router = inject(Router);
 
-  // Adiciona o token em todas as requisições
-  if (authService.existeToken()) {
-    request = addToken(request, authService);
-  }
-
-  // Adiciona headers padrão
+  // Adiciona o token e headers padrão
+  request = addToken(request, authService);
   request = addDefaultHeaders(request);
-
-  // Log da requisição
-  console.log(`Requisição ${request.method} para ${request.url}`);
 
   return next(request).pipe(
     catchError((error: HttpErrorResponse) => {
@@ -33,7 +26,6 @@ export const httpInterceptor: HttpInterceptorFn = (
           error.error?.message === 'Tempo limite de conexão com o sistema excedido. TOKEN Expirado') {
         handleTokenExpired(authService, router);
       }
-
       return throwError(() => error);
     })
   );
@@ -49,6 +41,16 @@ function addToken(request: HttpRequest<unknown>, authService: AuthService): Http
 }
 
 function addDefaultHeaders(request: HttpRequest<unknown>): HttpRequest<unknown> {
+  // Se a requisição for FormData, não adiciona o Content-Type
+  if (request.body instanceof FormData) {
+    return request.clone({
+      setHeaders: {
+        'Accept': 'application/json'
+      }
+    });
+  }
+
+  // Para outras requisições, adiciona o Content-Type
   return request.clone({
     setHeaders: {
       'Content-Type': 'application/json',

@@ -123,32 +123,11 @@ export class ProdutoListComponent implements OnInit {
 
   // Função para atualizar um produto através do id
   atualizarProduto(janelaEditar: any, id: number, produto: ProdutoDTO) {
-    // Primeiro busca o produto completo por ID
     this.produtoService.buscarProdutoPorId(id, this.authService.getUsuarioLogado().idUsuario).subscribe({
-      next: (produtoCompleto: ProdutoDTO) => {
-        this.produtoAtualizar = produtoCompleto;
-        
-        // Procura o fornecedor na lista de fornecedores
-        if (produtoCompleto.fornecedor) {
-          const fornecedorEncontrado = this.fornecedores.find(
-            fornecedor => fornecedor.id === produtoCompleto.fornecedor?.id
-          );
-          
-          if (fornecedorEncontrado) {
-            this.fornecedorSelecionado = fornecedorEncontrado;
-            this.produtoAtualizar.fornecedor = fornecedorEncontrado;
-          }
-        }
-        
-        this.calcularValores(this.produtoAtualizar);
-        this.abrirTelaEdicao(janelaEditar);
-      },
-      error: (error) => {
-        console.error('Erro ao buscar produto:', error);
-        // Em caso de erro, usa o produto da lista como fallback
+      next: (produto) => {
         this.produtoAtualizar = produto;
         
-        // Procura o fornecedor na lista de fornecedores mesmo no caso de erro
+        // Procura o fornecedor na lista de fornecedores
         if (produto.fornecedor) {
           const fornecedorEncontrado = this.fornecedores.find(
             fornecedor => fornecedor.id === produto.fornecedor?.id
@@ -162,6 +141,11 @@ export class ProdutoListComponent implements OnInit {
         
         this.calcularValores(this.produtoAtualizar);
         this.abrirTelaEdicao(janelaEditar);
+      },
+      error: () => {
+        // Em caso de erro, limpa o produto selecionado e fecha o modal
+        this.produtoAtualizar = {} as ProdutoDTO;
+        this.modalService.dismissAll();
       }
     });
   }

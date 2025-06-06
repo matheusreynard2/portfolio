@@ -73,8 +73,7 @@ export class AddUsuarioComponent implements OnInit {
   msgAddUsuario(modalMsgAddUser: any) {
     if (this.adicionouUsuario) {
       setTimeout(() => {
-        const modalRef = this.modalService.open(modalMsgAddUser);
-        modalRef.componentInstance.addUsuario = this.usuarioNovo;
+        this.modalService.open(modalMsgAddUser, {size: 'sm'});
       }, 100);
     }
   }

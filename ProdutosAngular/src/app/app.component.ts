@@ -47,15 +47,13 @@ export class AppComponent implements OnInit {
       }
     });
 
-    // CARREGAR MODO CLARO/ESCURO
-    this.carregarTema();
-
-    // VERIFICAR PERFIL
-    this.inicializarVerificacaoPerfil();
-
-    // ADD NOVO IP E TRAZ QTDE TOTAL
-    this.adicionarContabilizarAcessos().catch(error => {
-      console.error("Erro na contabilização de acessos: ", error);
+    this.verificarExibicaoPerfil();
+    this.verificarTema();
+    this.verificarAcessos();
+    this.router.events.pipe(
+      filter(event => event instanceof NavigationEnd)
+    ).subscribe(() => {
+      this.verificarExibicaoPerfil();
     });
 
     // Adiciona event listeners para os sub-menus mobile
@@ -69,20 +67,36 @@ export class AppComponent implements OnInit {
     }, 0);
   }
 
-  // Método separado para verificação do perfil
-  private inicializarVerificacaoPerfil() {
-    // Verificação inicial imediata
-    this.verificarExibicaoPerfil();
-
-    // Observer para mudanças de rota
-    this.router.events.pipe(
-      filter((event) => event instanceof NavigationEnd)
-    ).subscribe(() => {
-      this.verificarExibicaoPerfil();
+  private verificarAcessos() {
+    this.usuarioService.addNovoAcessoIp().subscribe({
+      next: () => {
+        this.usuarioService.getAllAcessosIp().subscribe({
+          next: (acessos) => {
+            this.numeroVisitas = acessos;
+          },
+          error: () => {
+            // Em caso de erro, mantém o valor padrão
+            this.numeroVisitas = 0;
+          }
+        });
+      },
+      error: () => {
+        // Em caso de erro, mantém o valor padrão
+        this.numeroVisitas = 0;
+      }
     });
   }
 
-// Método centralizado para verificar se deve exibir o perfil
+  private verificarTema() {
+    const tema = localStorage.getItem('tema');
+    if (tema === 'escuro') {
+      document.body.classList.add('tema-escuro');
+    } else {
+      document.body.classList.remove('tema-escuro');
+    }
+  }
+
+  // Método separado para verificação do perfil
   private verificarExibicaoPerfil() {
     // Atualizar usuário logado
     this.usuarioLogado = this.authService.getUsuarioLogado();
@@ -123,11 +137,9 @@ export class AppComponent implements OnInit {
     if (temaEscuro === 'true') {
       this.temaEscuro = true;
       document.body.classList.add('dark-mode');
-      console.log('carregou escuro')
     } else {
       this.temaEscuro = false;
       document.body.classList.remove('dark-mode');
-      console.log('carregou claro')
     }
   }
 
