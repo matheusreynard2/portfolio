@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { environment } from '../../../environments/environment';
@@ -24,6 +24,8 @@ export class FornecedorService extends HttpBaseService {
     this.fornecedorUrl = environment.API_URL + '/fornecedores';
   }
 
+ 
+
   acessarPaginaFornecedor(): Observable<any> {
     return this.http.get<any>(this.fornecedorUrl + "/acessarPaginaFornecedor")
       .pipe(catchError(error => this.handleError(error)));
@@ -39,14 +41,12 @@ export class FornecedorService extends HttpBaseService {
   }
 
   adicionarFornecedor(fornecedor: FornecedorDTO): Observable<FornecedorDTO> {
-    const formData = this.createFormData(fornecedor, undefined, 'fornecedorJSON');
-    return this.http.post<FornecedorDTO>(`${this.fornecedorUrl}/adicionarFornecedor/${fornecedor.idUsuario}`, formData)
+    return this.http.post<FornecedorDTO>(`${this.fornecedorUrl}/adicionarFornecedor/${fornecedor.idUsuario}`, fornecedor)
       .pipe(catchError(error => this.handleError(error)));
   }
 
   atualizarFornecedor(id: number, idUsuario: number, fornecedor: FornecedorDTO): Observable<FornecedorDTO> {
-    const formData = this.createFormData(fornecedor, undefined, 'fornecedorJSON');
-    return this.http.put<FornecedorDTO>(`${this.fornecedorUrl}/atualizarFornecedor/${id}/${idUsuario}`, formData)
+    return this.http.put<FornecedorDTO>(`${this.fornecedorUrl}/atualizarFornecedor/${id}/${idUsuario}`, fornecedor)
       .pipe(catchError(error => this.handleError(error)));
   }
 
