@@ -22,6 +22,7 @@ import lombok.ToString;
 @Entity
 @SequenceGenerator(name = "end_fornecedor_seq", sequenceName = "end_fornecedor_sequence", allocationSize = 1)
 @ToString
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class EnderecoFornecedor {
 	
 	@Id

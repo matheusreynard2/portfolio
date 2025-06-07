@@ -4,8 +4,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.apiestudar.api_prodify.application.mapper.FornecedorMapper;
 import com.apiestudar.api_prodify.domain.model.Fornecedor;
 import com.apiestudar.api_prodify.domain.repository.FornecedorRepository;
+import com.apiestudar.api_prodify.interfaces.dto.FornecedorDTO;
 import com.apiestudar.api_prodify.shared.exception.RegistroNaoEncontradoException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -18,13 +20,13 @@ public class AtualizarFornecedorUseCase {
     public AtualizarFornecedorUseCase(FornecedorRepository fornecedorRepository) {
         this.fornecedorRepository = fornecedorRepository;
     }
-    
+
     @Autowired
-    private ObjectMapper objectMapper;
+    private FornecedorMapper fornecedorMapper;
 
     @Transactional(rollbackFor = Exception.class)
-    public Fornecedor executar(long id, String fornecedorJSON, Long idUsuario) throws Exception {
-        Fornecedor fornecedorAtualizado = objectMapper.readValue(fornecedorJSON, Fornecedor.class);
+    public Fornecedor executar(long id, FornecedorDTO fornecedorDTO, Long idUsuario) throws Exception {
+        Fornecedor fornecedorAtualizado = fornecedorMapper.toEntity(fornecedorDTO);
         
         // Busca o fornecedor pelo id e idUsuario e lança exceção se não encontrar
         return fornecedorRepository.buscarFornecedorPorIdEUsuario(id, idUsuario)

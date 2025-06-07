@@ -45,7 +45,7 @@ import com.apiestudar.api_prodify.shared.exception.RegistroNaoEncontradoExceptio
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @ExtendWith(MockitoExtension.class)
-class ProdutoUseCaseTests {
+class ProdutoUnitaryUseCaseTests {
 
     @Mock
     private ProdutoRepository produtoRepository;

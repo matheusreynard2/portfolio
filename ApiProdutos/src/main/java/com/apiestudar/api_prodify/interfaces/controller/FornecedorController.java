@@ -97,9 +97,9 @@ public class FornecedorController {
 	@ApiResponse(code = 201, message = "Fornecedor cadastrado.")
 	@PostMapping("/adicionarFornecedor/{idUsuario}")
 	public ResponseEntity<FornecedorDTO> adicionarFornecedor(
-			@RequestParam String fornecedorJSON,
+			@RequestBody FornecedorDTO fornecedorDTO,
 			@PathVariable Long idUsuario) throws IOException {
-		Fornecedor fornecedor = fornecedorMapper.toEntity(objectMapper.readValue(fornecedorJSON, FornecedorDTO.class));
+		Fornecedor fornecedor = fornecedorMapper.toEntity(fornecedorDTO);
 		Fornecedor fornecedorAdicionado = adicionarFornecedor.executar(fornecedor, idUsuario);
 		FornecedorDTO responseDTO = fornecedorMapper.toDto(fornecedorAdicionado);
 		return ResponseEntity.status(HttpStatus.CREATED).body(responseDTO);
@@ -132,9 +132,9 @@ public class FornecedorController {
 	public ResponseEntity<FornecedorDTO> atualizarFornecedor(
 			@PathVariable long id,
 			@PathVariable long idUsuario,
-			@RequestParam String fornecedorJSON) throws Exception {
-		Fornecedor fornecedorAtualizado = atualizarFornecedor.executar(id, fornecedorJSON, idUsuario);
-		FornecedorDTO fornecedorDTO = fornecedorMapper.toDto(fornecedorAtualizado);
+			@RequestBody FornecedorDTO fornecedorDTO) throws Exception {
+		Fornecedor fornecedorAtualizado = atualizarFornecedor.executar(id, fornecedorDTO, idUsuario);
+		fornecedorDTO = fornecedorMapper.toDto(fornecedorAtualizado);
 		return ResponseEntity.status(HttpStatus.OK).body(fornecedorDTO);
 	}
 
