@@ -43,7 +43,7 @@ export class AddProdutoComponent implements OnInit {
     somaTotalValores: 0,
     freteAtivo: false,
     valorDesconto: 0,
-    imagem: '',
+    imagem: null,
     fornecedor: undefined
   };
 

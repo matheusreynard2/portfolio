@@ -27,7 +27,6 @@ export class AddUsuarioComponent implements OnInit {
     login: '',
     senha: '',
     token: '',
-    imagem: '',
     email: '',
   };
 

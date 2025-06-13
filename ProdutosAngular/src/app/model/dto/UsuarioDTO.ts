@@ -4,5 +4,5 @@ export interface UsuarioDTO {
     senha: string;
     email: string;
     token: string;
-    imagem: string;
+    imagem?: any;
 } 

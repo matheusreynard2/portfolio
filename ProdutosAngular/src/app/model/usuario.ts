@@ -7,7 +7,7 @@ export class Usuario {
 
   public token: string;
 
-  public imagem: string;
+  public imagem?: string;
 
   public email: string;
 
@@ -16,14 +16,14 @@ export class Usuario {
     login: string,
     senha: string,
     token: string,
-    imagem: string,
-    email: string
+    email: string,
+    imagem?: string
   ) {
     this.idUsuario = idUsuario;
     this.login = login;
     this.senha = senha;
     this.token = token;
+    this.email = email;
     this.imagem = imagem;
-    this.email = email
   }
 }

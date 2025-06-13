@@ -5,28 +5,30 @@ import { map } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import {Usuario} from '../../model/usuario';
 import {environment} from '../../../environments/environment';
+import { UsuarioDTO } from '../../model/dto/UsuarioDTO';
+import { HttpBaseService } from '../base/http-base.service';
+import { AuthService } from '../auth/auth.service';
 
 @Injectable({
   providedIn: 'root'
 })
-export class UsuarioService {
-
+export class UsuarioService extends HttpBaseService {
   private usuariosUrl: string;
   private apiUrl = environment.API_URL;
 
-  constructor(private http: HttpClient, private router: Router) {
-    // URL DO REST CONTROLLER
+
+  constructor(
+    private http: HttpClient,
+    authService: AuthService,
+    router: Router
+  ) {
+    super(authService, router);
     this.usuariosUrl = this.apiUrl + '/usuarios';
   }
 
-  adicionarUsuario(usuario: Usuario, imagem: File): Observable<Map<string, any>> {
-    const formData = new FormData();
-    const headers = new HttpHeaders();
-
-    formData.append('usuarioJSON', JSON.stringify(usuario));
-    formData.append('imagemFile', imagem);
-
-    return this.http.post<any>(this.usuariosUrl + "/adicionarUsuario", formData, {headers});
+  adicionarUsuario(usuario: UsuarioDTO, imagem: File): Observable<Map<string, any>> {
+    const formData = this.createFormData(usuario, imagem);
+    return this.http.post<any>(this.usuariosUrl + "/adicionarUsuario", formData);
   }
 
   public addNovoAcessoIp(): Observable<boolean> {

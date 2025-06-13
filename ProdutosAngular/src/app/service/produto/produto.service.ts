@@ -48,7 +48,7 @@ export class ProdutoService extends HttpBaseService {
   }
 
   adicionarProduto(produto: ProdutoDTO, imagem: File): Observable<ProdutoDTO> {
-    const formData = this.createFormData(produto, imagem, 'produtoJSON');
+    const formData = this.createProdutoFormData(produto, imagem);
     return this.http.post<ProdutoDTO>(this.produtosUrl + "/adicionarProduto", formData)
       .pipe(catchError(error => this.handleError(error)));
   }
@@ -61,7 +61,7 @@ export class ProdutoService extends HttpBaseService {
   }
 
   atualizarProduto(id: number, produto: ProdutoDTO, imagem: File): Observable<ProdutoDTO> {
-    const formData = this.createFormData(produto, imagem, 'produtoJSON');
+    const formData = this.createProdutoFormData(produto, imagem);
     return this.http.put<ProdutoDTO>(this.produtosUrl + "/atualizarProduto/" + id, formData)
       .pipe(catchError(error => this.handleError(error)));
   }

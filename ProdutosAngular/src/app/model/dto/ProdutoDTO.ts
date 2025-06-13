@@ -4,7 +4,7 @@ export interface ProdutoDTO {
   id: number;
   idUsuario: number;
   nome: string;
-  imagem?: string;
+  imagem?: any;
   fornecedor?: FornecedorDTO;
   valor: number;
   promocao: boolean;

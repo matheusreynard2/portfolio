@@ -30,10 +30,40 @@ export class HttpBaseService {
 
   protected createFormData(data: any, file?: File, jsonParamName: string = 'json'): FormData {
     const formData = new FormData();
-    formData.append(jsonParamName, JSON.stringify(data));
+    
+    // Para @ModelAttribute, precisamos enviar cada campo individualmente
+    Object.keys(data).forEach(key => {
+      const value = data[key];
+      if (value !== null && value !== undefined) {
+        if (typeof value === 'object' && !Array.isArray(value)) {
+          formData.append(key, JSON.stringify(value));
+        } else if (Array.isArray(value)) {
+          // Para arrays, enviar como JSON
+          formData.append(key, JSON.stringify(value));
+        } else {
+          formData.append(key, value.toString());
+        }
+      }
+    });
+    
     if (file) {
       formData.append('imagemFile', file);
     }
+    return formData;
+  }
+
+  protected createProdutoFormData(produto: any, file?: File): FormData {
+    const formData = new FormData();
+    
+    // Para o backend que espera ProdutoFormDTO
+    // Enviar o produto como JSON stringificado
+    formData.append('produtoJson', JSON.stringify(produto));
+    
+    // Enviar o arquivo de imagem se existir
+    if (file) {
+      formData.append('imagemFile', file);
+    }
+    
     return formData;
   }
 } 
