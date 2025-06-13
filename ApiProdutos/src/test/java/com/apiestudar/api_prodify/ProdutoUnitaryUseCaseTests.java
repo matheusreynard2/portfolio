@@ -27,7 +27,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.apiestudar.api_prodify.application.usecase.produto.AdicionarProdutoUseCase;
@@ -42,7 +41,6 @@ import com.apiestudar.api_prodify.domain.repository.ProdutoRepository;
 import com.apiestudar.api_prodify.domain.repository.UsuarioRepository;
 import com.apiestudar.api_prodify.shared.exception.ParametroInformadoNullException;
 import com.apiestudar.api_prodify.shared.exception.RegistroNaoEncontradoException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 @ExtendWith(MockitoExtension.class)
 class ProdutoUnitaryUseCaseTests {
@@ -55,8 +53,6 @@ class ProdutoUnitaryUseCaseTests {
 
     @Mock
     private MultipartFile mockImagemFile;
-
-    private ObjectMapper objectMapper;
 
     @InjectMocks
     private AdicionarProdutoUseCase adicionarProduto;
@@ -77,7 +73,6 @@ class ProdutoUnitaryUseCaseTests {
     private PesquisasSearchBarUseCase pesquisasProduto;
 
     private Produto produto;
-    private String produtoJSON;
     private byte[] imagemBytes;
 
     @BeforeEach
@@ -89,10 +84,8 @@ class ProdutoUnitaryUseCaseTests {
         produto.setDescricao("Descrição do produto teste");
         produto.setValor(100.0);
         produto.setQuantia(10);
-        produtoJSON = "{\"nome\":\"Produto Teste\",\"descricao\":\"Descrição do produto teste\",\"valor\":100.0,\"quantia\":10}";
         
         imagemBytes = "imagem-teste".getBytes();
-        ReflectionTestUtils.setField(adicionarProduto, "objectMapper", new ObjectMapper());
     }
 
     @Test
@@ -103,7 +96,7 @@ class ProdutoUnitaryUseCaseTests {
         when(produtoRepository.adicionarProduto(any(Produto.class))).thenReturn(produto);
 
         // Act
-        Produto resultado = adicionarProduto.executar(produtoJSON, mockImagemFile);
+        Produto resultado = adicionarProduto.executar(produto, mockImagemFile);
 
         // Assert
         assertThat(resultado).isNotNull();
@@ -113,8 +106,8 @@ class ProdutoUnitaryUseCaseTests {
     }
 
     @Test
-    @DisplayName("Deve lançar exceção quando produto JSON for null")
-    void deveLancarExcecaoQuandoProdutoJSONForNull() {
+    @DisplayName("Deve lançar exceção quando produto for null")
+    void deveLancarExcecaoQuandoProdutoForNull() {
         // Act & Assert
         assertThatThrownBy(() -> adicionarProduto.executar(null, mockImagemFile))
             .isInstanceOf(ParametroInformadoNullException.class);
@@ -160,8 +153,7 @@ class ProdutoUnitaryUseCaseTests {
         });
 
         // Act
-        ReflectionTestUtils.setField(atualizarProduto, "objectMapper", new ObjectMapper());
-        Produto resultado = atualizarProduto.executar(1L, produtoJSON, mockImagemFile);
+        Produto resultado = atualizarProduto.executar(1L, produto, mockImagemFile);
 
         // Assert
         assertThat(resultado).isNotNull();
@@ -178,9 +170,8 @@ class ProdutoUnitaryUseCaseTests {
         when(produtoRepository.buscarProdutoPorId(999L)).thenReturn(Optional.empty());
 
         // Act & Assert
-        ReflectionTestUtils.setField(atualizarProduto, "objectMapper", new ObjectMapper());
         assertThatThrownBy(
-        		() -> atualizarProduto.executar(999L, produtoJSON, mockImagemFile))
+                () -> atualizarProduto.executar(999L, produto, mockImagemFile))
             .isInstanceOf(RegistroNaoEncontradoException.class);
         
         verify(produtoRepository).buscarProdutoPorId(999L);

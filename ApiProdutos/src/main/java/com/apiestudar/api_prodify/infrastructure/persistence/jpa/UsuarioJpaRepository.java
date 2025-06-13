@@ -15,6 +15,6 @@ public interface UsuarioJpaRepository extends JpaRepository<Usuario, Long> {
     @Query(value = "SELECT senha FROM usuario WHERE login = :loginUsuario", nativeQuery = true)
     String getSenhaByLogin(@Param("loginUsuario") String loginUsuario);
 
-    @Query(value = "SELECT COUNT(login) FROM usuario WHERE login = :usuarioLogin", nativeQuery = true)
+    @Query("SELECT COUNT(u) FROM Usuario u WHERE u.login = :usuarioLogin")
     int findLoginRepetido(@Param("usuarioLogin") String usuarioLogin);
 }

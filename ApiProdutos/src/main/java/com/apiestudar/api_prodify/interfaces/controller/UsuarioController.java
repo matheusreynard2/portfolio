@@ -13,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -77,11 +78,11 @@ public class UsuarioController {
 	@ApiOperation(value = "Adiciona/cadastra um novo usuário.", notes = "Cria um novo registro de usuário no banco de dados.")
 	@ApiResponse(code = 200, message = "Usuário cadastrado.")
 	@PostMapping("/adicionarUsuario")
-	public ResponseEntity<Object> adicionarUsuario(@RequestParam String usuarioJSON,
-			@RequestParam MultipartFile imagemFile) throws IOException {
-		Object response = adicionarUsuario.executar(usuarioJSON, imagemFile);
+	public ResponseEntity<Object> adicionarUsuario(@ModelAttribute UsuarioDTO usuarioDTO,
+			@RequestParam(required = false) MultipartFile imagemFile) throws IOException {
+		Object response = adicionarUsuario.executar(usuarioDTO, imagemFile);
 		if (response instanceof Usuario) {
-			UsuarioDTO usuarioDTO = usuarioMapper.toDto((Usuario) response);
+			usuarioDTO = usuarioMapper.toDto((Usuario) response);
 			return ResponseEntity.status(HttpStatus.CREATED).body(usuarioDTO);
 		}
 		return ResponseEntity.status(HttpStatus.CONFLICT).body(response);

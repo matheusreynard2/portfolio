@@ -69,12 +69,9 @@ public class FornecedorController {
 			@RequestParam(defaultValue = "10") int size,
 			@PathVariable Long idUsuario) {
 		Pageable pageable = PageRequest.of(page, size);
-		Page<Fornecedor> fornecedoresPage;
-		if (idUsuario != null) {
-			fornecedoresPage = listarFornecedores.executar(idUsuario, pageable);
-		} else {
-			fornecedoresPage = fornecedorJpaRepository.findAll(pageable);
-		}
+		Page<Fornecedor> fornecedoresPage = (idUsuario != null)
+			? listarFornecedores.executar(idUsuario, pageable)
+			: fornecedorJpaRepository.findAll(pageable);
 		return fornecedoresPage.map(fornecedor -> fornecedorMapper.toDto(fornecedor));
 	}
 
@@ -83,12 +80,9 @@ public class FornecedorController {
 	@ApiResponse(code = 200, message = "Fornecedores encontrados.")
 	@GetMapping("/listarFornecedoresList/{idUsuario}")
 	public List<FornecedorDTO> listarFornecedoresList(@PathVariable Long idUsuario) {
-		List<Fornecedor> fornecedores;
-		if (idUsuario != null) {
-			fornecedores = listarFornecedores.executar(idUsuario);
-		} else {
-			fornecedores = fornecedorJpaRepository.findAll();
-		}
+		List<Fornecedor> fornecedores = (idUsuario != null)
+			? listarFornecedores.executar(idUsuario)
+			: fornecedorJpaRepository.findAll();
 		return fornecedorMapper.toDtoList(fornecedores);
 	}
 

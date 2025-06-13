@@ -14,13 +14,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
 
 import com.apiestudar.api_prodify.application.mapper.ProdutoMapper;
 import com.apiestudar.api_prodify.application.usecase.produto.AdicionarProdutoUseCase;
@@ -32,6 +32,8 @@ import com.apiestudar.api_prodify.application.usecase.produto.PesquisasSearchBar
 import com.apiestudar.api_prodify.application.usecase.produto.BuscarProdutoUseCase;
 import com.apiestudar.api_prodify.domain.model.Produto;
 import com.apiestudar.api_prodify.interfaces.dto.ProdutoDTO;
+import com.apiestudar.api_prodify.interfaces.dto.ProdutoFormDTO;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -56,6 +58,7 @@ public class ProdutoController {
 	private BuscarProdutoUseCase buscarProduto;
 	
 	private final ProdutoMapper produtoMapper;
+	ObjectMapper objectMapper = new ObjectMapper();
 
 	public ProdutoController(ProdutoMapper produtoMapper) {
 		this.produtoMapper = produtoMapper;
@@ -77,22 +80,22 @@ public class ProdutoController {
 	@ApiOperation(value = "Adiciona/cadastra um novo produto.", notes = "Cria um novo registro de produto no banco de dados.")
 	@ApiResponse(code = 200, message = "Produto cadastrado.")
 	@PostMapping("/adicionarProduto")
-	public ResponseEntity<ProdutoDTO> adicionarProduto(@RequestParam String produtoJSON,
-			@RequestParam MultipartFile imagemFile) throws IOException, SQLException {
-		Produto produtoAdicionado = adicionarProduto.executar(produtoJSON, imagemFile);
-		// Converter entidade para DTO usando o mapper
-		ProdutoDTO produtoDTO = produtoMapper.toDto(produtoAdicionado);
+	public ResponseEntity<ProdutoDTO> adicionarProduto(@ModelAttribute ProdutoFormDTO produtoFormDTO) throws IOException, SQLException {
+		ProdutoDTO produtoDTO = objectMapper.readValue(produtoFormDTO.getProdutoJson(), ProdutoDTO.class);
+		Produto produto = produtoMapper.toEntity(produtoDTO);		
+		Produto produtoAdicionado = adicionarProduto.executar(produto, produtoFormDTO.getImagemFile());
+		produtoDTO = produtoMapper.toDto(produtoAdicionado);
 		return ResponseEntity.status(HttpStatus.CREATED).body(produtoDTO);
 	}
 
 	@ApiOperation(value = "Atualiza as informações de um produto.", notes = "Atualiza as informações registradas no banco de dados de um produto de acordo com o número de id passado como parâmetro.")
 	@ApiResponse(code = 200, message = "Produto atualizado.")
 	@PutMapping("/atualizarProduto/{id}")
-	public ResponseEntity<ProdutoDTO> atualizarProduto(@PathVariable long id, @RequestParam String produtoJSON,
-			@RequestParam MultipartFile imagemFile) throws IOException {
-		Produto produtoAtualizado = atualizarProduto.executar(id, produtoJSON, imagemFile);
-		// Converter entidade para DTO usando o mapper
-		ProdutoDTO produtoDTO = produtoMapper.toDto(produtoAtualizado);
+	public ResponseEntity<ProdutoDTO> atualizarProduto(@PathVariable long id, @ModelAttribute ProdutoFormDTO produtoFormDTO) throws IOException {
+		ProdutoDTO produtoDTO = objectMapper.readValue(produtoFormDTO.getProdutoJson(), ProdutoDTO.class);
+		Produto produto = produtoMapper.toEntity(produtoDTO);
+		Produto produtoAtualizado = atualizarProduto.executar(id, produto, produtoFormDTO.getImagemFile());
+		produtoDTO = produtoMapper.toDto(produtoAtualizado);
 		return ResponseEntity.status(HttpStatus.OK).body(produtoDTO);
 	}
 

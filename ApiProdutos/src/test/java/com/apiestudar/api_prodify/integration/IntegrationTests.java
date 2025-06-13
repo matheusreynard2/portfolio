@@ -36,7 +36,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test")
 @Import(TestSecurityConfig.class)
-public class ProdutoIntegrationTests {
+public class IntegrationTests {
 
     @LocalServerPort
     private int port;
