@@ -38,10 +38,11 @@ export class ProdutoService extends HttpBaseService {
     ).pipe(catchError(error => this.handleError(error)));
   }
 
-  listarProdutos(page: number, size: number): Observable<PaginatedResponse<ProdutoDTO>> {
+  listarProdutos(page: number, size: number, idUsuario: number): Observable<PaginatedResponse<ProdutoDTO>> {
     const params = new HttpParams()
       .set('page', page.toString())
-      .set('size', size.toString());
+      .set('size', size.toString())
+      .set('idUsuario', idUsuario.toString());
 
     return this.http.get<PaginatedResponse<ProdutoDTO>>(this.produtosUrl + "/listarProdutos", { params })
       .pipe(catchError(error => this.handleError(error)));

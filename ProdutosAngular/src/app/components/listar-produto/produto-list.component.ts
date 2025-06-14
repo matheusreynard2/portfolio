@@ -74,9 +74,8 @@ export class ProdutoListComponent implements OnInit {
       this.fornecedores = data;
     });
 
-    this.produtoService.listarProdutos(this.currentPage, this.pageSize).subscribe(data => {
-      const usuarioLogadoId = this.authService.getUsuarioLogado().idUsuario;
-      this.listaDeProdutos = data.content.filter(produto => produto.idUsuario === usuarioLogadoId); // Filtra os produtos do usuário logado
+    this.produtoService.listarProdutos(this.currentPage, this.pageSize, this.authService.getUsuarioLogado().idUsuario).subscribe(data => {
+      this.listaDeProdutos = data.content
       this.totalRecords = data.totalElements; // Atualiza o total de registros exibidos
     });
 
@@ -160,9 +159,8 @@ export class ProdutoListComponent implements OnInit {
 
   // Função que atualiza a lista de produtos
   atualizarLista(): void {
-    this.produtoService.listarProdutos(this.currentPage, this.pageSize).subscribe(data => {
-      const usuarioLogadoId = this.authService.getUsuarioLogado().idUsuario;
-      this.listaDeProdutos = data.content.filter(produto => produto.idUsuario === usuarioLogadoId); // Filtra os produtos do usuário logado
+    this.produtoService.listarProdutos(this.currentPage, this.pageSize, this.authService.getUsuarioLogado().idUsuario).subscribe(data => {
+      this.listaDeProdutos = data.content
       this.totalRecords = data.totalElements; // Atualiza o total de registros exibidos
     });
     this.listarProdutoMaisCaro(this.authService.getUsuarioLogado().idUsuario);
