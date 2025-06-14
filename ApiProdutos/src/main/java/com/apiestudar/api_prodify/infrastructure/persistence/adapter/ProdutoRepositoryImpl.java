@@ -38,8 +38,8 @@ public class ProdutoRepositoryImpl implements ProdutoRepository {
     }
 
     @Override
-    public Page<Produto> listarProdutos(Pageable pageable) {
-        return produtoJpaRepository.findAll(pageable);
+    public Page<Produto> listarProdutosByIdUsuario(Pageable pageable, Long idUsuario) {
+        return produtoJpaRepository.findByIdUsuario(idUsuario, pageable);
     }
 
     @Override

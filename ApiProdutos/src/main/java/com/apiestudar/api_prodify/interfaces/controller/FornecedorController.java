@@ -3,7 +3,9 @@ package com.apiestudar.api_prodify.interfaces.controller;
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
+import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +25,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.apiestudar.api_prodify.application.mapper.FornecedorMapper;
 import com.apiestudar.api_prodify.application.usecase.fornecedor.AdicionarFornecedorUseCase;
 import com.apiestudar.api_prodify.application.usecase.fornecedor.AtualizarFornecedorUseCase;
 import com.apiestudar.api_prodify.application.usecase.fornecedor.DeletarFornecedorUseCase;
@@ -52,7 +53,7 @@ public class FornecedorController {
 	@Autowired
 	private AtualizarFornecedorUseCase atualizarFornecedor;
 	@Autowired
-	private FornecedorMapper fornecedorMapper;
+	private ModelMapper modelMapper;
 	@Autowired
 	private FornecedorJpaRepository fornecedorJpaRepository;
 	@Autowired
@@ -72,7 +73,7 @@ public class FornecedorController {
 		Page<Fornecedor> fornecedoresPage = (idUsuario != null)
 			? listarFornecedores.executar(idUsuario, pageable)
 			: fornecedorJpaRepository.findAll(pageable);
-		return fornecedoresPage.map(fornecedor -> fornecedorMapper.toDto(fornecedor));
+		return fornecedoresPage.map(fornecedor -> modelMapper.map(fornecedor, FornecedorDTO.class));
 	}
 
 	@Transactional(readOnly = true)
@@ -83,7 +84,9 @@ public class FornecedorController {
 		List<Fornecedor> fornecedores = (idUsuario != null)
 			? listarFornecedores.executar(idUsuario)
 			: fornecedorJpaRepository.findAll();
-		return fornecedorMapper.toDtoList(fornecedores);
+		return fornecedores.stream()
+			.map(fornecedor -> modelMapper.map(fornecedor, FornecedorDTO.class))
+			.collect(Collectors.toList());
 	}
 
 	@Transactional
@@ -93,9 +96,9 @@ public class FornecedorController {
 	public ResponseEntity<FornecedorDTO> adicionarFornecedor(
 			@RequestBody FornecedorDTO fornecedorDTO,
 			@PathVariable Long idUsuario) throws IOException {
-		Fornecedor fornecedor = fornecedorMapper.toEntity(fornecedorDTO);
+		Fornecedor fornecedor = modelMapper.map(fornecedorDTO, Fornecedor.class);
 		Fornecedor fornecedorAdicionado = adicionarFornecedor.executar(fornecedor, idUsuario);
-		FornecedorDTO responseDTO = fornecedorMapper.toDto(fornecedorAdicionado);
+		FornecedorDTO responseDTO = modelMapper.map(fornecedorAdicionado, FornecedorDTO.class);
 		return ResponseEntity.status(HttpStatus.CREATED).body(responseDTO);
 	}
 
@@ -128,7 +131,7 @@ public class FornecedorController {
 			@PathVariable long idUsuario,
 			@RequestBody FornecedorDTO fornecedorDTO) throws Exception {
 		Fornecedor fornecedorAtualizado = atualizarFornecedor.executar(id, fornecedorDTO, idUsuario);
-		fornecedorDTO = fornecedorMapper.toDto(fornecedorAtualizado);
+		fornecedorDTO = modelMapper.map(fornecedorAtualizado, FornecedorDTO.class);
 		return ResponseEntity.status(HttpStatus.OK).body(fornecedorDTO);
 	}
 
@@ -137,7 +140,34 @@ public class FornecedorController {
 	@GetMapping("/buscarFornecedorPorId/{id}")
 	public ResponseEntity<FornecedorDTO> buscarFornecedorPorId(@PathVariable Long id) {
 		Fornecedor fornecedor = buscarFornecedor.executar(id);
-		FornecedorDTO fornecedorDTO = fornecedorMapper.toDto(fornecedor);
+		FornecedorDTO fornecedorDTO = modelMapper.map(fornecedor, FornecedorDTO.class);
 		return ResponseEntity.status(HttpStatus.OK).body(fornecedorDTO);
+	}
+
+	// Endpoint de teste público para verificar JSON
+	@ApiOperation(value = "Teste de JSON para fornecedores.", notes = "Endpoint público para testar se o JSON está sendo gerado corretamente.")
+	@ApiResponse(code = 200, message = "Teste realizado com sucesso.")
+	@GetMapping("/testeJson")
+	public ResponseEntity<String> testeJson() {
+		try {
+			// Cria um fornecedor de teste
+			Fornecedor fornecedor = Fornecedor.builder()
+				.id(1L)
+				.nome("Fornecedor Teste")
+				.nrResidencia("123")
+				.idUsuario(1L)
+				.build();
+			
+			// Mapeia para DTO
+			FornecedorDTO fornecedorDTO = modelMapper.map(fornecedor, FornecedorDTO.class);
+			
+			// Converte para JSON
+			String json = objectMapper.writeValueAsString(fornecedorDTO);
+			
+			return ResponseEntity.status(HttpStatus.OK).body(json);
+		} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+				.body("Erro ao gerar JSON: " + e.getMessage());
+		}
 	}
 }

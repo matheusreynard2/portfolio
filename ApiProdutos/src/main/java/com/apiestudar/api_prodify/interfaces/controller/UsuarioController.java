@@ -3,9 +3,11 @@ package com.apiestudar.api_prodify.interfaces.controller;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +30,6 @@ import com.apiestudar.api_prodify.application.usecase.usuario.ListarUsuariosUseC
 import com.apiestudar.api_prodify.application.usecase.usuario.RealizarLoginUseCase;
 import com.apiestudar.api_prodify.application.usecase.usuario.UsuarioHelper;
 import com.apiestudar.api_prodify.domain.model.Usuario;
-import com.apiestudar.api_prodify.application.mapper.UsuarioMapper;
 import com.apiestudar.api_prodify.interfaces.dto.UsuarioDTO;
 
 import io.swagger.annotations.ApiOperation;
@@ -51,7 +52,7 @@ public class UsuarioController {
 	@Autowired
 	private UsuarioHelper usuarioHelper;
 	@Autowired
-	private UsuarioMapper usuarioMapper;
+	private ModelMapper modelMapper;
 
 	@ApiOperation(value = "Adiciona novo acesso pelo IP.", notes = "Quando um novo usuário acessa o site, ele registra o IP no banco.")
 	@ApiResponse(code = 200, message = "IP registrado.")
@@ -72,7 +73,9 @@ public class UsuarioController {
 	@GetMapping("/listarUsuarios")
 	public List<UsuarioDTO> listarUsuarios() {
 		List<Usuario> usuarios = listarUsuarios.executar();
-		return usuarioMapper.toDtoList(usuarios);
+		return usuarios.stream()
+			.map(usuario -> modelMapper.map(usuario, UsuarioDTO.class))
+			.collect(Collectors.toList());
 	}
 
 	@ApiOperation(value = "Adiciona/cadastra um novo usuário.", notes = "Cria um novo registro de usuário no banco de dados.")
@@ -82,7 +85,7 @@ public class UsuarioController {
 			@RequestParam(required = false) MultipartFile imagemFile) throws IOException {
 		Object response = adicionarUsuario.executar(usuarioDTO, imagemFile);
 		if (response instanceof Usuario) {
-			usuarioDTO = usuarioMapper.toDto((Usuario) response);
+			usuarioDTO = modelMapper.map((Usuario) response, UsuarioDTO.class);
 			return ResponseEntity.status(HttpStatus.CREATED).body(usuarioDTO);
 		}
 		return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
@@ -100,11 +103,11 @@ public class UsuarioController {
 	@ApiResponse(code = 200, message = "Login realizado.")
 	@PostMapping("/realizarLogin")
 	public ResponseEntity<Map<String, Object>> realizarLogin(@RequestBody UsuarioDTO usuarioDTO) {
-		Usuario usuario = usuarioMapper.toEntity(usuarioDTO);
+		Usuario usuario = modelMapper.map(usuarioDTO, Usuario.class);
 		Map<String, Object> response = realizarLogin.executar(usuario);
 		if (response.containsKey("usuario")) {
 			Usuario usuarioLogado = (Usuario) response.get("usuario");
-			response.put("usuario", usuarioMapper.toDto(usuarioLogado));
+			response.put("usuario", modelMapper.map(usuarioLogado, UsuarioDTO.class));
 		}
 		return response.containsKey("msgCredenciaisInvalidas")
 				? ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response)

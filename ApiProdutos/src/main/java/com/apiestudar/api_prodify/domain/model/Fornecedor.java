@@ -14,9 +14,13 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Builder.Default;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -27,21 +31,33 @@ import lombok.ToString;
 @Entity
 @SequenceGenerator(name = "fornecedor_seq", sequenceName = "fornecedor_sequence", allocationSize = 1)
 @ToString
+@Schema(name = "Fornecedor Entity")
+@Builder
 public class Fornecedor {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "fornecedor_seq")
+	@Schema(description = "ID do fornecedor")
 	private long id;
+	
+	@Schema(description = "Nome do fornecedor")
 	private String nome;
+	
+	@Schema(description = "Número da residência")
 	private String nrResidencia; 
+	
+	@Schema(description = "ID do usuário")
 	private long idUsuario;
 	
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "endereco_id", referencedColumnName = "id")
-    @JsonManagedReference
+    @Schema(description = "Endereço do fornecedor")
 	private EnderecoFornecedor enderecoFornecedor;
 
-    @JsonManagedReference
-    @OneToMany(mappedBy = "fornecedor", cascade = CascadeType.ALL, orphanRemoval = true)
+	@JsonIgnore
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @Schema(description = "Lista de produtos do fornecedor")
+	@JoinColumn(name = "fornecedor", referencedColumnName = "id")
+	@Builder.Default
     private List<Produto> produtos = new ArrayList<>();
 }

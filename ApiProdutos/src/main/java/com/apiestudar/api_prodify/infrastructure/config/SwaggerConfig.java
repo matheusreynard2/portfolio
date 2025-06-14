@@ -1,4 +1,4 @@
-package com.apiestudar.api_prodify.infrastructure.persistence.config;
+package com.apiestudar.api_prodify.infrastructure.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -45,4 +45,4 @@ public class SwaggerConfig {
             .defaultModelsExpandDepth(-1)
             .build();
     }
-}
+} 

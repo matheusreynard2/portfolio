@@ -3,13 +3,16 @@ package com.apiestudar.api_prodify.interfaces.controller;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.stream.Collectors;
 
+import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -22,7 +25,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.apiestudar.api_prodify.application.mapper.ProdutoMapper;
 import com.apiestudar.api_prodify.application.usecase.produto.AdicionarProdutoUseCase;
 import com.apiestudar.api_prodify.application.usecase.produto.AtualizarProdutoUseCase;
 import com.apiestudar.api_prodify.application.usecase.produto.CalculosSobreProdutosUseCase;
@@ -47,7 +49,7 @@ public class ProdutoController {
 	@Autowired
 	private AdicionarProdutoUseCase adicionarProduto;
 	@Autowired
-	private ListarProdutosUseCase listarProdutos;
+	private ListarProdutosUseCase listarProdutosPorUsuario;
 	@Autowired
 	private AtualizarProdutoUseCase atualizarProduto;
 	@Autowired
@@ -56,13 +58,10 @@ public class ProdutoController {
 	private CalculosSobreProdutosUseCase consultasProduto;
 	@Autowired
 	private BuscarProdutoUseCase buscarProduto;
+	@Autowired
+	private ModelMapper modelMapper;
 	
-	private final ProdutoMapper produtoMapper;
-	ObjectMapper objectMapper = new ObjectMapper();
-
-	public ProdutoController(ProdutoMapper produtoMapper) {
-		this.produtoMapper = produtoMapper;
-	}
+	private ObjectMapper objectMapper = new ObjectMapper();
 
 	private static final Logger log = LoggerFactory.getLogger(ProdutoController.class);
 
@@ -70,33 +69,24 @@ public class ProdutoController {
 	@ApiResponse(code = 200, message = "Produtos encontrados.")
 	@GetMapping("/listarProdutos")
 	public Page<ProdutoDTO> listarProdutos(@RequestParam(defaultValue = "0") int page,
-			@RequestParam(defaultValue = "10") int size) {
+			@RequestParam(defaultValue = "10") int size, @RequestParam Long idUsuario) {
 		Pageable pageable = PageRequest.of(page, size);
-		Page<Produto> produtosPage = listarProdutos.executar(pageable);
-		return produtoMapper.toDtoPage(produtosPage);
-
+		Page<Produto> produtosPage = listarProdutosPorUsuario.executar(pageable, idUsuario);
+		return produtosPage.map(produto -> modelMapper.map(produto, ProdutoDTO.class));
 	}
 
 	@ApiOperation(value = "Adiciona/cadastra um novo produto.", notes = "Cria um novo registro de produto no banco de dados.")
 	@ApiResponse(code = 200, message = "Produto cadastrado.")
 	@PostMapping("/adicionarProduto")
 	public ResponseEntity<ProdutoDTO> adicionarProduto(@ModelAttribute ProdutoFormDTO produtoFormDTO) throws IOException, SQLException {
-		ProdutoDTO produtoDTO = objectMapper.readValue(produtoFormDTO.getProdutoJson(), ProdutoDTO.class);
-		Produto produto = produtoMapper.toEntity(produtoDTO);		
-		Produto produtoAdicionado = adicionarProduto.executar(produto, produtoFormDTO.getImagemFile());
-		produtoDTO = produtoMapper.toDto(produtoAdicionado);
-		return ResponseEntity.status(HttpStatus.CREATED).body(produtoDTO);
+		return ResponseEntity.status(HttpStatus.CREATED).body(adicionarProduto.executar(produtoFormDTO, produtoFormDTO.getImagemFile()));
 	}
 
 	@ApiOperation(value = "Atualiza as informações de um produto.", notes = "Atualiza as informações registradas no banco de dados de um produto de acordo com o número de id passado como parâmetro.")
 	@ApiResponse(code = 200, message = "Produto atualizado.")
 	@PutMapping("/atualizarProduto/{id}")
 	public ResponseEntity<ProdutoDTO> atualizarProduto(@PathVariable long id, @ModelAttribute ProdutoFormDTO produtoFormDTO) throws IOException {
-		ProdutoDTO produtoDTO = objectMapper.readValue(produtoFormDTO.getProdutoJson(), ProdutoDTO.class);
-		Produto produto = produtoMapper.toEntity(produtoDTO);
-		Produto produtoAtualizado = atualizarProduto.executar(id, produto, produtoFormDTO.getImagemFile());
-		produtoDTO = produtoMapper.toDto(produtoAtualizado);
-		return ResponseEntity.status(HttpStatus.OK).body(produtoDTO);
+		return ResponseEntity.status(HttpStatus.OK).body(atualizarProduto.executar(id, produtoFormDTO, produtoFormDTO.getImagemFile()));
 	}
 
 	@ApiOperation(value = "Deleta/exclui um produto.", notes = "Faz a exclusão de um produto do banco de dados de acordo com o número de id passado como parâmetro.")
@@ -105,7 +95,6 @@ public class ProdutoController {
 	public ResponseEntity<Object> deletarProduto(@PathVariable int id) {
 		deletarProduto.executar(id);
 		return ResponseEntity.status(HttpStatus.OK).body("Deletou com sucesso");
-
 	}
 
 	@ApiOperation(value = "Exibe o produto mais caro.", notes = "Exibe o valor unitário do produto mais caro entre todos os produtos registrados no banco de dados.")
@@ -114,7 +103,6 @@ public class ProdutoController {
 	public ResponseEntity<Object> listarProdutoMaisCaro(@PathVariable long idUsuario) {
 		List<Produto> produtoMaisCaro = consultasProduto.listarProdutoMaisCaro(idUsuario);
 		return ResponseEntity.status(HttpStatus.OK).body(produtoMaisCaro);
-
 	}
 
 	@ApiOperation(value = "Exibe a média de preço dos produtos.", notes = "Exibe a média de preço entre os valores unitários dos produtos registrados no banco de dados.")
@@ -123,7 +111,6 @@ public class ProdutoController {
 	public ResponseEntity<Object> obterMediaPreco(@PathVariable long idUsuario) {
 		Double media = consultasProduto.obterMediaPreco(idUsuario);
 		return ResponseEntity.status(HttpStatus.OK).body(media);
-
 	}
 
 	@ApiOperation(value = "Cálculo de valor de desconto.", notes = "Calcula o valor que será reduzido do preço do produto de acordo com a porcentagem de desconto passada pelo usuário.")
@@ -143,8 +130,10 @@ public class ProdutoController {
 	public ResponseEntity<List<ProdutoDTO>> efetuarPesquisa(@PathVariable String tipoPesquisa,
 			@PathVariable String valorPesquisa, @PathVariable long idUsuario) {
 		List<Produto> produtos = pesquisasUseCase.efetuarPesquisa(tipoPesquisa, valorPesquisa, idUsuario);
-		// Converter lista de entidades para lista de DTOs usando o mapper
-		List<ProdutoDTO> produtoDTOs = produtoMapper.toDtoList(produtos);
+		// Converter lista de entidades para lista de DTOs usando o ModelMapper
+		List<ProdutoDTO> produtoDTOs = produtos.stream()
+			.map(produto -> modelMapper.map(produto, ProdutoDTO.class))
+			.collect(Collectors.toList());
 		return ResponseEntity.status(HttpStatus.OK).body(produtoDTOs);
 	}
 
@@ -162,8 +151,7 @@ public class ProdutoController {
 	@GetMapping("/buscarProduto/{id}/{idUsuario}")
 	public ResponseEntity<ProdutoDTO> buscarProduto(@PathVariable Long id, @PathVariable Long idUsuario) {
 		Produto produto = buscarProduto.executar(id, idUsuario);
-		ProdutoDTO produtoDTO = produtoMapper.toDto(produto);
+		ProdutoDTO produtoDTO = modelMapper.map(produto, ProdutoDTO.class);
 		return ResponseEntity.status(HttpStatus.OK).body(produtoDTO);
 	}
-
 }

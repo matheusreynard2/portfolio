@@ -123,16 +123,16 @@ class ProdutoUnitaryUseCaseTests {
         Page<Produto> produtosPage = new PageImpl<>(produtos);
         Pageable pageable = PageRequest.of(0, 10);
         
-        when(produtoRepository.listarProdutos(pageable)).thenReturn(produtosPage);
+        when(produtoRepository.listarProdutosByIdUsuario(pageable, 1L)).thenReturn(produtosPage);
 
         // Act
-        Page<Produto> resultado = listarProdutos.executar(pageable);
+        Page<Produto> resultado = listarProdutos.executar(pageable, 1L);
 
         // Assert
         assertThat(resultado).isNotNull();
         assertThat(resultado.getContent()).hasSize(1);
         assertThat(resultado.getContent().get(0).getNome()).isEqualTo("Produto Teste");
-        verify(produtoRepository).listarProdutos(pageable);
+        verify(produtoRepository).listarProdutosByIdUsuario(pageable, 1L);
     }
 
     @Test

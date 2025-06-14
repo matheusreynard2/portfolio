@@ -16,7 +16,7 @@ public interface ProdutoRepository {
 
     Optional<Produto> buscarProdutoPorId(Long id);
 
-    Page<Produto> listarProdutos(Pageable pageable);
+    Page<Produto> listarProdutosByIdUsuario(Pageable pageable, Long idUsuario);
 
     void deletarProdutoPorId(Long id);
 

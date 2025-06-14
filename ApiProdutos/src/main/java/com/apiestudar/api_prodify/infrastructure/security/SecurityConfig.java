@@ -80,6 +80,7 @@ public class SecurityConfig {
             	.antMatchers(HttpMethod.POST, "/api/usuarios/adicionarUsuario").permitAll()
             	.antMatchers(HttpMethod.DELETE, "/api/usuarios/deletarUsuario/{id}").permitAll()
             	.antMatchers(HttpMethod.GET, "/api/usuarios/listarUsuarios").permitAll()
+            	.antMatchers(HttpMethod.GET, "/api/fornecedores/testeJson").permitAll()
 
             	
             	// Protege endpoints específicosvz 

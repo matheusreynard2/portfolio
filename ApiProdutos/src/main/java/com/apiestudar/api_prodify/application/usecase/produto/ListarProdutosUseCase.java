@@ -1,7 +1,5 @@
-
 package com.apiestudar.api_prodify.application.usecase.produto;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -15,13 +13,12 @@ public class ListarProdutosUseCase {
 
 	private final ProdutoRepository produtoRepository;
 
-	@Autowired
 	public ListarProdutosUseCase(ProdutoRepository produtoRepository) {
 		this.produtoRepository = produtoRepository;
 	}
 
 	@Transactional(rollbackFor = Exception.class)
-	public Page<Produto> executar(Pageable pageable) {
-		return produtoRepository.listarProdutos(pageable);
+	public Page<Produto> executar(Pageable pageable, Long idUsuario) {
+		return produtoRepository.listarProdutosByIdUsuario(pageable, idUsuario);
 	}
 }

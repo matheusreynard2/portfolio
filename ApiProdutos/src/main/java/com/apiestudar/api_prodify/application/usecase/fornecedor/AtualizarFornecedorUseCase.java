@@ -1,10 +1,10 @@
 package com.apiestudar.api_prodify.application.usecase.fornecedor;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.apiestudar.api_prodify.application.mapper.FornecedorMapper;
 import com.apiestudar.api_prodify.domain.model.Fornecedor;
 import com.apiestudar.api_prodify.domain.repository.FornecedorRepository;
 import com.apiestudar.api_prodify.interfaces.dto.FornecedorDTO;
@@ -22,11 +22,11 @@ public class AtualizarFornecedorUseCase {
     }
 
     @Autowired
-    private FornecedorMapper fornecedorMapper;
+    private ModelMapper modelMapper;
 
     @Transactional(rollbackFor = Exception.class)
     public Fornecedor executar(long id, FornecedorDTO fornecedorDTO, Long idUsuario) throws Exception {
-        Fornecedor fornecedorAtualizado = fornecedorMapper.toEntity(fornecedorDTO);
+        Fornecedor fornecedorAtualizado = modelMapper.map(fornecedorDTO, Fornecedor.class);
         
         // Busca o fornecedor pelo id e idUsuario e lança exceção se não encontrar
         return fornecedorRepository.buscarFornecedorPorIdEUsuario(id, idUsuario)

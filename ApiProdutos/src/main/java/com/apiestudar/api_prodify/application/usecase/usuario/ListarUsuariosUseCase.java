@@ -14,7 +14,6 @@ public class ListarUsuariosUseCase {
 
     private final UsuarioRepository usuarioRepository;
 
-    @Autowired
     public ListarUsuariosUseCase(UsuarioRepository usuarioRepository) {
         this.usuarioRepository = usuarioRepository;
     }

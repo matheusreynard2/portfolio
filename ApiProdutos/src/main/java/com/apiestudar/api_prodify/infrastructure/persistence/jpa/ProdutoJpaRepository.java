@@ -29,7 +29,10 @@ public interface ProdutoJpaRepository extends JpaRepository<Produto, Long> {
 			@Param("idUsuario") Long idUsuario);
     
 	@Override
+	@EntityGraph(attributePaths = {"fornecedor"})
+	Page<Produto> findAll(Pageable pageable);
+		
     @EntityGraph(attributePaths = {"fornecedor"})
-    Page<Produto> findAll(Pageable pageable);
+    Page<Produto> findByIdUsuario(Long idUsuario, Pageable pageable);
 
 }
