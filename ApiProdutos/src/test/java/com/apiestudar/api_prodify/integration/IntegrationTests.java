@@ -180,7 +180,7 @@ public class IntegrationTests {
         
         // Criar MultiValueMap para enviar o produto e a imagem
         MultiValueMap<String, Object> map = new LinkedMultiValueMap<>();
-        map.add("produtoJSON", produtoJSON);
+        map.add("produtoJson", produtoJSON);
         map.add("imagemFile", new ByteArrayResource(imagemBytes) {
             @Override
             public String getFilename() {

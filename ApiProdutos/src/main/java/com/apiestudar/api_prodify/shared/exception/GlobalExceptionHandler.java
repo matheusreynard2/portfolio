@@ -1,5 +1,8 @@
 package com.apiestudar.api_prodify.shared.exception;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -61,5 +64,21 @@ public class GlobalExceptionHandler {
     public ResponseEntity<Object> handleObterCoordenadasViaCEPException(ObterCoordenadasViaCEPException ex) {
     	log.error("Erro ao processar JSON: {}", ex);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
+    }
+
+    @ExceptionHandler(LoginJaExisteException.class)
+    public ResponseEntity<Map<String, String>> handleLoginJaExisteException(LoginJaExisteException ex) {
+        Map<String, String> errorResponse = new HashMap<>();
+        errorResponse.put("erro", "LOGIN_JA_EXISTE");
+        errorResponse.put("mensagem", ex.getMessage());
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(errorResponse);
+    }
+    
+    @ExceptionHandler(CredenciaisInvalidasException.class)
+    public ResponseEntity<Map<String, String>> handleCredenciaisInvalidasException(CredenciaisInvalidasException ex) {
+        Map<String, String> errorResponse = new HashMap<>();
+        errorResponse.put("erro", "CREDENCIAIS_INVALIDAS");
+        errorResponse.put("mensagem", ex.getMessage());
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorResponse);
     }
 }

@@ -2,8 +2,6 @@ package com.apiestudar.api_prodify.interfaces.controller;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -20,7 +18,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -31,6 +28,7 @@ import com.apiestudar.api_prodify.application.usecase.usuario.RealizarLoginUseCa
 import com.apiestudar.api_prodify.application.usecase.usuario.UsuarioHelper;
 import com.apiestudar.api_prodify.domain.model.Usuario;
 import com.apiestudar.api_prodify.interfaces.dto.UsuarioDTO;
+import com.apiestudar.api_prodify.interfaces.dto.UsuarioFormDTO;
 
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -72,45 +70,27 @@ public class UsuarioController {
 	@ApiResponse(code = 200, message = "Usuários encontrados.")
 	@GetMapping("/listarUsuarios")
 	public List<UsuarioDTO> listarUsuarios() {
-		List<Usuario> usuarios = listarUsuarios.executar();
-		return usuarios.stream()
-			.map(usuario -> modelMapper.map(usuario, UsuarioDTO.class))
-			.collect(Collectors.toList());
+		return listarUsuarios.executar();
 	}
 
 	@ApiOperation(value = "Adiciona/cadastra um novo usuário.", notes = "Cria um novo registro de usuário no banco de dados.")
 	@ApiResponse(code = 200, message = "Usuário cadastrado.")
 	@PostMapping("/adicionarUsuario")
-	public ResponseEntity<Object> adicionarUsuario(@ModelAttribute UsuarioDTO usuarioDTO,
-			@RequestParam(required = false) MultipartFile imagemFile) throws IOException {
-		Object response = adicionarUsuario.executar(usuarioDTO, imagemFile);
-		if (response instanceof Usuario) {
-			usuarioDTO = modelMapper.map((Usuario) response, UsuarioDTO.class);
-			return ResponseEntity.status(HttpStatus.CREATED).body(usuarioDTO);
-		}
-		return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
+	public ResponseEntity<UsuarioDTO> adicionarUsuario(@ModelAttribute UsuarioFormDTO usuarioFormDTO) throws IOException {
+		return ResponseEntity.status(HttpStatus.CREATED).body(adicionarUsuario.executar(usuarioFormDTO, usuarioFormDTO.getImagemFile()));
 	}
 
 	@ApiOperation(value = "Deleta/exclui um usuário.", notes = "Faz a exclusão de um usuário do banco de dados de acordo com o número de id passado como parâmetro.")
 	@ApiResponse(code = 200, message = "Usuário excluído.")
 	@DeleteMapping("/deletarUsuario/{id}")
-	public ResponseEntity<Object> deletarUsuario(@PathVariable int id) {
-		deletarUsuario.executar(id);
-		return ResponseEntity.status(HttpStatus.OK).body("Deletou com sucesso");
+	public ResponseEntity<Boolean> deletarUsuario(@PathVariable int id) {
+		return ResponseEntity.status(HttpStatus.OK).body(deletarUsuario.executar(id));
 	}
 
 	@ApiOperation(value = "Realiza um login com auntenticação JWT.", notes = "Realiza uma operação de login com autenticação de token via Spring Security - JWT e com senha criptografada.")
 	@ApiResponse(code = 200, message = "Login realizado.")
 	@PostMapping("/realizarLogin")
-	public ResponseEntity<Map<String, Object>> realizarLogin(@RequestBody UsuarioDTO usuarioDTO) {
-		Usuario usuario = modelMapper.map(usuarioDTO, Usuario.class);
-		Map<String, Object> response = realizarLogin.executar(usuario);
-		if (response.containsKey("usuario")) {
-			Usuario usuarioLogado = (Usuario) response.get("usuario");
-			response.put("usuario", modelMapper.map(usuarioLogado, UsuarioDTO.class));
-		}
-		return response.containsKey("msgCredenciaisInvalidas")
-				? ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response)
-				: ResponseEntity.status(HttpStatus.OK).body(response);
+	public ResponseEntity<UsuarioDTO> realizarLogin(@RequestBody UsuarioDTO usuarioDTO) {
+		return ResponseEntity.status(HttpStatus.OK).body(realizarLogin.executar(usuarioDTO));
 	}
 }
