@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -23,10 +24,12 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.apiestudar.api_prodify.application.usecase.produto.AdicionarProdutoUseCase;
@@ -39,8 +42,11 @@ import com.apiestudar.api_prodify.domain.model.Produto;
 import com.apiestudar.api_prodify.domain.model.Usuario;
 import com.apiestudar.api_prodify.domain.repository.ProdutoRepository;
 import com.apiestudar.api_prodify.domain.repository.UsuarioRepository;
+import com.apiestudar.api_prodify.interfaces.dto.ProdutoDTO;
+import com.apiestudar.api_prodify.interfaces.dto.ProdutoFormDTO;
 import com.apiestudar.api_prodify.shared.exception.ParametroInformadoNullException;
 import com.apiestudar.api_prodify.shared.exception.RegistroNaoEncontradoException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 @ExtendWith(MockitoExtension.class)
 class ProdutoUnitaryUseCaseTests {
@@ -53,6 +59,12 @@ class ProdutoUnitaryUseCaseTests {
 
     @Mock
     private MultipartFile mockImagemFile;
+
+    @Mock
+    private ModelMapper modelMapper;
+
+    @Mock
+    private ObjectMapper objectMapper;
 
     @InjectMocks
     private AdicionarProdutoUseCase adicionarProduto;
@@ -73,6 +85,8 @@ class ProdutoUnitaryUseCaseTests {
     private PesquisasSearchBarUseCase pesquisasProduto;
 
     private Produto produto;
+    private ProdutoDTO produtoDTO;
+    private ProdutoFormDTO produtoFormDTO;
     private byte[] imagemBytes;
 
     @BeforeEach
@@ -85,7 +99,24 @@ class ProdutoUnitaryUseCaseTests {
         produto.setValor(100.0);
         produto.setQuantia(10);
         
+        produtoDTO = new ProdutoDTO();
+        produtoDTO.setId(1L);
+        produtoDTO.setNome("Produto Teste");
+        produtoDTO.setDescricao("Descrição do produto teste");
+        produtoDTO.setValor(100.0);
+        produtoDTO.setQuantia(10);
+        
+        produtoFormDTO = new ProdutoFormDTO();
+        produtoFormDTO.setProdutoJson("{\"id\":1,\"nome\":\"Produto Teste\",\"descricao\":\"Descrição do produto teste\",\"valor\":100.0,\"quantia\":10}");
+        produtoFormDTO.setImagemFile(mockImagemFile);
+        
         imagemBytes = "imagem-teste".getBytes();
+        
+        // Injetar mocks manualmente nos use cases
+        ReflectionTestUtils.setField(adicionarProduto, "modelMapper", modelMapper);
+        ReflectionTestUtils.setField(adicionarProduto, "objectMapper", objectMapper);
+        ReflectionTestUtils.setField(atualizarProduto, "modelMapper", modelMapper);
+        ReflectionTestUtils.setField(atualizarProduto, "objectMapper", objectMapper);
     }
 
     @Test
@@ -93,10 +124,13 @@ class ProdutoUnitaryUseCaseTests {
     void deveAdicionarProdutoComSucesso() throws SQLException, IOException {
         // Arrange
         when(mockImagemFile.getBytes()).thenReturn(imagemBytes);
+        when(objectMapper.readValue(produtoFormDTO.getProdutoJson(), ProdutoDTO.class)).thenReturn(produtoDTO);
+        when(modelMapper.map(produtoDTO, Produto.class)).thenReturn(produto);
         when(produtoRepository.adicionarProduto(any(Produto.class))).thenReturn(produto);
+        when(modelMapper.map(produto, ProdutoDTO.class)).thenReturn(produtoDTO);
 
         // Act
-        Produto resultado = adicionarProduto.executar(produto, mockImagemFile);
+        ProdutoDTO resultado = adicionarProduto.executar(produtoFormDTO, mockImagemFile);
 
         // Assert
         assertThat(resultado).isNotNull();
@@ -121,12 +155,14 @@ class ProdutoUnitaryUseCaseTests {
         // Arrange
         List<Produto> produtos = Arrays.asList(produto);
         Page<Produto> produtosPage = new PageImpl<>(produtos);
+        List<ProdutoDTO> produtosDTO = Arrays.asList(produtoDTO);
+        Page<ProdutoDTO> produtosDTOPage = new PageImpl<>(produtosDTO);
         Pageable pageable = PageRequest.of(0, 10);
         
         when(produtoRepository.listarProdutosByIdUsuario(pageable, 1L)).thenReturn(produtosPage);
 
         // Act
-        Page<Produto> resultado = listarProdutos.executar(pageable, 1L);
+        Page<ProdutoDTO> resultado = listarProdutos.executar(pageable, 1L);
 
         // Assert
         assertThat(resultado).isNotNull();
@@ -140,20 +176,23 @@ class ProdutoUnitaryUseCaseTests {
     void deveAtualizarProdutoComSucesso() throws IOException {
         // Arrange
         when(mockImagemFile.getBytes()).thenReturn(imagemBytes);
+        when(objectMapper.readValue(produtoFormDTO.getProdutoJson(), ProdutoDTO.class)).thenReturn(produtoDTO);
+        when(modelMapper.map(produtoDTO, Produto.class)).thenReturn(produto);
+        
         Produto produtoExistente = new Produto();
         produtoExistente.setId(1L);
         produtoExistente.setNome("Produto Antigo");
 
         // Configurar o mock para retornar o mesmo objeto que é passado para salvar
-        // Isso simula melhor o comportamento real do repositório
         when(produtoRepository.buscarProdutoPorId(1L)).thenReturn(Optional.of(produtoExistente));
         when(produtoRepository.salvarProduto(any(Produto.class))).thenAnswer(invocation -> {
             // Retorna o mesmo objeto que foi passado ao método salvarProduto
             return invocation.getArgument(0);
         });
+        when(modelMapper.map(any(Produto.class), any(Class.class))).thenReturn(produtoDTO);
 
         // Act
-        Produto resultado = atualizarProduto.executar(1L, produto, mockImagemFile);
+        ProdutoDTO resultado = atualizarProduto.executar(1L, produtoFormDTO, mockImagemFile);
 
         // Assert
         assertThat(resultado).isNotNull();
@@ -167,11 +206,13 @@ class ProdutoUnitaryUseCaseTests {
     void deveLancarExcecaoAoAtualizarProdutoNaoEncontrado() throws IOException {
         // Arrange
         when(mockImagemFile.getBytes()).thenReturn(imagemBytes);
+        when(objectMapper.readValue(produtoFormDTO.getProdutoJson(), ProdutoDTO.class)).thenReturn(produtoDTO);
+        when(modelMapper.map(produtoDTO, Produto.class)).thenReturn(produto);
         when(produtoRepository.buscarProdutoPorId(999L)).thenReturn(Optional.empty());
 
         // Act & Assert
         assertThatThrownBy(
-                () -> atualizarProduto.executar(999L, produto, mockImagemFile))
+                () -> atualizarProduto.executar(999L, produtoFormDTO, mockImagemFile))
             .isInstanceOf(RegistroNaoEncontradoException.class);
         
         verify(produtoRepository).buscarProdutoPorId(999L);

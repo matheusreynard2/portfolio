@@ -7,6 +7,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.apiestudar.api_prodify.domain.model.Produto;
 import com.apiestudar.api_prodify.domain.repository.ProdutoRepository;
+import com.apiestudar.api_prodify.interfaces.dto.ProdutoDTO;
+import com.apiestudar.api_prodify.shared.utils.Helper;
 
 @Service
 public class ListarProdutosUseCase {
@@ -18,7 +20,8 @@ public class ListarProdutosUseCase {
 	}
 
 	@Transactional(rollbackFor = Exception.class)
-	public Page<Produto> executar(Pageable pageable, Long idUsuario) {
-		return produtoRepository.listarProdutosByIdUsuario(pageable, idUsuario);
+	public Page<ProdutoDTO> executar(Pageable pageable, Long idUsuario) {
+		Page<Produto> produtosPage = produtoRepository.listarProdutosByIdUsuario(pageable, idUsuario);
+		return Helper.mapClassToDTOPage(produtosPage, ProdutoDTO.class);
 	}
 }

@@ -11,6 +11,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.apiestudar.api_prodify.domain.model.Fornecedor;
 import com.apiestudar.api_prodify.domain.repository.FornecedorRepository;
+import com.apiestudar.api_prodify.interfaces.dto.FornecedorDTO;
+import com.apiestudar.api_prodify.shared.utils.Helper;
 
 @Service
 public class ListarFornecedoresUseCase {
@@ -23,13 +25,15 @@ public class ListarFornecedoresUseCase {
     }
 
     @Transactional
-	public Page<Fornecedor> executar(Long idUsuario, Pageable pageable) {
-		return fornecedorRepository.listarFornecedoresPorUsuario(idUsuario, pageable);
+	public Page<FornecedorDTO> executar(Long idUsuario, Pageable pageable) {
+		Page<Fornecedor> fornecedoresPage = fornecedorRepository.listarFornecedoresPorUsuario(idUsuario, pageable);
+		return Helper.mapClassToDTOPage(fornecedoresPage, FornecedorDTO.class);
 	}
 
 	@Transactional
-	public List<Fornecedor> executar(Long idUsuario) {
-		return fornecedorRepository.listarFornecedoresPorUsuario(idUsuario);
+	public List<FornecedorDTO> executar(Long idUsuario) {
+		List<Fornecedor> fornecedores = fornecedorRepository.listarFornecedoresPorUsuario(idUsuario);
+		return Helper.mapClassToDTOList(fornecedores, FornecedorDTO.class);
 	}
 
 	@Transactional

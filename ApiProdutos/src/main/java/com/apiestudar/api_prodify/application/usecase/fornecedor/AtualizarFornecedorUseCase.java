@@ -25,11 +25,11 @@ public class AtualizarFornecedorUseCase {
     private ModelMapper modelMapper;
 
     @Transactional(rollbackFor = Exception.class)
-    public Fornecedor executar(long id, FornecedorDTO fornecedorDTO, Long idUsuario) throws Exception {
+    public FornecedorDTO executar(long id, FornecedorDTO fornecedorDTO, Long idUsuario) throws Exception {
         Fornecedor fornecedorAtualizado = modelMapper.map(fornecedorDTO, Fornecedor.class);
         
         // Busca o fornecedor pelo id e idUsuario e lança exceção se não encontrar
-        return fornecedorRepository.buscarFornecedorPorIdEUsuario(id, idUsuario)
+        Fornecedor fornecedorSalvo = fornecedorRepository.buscarFornecedorPorIdEUsuario(id, idUsuario)
             .map(fornecedorExistente -> {
                 // Atualiza todos os atributos do fornecedor existente
                 atualizarDadosFornecedor(fornecedorExistente, fornecedorAtualizado);
@@ -39,6 +39,8 @@ public class AtualizarFornecedorUseCase {
                 return fornecedorRepository.adicionarFornecedor(fornecedorExistente, idUsuario);
             })
             .orElseThrow(RegistroNaoEncontradoException::new);
+        
+        return modelMapper.map(fornecedorSalvo, FornecedorDTO.class);
     }
 
     // Método auxiliar para atualizar todos os campos do fornecedor

@@ -12,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -35,7 +34,7 @@ import com.apiestudar.api_prodify.application.usecase.produto.BuscarProdutoUseCa
 import com.apiestudar.api_prodify.domain.model.Produto;
 import com.apiestudar.api_prodify.interfaces.dto.ProdutoDTO;
 import com.apiestudar.api_prodify.interfaces.dto.ProdutoFormDTO;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.apiestudar.api_prodify.shared.utils.Helper;
 
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -58,10 +57,6 @@ public class ProdutoController {
 	private CalculosSobreProdutosUseCase consultasProduto;
 	@Autowired
 	private BuscarProdutoUseCase buscarProduto;
-	@Autowired
-	private ModelMapper modelMapper;
-	
-	private ObjectMapper objectMapper = new ObjectMapper();
 
 	private static final Logger log = LoggerFactory.getLogger(ProdutoController.class);
 
@@ -70,9 +65,7 @@ public class ProdutoController {
 	@GetMapping("/listarProdutos")
 	public Page<ProdutoDTO> listarProdutos(@RequestParam(defaultValue = "0") int page,
 			@RequestParam(defaultValue = "10") int size, @RequestParam Long idUsuario) {
-		Pageable pageable = PageRequest.of(page, size);
-		Page<Produto> produtosPage = listarProdutosPorUsuario.executar(pageable, idUsuario);
-		return produtosPage.map(produto -> modelMapper.map(produto, ProdutoDTO.class));
+		return listarProdutosPorUsuario.executar(PageRequest.of(page, size), idUsuario);
 	}
 
 	@ApiOperation(value = "Adiciona/cadastra um novo produto.", notes = "Cria um novo registro de produto no banco de dados.")
@@ -92,25 +85,22 @@ public class ProdutoController {
 	@ApiOperation(value = "Deleta/exclui um produto.", notes = "Faz a exclusão de um produto do banco de dados de acordo com o número de id passado como parâmetro.")
 	@ApiResponse(code = 200, message = "Produto excluído.")
 	@DeleteMapping("/deletarProduto/{id}")
-	public ResponseEntity<Object> deletarProduto(@PathVariable int id) {
-		deletarProduto.executar(id);
-		return ResponseEntity.status(HttpStatus.OK).body("Deletou com sucesso");
+	public ResponseEntity<Boolean> deletarProduto(@PathVariable int id) {
+		return ResponseEntity.status(HttpStatus.OK).body(deletarProduto.executar(id));
 	}
 
 	@ApiOperation(value = "Exibe o produto mais caro.", notes = "Exibe o valor unitário do produto mais caro entre todos os produtos registrados no banco de dados.")
 	@ApiResponse(code = 200, message = "Cálculo de preço mais caro efetuado.")
 	@GetMapping("/produtoMaisCaro/{idUsuario}")
 	public ResponseEntity<Object> listarProdutoMaisCaro(@PathVariable long idUsuario) {
-		List<Produto> produtoMaisCaro = consultasProduto.listarProdutoMaisCaro(idUsuario);
-		return ResponseEntity.status(HttpStatus.OK).body(produtoMaisCaro);
+		return ResponseEntity.status(HttpStatus.OK).body(consultasProduto.listarProdutoMaisCaro(idUsuario));
 	}
 
 	@ApiOperation(value = "Exibe a média de preço dos produtos.", notes = "Exibe a média de preço entre os valores unitários dos produtos registrados no banco de dados.")
 	@ApiResponse(code = 200, message = "Cálculo de média de preços efetuado.")
 	@GetMapping("/mediaPreco/{idUsuario}")
 	public ResponseEntity<Object> obterMediaPreco(@PathVariable long idUsuario) {
-		Double media = consultasProduto.obterMediaPreco(idUsuario);
-		return ResponseEntity.status(HttpStatus.OK).body(media);
+		return ResponseEntity.status(HttpStatus.OK).body(consultasProduto.obterMediaPreco(idUsuario));
 	}
 
 	@ApiOperation(value = "Cálculo de valor de desconto.", notes = "Calcula o valor que será reduzido do preço do produto de acordo com a porcentagem de desconto passada pelo usuário.")
@@ -118,8 +108,7 @@ public class ProdutoController {
 	@GetMapping("/calcularDesconto/{valorProduto}/{valorDesconto}")
 	public ResponseEntity<Object> calcularValorDesconto(@PathVariable double valorProduto,
 			@PathVariable double valorDesconto) {
-		Double valorComDesconto = consultasProduto.calcularValorComDesconto(valorProduto, valorDesconto);
-		return ResponseEntity.status(HttpStatus.OK).body(valorComDesconto);
+		return ResponseEntity.status(HttpStatus.OK).body(consultasProduto.calcularValorComDesconto(valorProduto, valorDesconto));
 	}
 
 	// Método responsável por retornar o resultado da barra de pesquisa do
@@ -130,10 +119,7 @@ public class ProdutoController {
 	public ResponseEntity<List<ProdutoDTO>> efetuarPesquisa(@PathVariable String tipoPesquisa,
 			@PathVariable String valorPesquisa, @PathVariable long idUsuario) {
 		List<Produto> produtos = pesquisasUseCase.efetuarPesquisa(tipoPesquisa, valorPesquisa, idUsuario);
-		// Converter lista de entidades para lista de DTOs usando o ModelMapper
-		List<ProdutoDTO> produtoDTOs = produtos.stream()
-			.map(produto -> modelMapper.map(produto, ProdutoDTO.class))
-			.collect(Collectors.toList());
+		List<ProdutoDTO> produtoDTOs = Helper.mapClassToDTOList(produtos, ProdutoDTO.class);
 		return ResponseEntity.status(HttpStatus.OK).body(produtoDTOs);
 	}
 
@@ -142,16 +128,13 @@ public class ProdutoController {
 	@ApiResponse(code = 200, message = "Página retornada.")
 	@GetMapping("/acessarPaginaCadastro")
 	public ResponseEntity acessarPaginaCadastro() {
-		ResponseEntity response = new ResponseEntity(HttpStatus.OK);
-		return response;
+		return new ResponseEntity(HttpStatus.OK);
 	}
 
 	@ApiOperation(value = "Busca um produto pelo ID.", notes = "Retorna os dados de um produto específico de acordo com o ID fornecido.")
 	@ApiResponse(code = 200, message = "Produto encontrado.")
 	@GetMapping("/buscarProduto/{id}/{idUsuario}")
 	public ResponseEntity<ProdutoDTO> buscarProduto(@PathVariable Long id, @PathVariable Long idUsuario) {
-		Produto produto = buscarProduto.executar(id, idUsuario);
-		ProdutoDTO produtoDTO = modelMapper.map(produto, ProdutoDTO.class);
-		return ResponseEntity.status(HttpStatus.OK).body(produtoDTO);
+		return ResponseEntity.status(HttpStatus.OK).body(buscarProduto.executar(id, idUsuario));
 	}
 }
