@@ -7,6 +7,7 @@ import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {DeviceService} from '../../service/device/device.service';
 import {MatCard, MatCardContent} from '@angular/material/card';
 import { Usuario } from '../../model/usuario';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-add-usuario',
@@ -57,12 +58,15 @@ export class AddUsuarioComponent implements OnInit {
         this.adicionouUsuario = true
         this.msgAddUsuario(this.modalMsgAddUser)
       },
-      error: (error) => {
+      error: (error: HttpErrorResponse) => {
         // Se o erro for de login repetido, exibe a mensagem de erro.
-        if (error.status === 409 && error.error === 'Login já cadastrado no banco de dados.') {
-          setTimeout(() => {
-            this.modalService.open(this.modalMsgLoginExistente, {size: 'sm'});
-          }, 100);
+        if (error.status === 409 ) {
+          const errorBody = error.error;
+          if (errorBody.erro === 'LOGIN_JA_EXISTE') {
+            setTimeout(() => {
+              this.modalService.open(this.modalMsgLoginExistente, {size: 'sm'});
+            }, 100);
+          }
         }
       }
     })

@@ -27,7 +27,7 @@ export class UsuarioService extends HttpBaseService {
   }
 
   adicionarUsuario(usuario: UsuarioDTO, imagem: File): Observable<Map<string, any>> {
-    const formData = this.createFormData(usuario, imagem);
+    const formData = this.createUsuarioFormData(usuario, imagem);
     return this.http.post<any>(this.usuariosUrl + "/adicionarUsuario", formData);
   }
 

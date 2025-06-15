@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { environment } from '../../../environments/environment';
 import { Usuario } from '../../model/usuario';
 import { StorageService } from '../storage/storage.service';
+import { UsuarioDTO } from '../../model/dto/UsuarioDTO';
 
 @Injectable({
   providedIn: 'root'
@@ -59,10 +60,8 @@ export class AuthService {
     return this.storage.getItem<string>(this.TOKEN_KEY, '');
   }
 
-  realizarLogin(usuario: Usuario): Observable<Map<string, any>> {
-    return this.http.post<Map<string, any>>(this.usuariosUrl + "/realizarLogin", usuario).pipe(
-      map(response => new Map<string, any>(Object.entries(response)))
-    );
+  realizarLogin(usuario: UsuarioDTO): Observable<UsuarioDTO> {
+    return this.http.post<UsuarioDTO>(this.usuariosUrl + "/realizarLogin", usuario);
   }
 
   logout(): void {

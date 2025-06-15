@@ -66,4 +66,17 @@ export class HttpBaseService {
     
     return formData;
   }
+
+  protected createUsuarioFormData(usuario: any, file?: File): FormData {
+    const formData = new FormData();
+
+    formData.append('usuarioJson', JSON.stringify(usuario));
+    
+    // Enviar o arquivo de imagem se existir
+    if (file) {
+      formData.append('imagemFile', file);
+    }
+    
+    return formData;
+  }
 } 
