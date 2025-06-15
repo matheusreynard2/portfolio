@@ -110,7 +110,7 @@ export class ProdutoListComponent implements OnInit {
   // Função para deletar um produto através do id. Chama o endpoint, e a msg de sucesso
   deletarProduto(modalDeletar: any, id: number, produto: ProdutoDTO) {
     this.produtoService.deletarProduto(id).subscribe({
-      next: (response) => {
+      next: (response: HttpResponse<boolean>) => {
         if (response.status === 200) {
           this.produtoExcluido = produto;
           this.abrirTelaExclusao(modalDeletar);

@@ -49,6 +49,9 @@ p {
   display: flex;
   flex-direction: column;
   font-size: 16px;
+  align-items: center;  /* Centraliza horizontalmente */
+  justify-content: center;  /* Centraliza verticalmente */
+  overflow-y: auto;
 }
 
 .maps-info-header {
@@ -80,3 +83,254 @@ p {
 p {
   color: black;
 }
+
+/* ///////////////////////////////////// PARTE DE CSS DO CARD ANIMADO DA TELA DE LOGIN /////////////////////////////////////////// */
+
+body {
+  margin: 0;
+  padding: 20px;
+  background-color: #f0f0f0;
+  font-family: 'Courier New', monospace;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+/* IMAGEM DE FUNDO COM OPACITY */
+.card-container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url('/foto_website_index.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  opacity: 0.5; /* OPACITY DA IMAGEM - Altere aqui (0.1 = muito transparente, 1.0 = opaco) */
+  z-index: 1;
+}
+
+/* CONTAINER PRINCIPAL */
+.card-container {
+  /* TAMANHO RESPONSIVO */
+  width: min(500px, 90vw);  /* Máximo 500px ou 90% da largura da tela */
+  height: min(250px, 45vw); /* Mantém proporção 2:1 */
+  max-width: 500px;
+  max-height: 250px;
+  min-width: 250px;   /* Tamanho mínimo */
+  min-height: 125px;  /* Mantém proporção */
+  
+  /* CENTRALIZAÇÃO */
+  margin: 0 auto;
+  
+  /* Resto das propriedades existentes */
+  position: relative;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  animation: restart 15s infinite;
+}
+
+
+/* BARRA PRETA INFERIOR */
+.text-bar {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  /* ALTURA DA BARRA PRETA - Altere aqui para mudar altura da barra */
+  height: 40px;   /* Era 20px - aumentado 4x */
+  background-color: rgba(0, 0, 0, 0.9);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 16px;  /* Era 4px - aumentado 4x */
+  box-sizing: border-box;
+  z-index: 10;  /* Garantir que fique acima da imagem */
+}
+
+/* CONFIGURAÇÃO GERAL DOS TEXTOS */
+.typing-text {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  opacity: 0;
+  visibility: hidden;
+  z-index: 15;
+  color: white;
+  /* TAMANHO DA FONTE - Altere aqui para mudar tamanho do texto */
+  font-size: 24px;  /* Reduzido de 32px para 24px */
+  font-weight: bold;
+  text-align: center;
+  min-height: 30px;
+}
+
+/* CURSOR PISCANDO */
+.typing-text::after {
+  content: '|';
+  color: white;
+  animation: blink 1s infinite;
+  margin-left: 2px;
+}
+
+@keyframes blink {
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0; }
+}
+
+/* ANIMAÇÕES INDIVIDUAIS PARA CADA TEXTO */
+.text-1 {
+  animation: text1-complete 15s infinite;
+  animation-fill-mode: both;
+}
+
+.text-2 {
+  animation: text2-complete 15s infinite;
+  animation-fill-mode: both;
+}
+
+.text-3 {
+  animation: text3-complete 15s infinite;
+  animation-fill-mode: both;
+}
+
+/* TEXTO 1: "Matheus Reynard" - 0-30% do ciclo */
+@keyframes text1-complete {
+  0% { 
+      opacity: 1; 
+      visibility: visible; 
+      width: 0; 
+  }
+  15% { 
+      opacity: 1; 
+      visibility: visible; 
+      width: 480px; 
+  }
+  25% { 
+      opacity: 1; 
+      visibility: visible; 
+      width: 480px; 
+  }
+  30% { 
+      opacity: 0; 
+      visibility: hidden; 
+      width: 0; 
+  }
+  30.1%, 100% { 
+      opacity: 0; 
+      visibility: hidden; 
+      width: 0; 
+  }
+}
+
+/* TEXTO 2: "Dev Full-Stack Java" - 35-65% do ciclo */
+@keyframes text2-complete {
+  0%, 34% { 
+      opacity: 0; 
+      visibility: hidden; 
+      width: 0; 
+  }
+  35% { 
+      opacity: 1; 
+      visibility: visible; 
+      width: 0; 
+  }
+  50% { 
+      opacity: 1; 
+      visibility: visible; 
+      width: 480px; 
+  }
+  60% { 
+      opacity: 1; 
+      visibility: visible; 
+      width: 480px; 
+  }
+  65% { 
+      opacity: 0; 
+      visibility: hidden; 
+      width: 0; 
+  }
+  65.1%, 100% { 
+      opacity: 0; 
+      visibility: hidden; 
+      width: 0; 
+  }
+}
+
+/* TEXTO 3: "(41)-99539-7044" - 70-95% do ciclo */
+@keyframes text3-complete {
+  0%, 69% { 
+      opacity: 0; 
+      visibility: hidden; 
+      width: 0; 
+  }
+  70% { 
+      opacity: 1; 
+      visibility: visible; 
+      width: 0; 
+  }
+  85% { 
+      opacity: 1; 
+      visibility: visible; 
+      width: 480px; 
+  }
+  90% { 
+      opacity: 1; 
+      visibility: visible; 
+      width: 480px; 
+  }
+  95% { 
+      opacity: 0; 
+      visibility: hidden; 
+      width: 0; 
+  }
+  95.1%, 100% { 
+      opacity: 0; 
+      visibility: hidden; 
+      width: 0; 
+  }
+}
+
+/* DURAÇÃO TOTAL DO CICLO */
+@keyframes restart {
+  0% { opacity: 1; }
+  100% { opacity: 1; }
+}
+
+/* 
+GUIA DE ALTERAÇÕES RÁPIDAS:
+
+1. TAMANHO DA IMAGEM:
+   - .card-container: width e height
+
+2. ALTURA DA BARRA PRETA:
+   - .text-bar: height
+
+3. TAMANHO DO TEXTO:
+   - .typing-text: font-size
+
+4. VELOCIDADE DA ANIMAÇÃO:
+   - .card-container animation: restart XXs (tempo total do ciclo)
+   - Para cada texto individual, altere os tempos nos @keyframes
+
+5. OPACITY DA IMAGEM:
+   - .card-container::before: opacity
+
+6. CURSOR PISCANDO:
+   - @keyframes blink: altere o tempo "1s" para mais rápido/lento
+
+TIMING ATUAL:
+- Texto 1: 0-30% (4.5s)
+- Pausa: 30-35% (0.75s)
+- Texto 2: 35-65% (4.5s)  
+- Pausa: 65-70% (0.75s)
+- Texto 3: 70-95% (3.75s)
+- Pausa: 95-100% (0.75s)
+- TOTAL: 15s por ciclo
+*/

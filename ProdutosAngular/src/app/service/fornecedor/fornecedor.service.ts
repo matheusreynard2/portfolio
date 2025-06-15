@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { environment } from '../../../environments/environment';
@@ -28,7 +28,7 @@ export class FornecedorService extends HttpBaseService {
 
   acessarPaginaFornecedor(): Observable<any> {
     return this.http.get<any>(this.fornecedorUrl + "/acessarPaginaFornecedor")
-      .pipe(catchError(error => this.handleError(error)));
+      .pipe(catchError(error => this.catchErrorTokenExpirado(error)));
   }
 
   listarFornecedores(page: number, size: number, idUsuario: number): Observable<PaginatedResponse<FornecedorDTO>> {
@@ -37,33 +37,32 @@ export class FornecedorService extends HttpBaseService {
       .set('size', size.toString());
 
     return this.http.get<PaginatedResponse<FornecedorDTO>>(`${this.fornecedorUrl}/listarFornecedores/${idUsuario}`, { params })
-      .pipe(catchError(error => this.handleError(error)));
+      .pipe(catchError(error => this.catchErrorTokenExpirado(error)));
   }
 
   adicionarFornecedor(fornecedor: FornecedorDTO): Observable<FornecedorDTO> {
     return this.http.post<FornecedorDTO>(`${this.fornecedorUrl}/adicionarFornecedor/${fornecedor.idUsuario}`, fornecedor)
-      .pipe(catchError(error => this.handleError(error)));
+      .pipe(catchError(error => this.catchErrorTokenExpirado(error)));
   }
 
   atualizarFornecedor(id: number, idUsuario: number, fornecedor: FornecedorDTO): Observable<FornecedorDTO> {
     return this.http.put<FornecedorDTO>(`${this.fornecedorUrl}/atualizarFornecedor/${id}/${idUsuario}`, fornecedor)
-      .pipe(catchError(error => this.handleError(error)));
+      .pipe(catchError(error => this.catchErrorTokenExpirado(error)));
   }
 
-  deletarFornecedor(id: number, idUsuario: number): Observable<any> {
-    return this.http.delete(`${this.fornecedorUrl}/deletarFornecedor/${id}/${idUsuario}`, {
-      observe: 'response',
-      responseType: 'text'
-    }).pipe(catchError(error => this.handleError(error)));
+  deletarFornecedor(id: number, idUsuario: number): Observable<HttpResponse<boolean>> {
+    return this.http.delete<boolean>(this.fornecedorUrl + "/deletarFornecedor/" + id + "/" + idUsuario, {
+        observe: 'response'
+    }).pipe(catchError(error => this.catchErrorTokenExpirado(error)));
   }
-
+  
   buscarFornecedorPorId(id: number): Observable<FornecedorDTO> {
     return this.http.get<FornecedorDTO>(`${this.fornecedorUrl}/buscarFornecedorPorId/${id}`)
-      .pipe(catchError(error => this.handleError(error)));
+      .pipe(catchError(error => this.catchErrorTokenExpirado(error)));
   }
 
   listarFornecedoresList(idUsuario: number): Observable<FornecedorDTO[]> {
     return this.http.get<FornecedorDTO[]>(`${this.fornecedorUrl}/listarFornecedoresList/${idUsuario}`)
-      .pipe(catchError(error => this.handleError(error)));
+      .pipe(catchError(error => this.catchErrorTokenExpirado(error)));
   }
 }
