@@ -16,7 +16,10 @@ import com.apiestudar.api_prodify.application.usecase.localizacao.ObterEnderecoB
 import com.apiestudar.api_prodify.application.usecase.localizacao.ObterEnderecoDetalhadoUseCase;
 import com.apiestudar.api_prodify.application.usecase.localizacao.ObterGeolocationByIPUseCase;
 import com.apiestudar.api_prodify.domain.model.EnderecoFornecedor;
-import com.apiestudar.api_prodify.domain.model.Geolocation;
+import com.apiestudar.api_prodify.interfaces.dto.EnderecoFornecedorDTO;
+import com.apiestudar.api_prodify.interfaces.dto.GeolocationDTO;
+import com.apiestudar.api_prodify.interfaces.dto.LatitudeLongitudeDTO;
+import com.apiestudar.api_prodify.interfaces.dto.google_maps_geolocation_api.EnderecoGeolocalizacaoDTO;
 import com.apiestudar.api_prodify.shared.exception.GeoLocationException;
 import com.apiestudar.api_prodify.shared.exception.ObterCoordenadasViaCEPException;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -38,44 +41,33 @@ public class LocalizacaoController {
 	@Autowired
 	private ObterCoordenadasByCEPUseCase coordenadasByCep;
 
-	@ApiOperation(value = "Localiza informações de endereço do usuário.", notes = "Fornece informações de localização do usuário de acordo com seu IP público.")
+	@ApiOperation(value = "Chamda API da ipinfo.io que obtém informações básicas de localização.", notes = "Fornece informações básicas de localização do usuário de acordo com seu IP público através da API da ipinfo.io.")
 	@ApiResponse(code = 200, message = "IP localizado, informações fornecidas.")
 	@GetMapping("/localizarIp/{ipAddress}")
-	public ResponseEntity<Geolocation> obterGeolocalizacaoUsuario(@PathVariable String ipAddress)
+	public ResponseEntity<GeolocationDTO> obterGeolocalizacaoUsuario(@PathVariable String ipAddress)
 			throws GeoLocationException {
-		Geolocation infoLocalizacao = obterGeolocationByIP.executar(ipAddress);
-		return ResponseEntity.ok(infoLocalizacao);
+		return ResponseEntity.ok(obterGeolocationByIP.executar(ipAddress));
 	}
 
-	@ApiOperation(value = "Obtém endereço detalhado a partir de coordenadas.", notes = "Utiliza a API de Geocodificação do Google Maps para obter detalhes de endereço.")
+	@ApiOperation(value = "Chama API do Google Maps que obtém endereço.", notes = "Utiliza a API de Geocodificação do Google Maps para obter detalhes de endereço a partir de coordenadas de localização de longitude e latitude e aponta no Google Maps.")
 	@ApiResponse(code = 200, message = "Endereço detalhado obtido com sucesso.")
 	@GetMapping("/enderecoDetalhado")
-	public ResponseEntity<Map<String, Object>> obterEnderecoDetalhado(@RequestParam double lat,
+	public ResponseEntity<EnderecoGeolocalizacaoDTO> obterEnderecoDetalhado(@RequestParam double lat,
 			@RequestParam double lng) {
-
-		Map<String, Object> endereco = obterEnderecoDetalhado.executar(lat, lng);
-		return ResponseEntity.ok(endereco);
+		return ResponseEntity.ok(obterEnderecoDetalhado.executar(lat, lng));
 	}
 
-	@ApiOperation(value = "Obtém endereço a partir do CEP.", notes = "Utiliza a API ViaCEP para obter informações detalhadas de endereço.")
+	@ApiOperation(value = "Chama API ViaCEP que obtém endereço.", notes = "Utiliza a API ViaCEP para obter informações detalhadas de endereço.")
 	@ApiResponse(code = 200, message = "CEP consultado.")
 	@GetMapping("/consultarCEP/{cep}")
-	public ResponseEntity<EnderecoFornecedor> obterEnderecoViaCEP(@PathVariable String cep)
-			throws JsonMappingException, JsonProcessingException {
-		EnderecoFornecedor endereco = enderecoByCep.executar(cep);
-		return ResponseEntity.ok(endereco);
+	public ResponseEntity<EnderecoFornecedorDTO> obterEnderecoViaCEP(@PathVariable String cep) {
+		return ResponseEntity.ok(enderecoByCep.executar(cep));
 	}
 
-	@ApiOperation(value = "Obtém coordenadas a partir do CEP.", notes = "Utiliza a API da Google para obter informações de coordenadas latitude e longitude.")
+	@ApiOperation(value = "Obtém coordenadas a partir do CEP.", notes = "Utiliza a API da Google para obter informações de coordenadas latitude e longitude a partir do CEP fornecido..")
 	@ApiResponse(code = 200, message = "Coordenadas consultadas.")
 	@GetMapping("/obterCoordenadas/{cep}")
-	public ResponseEntity<Map<String, Object>> obterCoordenadasPorCEP(@PathVariable String cep)
-			throws JsonMappingException, JsonProcessingException, ObterCoordenadasViaCEPException {
-		Map<String, Object> response = coordenadasByCep.executar(cep);
-		return response.containsKey("error") ? ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response)
-				: (response.containsKey("latitude") && response.containsKey("longitude"))
-						? ResponseEntity.status(HttpStatus.OK).body(response)
-						: ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-								.body(Map.of("error", "Resposta inesperada do serviço de geolocalização"));
+	public ResponseEntity<LatitudeLongitudeDTO> obterCoordenadasPorCEP(@PathVariable String cep) { 
+		return ResponseEntity.ok(coordenadasByCep.executar(cep));
 	}
 }

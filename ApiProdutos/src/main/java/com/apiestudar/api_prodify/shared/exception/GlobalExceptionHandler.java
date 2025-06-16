@@ -61,9 +61,11 @@ public class GlobalExceptionHandler {
     }
     
     @ExceptionHandler(ObterCoordenadasViaCEPException.class)
-    public ResponseEntity<Object> handleObterCoordenadasViaCEPException(ObterCoordenadasViaCEPException ex) {
-    	log.error("Erro ao processar JSON: {}", ex);
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
+    public ResponseEntity<Map<String, String>> handleObterCoordenadasViaCEPException(ObterCoordenadasViaCEPException ex) {
+        Map<String, String> errorResponse = new HashMap<>();
+        errorResponse.put("erro", "ERRO_OBTER_CEP");
+        errorResponse.put("mensagem", ex.getMessage());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
     }
 
     @ExceptionHandler(LoginJaExisteException.class)

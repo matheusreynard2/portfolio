@@ -49,8 +49,6 @@ public class UsuarioController {
 	private ListarUsuariosUseCase listarUsuarios;
 	@Autowired
 	private UsuarioHelper usuarioHelper;
-	@Autowired
-	private ModelMapper modelMapper;
 
 	@ApiOperation(value = "Adiciona novo acesso pelo IP.", notes = "Quando um novo usuário acessa o site, ele registra o IP no banco.")
 	@ApiResponse(code = 200, message = "IP registrado.")
