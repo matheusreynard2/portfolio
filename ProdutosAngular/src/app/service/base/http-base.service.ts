@@ -14,6 +14,9 @@ export class HttpBaseService {
   ) {}
 
   protected catchErrorTokenExpirado(error: HttpErrorResponse): Observable<never> {
+    if (error.status === 403) {
+      this.handleTokenExpired();
+    }
     if (error.status === 401 && error.error.message === 'Tempo limite de conexão com o sistema excedido. TOKEN Expirado') {
       this.handleTokenExpired();
     }

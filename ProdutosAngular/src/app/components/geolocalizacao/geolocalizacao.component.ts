@@ -1,14 +1,13 @@
 // Corrigindo o componente geolocalizacao.component.ts
 
 import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
-import {Router, RouterLink} from '@angular/router';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { Geolocalizacao } from '../../model/geolocalizacao';
-import { EnderecoGeolocalizacao, GeocodingResult } from '../../model/endereco-geolocalizacao';
+import {RouterLink} from '@angular/router';
+import { GeolocalizacaoDTO } from '../../model/dto/GeolocalizacaoDTO';
+import { GeocodingResultDTO } from '../../model/dto/EnderecoGeolocalizacaoDTO';
 import { GeolocalizacaoService } from '../../service/geolocalizacao/geolocalizacao.service';
 import { GoogleMapsLoaderService } from '../../service/geolocalizacao/google-maps-loader.service';
 import { GoogleMap, MapMarker } from '@angular/google-maps';
-import {NgIf, NgOptimizedImage} from '@angular/common';
+import {NgIf} from '@angular/common';
 import { catchError, finalize, switchMap } from 'rxjs/operators';
 import { of } from 'rxjs';
 import {MatCard, MatCardContent} from '@angular/material/card';
@@ -37,8 +36,8 @@ export class GeolocalizacaoComponent implements OnInit {
   // Nova propriedade para armazenar o IP digitado pelo usuário
   ipDigitado: string = '';
 
-  geoInfo: Geolocalizacao | null = null;
-  enderecoGeolocalizacao: GeocodingResult | null = null;
+  geoInfo: GeolocalizacaoDTO | null = null;
+  enderecoGeolocalizacao: GeocodingResultDTO | null = null;
   carregando = false;
   erro: string | null = null;
   consentimentoFornecido = false;

@@ -1,4 +1,4 @@
-export interface EnderecoFornecedor {
+export interface EnderecoFornecedorDTO {
   cep: string;
   logradouro?: string;
   complemento: string;
@@ -13,4 +13,4 @@ export interface EnderecoFornecedor {
   ddd: string;
   siafi: string;
   erro: string;
-}
+} 

@@ -1,5 +1,5 @@
-export interface EnderecoGeolocalizacao {
-  results: GeocodingResult[];
+export interface EnderecoGeolocalizacaoDTO {
+  results: GeocodingResultDTO[];
   status: string;
   error_message?: string
   plus_code?: PlusCode;
@@ -10,7 +10,7 @@ export interface PlusCode {
   global_code: string;
 }
 
-export interface GeocodingResult {
+export interface GeocodingResultDTO {
   formatted_address: string;
   place_id: string;
   geometry: Geometry;

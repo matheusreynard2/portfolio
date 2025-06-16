@@ -1,4 +1,4 @@
-export interface Geolocalizacao {
+export interface GeolocalizacaoDTO {
   ip: string;
   hostname?: string;
   city: string;

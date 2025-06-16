@@ -1,8 +1,8 @@
-import {EnderecoFornecedor} from './endereco-fornecedor';
+import {EnderecoFornecedorDTO} from './EnderecoFornecedorDTO';
 
 export interface Fornecedor {
   id: number;
   nome: string;
   nrResidencia: string;
-  enderecoFornecedor: EnderecoFornecedor;
+  enderecoFornecedor: EnderecoFornecedorDTO;
 }

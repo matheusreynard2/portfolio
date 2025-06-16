@@ -12,8 +12,8 @@ import {HttpResponse} from '@angular/common/http';
 import {DeviceService} from '../../service/device/device.service';
 import {FornecedorService} from '../../service/fornecedor/fornecedor.service';
 import {FornecedorDTO} from '../../model/dto/FornecedorDTO';
-import {EnderecoFornecedor} from '../../model/endereco-fornecedor';
 import {NgxMaskDirective, provideNgxMask} from 'ngx-mask';
+import { EnderecoFornecedorDTO } from '../../model/EnderecoFornecedorDTO';
 
 @Component({
   selector: 'app-listar-fornecedor',  // Corrigido para 'app-produto-list', sem a barra inicial

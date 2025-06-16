@@ -1,32 +1,27 @@
 // src/app/components/geolocalizacao/geolocalizacao.component.ts
 import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import {Router, RouterLink} from '@angular/router';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { Geolocalizacao } from '../../model/geolocalizacao';
-import { GeocodingResult } from '../../model/endereco-geolocalizacao';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { GeolocalizacaoService } from '../../service/geolocalizacao/geolocalizacao.service';
+import { GeolocalizacaoDTO } from '../../model/dto/GeolocalizacaoDTO';
+import { EnderecoGeolocalizacaoDTO, GeocodingResultDTO } from '../../model/dto/EnderecoGeolocalizacaoDTO';
+import { EnderecoFornecedorDTO } from '../../model/EnderecoFornecedorDTO';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCard, MatCardContent} from '@angular/material/card';
+import {FornecedorService} from '../../service/fornecedor/fornecedor.service';
 import { GoogleMapsLoaderService } from '../../service/geolocalizacao/google-maps-loader.service';
 import {DeviceService} from '../../service/device/device.service';
-import { FormsModule } from '@angular/forms';
 import {NgxMaskDirective, NgxMaskPipe, provideNgxMask } from 'ngx-mask';
-import {Fornecedor} from '../../model/fornecedor';
-import {EnderecoFornecedor} from '../../model/endereco-fornecedor';
 import {NgIf, NgOptimizedImage} from '@angular/common';
 import {firstValueFrom} from 'rxjs';
 import {GoogleMap, MapMarker} from '@angular/google-maps';
-import {MatCard, MatCardContent} from '@angular/material/card';
-import {FornecedorService} from '../../service/fornecedor/fornecedor.service';
 
 @Component({
   selector: 'app-geolocalizacao2',
   templateUrl: './geolocalizacao2.component.html',
   imports: [
-    //MapMarker,
-    //GoogleMap,
-    //NgIf,
-    //MatCard,
-    //MatCardContent,
-    //NgOptimizedImage,
     RouterLink,
     FormsModule,
     NgxMaskDirective,
@@ -44,10 +39,9 @@ import {FornecedorService} from '../../service/fornecedor/fornecedor.service';
 })
 export class Geolocalizacao2Component implements OnInit {
 
-  @ViewChild('modalConsent', {static: true}) modalConsent!: TemplateRef<any>;
   @ViewChild('modalMsgAviso') modalMsgAviso!: TemplateRef<any>;
 
-  enderecoGeolocalizacao: GeocodingResult | null = null;
+  enderecoGeolocalizacao: GeocodingResultDTO | null = null;
   carregando = false; // Alterado para false inicialmente
   erro: string | null = null;
   mapsCarregado = false;
@@ -61,7 +55,7 @@ export class Geolocalizacao2Component implements OnInit {
   mensagemModal: string = '';
   obteveCoordenadas: boolean = false;
 
-  endereco: EnderecoFornecedor = {
+  endereco: EnderecoFornecedorDTO = {
     cep: '',
     logradouro: '',
     complemento: '',
@@ -89,14 +83,12 @@ export class Geolocalizacao2Component implements OnInit {
     maxZoom: 20,
     minZoom: 4,
   };
-  marker = {
-    position: {lat: 0, lng: 0},
-    title: '',
+  marker: any = {
+    position: {lat: -23.5505, lng: -46.6333},
+    title: 'Localização',
     options: {
-      draggable: false,
-      animation: (typeof google !== 'undefined' && google.maps && google.maps.Animation)
-        ? google.maps.Animation.DROP
-        : null
+      draggable: false
+      // Não incluir a animação aqui
     }
   };
 
@@ -125,6 +117,8 @@ export class Geolocalizacao2Component implements OnInit {
         await this.mapsLoaderService.loadGoogleMaps();
       }
 
+      // Após o carregamento, configura a animação do marcador
+      this.mapsCarregado = true;
       this.apiLoaded = true;
 
       // Só configura a animação após garantir que o Google Maps está disponível
@@ -182,16 +176,18 @@ export class Geolocalizacao2Component implements OnInit {
       const coordenadas = await firstValueFrom(
         this.geoService.obterCoordenadasPorCEP(cepFormatado)
       );
+      
       // Se chegou aqui, significa que obteve as coordenadas com sucesso
       this.obteveCoordenadas = true;
       this.latitude = coordenadas.latitude;
       this.longitude = coordenadas.longitude;
       this.mensagemModal = "Localização encontrada!"
+      
       this.geoService.obterEnderecoDetalhado(this.latitude, this.longitude).subscribe({
         next: (enderecoData) => {
           if (enderecoData && enderecoData.results && enderecoData.results.length > 0) {
             this.enderecoGeolocalizacao = enderecoData.results[0];
-
+    
             // Atualizar o mapa com as coordenadas mais precisas, se disponíveis
             if (this.enderecoGeolocalizacao?.geometry && this.enderecoGeolocalizacao.geometry.location) {
               const preciseLoc = this.enderecoGeolocalizacao.geometry.location;
@@ -207,12 +203,24 @@ export class Geolocalizacao2Component implements OnInit {
           this.carregandoEndereco = false;
         }
       });
-    } catch (coordError) {
+      
+    } catch (error: any) {
       // Falha ao obter coordenadas
       this.obteveCoordenadas = false;
-      this.mensagemModal = "Não foi possível obter as coordenadas para este CEP.";
+      
+      // Tratamento específico para erro de CEP
+      if (error.status === 400) {
+        const errorBody = error.error;
+        if (errorBody?.erro === 'ERRO_OBTER_CEP') {
+          this.mensagemModal = "Não foi possível obter latitude e longitude para este CEP.";
+        } else {
+          this.mensagemModal = "CEP inválido ou não encontrado.";
+        }
+      } else {
+        this.mensagemModal = "Erro ao buscar coordenadas. Tente novamente.";
+      }
+      
     } finally {
-      // Desativa carregamento independentemente do resultado da segunda chamada
       this.carregando = false;
       this.modalService.open(this.modalMsgAviso);
     }

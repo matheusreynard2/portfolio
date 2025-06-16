@@ -1,13 +1,14 @@
 import { Component, OnInit, ViewChild, TemplateRef } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { GeolocalizacaoService } from '../../service/geolocalizacao/geolocalizacao.service';
-import { EnderecoFornecedor } from '../../model/endereco-fornecedor';
+import { EnderecoFornecedorDTO } from '../../model/EnderecoFornecedorDTO';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FornecedorService } from '../../service/fornecedor/fornecedor.service';
 import { NgOptimizedImage, CommonModule } from '@angular/common';
 import { NgxMaskDirective, provideNgxMask } from 'ngx-mask';
 import {FornecedorDTO} from '../../model/dto/FornecedorDTO';
 import { AuthService } from '../../service/auth/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'adicionar-fornecedor',
@@ -31,7 +32,7 @@ export class AdicionarFornecedorComponent implements OnInit {
   adicionouFornecedor: boolean = false;
   mensagemErro: string = '';
 
-  endereco: EnderecoFornecedor = {
+  endereco: EnderecoFornecedorDTO = {
     cep: '',
     logradouro: '',
     complemento: '',
@@ -62,7 +63,8 @@ export class AdicionarFornecedorComponent implements OnInit {
     private geolocalizacaoService: GeolocalizacaoService,
     private modalService: NgbModal,
     private fornecedorService: FornecedorService,
-    private authService: AuthService
+    private authService: AuthService,
+    private router: Router
   ) { }
 
   ngOnInit() {
@@ -89,7 +91,7 @@ export class AdicionarFornecedorComponent implements OnInit {
 
     // Chama o serviço que se comunica com o backend
     this.geolocalizacaoService.obterEnderecoViaCEP(cepFormatado).subscribe({
-      next: (endereco: EnderecoFornecedor) => {
+      next: (endereco: EnderecoFornecedorDTO) => {
         // Verifica APENAS o campo erro, não verificar o CEP novamente
         if (endereco.erro === "true") {
           this.mensagemErro = "CEP não encontrado.";
