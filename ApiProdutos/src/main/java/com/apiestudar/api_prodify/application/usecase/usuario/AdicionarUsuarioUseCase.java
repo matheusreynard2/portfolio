@@ -44,6 +44,7 @@ public class AdicionarUsuarioUseCase {
         } else {
             String senhaCriptografada = new BCryptPasswordEncoder().encode(usuario.getSenha());
             usuario.setSenha(senhaCriptografada);
+            usuario.setImagem(imagemFile.getBytes());
             usuario = usuarioRepository.adicionarUsuario(usuario);
             usuarioDTO = modelMapper.map(usuario, UsuarioDTO.class);
             return usuarioDTO;
