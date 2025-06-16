@@ -1,5 +1,4 @@
 import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
-import { Produto } from '../../model/produto';
 import { ProdutoService } from '../../service/produto/produto.service';
 import {CurrencyPipe, NgForOf, NgIf, NgOptimizedImage} from '@angular/common';
 import {NgbModal, NgbModule} from '@ng-bootstrap/ng-bootstrap';
@@ -13,10 +12,9 @@ import {HttpResponse} from '@angular/common/http';
 import {DeviceService} from '../../service/device/device.service';
 import {ProdutoDTO} from '../../model/dto/ProdutoDTO';
 import {FornecedorDTO} from '../../model/dto/FornecedorDTO';
-import {Fornecedor} from '../../model/fornecedor';
 
 @Component({
-  selector: 'app-produto-list',  // Corrigido para 'app-produto-list', sem a barra inicial
+  selector: 'app-produto-list', 
   templateUrl: './produto-list.component.html',
   styleUrls: ['./produto-list.component.css'],
   imports: [
@@ -36,7 +34,7 @@ import {Fornecedor} from '../../model/fornecedor';
 export class ProdutoListComponent implements OnInit {
 
   // Variáveis
-  listaProdutoMaisCaro: Produto[] = [];
+  listaProdutoMaisCaro: ProdutoDTO[] = [];
   stringProdutoMaisCaro: string = '';
   mediaPreco: number = 0;
   tipoPesquisaSelecionado: string = 'id';
@@ -96,7 +94,7 @@ export class ProdutoListComponent implements OnInit {
 
   // Função que busca o produto com Valor Total mais caro
   listarProdutoMaisCaro(idUsuario: number) {
-  this.produtoService.listarProdutoMaisCaro(idUsuario).subscribe((produtos: Produto[]) => {
+  this.produtoService.listarProdutoMaisCaro(idUsuario).subscribe((produtos: ProdutoDTO[]) => {
     this.listaProdutoMaisCaro = produtos;
 
     // Checa se existe registro na lista para preencher a string e exibir na tela

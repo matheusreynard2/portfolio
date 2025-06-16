@@ -1,4 +1,4 @@
-import {EnderecoFornecedorDTO} from '../EnderecoFornecedorDTO';
+import {EnderecoFornecedorDTO} from './EnderecoFornecedorDTO';
 import {ProdutoDTO} from './ProdutoDTO';
 
 export interface FornecedorDTO {

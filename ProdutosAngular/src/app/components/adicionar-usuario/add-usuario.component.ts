@@ -6,8 +6,9 @@ import {NgIf, NgOptimizedImage} from '@angular/common';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {DeviceService} from '../../service/device/device.service';
 import {MatCard, MatCardContent} from '@angular/material/card';
-import { Usuario } from '../../model/usuario';
+import { UsuarioDTO } from '../../model/dto/UsuarioDTO';
 import { HttpErrorResponse } from '@angular/common/http';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-add-usuario',
@@ -16,30 +17,33 @@ import { HttpErrorResponse } from '@angular/common/http';
     NgOptimizedImage,
     NgIf,
     MatCard,
-    MatCardContent
+    MatCardContent,
+    CommonModule
   ],
   templateUrl: './add-usuario.component.html',
   styleUrl: './add-usuario.component.css'
 })
 export class AddUsuarioComponent implements OnInit {
 
-  addUsuario: Usuario = {
+  addUsuario: UsuarioDTO = {
     idUsuario: 0,
     login: '',
     senha: '',
     token: '',
     email: '',
+    imagem: null
   };
 
   private modalService: NgbModal = new NgbModal();
-  usuarioNovo!: Usuario;
+  usuarioNovo!: UsuarioDTO;
   adicionouUsuario: boolean = false;
   @ViewChild('modalMsgLoginExistente') modalMsgLoginExistente: any
   @ViewChild('modalMsgAddUser') modalMsgAddUser: any
-  @ViewChild('foto-perfil') fotoPerfil: any
   imagemFile: File = new File([], '', {})
   isMobileOrTablet: boolean = false;
   mostrarSenha = false;
+  mensagemErro: string = '';
+  mensagemSucesso: string = '';
 
   constructor(private usuarioService: UsuarioService, private router: Router, private deviceService: DeviceService) {}
 
@@ -53,7 +57,7 @@ export class AddUsuarioComponent implements OnInit {
   onSubmit() {
     // Adiciona no banco depois chama a mensagem de sucesso de adição de usuario "msgAddUsuario"
     this.usuarioService.adicionarUsuario(this.addUsuario, this.imagemFile).subscribe({
-      next: (usuarioAdicionado: any) => {
+      next: (usuarioAdicionado: UsuarioDTO) => {
         this.usuarioNovo = usuarioAdicionado
         this.adicionouUsuario = true
         this.msgAddUsuario(this.modalMsgAddUser)

@@ -1,5 +1,4 @@
 import {Injectable, NgZone} from '@angular/core';
-import {Produto} from '../../model/produto';
 import {ProdutoService} from './produto.service';
 import {HttpClient} from '@angular/common/http';
 import {ProdutoDTO} from '../../model/dto/ProdutoDTO';

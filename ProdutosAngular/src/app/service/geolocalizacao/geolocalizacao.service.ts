@@ -7,7 +7,7 @@ import { GeolocalizacaoDTO } from '../../model/dto/GeolocalizacaoDTO';
 import { AuthService } from '../auth/auth.service';
 import { Router } from '@angular/router';
 import { EnderecoGeolocalizacaoDTO } from '../../model/dto/EnderecoGeolocalizacaoDTO';
-import { EnderecoFornecedorDTO } from '../../model/EnderecoFornecedorDTO';
+import { EnderecoFornecedorDTO } from '../../model/dto/EnderecoFornecedorDTO';
 import { HttpBaseService } from '../base/http-base.service';
 import { LatitudeLongitudeDTO } from '../../model/dto/LatitudeLongitudeDTO';
 

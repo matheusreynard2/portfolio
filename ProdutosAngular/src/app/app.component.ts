@@ -9,7 +9,7 @@ import {filter, firstValueFrom, Observable, of} from 'rxjs';
 import {UsuarioService} from './service/usuario/usuario.service';
 import {DeviceService} from './service/device/device.service';
 import {environment} from '../environments/environment';
-import { Usuario } from './model/usuario';
+import { UsuarioDTO } from './model/dto/UsuarioDTO';
 
 @Component({
   selector: 'app-root',
@@ -27,7 +27,7 @@ export class AppComponent implements OnInit {
   }
 
   mostrarPerfil: boolean = false;
-  usuarioLogado!: Usuario;
+  usuarioLogado!: UsuarioDTO;
   numeroVisitas: number = 0;
   temaEscuro: boolean = false;
   isMobileOrTablet: boolean = false;

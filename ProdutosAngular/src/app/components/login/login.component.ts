@@ -5,8 +5,8 @@ import {NgbModal, NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {NgOptimizedImage} from '@angular/common';
 import {AuthService} from '../../service/auth/auth.service';
 import { MatCardModule } from '@angular/material/card';
-import { Usuario } from '../../model/usuario';
 import { UsuarioDTO } from '../../model/dto/UsuarioDTO';
+import { NgxMaskDirective, provideNgxMask } from 'ngx-mask';
 
 @Component({
   selector: 'app-login',
@@ -17,17 +17,18 @@ import { UsuarioDTO } from '../../model/dto/UsuarioDTO';
     MatCardModule
   ],
   templateUrl: './login.component.html',
-  styleUrl: './login.component.css'
+  styleUrl: './login.component.css',
+  providers: [provideNgxMask()]
 })
 export class LoginComponent implements OnInit {
 
-  usuario: Usuario = {
+  usuario: UsuarioDTO = {
     idUsuario: 0,
     login: '',
     senha: '',
     token: '',
-    imagem: '',
     email: '',
+    imagem: ''
   };
 
   @ViewChild('modalMsgToken') modalMsgToken: any

@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild, TemplateRef } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { GeolocalizacaoService } from '../../service/geolocalizacao/geolocalizacao.service';
-import { EnderecoFornecedorDTO } from '../../model/EnderecoFornecedorDTO';
+import { EnderecoFornecedorDTO } from '../../model/dto/EnderecoFornecedorDTO';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FornecedorService } from '../../service/fornecedor/fornecedor.service';
 import { NgOptimizedImage, CommonModule } from '@angular/common';
@@ -31,6 +31,7 @@ export class AdicionarFornecedorComponent implements OnInit {
   nrResidenciaFornecedor: string = '';
   adicionouFornecedor: boolean = false;
   mensagemErro: string = '';
+  isLoading: boolean = false; // Variável para controlar o loading
 
   endereco: EnderecoFornecedorDTO = {
     cep: '',
@@ -89,9 +90,15 @@ export class AdicionarFornecedorComponent implements OnInit {
       return;
     }
 
+    // Ativar loading
+    this.isLoading = true;
+
     // Chama o serviço que se comunica com o backend
     this.geolocalizacaoService.obterEnderecoViaCEP(cepFormatado).subscribe({
       next: (endereco: EnderecoFornecedorDTO) => {
+        // Desativar loading
+        this.isLoading = false;
+        
         // Verifica APENAS o campo erro, não verificar o CEP novamente
         if (endereco.erro === "true") {
           this.mensagemErro = "CEP não encontrado.";
@@ -111,6 +118,8 @@ export class AdicionarFornecedorComponent implements OnInit {
         };
       },
       error: (error: any) => {
+        // Desativar loading
+        this.isLoading = false;
         this.mensagemErro = "Erro ao buscar CEP. Tente novamente.";
         this.modalService.open(this.modalMsgAviso);
       }

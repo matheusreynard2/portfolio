@@ -7,7 +7,6 @@ import { PaginatedResponse } from '../../paginated-response';
 import { environment } from '../../../environments/environment';
 import { FornecedorDTO } from '../../model/dto/FornecedorDTO';
 import { ProdutoDTO } from '../../model/dto/ProdutoDTO';
-import { Produto } from '../../model/produto';
 import { HttpBaseService } from '../base/http-base.service';
 
 @Injectable({
@@ -66,8 +65,8 @@ export class ProdutoService extends HttpBaseService {
       .pipe(catchError(error => this.catchErrorTokenExpirado(error)));
   }
 
-  listarProdutoMaisCaro(idUsuario: number): Observable<Produto[]> {
-    return this.http.get<Produto[]>(this.produtosUrl + "/produtoMaisCaro/" + idUsuario)
+  listarProdutoMaisCaro(idUsuario: number): Observable<ProdutoDTO[]> {
+    return this.http.get<ProdutoDTO[]>(this.produtosUrl + "/produtoMaisCaro/" + idUsuario)
       .pipe(catchError(error => this.catchErrorTokenExpirado(error)));
   }
 

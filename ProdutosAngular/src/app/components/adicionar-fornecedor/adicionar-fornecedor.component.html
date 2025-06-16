@@ -52,7 +52,14 @@
               </div>
             </td>
             <td colspan="2" style="width: 12%;">
-              <button type="button" class="btn btn-secondary" (click)="buscarEnderecoPorCep(endereco.cep)">Buscar</button>
+              <button type="button" 
+                      class="btn btn-secondary" 
+                      (click)="buscarEnderecoPorCep(endereco.cep)"
+                      [disabled]="isLoading">
+                <span *ngIf="!isLoading">Buscar</span>
+                <span *ngIf="isLoading" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                <span *ngIf="isLoading">Buscando...</span>
+              </button>
             </td>
           </tr>
 

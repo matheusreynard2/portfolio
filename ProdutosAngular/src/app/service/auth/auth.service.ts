@@ -3,7 +3,6 @@ import { HttpClient } from '@angular/common/http';
 import { map, Observable } from 'rxjs';
 import { Router } from '@angular/router';
 import { environment } from '../../../environments/environment';
-import { Usuario } from '../../model/usuario';
 import { StorageService } from '../storage/storage.service';
 import { UsuarioDTO } from '../../model/dto/UsuarioDTO';
 
@@ -24,12 +23,12 @@ export class AuthService {
     this.usuariosUrl = environment.API_URL + '/usuarios';
   }
 
-  adicionarUsuarioLogado(usuario: Usuario): void {
+  adicionarUsuarioLogado(usuario: UsuarioDTO): void {
     this.storage.setItem(this.USUARIO_KEY, usuario);
   }
 
-  getUsuarioLogado(): Usuario {
-    return this.storage.getItem<Usuario>(this.USUARIO_KEY, {} as Usuario);
+  getUsuarioLogado(): UsuarioDTO {
+    return this.storage.getItem<UsuarioDTO>(this.USUARIO_KEY, {} as UsuarioDTO);
   }
 
   adicionarToken(token: string): void {

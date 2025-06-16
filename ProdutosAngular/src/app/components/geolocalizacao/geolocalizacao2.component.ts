@@ -1,4 +1,4 @@
-// src/app/components/geolocalizacao/geolocalizacao.component.ts
+// src/app/components/geolocalizacao/geolocalizacao2.component.ts
 import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import {Router, RouterLink} from '@angular/router';
 import { CommonModule } from '@angular/common';
@@ -7,7 +7,7 @@ import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { GeolocalizacaoService } from '../../service/geolocalizacao/geolocalizacao.service';
 import { GeolocalizacaoDTO } from '../../model/dto/GeolocalizacaoDTO';
 import { EnderecoGeolocalizacaoDTO, GeocodingResultDTO } from '../../model/dto/EnderecoGeolocalizacaoDTO';
-import { EnderecoFornecedorDTO } from '../../model/EnderecoFornecedorDTO';
+import { EnderecoFornecedorDTO } from '../../model/dto/EnderecoFornecedorDTO';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCard, MatCardContent} from '@angular/material/card';
 import {FornecedorService} from '../../service/fornecedor/fornecedor.service';

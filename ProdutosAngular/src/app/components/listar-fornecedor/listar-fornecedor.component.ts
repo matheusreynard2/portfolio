@@ -1,19 +1,17 @@
 import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
-import { ProdutoService } from '../../service/produto/produto.service';
-import {CurrencyPipe, NgForOf, NgIf, NgOptimizedImage, CommonModule} from '@angular/common';
+import {NgForOf, NgIf, NgOptimizedImage, CommonModule} from '@angular/common';
 import {NgbModal, NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import { ProdutoFunctionsService } from '../../service/produto/produto-functions.service';
-import {PorcentagemMaskDirective} from '../../directives/porcentagem-mask.directive';
 import {NgxPaginationModule} from 'ngx-pagination';
 import {MatPaginatorModule, PageEvent} from '@angular/material/paginator';
 import {AuthService} from '../../service/auth/auth.service';
-import {HttpResponse} from '@angular/common/http';
 import {DeviceService} from '../../service/device/device.service';
 import {FornecedorService} from '../../service/fornecedor/fornecedor.service';
 import {FornecedorDTO} from '../../model/dto/FornecedorDTO';
 import {NgxMaskDirective, provideNgxMask} from 'ngx-mask';
-import { EnderecoFornecedorDTO } from '../../model/EnderecoFornecedorDTO';
+import { Router } from '@angular/router';
+import { MatTableModule } from '@angular/material/table';
+import { MatSortModule } from '@angular/material/sort';
 
 @Component({
   selector: 'app-listar-fornecedor',  // Corrigido para 'app-produto-list', sem a barra inicial
@@ -29,7 +27,9 @@ import { EnderecoFornecedorDTO } from '../../model/EnderecoFornecedorDTO';
     MatPaginatorModule,
     NgOptimizedImage,
     CommonModule,
-    NgxMaskDirective
+    NgxMaskDirective,
+    MatTableModule,
+    MatSortModule
   ],
   providers: [provideNgxMask()]
 })
@@ -53,7 +53,8 @@ export class ListarFornecedorComponent implements OnInit {
     private fornecedorService: FornecedorService,
     private authService: AuthService,
     private deviceService: DeviceService,
-    private modalService: NgbModal
+    private modalService: NgbModal,
+    private router: Router
   ) { }
 
   ngOnInit() {
