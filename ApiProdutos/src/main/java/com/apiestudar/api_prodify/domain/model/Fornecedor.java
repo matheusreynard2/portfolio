@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -39,9 +40,11 @@ public class Fornecedor {
 	@Schema(description = "ID do fornecedor")
 	private long id;
 	
+	@Column(length = 100)
 	@Schema(description = "Nome do fornecedor")
 	private String nome;
 	
+	@Column(length = 100)
 	@Schema(description = "Número da residência")
 	private String nrResidencia; 
 	
