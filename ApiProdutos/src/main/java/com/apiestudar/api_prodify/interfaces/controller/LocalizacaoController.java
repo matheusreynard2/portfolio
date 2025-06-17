@@ -15,15 +15,11 @@ import com.apiestudar.api_prodify.application.usecase.localizacao.ObterCoordenad
 import com.apiestudar.api_prodify.application.usecase.localizacao.ObterEnderecoByCEPUseCase;
 import com.apiestudar.api_prodify.application.usecase.localizacao.ObterEnderecoDetalhadoUseCase;
 import com.apiestudar.api_prodify.application.usecase.localizacao.ObterGeolocationByIPUseCase;
-import com.apiestudar.api_prodify.domain.model.EnderecoFornecedor;
 import com.apiestudar.api_prodify.interfaces.dto.EnderecoFornecedorDTO;
 import com.apiestudar.api_prodify.interfaces.dto.GeolocationDTO;
 import com.apiestudar.api_prodify.interfaces.dto.LatitudeLongitudeDTO;
 import com.apiestudar.api_prodify.interfaces.dto.google_maps_geolocation_api.EnderecoGeolocalizacaoDTO;
 import com.apiestudar.api_prodify.shared.exception.GeoLocationException;
-import com.apiestudar.api_prodify.shared.exception.ObterCoordenadasViaCEPException;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonMappingException;
 
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -64,10 +60,11 @@ public class LocalizacaoController {
 		return ResponseEntity.ok(enderecoByCep.executar(cep));
 	}
 
-	@ApiOperation(value = "Obtém coordenadas a partir do CEP.", notes = "Utiliza a API da Google para obter informações de coordenadas latitude e longitude a partir do CEP fornecido..")
+	@ApiOperation(value = "Obtém coordenadas a partir do CEP.", notes = "Utiliza a API da Google para obter informações de coordenadas latitude e longitude a partir do CEP fornecido.")
 	@ApiResponse(code = 200, message = "Coordenadas consultadas.")
 	@GetMapping("/obterCoordenadas/{cep}")
 	public ResponseEntity<LatitudeLongitudeDTO> obterCoordenadasPorCEP(@PathVariable String cep) { 
 		return ResponseEntity.ok(coordenadasByCep.executar(cep));
 	}
+	
 }

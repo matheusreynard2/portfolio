@@ -2,13 +2,11 @@
 package com.apiestudar.api_prodify.application.usecase.localizacao;
 
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.apiestudar.api_prodify.domain.model.EnderecoFornecedor;
 import com.apiestudar.api_prodify.interfaces.dto.EnderecoFornecedorDTO;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import kong.unirest.Unirest;

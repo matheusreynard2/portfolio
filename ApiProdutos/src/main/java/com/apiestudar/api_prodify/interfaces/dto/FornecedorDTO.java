@@ -3,6 +3,7 @@ package com.apiestudar.api_prodify.interfaces.dto;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.apiestudar.api_prodify.interfaces.dto.brasilapi.DadosEmpresaDTO;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -39,4 +40,7 @@ public class FornecedorDTO {
     @JsonIgnore
     @Schema(description = "Lista de produtos do fornecedor")
     private List<ProdutoDTO> produtos;
+    
+    @Schema(description = "Dados da empresa do fornecedor")
+    private DadosEmpresaDTO dadosEmpresa;
 }

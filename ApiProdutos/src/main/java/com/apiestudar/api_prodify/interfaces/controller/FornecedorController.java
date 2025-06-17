@@ -25,8 +25,10 @@ import com.apiestudar.api_prodify.application.usecase.fornecedor.AdicionarFornec
 import com.apiestudar.api_prodify.application.usecase.fornecedor.AtualizarFornecedorUseCase;
 import com.apiestudar.api_prodify.application.usecase.fornecedor.DeletarFornecedorUseCase;
 import com.apiestudar.api_prodify.application.usecase.fornecedor.ListarFornecedoresUseCase;
+import com.apiestudar.api_prodify.application.usecase.fornecedor.ObterEmpresaByCNPJUseCase;
 import com.apiestudar.api_prodify.application.usecase.fornecedor.BuscarFornecedorUseCase;
 import com.apiestudar.api_prodify.interfaces.dto.FornecedorDTO;
+import com.apiestudar.api_prodify.interfaces.dto.brasilapi.DadosEmpresaDTO;
 
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -47,6 +49,8 @@ public class FornecedorController {
 	private AtualizarFornecedorUseCase atualizarFornecedor;
 	@Autowired
 	private BuscarFornecedorUseCase buscarFornecedor;
+	@Autowired
+    private ObterEmpresaByCNPJUseCase obterEmpresaByCNPJ;
 
 	@Transactional(readOnly = true)
 	@ApiOperation(value = "Listagem de todos os fornecedores cadastrados.", notes = "Faz uma busca no banco de dados retornando uma lista com todos os fornecedores cadastrados.")
@@ -108,4 +112,11 @@ public class FornecedorController {
 	public ResponseEntity<FornecedorDTO> buscarFornecedorPorId(@PathVariable Long id) {
 		return ResponseEntity.status(HttpStatus.OK).body(buscarFornecedor.executar(id));
 	}
+
+	@ApiOperation(value = "Obtém informações de empresa pelo CNPJ.", notes = "Utiliza a API da BrasilAPI para obter informações de empresas a partir do CNPJ fornecido.")
+	@ApiResponse(code = 200, message = "CNPJ consultado.")
+	@GetMapping("/consultarCNPJ/{cnpj}")
+    public ResponseEntity<DadosEmpresaDTO> obterEmpresaViaCNPJ(@PathVariable String cnpj) {
+		return ResponseEntity.status(HttpStatus.OK).body(obterEmpresaByCNPJ.executar(cnpj));
+    }
 }
