@@ -1,22 +1,71 @@
 <div class="card my-5">
   <div class="card-body">
-    <!-- Radio group para informar CNPJ - SEMPRE VISÍVEL -->
-    <div class="mb-3">
-      <label class="me-2 fw-bold">Informar CNPJ?</label>
-      <div class="form-check form-check-inline">
-        <input class="form-check-input" type="radio" name="informarCNPJ" id="informarCNPJSim" 
-               [(ngModel)]="informarCNPJ" [value]="true" (change)="onInformarCNPJChange()">
-        <label class="form-check-label" for="informarCNPJSim">SIM</label>
+    <!-- Linha de controle - Radio buttons, botões e mensagens -->
+    <div class="row mb-3 justify-content-center">
+      <div class="col-md-2">
+        <label class="fw-bold">Informar CNPJ?</label><br>
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="radio" name="informarCNPJ" id="informarCNPJSim" 
+                 [(ngModel)]="informarCNPJ" [value]="true" (change)="onInformarCNPJChange()">
+          <label class="form-check-label" for="informarCNPJSim">SIM</label>
+        </div>
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="radio" name="informarCNPJ" id="informarCNPJNao" 
+                 [(ngModel)]="informarCNPJ" [value]="false" (change)="onInformarCNPJChange()">
+          <label class="form-check-label" for="informarCNPJNao">NÃO</label>
+        </div>
       </div>
-      <div class="form-check form-check-inline">
-        <input class="form-check-input" type="radio" name="informarCNPJ" id="informarCNPJNao" 
-               [(ngModel)]="informarCNPJ" [value]="false" (change)="onInformarCNPJChange()">
-        <label class="form-check-label" for="informarCNPJNao">NÃO</label>
+      <div class="col-md-6">
+        <button type="button" 
+                class="btn btn-secondary me-2 style-btn-form" 
+                (click)="buscarEmpresaPorCNPJ(cnpjEmpresa)"
+                [disabled]="isLoadingCNPJ || !informarCNPJ">
+          <span *ngIf="!isLoadingCNPJ">Buscar Empresa</span>
+          <span *ngIf="isLoadingCNPJ" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+          <span *ngIf="isLoadingCNPJ">Buscando...</span>
+        </button>
+        <button type="button" 
+                class="btn btn-warning me-2 style-btn-form" 
+                (click)="limparFormularioCNPJ()"
+                [disabled]="!informarCNPJ">
+          Limpar Campos
+        </button>
+        <button type="button" 
+                class="btn bg-primary-subtle fw-bold style-btn-form" 
+                (click)="cadastrarCNPJ()">
+          Próximo
+        </button>
+      </div>
+      <div class="col-md-4 d-flex align-items-center">
+        <small class="text-muted">
+          <span *ngIf="fornecedorCadastradoComSucesso" class="text-success">
+            <i class="bi bi-check-circle-fill"></i> Fornecedor cadastrado com sucesso!
+          </span>
+          <span *ngIf="informarCNPJ && cnpjBuscado && !fornecedorCadastradoComSucesso" class="text-success">
+            <i class="bi bi-check-circle-fill"></i> Dados carregados
+          </span>
+          <span *ngIf="informarCNPJ && !cnpjBuscado && !fornecedorCadastradoComSucesso" class="text-info">
+            <i class="bi bi-info-circle-fill"></i> Busque por um CNPJ em "Buscar Empresa"
+          </span>
+          <span *ngIf="!informarCNPJ && !fornecedorCadastradoComSucesso" class="text-info">
+            <i class="bi bi-info-circle-fill"></i> CNPJ não informado
+          </span>
+        </small>
       </div>
     </div>
 
+    <!-- Mensagem quando não informar CNPJ -->
+    <div *ngIf="!informarCNPJ" class="alert alert-info">
+      <p>Você optou por não informar os dados do CNPJ.</p>
+    </div>
+
+    <!-- Mensagem quando CNPJ foi cadastrado com sucesso -->
+    <div *ngIf="cnpjCadastradoComSucesso && informarCNPJ && !formularioCNPJVisivel" class="alert alert-success">
+      <p>Dados do CNPJ cadastrados com sucesso.</p>
+    </div>
+
     <!-- Campos relacionados ao CNPJ -->
-    <div *ngIf="informarCNPJ">
+    <div *ngIf="informarCNPJ && formularioCNPJVisivel">
       <table class="table table-bordered" style="width: 100%; table-layout: fixed;">
         <thead>
           <tr>
@@ -24,12 +73,12 @@
           </tr>
         </thead>
         <tbody>
-          <!-- Linha 1: CNPJ e botões -->
+          <!-- Linha 1: CNPJ -->
           <tr>
             <td style="width: 16%;">
               <label for="cnpjEmpresa">CNPJ:</label>
             </td>
-            <td style="width: 24%;">
+            <td colspan="5" style="width: 84%;">
               <input type="text" [(ngModel)]="cnpjEmpresa"
                      class="form-control"
                      id="cnpjEmpresa"
@@ -37,22 +86,9 @@
                      placeholder="00.000.000/0000-00"
                      mask="00.000.000/0000-00"
                      [showMaskTyped]="true"
-                     required>
-            </td>
-            <td colspan="4" style="width: 60%;">
-              <button type="button" 
-                      class="btn btn-secondary me-2" 
-                      (click)="buscarEmpresaPorCNPJ(cnpjEmpresa)"
-                      [disabled]="isLoadingCNPJ">
-                <span *ngIf="!isLoadingCNPJ">Buscar Empresa</span>
-                <span *ngIf="isLoadingCNPJ" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
-                <span *ngIf="isLoadingCNPJ">Buscando...</span>
-              </button>
-              <button type="button" 
-                      class="btn btn-warning" 
-                      (click)="limparFormularioCNPJ()">
-                Limpar Campos
-              </button>
+                     [disabled]="!informarCNPJ"
+                     required
+                     maxlength="100">
             </td>
           </tr>
 
@@ -68,7 +104,7 @@
                        class="form-control"
                        id="razaoSocial"
                        name="razaoSocial"
-                       readonly>
+                       maxlength="100">
               </td>
               <td style="width: 12%;">
                 <label for="nomeFantasia">Nome Fantasia:</label>
@@ -78,7 +114,7 @@
                        class="form-control"
                        id="nomeFantasia"
                        name="nomeFantasia"
-                       readonly>
+                       maxlength="100">
               </td>
             </tr>
 
@@ -92,7 +128,7 @@
                        class="form-control"
                        id="cnaeFiscal"
                        name="cnaeFiscal"
-                       readonly>
+                       maxlength="100">
               </td>
               <td style="width: 12%;">
                 <label for="naturezaJuridica">Natureza Jurídica:</label>
@@ -102,7 +138,7 @@
                        class="form-control"
                        id="naturezaJuridica"
                        name="naturezaJuridica"
-                       readonly>
+                       maxlength="100">
               </td>
             </tr>
 
@@ -116,7 +152,7 @@
                        class="form-control"
                        id="situacaoCadastral"
                        name="situacaoCadastral"
-                       readonly>
+                       maxlength="100">
               </td>
               <td style="width: 12%;">
                 <label for="dataSituacao">Data Situação:</label>
@@ -126,7 +162,7 @@
                        class="form-control"
                        id="dataSituacao"
                        name="dataSituacao"
-                       readonly>
+                       maxlength="100">
               </td>
             </tr>
 
@@ -140,7 +176,7 @@
                        class="form-control"
                        id="dataInicioAtividade"
                        name="dataInicioAtividade"
-                       readonly>
+                       maxlength="100">
               </td>
               <td style="width: 12%;">
                 <label for="porte">Porte:</label>
@@ -150,7 +186,7 @@
                        class="form-control"
                        id="porte"
                        name="porte"
-                       readonly>
+                       maxlength="100">
               </td>
             </tr>
 
@@ -164,7 +200,7 @@
                        class="form-control"
                        id="capitalSocial"
                        name="capitalSocial"
-                       readonly>
+                       maxlength="100">
               </td>
             </tr>
 
@@ -178,7 +214,7 @@
                        class="form-control"
                        id="logradouroEmpresa"
                        name="logradouroEmpresa"
-                       readonly>
+                       maxlength="100">
               </td>
               <td style="width: 12%;">
                 <label for="numeroEmpresa">Número:</label>
@@ -188,7 +224,7 @@
                        class="form-control"
                        id="numeroEmpresa"
                        name="numeroEmpresa"
-                       readonly>
+                       maxlength="100">
               </td>
             </tr>
 
@@ -202,7 +238,7 @@
                        class="form-control"
                        id="complementoEmpresa"
                        name="complementoEmpresa"
-                       readonly>
+                       maxlength="100">
               </td>
               <td style="width: 12%;">
                 <label for="bairroEmpresa">Bairro:</label>
@@ -212,7 +248,7 @@
                        class="form-control"
                        id="bairroEmpresa"
                        name="bairroEmpresa"
-                       readonly>
+                       maxlength="100">
               </td>
             </tr>
 
@@ -226,7 +262,7 @@
                        class="form-control"
                        id="cepEmpresa"
                        name="cepEmpresa"
-                       readonly>
+                       maxlength="100">
               </td>
               <td style="width: 12%;">
                 <label for="municipioEmpresa">Município:</label>
@@ -236,7 +272,7 @@
                        class="form-control"
                        id="municipioEmpresa"
                        name="municipioEmpresa"
-                       readonly>
+                       maxlength="100">
               </td>
               <td style="width: 12%;">
                 <label for="ufEmpresa">UF:</label>
@@ -246,11 +282,11 @@
                        class="form-control"
                        id="ufEmpresa"
                        name="ufEmpresa"
-                       readonly>
+                       maxlength="100">
               </td>
             </tr>
 
-            <!-- Linha 9.5: País -->
+            <!-- Linha 10: País -->
             <tr>
               <td style="width: 16%;">
                 <label for="paisEmpresa">País:</label>
@@ -260,35 +296,35 @@
                        class="form-control"
                        id="paisEmpresa"
                        name="paisEmpresa"
-                       readonly>
+                       maxlength="100">
               </td>
             </tr>
 
-            <!-- Linha 10: Telefones -->
+            <!-- Linha 11: Telefones -->
             <tr>
               <td style="width: 16%;">
                 <label for="telefone1">Telefone 1:</label>
               </td>
               <td style="width: 24%;">
-                <input type="text" [(ngModel)]="telefone1Formatado"
+                <input type="text" [(ngModel)]="dadosEmpresa.telefone1"
                        class="form-control"
                        id="telefone1"
                        name="telefone1"
-                       readonly>
+                       maxlength="100">
               </td>
               <td style="width: 12%;">
                 <label for="telefone2">Telefone 2:</label>
               </td>
               <td colspan="3" style="width: 48%;">
-                <input type="text" [(ngModel)]="telefone2Formatado"
+                <input type="text" [(ngModel)]="dadosEmpresa.telefone2"
                        class="form-control"
                        id="telefone2"
                        name="telefone2"
-                       readonly>
+                       maxlength="100">
               </td>
             </tr>
 
-            <!-- Linha 11: Email -->
+            <!-- Linha 12: Email -->
             <tr>
               <td style="width: 16%;">
                 <label for="emailEmpresa">Email:</label>
@@ -298,40 +334,47 @@
                        class="form-control"
                        id="emailEmpresa"
                        name="emailEmpresa"
-                       readonly>
+                       maxlength="100">
               </td>
             </tr>
           </ng-container>
         </tbody>
       </table>
     </div>
-
-    <!-- Mensagem quando não informar CNPJ -->
-    <div *ngIf="!informarCNPJ" class="alert alert-info">
-      <p>Você optou por não informar os dados do CNPJ.</p>
-    </div>
-
-    <!-- Botão Próximo -->
-    <div class="text-left mt-3">
-      <button type="button" class="btn bg-primary-subtle fw-bold" (click)="cadastrarCNPJ()">Próximo</button>
-    </div>
-
-    <!-- Indicador de status do CNPJ -->
-    <div *ngIf="informarCNPJ" class="mt-2">
-      <small class="text-muted">
-        <span *ngIf="cnpjBuscado" class="text-success">
-          <i class="bi bi-check-circle-fill"></i> Dados da empresa carregados com sucesso
-        </span>
-        <span *ngIf="!cnpjBuscado" class="text-warning">
-          <i class="bi bi-exclamation-triangle-fill"></i> Clique em "Buscar Empresa" para carregar os dados
-        </span>
-      </small>
-    </div>
   </div>
 </div>
 
 <div class="card my-5">
   <div class="card-body">
+    <!-- Linha de controle para o formulário de fornecedor -->
+    <div class="row mb-3 justify-content-center" *ngIf="formularioFornecedorHabilitado">
+      <div class="col-md-6">
+        <button type="button" 
+                class="btn btn-secondary me-2 style-btn-form" 
+                (click)="buscarEnderecoPorCep(endereco.cep)"
+                [disabled]="isLoading">
+          <span *ngIf="!isLoading">Buscar CEP</span>
+          <span *ngIf="isLoading" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+          <span *ngIf="isLoading">Buscando...</span>
+        </button>
+        <button type="button" 
+                class="btn btn-warning me-2 style-btn-form" 
+                (click)="limparFormularioFornecedor()">
+          Limpar Campos
+        </button>
+      </div>
+      <div class="col-md-6 d-flex align-items-center">
+        <small class="text-muted">
+          <span *ngIf="cepBuscado" class="text-success">
+            <i class="bi bi-check-circle-fill"></i> Endereço carregado
+          </span>
+          <span *ngIf="!cepBuscado" class="text-info">
+            <i class="bi bi-info-circle-fill"></i> Busque por um CEP em "Buscar CEP"
+          </span>
+        </small>
+      </div>
+    </div>
+
     <div class="div-tabela">
       
 
@@ -360,7 +403,7 @@
                      required
                      #nomeFornecedorInput="ngModel"
                      [ngClass]="{'is-invalid': nomeFornecedorInput.invalid && nomeFornecedorInput.touched}"
-                     maxlength="50">
+                     maxlength="100">
               <div *ngIf="nomeFornecedorInput.invalid && nomeFornecedorInput.touched" class="invalid-feedback">
                 O nome do fornecedor é obrigatório.
               </div>
@@ -386,19 +429,7 @@
               </div>
             </td>
             <td colspan="2" style="width: 32%;">
-              <button type="button" 
-                      class="btn btn-secondary me-2" 
-                      (click)="buscarEnderecoPorCep(endereco.cep)"
-                      [disabled]="isLoading">
-                <span *ngIf="!isLoading">Buscar</span>
-                <span *ngIf="isLoading" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
-                <span *ngIf="isLoading">Buscando...</span>
-              </button>
-              <button type="button" 
-                      class="btn btn-warning" 
-                      (click)="limparFormularioFornecedor()">
-                Limpar Campos
-              </button>
+              <!-- Botões removidos - agora estão na linha de controle acima -->
             </td>
           </tr>
 
@@ -412,7 +443,7 @@
                      class="form-control"
                      id="logradouro"
                      name="logradouroFornecedor"
-                     readonly>
+                     maxlength="100">
             </td>
             <td style="width: 12%;">
               <label for="nrResidenciaFornecedor">Nº Residência:</label>
@@ -432,7 +463,8 @@
               <input type="text" [(ngModel)]="endereco.complemento"
                      class="form-control"
                      id="complemento"
-                     name="complementoFornecedor">
+                     name="complementoFornecedor"
+                     maxlength="100">
             </td>
           </tr>
 
@@ -446,7 +478,7 @@
                      class="form-control"
                      id="unidade"
                      name="unidadeFornecedor"
-                     readonly>
+                     maxlength="100">
             </td>
             <td style="width: 12%;">
               <label for="bairro">Bairro:</label>
@@ -456,7 +488,7 @@
                      class="form-control"
                      id="bairro"
                      name="bairroFornecedor"
-                     readonly>
+                     maxlength="100">
             </td>
           </tr>
 
@@ -470,7 +502,7 @@
                      class="form-control"
                      id="localidade"
                      name="localidadeFornecedor"
-                     readonly>
+                     maxlength="100">
             </td>
             <td style="width: 12%;">
               <label for="uf">UF:</label>
@@ -480,7 +512,7 @@
                      class="form-control"
                      id="uf"
                      name="ufFornecedor"
-                     readonly>
+                     maxlength="100">
             </td>
             <td style="width: 12%;">
               <label for="estado">Estado:</label>
@@ -490,7 +522,7 @@
                      class="form-control"
                      id="estado"
                      name="estadoFornecedor"
-                     readonly>
+                     maxlength="100">
             </td>
           </tr>
 
@@ -504,7 +536,7 @@
                      class="form-control"
                      id="regiao"
                      name="regiaoFornecedor"
-                     readonly>
+                     maxlength="100">
             </td>
             <td style="width: 12%;">
               <label for="ibge">IBGE:</label>
@@ -514,7 +546,7 @@
                      class="form-control"
                      id="ibge"
                      name="ibgeFornecedor"
-                     readonly>
+                     maxlength="100">
             </td>
             <td style="width: 12%;">
               <label for="gia">GIA:</label>
@@ -524,7 +556,7 @@
                      class="form-control"
                      id="gia"
                      name="giaFornecedor"
-                     readonly>
+                     maxlength="100">
             </td>
           </tr>
 
@@ -538,7 +570,7 @@
                      class="form-control"
                      id="ddd"
                      name="dddFornecedor"
-                     readonly>
+                     maxlength="100">
             </td>
             <td style="width: 12%;">
               <label for="siafi">SIAFI:</label>
@@ -548,7 +580,7 @@
                      class="form-control"
                      id="siafi"
                      name="siafiFornecedor"
-                     readonly>
+                     maxlength="100">
             </td>
           </tr>
 
@@ -567,20 +599,6 @@
                       class="btn bg-primary-subtle fw-bold">
                 Cadastrar
               </button>
-            </td>
-          </tr>
-
-          <!-- Indicador de status do CEP -->
-          <tr>
-            <td colspan="6" style="width: 100%;">
-              <small class="text-muted">
-                <span *ngIf="cepBuscado" class="text-success">
-                  <i class="bi bi-check-circle-fill"></i> Endereço carregado com sucesso
-                </span>
-                <span *ngIf="!cepBuscado" class="text-warning">
-                  <i class="bi bi-exclamation-triangle-fill"></i> Clique em "Buscar" para carregar o endereço
-                </span>
-              </small>
             </td>
           </tr>
           </tbody>

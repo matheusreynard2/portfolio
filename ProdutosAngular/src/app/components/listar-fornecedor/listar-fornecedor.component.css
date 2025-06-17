@@ -35,6 +35,11 @@
   text-align: left !important;
 }
 
+.coluna_razao_social {
+  width: 250px;
+  text-align: left !important;
+}
+
 .coluna_logradouro {
   text-align: left !important;
   width: 300px;
@@ -159,4 +164,33 @@
   .modal-container {
     padding: 10px;
   }
+}
+
+/* Estilos para as informações */
+.info-container {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 5px 0;
+  font-size: 12px;
+}
+
+.info-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.info-label {
+  font-weight: 600;
+  color: #495057;
+}
+
+.info-text {
+  color: #6c757d;
+}
+
+.info-divider {
+  color: #dee2e6;
+  font-weight: 300;
 }

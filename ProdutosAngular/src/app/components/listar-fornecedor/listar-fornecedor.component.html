@@ -1,45 +1,48 @@
 <div class="tabela-container">
   <table class="table table-bordered table-striped table-fixed">
-      <table class="table table-bordered table-striped">
-        <thead class="thead-dark">
-        <tr>
-          <th colspan="11" class="text-center">Fornecedores</th>
-        </tr>
-        <tr>
-          <th class="text-center coluna_id"><strong>ID</strong></th>
-          <th class="text-left coluna_nome"><strong>Nome</strong></th>
-          <th class="text-left coluna_logradouro"><strong>Logradouro</strong></th>
-          <th class="text-center"><strong>Bairro</strong></th>
-          <th class="text-center"><strong>Estado</strong></th>
-          <th class="text-center"><strong>CEP</strong></th>
-          <th class="text-center"><strong></strong></th>
-          <th class="text-center"><strong></strong></th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr *ngFor="let fornecedor of listaFornecedores">
-          <td class="coluna_id">{{ fornecedor.id }}</td>
-          <td class="coluna_nome">{{ fornecedor.nome }}</td>
-          <td class="coluna_logradouro">{{ fornecedor.enderecoFornecedor.logradouro }}<span *ngIf="fornecedor.nrResidencia"> - N° {{ fornecedor.nrResidencia }}</span></td>
-          <td class="text-center">{{ fornecedor.enderecoFornecedor.bairro }}</td>
-          <td class="text-center">{{ fornecedor.enderecoFornecedor.estado }}</td>
-          <td class="text-center">{{ fornecedor.enderecoFornecedor.cep }}</td>
-          <td class="text-center">
-            <button type="button" class="btn btn-info full-width-btn" id="btn_editar" (click)="atualizarFornecedor(modalEditar, fornecedor.id, fornecedor)">✎</button>
-          </td>
-          <td class="text-center">
-            <button type="button" class="btn btn-danger full-width-btn" id="btn_excluir" (click)="deletarFornecedor(modalMsgExcluir, fornecedor.id, fornecedor)">X</button>
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <button class="btn bg-primary-subtle fw-bold btn-atualizar-lista" (click)="atualizarLista()" role="button">Atualizar</button>
-          </td>
-        </tr>
-        </tbody>
-      </table>
+    <thead class="thead-dark">
+      <tr>
+        <th colspan="9" class="text-center">Fornecedores</th>
+      </tr>
+      <tr>
+        <th class="text-center coluna_id"><strong>ID</strong></th>
+        <th class="text-left coluna_nome"><strong>Nome fornecedor</strong></th>
+        <th class="text-left coluna_razao_social"><strong>Razão Social CNPJ</strong></th>
+        <th class="text-left coluna_logradouro"><strong>Logradouro</strong></th>
+        <th class="text-center"><strong>Bairro</strong></th>
+        <th class="text-center"><strong>Estado</strong></th>
+        <th class="text-center"><strong>CEP</strong></th>
+        <th class="text-center"><strong></strong></th>
+        <th class="text-center"><strong></strong></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let fornecedor of listaFornecedores">
+        <td class="coluna_id">{{ fornecedor.id }}</td>
+        <td class="coluna_nome">{{ fornecedor.nome }}</td>
+        <td class="coluna_razao_social">{{ fornecedor.dadosEmpresa?.razaoSocial || '-' }}</td>
+        <td class="coluna_logradouro">{{ fornecedor.enderecoFornecedor.logradouro }}<span *ngIf="fornecedor.nrResidencia"> - N° {{ fornecedor.nrResidencia }}</span></td>
+        <td class="text-center">{{ fornecedor.enderecoFornecedor.bairro }}</td>
+        <td class="text-center">{{ fornecedor.enderecoFornecedor.estado }}</td>
+        <td class="text-center">{{ fornecedor.enderecoFornecedor.cep }}</td>
+        <td class="text-center">
+          <button type="button" class="btn btn-info full-width-btn" id="btn_editar" (click)="atualizarFornecedor(modalEditar, fornecedor.id, fornecedor)">✎</button>
+        </td>
+        <td class="text-center">
+          <button type="button" class="btn btn-danger full-width-btn" id="btn_excluir" (click)="deletarFornecedor(modalMsgExcluir, fornecedor.id, fornecedor)">X</button>
+        </td>
+      </tr>
+      <tr>
+        <td colspan="9" style="width: 100%;">
+          <span style="font-size: 14px; color: red"><strong>AVISO: </strong></span> <span style="font-size: 13px;">Informações referentes aos dados do fornecedor como Pessoa Física. Somente a Razão Social refere-se a Pessoa Jurídica.</span>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <div style="margin: 10px 0 0 0; text-align: left;">
+    <button class="btn bg-primary-subtle fw-bold btn-atualizar-lista" (click)="atualizarLista()" role="button">Atualizar</button>
+  </div>
   <mat-paginator [length]="totalRecords" [pageSize]="pageSize" [pageIndex]="currentPage" (page)="trocarPagina($event)"></mat-paginator>
-    </table>
 </div>
 
 <!-- Janela (modal) que abre ao clicar no botão Excluir -->

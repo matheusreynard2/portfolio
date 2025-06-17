@@ -122,3 +122,8 @@
 .disabled-table {
   opacity: 0.6;
 }
+
+.style-btn-form {
+  width: 200px;
+  margin-top: 0.5rem;
+}

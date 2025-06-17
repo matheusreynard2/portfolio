@@ -37,8 +37,6 @@ export class AdicionarFornecedorComponent implements OnInit {
   // Propriedades para o formulário de CNPJ
   cnpjEmpresa: string = '';
   isLoadingCNPJ: boolean = false;
-  telefone1Formatado: string = '';
-  telefone2Formatado: string = '';
 
   endereco: EnderecoFornecedorDTO = {
     cep: '',
@@ -100,6 +98,9 @@ export class AdicionarFornecedorComponent implements OnInit {
   formularioFornecedorHabilitado: boolean = false;
   cnpjBuscado: boolean = false;
   cepBuscado: boolean = false;
+  cnpjCadastradoComSucesso: boolean = false; // Nova variável para controlar se o CNPJ foi cadastrado
+  formularioCNPJVisivel: boolean = true; // Nova variável para controlar a visibilidade do formulário de CNPJ
+  fornecedorCadastradoComSucesso: boolean = false; // Nova variável para controlar a mensagem de sucesso do fornecedor
 
   // Opções da máscara de CEP
   constructor(
@@ -169,6 +170,9 @@ export class AdicionarFornecedorComponent implements OnInit {
       return;
     }
 
+    // Remover mensagem de sucesso do fornecedor ao buscar novo CEP
+    this.fornecedorCadastradoComSucesso = false;
+
     // Ativar loading
     this.isLoading = true;
 
@@ -226,6 +230,9 @@ export class AdicionarFornecedorComponent implements OnInit {
       return;
     }
 
+    // Remover mensagem de sucesso do fornecedor ao buscar novo CNPJ
+    this.fornecedorCadastradoComSucesso = false;
+
     // Ativar loading
     this.isLoadingCNPJ = true;
 
@@ -240,12 +247,6 @@ export class AdicionarFornecedorComponent implements OnInit {
         
         // Preenche os campos com os dados retornados pelo backend
         this.dadosEmpresa = empresa;
-        
-        // Formata os telefones para exibição
-        this.telefone1Formatado = empresa.dddTelefone1 && empresa.telefone1 ? 
-          `(${empresa.dddTelefone1}) ${empresa.telefone1}` : '';
-        this.telefone2Formatado = empresa.dddTelefone2 && empresa.telefone2 ? 
-          `(${empresa.dddTelefone2}) ${empresa.telefone2}` : '';
       },
       error: (error: any) => {
         // Desativar loading
@@ -258,9 +259,9 @@ export class AdicionarFornecedorComponent implements OnInit {
   }
 
   onSubmit(): void {
-    // Validar se o CEP foi buscado
-    if (!this.cepBuscado) {
-      this.mensagemErro = "Por favor, busque pelo CEP usando o botão 'Buscar' antes de finalizar o cadastro.";
+    // Validar se pelo menos o CEP foi preenchido
+    if (!this.endereco.cep.trim()) {
+      this.mensagemErro = "Por favor, digite um CEP antes de finalizar o cadastro.";
       this.modalService.open(this.modalMsgAviso);
       return;
     }
@@ -273,6 +274,9 @@ export class AdicionarFornecedorComponent implements OnInit {
         this.adicionouFornecedor = true;
         this.mensagemErro = "" // VOLTA A MSG DO MODAL DE ERROS PARA STRING VAZIA
         this.modalService.open(this.modalMsgAddFornecedor);
+        
+        // Resetar a tela ao estado inicial após cadastro bem-sucedido
+        this.resetarTelaAoEstadoInicial();
       },
       error: (error: any) => {
         this.mensagemErro = "Erro ao cadastrar fornecedor. Tente novamente.";
@@ -305,11 +309,15 @@ export class AdicionarFornecedorComponent implements OnInit {
     this.formularioFornecedorHabilitado = false;
     this.cnpjBuscado = false;
     this.cepBuscado = false;
+    this.cnpjCadastradoComSucesso = false; // Resetar o estado de CNPJ cadastrado
+    this.formularioCNPJVisivel = true; // Mostrar o formulário de CNPJ novamente
+    this.fornecedorCadastradoComSucesso = false; // Remover mensagem de sucesso do fornecedor
   }
 
   cadastrarCNPJ() {
-    if (this.informarCNPJ && !this.cnpjBuscado) {
-      this.mensagemErro = "Por favor, busque pelos dados da empresa usando o botão 'Buscar Empresa' antes de prosseguir.";
+    // Se escolheu informar CNPJ, verificar se pelo menos o CNPJ foi preenchido
+    if (this.informarCNPJ && !this.cnpjEmpresa.trim()) {
+      this.mensagemErro = "Por favor, digite um CNPJ antes de prosseguir.";
       this.modalService.open(this.modalMsgAviso);
       return;
     }
@@ -317,13 +325,18 @@ export class AdicionarFornecedorComponent implements OnInit {
     if (!this.informarCNPJ) {
       this.dadosEmpresa = null;
     }
+    
+    // Marcar que o CNPJ foi cadastrado com sucesso
+    this.cnpjCadastradoComSucesso = true;
     this.formularioFornecedorHabilitado = true;
+    this.formularioCNPJVisivel = false; // Esconder o formulário de CNPJ
   }
 
   limparFormularioCNPJ() {
     this.cnpjEmpresa = '';
     this.resetDadosEmpresa();
     this.cnpjBuscado = false;
+    this.fornecedorCadastradoComSucesso = false; // Remover mensagem de sucesso do fornecedor
   }
 
   limparFormularioFornecedor(): void {
@@ -346,5 +359,28 @@ export class AdicionarFornecedorComponent implements OnInit {
       siafi: '',
       erro: ''
     };
+    this.fornecedorCadastradoComSucesso = false; // Remover mensagem de sucesso do fornecedor
+  }
+
+  resetarTelaAoEstadoInicial() {
+    // Resetar dados do CNPJ
+    this.cnpjEmpresa = '';
+    this.resetDadosEmpresa();
+    this.cnpjBuscado = false;
+    this.cnpjCadastradoComSucesso = false;
+    this.formularioCNPJVisivel = true;
+    
+    // Resetar dados do fornecedor
+    this.limparFormularioFornecedor();
+    this.cepBuscado = false;
+    
+    // Resetar estados dos formulários
+    this.formularioFornecedorHabilitado = false;
+    
+    // Manter radio button "SIM" selecionado
+    this.informarCNPJ = true;
+    
+    // Ativar mensagem de sucesso do fornecedor
+    this.fornecedorCadastradoComSucesso = true;
   }
 }
