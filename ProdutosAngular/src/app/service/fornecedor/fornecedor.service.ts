@@ -8,6 +8,7 @@ import { Router } from '@angular/router';
 import { FornecedorDTO } from '../../model/dto/FornecedorDTO';
 import { PaginatedResponse } from '../../paginated-response';
 import { HttpBaseService } from '../base/http-base.service';
+import { DadosEmpresaDTO } from '../../model/dto/DadosEmpresaDTO';
 
 @Injectable({
   providedIn: 'root'
@@ -63,6 +64,14 @@ export class FornecedorService extends HttpBaseService {
 
   listarFornecedoresList(idUsuario: number): Observable<FornecedorDTO[]> {
     return this.http.get<FornecedorDTO[]>(`${this.fornecedorUrl}/listarFornecedoresList/${idUsuario}`)
+      .pipe(catchError(error => this.catchErrorTokenExpirado(error)));
+  }
+
+  // OBTEM DADOS DA EMPRESA ATRAVÉS DO CNPJ
+  obterEmpresaViaCNPJ(cnpj: string): Observable<DadosEmpresaDTO> {
+    // Remove caracteres não numéricos do CNPJ
+    const cnpjLimpo = cnpj.replace(/\D/g, '');
+    return this.http.get<DadosEmpresaDTO>(this.fornecedorUrl + "/consultarCNPJ/" + cnpjLimpo)
       .pipe(catchError(error => this.catchErrorTokenExpirado(error)));
   }
 }

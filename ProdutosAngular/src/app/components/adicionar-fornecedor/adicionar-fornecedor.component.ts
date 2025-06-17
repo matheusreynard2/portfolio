@@ -9,6 +9,7 @@ import { NgxMaskDirective, provideNgxMask } from 'ngx-mask';
 import {FornecedorDTO} from '../../model/dto/FornecedorDTO';
 import { AuthService } from '../../service/auth/auth.service';
 import { Router } from '@angular/router';
+import { DadosEmpresaDTO } from '../../model/dto/DadosEmpresaDTO';
 
 @Component({
   selector: 'adicionar-fornecedor',
@@ -33,6 +34,12 @@ export class AdicionarFornecedorComponent implements OnInit {
   mensagemErro: string = '';
   isLoading: boolean = false; // Variável para controlar o loading
 
+  // Propriedades para o formulário de CNPJ
+  cnpjEmpresa: string = '';
+  isLoadingCNPJ: boolean = false;
+  telefone1Formatado: string = '';
+  telefone2Formatado: string = '';
+
   endereco: EnderecoFornecedorDTO = {
     cep: '',
     logradouro: '',
@@ -50,14 +57,49 @@ export class AdicionarFornecedorComponent implements OnInit {
     erro: ''
   };
 
+  dadosEmpresa: DadosEmpresaDTO | null = {
+    cnpj: '',
+    razaoSocial: '',
+    nomeFantasia: '',
+    cnaeFiscal: '',
+    codigoNaturezaJuridica: '',
+    descricaoNaturezaJuridica: '',
+    situacaoCadastral: '',
+    dataSituacaoCadastral: '',
+    dataInicioAtividade: '',
+    porte: '',
+    capitalSocial: '',
+    logradouro: '',
+    numero: '',
+    complemento: '',
+    bairro: '',
+    cep: '',
+    municipio: '',
+    uf: '',
+    pais: '',
+    dddTelefone1: '',
+    telefone1: '',
+    dddTelefone2: '',
+    telefone2: '',
+    email: '',
+    cnaesSecundarios: [],
+    qsa: []
+  };
+
   novoFornecedor: FornecedorDTO = {
     id: 0,
     idUsuario: 0,
     nome: '',
     nrResidencia: '',
     enderecoFornecedor: this.endereco,
-    produtos: []
+    produtos: [],
+    dadosEmpresa: null
   };
+
+  informarCNPJ: boolean = true;
+  formularioFornecedorHabilitado: boolean = false;
+  cnpjBuscado: boolean = false;
+  cepBuscado: boolean = false;
 
   // Opções da máscara de CEP
   constructor(
@@ -72,6 +114,43 @@ export class AdicionarFornecedorComponent implements OnInit {
     // ENDPOINT PARA VERIFICAR TOKEN E LIBERAR ACESSO
     this.fornecedorService.acessarPaginaFornecedor().subscribe();
 
+    // Inicializa com um objeto vazio se informarCNPJ for true
+    this.resetDadosEmpresa();
+  }
+
+  resetDadosEmpresa() {
+    if (this.informarCNPJ) {
+      this.dadosEmpresa = {
+        cnpj: '',
+        razaoSocial: '',
+        nomeFantasia: '',
+        cnaeFiscal: '',
+        codigoNaturezaJuridica: '',
+        descricaoNaturezaJuridica: '',
+        situacaoCadastral: '',
+        dataSituacaoCadastral: '',
+        dataInicioAtividade: '',
+        porte: '',
+        capitalSocial: '',
+        logradouro: '',
+        numero: '',
+        complemento: '',
+        bairro: '',
+        cep: '',
+        municipio: '',
+        uf: '',
+        pais: '',
+        dddTelefone1: '',
+        telefone1: '',
+        dddTelefone2: '',
+        telefone2: '',
+        email: '',
+        cnaesSecundarios: [],
+        qsa: []
+      };
+    } else {
+      this.dadosEmpresa = null;
+    }
   }
 
   buscarEnderecoPorCep(cep: string): void {
@@ -99,8 +178,12 @@ export class AdicionarFornecedorComponent implements OnInit {
         // Desativar loading
         this.isLoading = false;
         
+        // Marcar que o CEP foi buscado com sucesso
+        this.cepBuscado = true;
+        
         // Verifica APENAS o campo erro, não verificar o CEP novamente
         if (endereco.erro === "true") {
+          this.cepBuscado = false;
           this.mensagemErro = "CEP não encontrado.";
           this.modalService.open(this.modalMsgAviso);
           return;
@@ -120,13 +203,68 @@ export class AdicionarFornecedorComponent implements OnInit {
       error: (error: any) => {
         // Desativar loading
         this.isLoading = false;
+        this.cepBuscado = false;
         this.mensagemErro = "Erro ao buscar CEP. Tente novamente.";
         this.modalService.open(this.modalMsgAviso);
       }
     });
   }
 
+  buscarEmpresaPorCNPJ(cnpj: string): void {
+    if (!cnpj) {
+      this.mensagemErro = "Por favor, digite um CNPJ.";
+      this.modalService.open(this.modalMsgAviso);
+      return;
+    }
+
+    // Remover caracteres não numéricos do CNPJ
+    const cnpjLimpo = cnpj.replace(/\D/g, '');
+
+    if (cnpjLimpo.length !== 14) {
+      this.mensagemErro = "CNPJ inválido. Por favor, digite um CNPJ com 14 dígitos.";
+      this.modalService.open(this.modalMsgAviso);
+      return;
+    }
+
+    // Ativar loading
+    this.isLoadingCNPJ = true;
+
+    // Chama o serviço que se comunica com o backend
+    this.fornecedorService.obterEmpresaViaCNPJ(cnpjLimpo).subscribe({
+      next: (empresa: DadosEmpresaDTO) => {
+        // Desativar loading
+        this.isLoadingCNPJ = false;
+        
+        // Marcar que o CNPJ foi buscado com sucesso
+        this.cnpjBuscado = true;
+        
+        // Preenche os campos com os dados retornados pelo backend
+        this.dadosEmpresa = empresa;
+        
+        // Formata os telefones para exibição
+        this.telefone1Formatado = empresa.dddTelefone1 && empresa.telefone1 ? 
+          `(${empresa.dddTelefone1}) ${empresa.telefone1}` : '';
+        this.telefone2Formatado = empresa.dddTelefone2 && empresa.telefone2 ? 
+          `(${empresa.dddTelefone2}) ${empresa.telefone2}` : '';
+      },
+      error: (error: any) => {
+        // Desativar loading
+        this.isLoadingCNPJ = false;
+        this.cnpjBuscado = false;
+        this.mensagemErro = "Erro ao buscar CNPJ. Tente novamente.";
+        this.modalService.open(this.modalMsgAviso);
+      }
+    });
+  }
+
   onSubmit(): void {
+    // Validar se o CEP foi buscado
+    if (!this.cepBuscado) {
+      this.mensagemErro = "Por favor, busque pelo CEP usando o botão 'Buscar' antes de finalizar o cadastro.";
+      this.modalService.open(this.modalMsgAviso);
+      return;
+    }
+    
     this.gerarDadosFornecedor();
     // Adiciona o produto no banco depois chama a mensagem de sucesso de adição de produto "msgAddProduto"
     this.fornecedorService.adicionarFornecedor(this.novoFornecedor).subscribe({
@@ -135,6 +273,10 @@ export class AdicionarFornecedorComponent implements OnInit {
         this.adicionouFornecedor = true;
         this.mensagemErro = "" // VOLTA A MSG DO MODAL DE ERROS PARA STRING VAZIA
         this.modalService.open(this.modalMsgAddFornecedor);
+      },
+      error: (error: any) => {
+        this.mensagemErro = "Erro ao cadastrar fornecedor. Tente novamente.";
+        this.modalService.open(this.modalMsgAviso);
       }
     });
   }
@@ -152,7 +294,57 @@ export class AdicionarFornecedorComponent implements OnInit {
         ...this.endereco,
         cep: cepFormatado // Garante que o CEP seja enviado apenas com números
       },
-      produtos: []
+      produtos: [],
+      dadosEmpresa: this.dadosEmpresa
     }
+  }
+
+  onInformarCNPJChange() {
+    this.resetDadosEmpresa();
+    this.cnpjEmpresa = '';
+    this.formularioFornecedorHabilitado = false;
+    this.cnpjBuscado = false;
+    this.cepBuscado = false;
+  }
+
+  cadastrarCNPJ() {
+    if (this.informarCNPJ && !this.cnpjBuscado) {
+      this.mensagemErro = "Por favor, busque pelos dados da empresa usando o botão 'Buscar Empresa' antes de prosseguir.";
+      this.modalService.open(this.modalMsgAviso);
+      return;
+    }
+    
+    if (!this.informarCNPJ) {
+      this.dadosEmpresa = null;
+    }
+    this.formularioFornecedorHabilitado = true;
+  }
+
+  limparFormularioCNPJ() {
+    this.cnpjEmpresa = '';
+    this.resetDadosEmpresa();
+    this.cnpjBuscado = false;
+  }
+
+  limparFormularioFornecedor(): void {
+    this.nomeFornecedor = '';
+    this.nrResidenciaFornecedor = '';
+    this.cepBuscado = false;
+    this.endereco = {
+      cep: '',
+      logradouro: '',
+      complemento: '',
+      unidade: '',
+      bairro: '',
+      localidade: '',
+      uf: '',
+      estado: '',
+      regiao: '',
+      ibge: '',
+      gia: '',
+      ddd: '',
+      siafi: '',
+      erro: ''
+    };
   }
 }

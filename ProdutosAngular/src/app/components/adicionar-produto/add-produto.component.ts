@@ -115,7 +115,7 @@ export class AddProdutoComponent implements OnInit {
     if (this.adicionouProduto && this.novoProduto && modalMsgAddProduto) {
       setTimeout(() => {
         try {
-          const modalRef = this.modalService.open(modalMsgAddProduto);
+          const modalRef = this.modalService.open(modalMsgAddProduto, {size: 'lg'});
           if (modalRef && modalRef.componentInstance) {
             modalRef.componentInstance.produto = this.novoProduto;
           }

@@ -1,3 +1,4 @@
+import { DadosEmpresaDTO } from './DadosEmpresaDTO';
 import {EnderecoFornecedorDTO} from './EnderecoFornecedorDTO';
 import {ProdutoDTO} from './ProdutoDTO';
 
@@ -8,4 +9,5 @@ export interface FornecedorDTO {
   nrResidencia: string;
   enderecoFornecedor: EnderecoFornecedorDTO;
   produtos: ProdutoDTO[];
+  dadosEmpresa: DadosEmpresaDTO | null;
 }

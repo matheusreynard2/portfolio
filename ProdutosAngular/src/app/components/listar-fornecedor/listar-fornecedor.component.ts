@@ -94,7 +94,7 @@ export class ListarFornecedorComponent implements OnInit {
       next: () => {
         modal.close();
         this.atualizarLista();
-        this.modalService.open(this.modalAviso);
+        this.modalService.open(this.modalAviso, {size: 'sm'});
       },
       error: (error) => {
         console.error('Erro ao atualizar fornecedor:', error);

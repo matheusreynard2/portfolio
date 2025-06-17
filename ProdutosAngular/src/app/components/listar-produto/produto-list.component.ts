@@ -199,7 +199,8 @@ export class ProdutoListComponent implements OnInit {
         nome: this.fornecedorSelecionado.nome,
         nrResidencia: this.fornecedorSelecionado.nrResidencia,
         enderecoFornecedor: this.fornecedorSelecionado.enderecoFornecedor,
-        produtos: [] // Array vazio para evitar referência circular
+        produtos: [],
+        dadosEmpresa: this.fornecedorSelecionado.dadosEmpresa // Array vazio para evitar referência circular
       };
       this.produtoAtualizar.fornecedor = fornecedorParaEnviar;
     }
@@ -209,7 +210,7 @@ export class ProdutoListComponent implements OnInit {
   onSubmitSalvar(modal: any) {
     this.calcularValores(this.produtoAtualizar);
     
-   this.criarFornecedor();
+    this.criarFornecedor();
 
     // CHAMA O ATUALIZAR PRODUTO
     this.produtoService.atualizarProduto(this.produtoAtualizar.id, this.produtoAtualizar, this.imagemFile).subscribe({
@@ -257,8 +258,8 @@ export class ProdutoListComponent implements OnInit {
   }
 
   // Função que abre o modal - Janel de Aviso para Atualizar List de Produtos
-  abrirTelaAviso(modalAviso: any) {
-    this.modalService.open(modalAviso);
+  abrirTelaAviso(modalSalvouProduto: any) {
+    this.modalService.open(modalSalvouProduto, {size: 'sm'});
   }
 
   // Função chamada ao mudar de valor na ComboBox Tipo de Pesquisa

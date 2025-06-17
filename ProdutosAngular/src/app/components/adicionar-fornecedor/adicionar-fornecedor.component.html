@@ -1,15 +1,351 @@
 <div class="card my-5">
   <div class="card-body">
-    <form (ngSubmit)="onSubmit()" #fornecedorForm="ngForm">
+    <!-- Radio group para informar CNPJ - SEMPRE VISÍVEL -->
+    <div class="mb-3">
+      <label class="me-2 fw-bold">Informar CNPJ?</label>
+      <div class="form-check form-check-inline">
+        <input class="form-check-input" type="radio" name="informarCNPJ" id="informarCNPJSim" 
+               [(ngModel)]="informarCNPJ" [value]="true" (change)="onInformarCNPJChange()">
+        <label class="form-check-label" for="informarCNPJSim">SIM</label>
+      </div>
+      <div class="form-check form-check-inline">
+        <input class="form-check-input" type="radio" name="informarCNPJ" id="informarCNPJNao" 
+               [(ngModel)]="informarCNPJ" [value]="false" (change)="onInformarCNPJChange()">
+        <label class="form-check-label" for="informarCNPJNao">NÃO</label>
+      </div>
+    </div>
+
+    <!-- Campos relacionados ao CNPJ -->
+    <div *ngIf="informarCNPJ">
+      <table class="table table-bordered" style="width: 100%; table-layout: fixed;">
+        <thead>
+          <tr>
+            <th colspan="6" class="text-center">Dados da Empresa (CNPJ)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Linha 1: CNPJ e botões -->
+          <tr>
+            <td style="width: 16%;">
+              <label for="cnpjEmpresa">CNPJ:</label>
+            </td>
+            <td style="width: 24%;">
+              <input type="text" [(ngModel)]="cnpjEmpresa"
+                     class="form-control"
+                     id="cnpjEmpresa"
+                     name="cnpjEmpresa"
+                     placeholder="00.000.000/0000-00"
+                     mask="00.000.000/0000-00"
+                     [showMaskTyped]="true"
+                     required>
+            </td>
+            <td colspan="4" style="width: 60%;">
+              <button type="button" 
+                      class="btn btn-secondary me-2" 
+                      (click)="buscarEmpresaPorCNPJ(cnpjEmpresa)"
+                      [disabled]="isLoadingCNPJ">
+                <span *ngIf="!isLoadingCNPJ">Buscar Empresa</span>
+                <span *ngIf="isLoadingCNPJ" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                <span *ngIf="isLoadingCNPJ">Buscando...</span>
+              </button>
+              <button type="button" 
+                      class="btn btn-warning" 
+                      (click)="limparFormularioCNPJ()">
+                Limpar Campos
+              </button>
+            </td>
+          </tr>
+
+          <!-- Campos que dependem do dadosEmpresa -->
+          <ng-container *ngIf="dadosEmpresa">
+            <!-- Linha 2: Razão Social e Nome Fantasia -->
+            <tr>
+              <td style="width: 16%;">
+                <label for="razaoSocial">Razão Social:</label>
+              </td>
+              <td style="width: 24%;">
+                <input type="text" [ngModel]="dadosEmpresa.razaoSocial"
+                       class="form-control"
+                       id="razaoSocial"
+                       name="razaoSocial"
+                       readonly>
+              </td>
+              <td style="width: 12%;">
+                <label for="nomeFantasia">Nome Fantasia:</label>
+              </td>
+              <td colspan="3" style="width: 48%;">
+                <input type="text" [ngModel]="dadosEmpresa.nomeFantasia"
+                       class="form-control"
+                       id="nomeFantasia"
+                       name="nomeFantasia"
+                       readonly>
+              </td>
+            </tr>
+
+            <!-- Linha 3: CNAE Fiscal e Natureza Jurídica -->
+            <tr>
+              <td style="width: 16%;">
+                <label for="cnaeFiscal">CNAE Fiscal:</label>
+              </td>
+              <td style="width: 24%;">
+                <input type="text" [(ngModel)]="dadosEmpresa.cnaeFiscal"
+                       class="form-control"
+                       id="cnaeFiscal"
+                       name="cnaeFiscal"
+                       readonly>
+              </td>
+              <td style="width: 12%;">
+                <label for="naturezaJuridica">Natureza Jurídica:</label>
+              </td>
+              <td colspan="3" style="width: 48%;">
+                <input type="text" [(ngModel)]="dadosEmpresa.descricaoNaturezaJuridica"
+                       class="form-control"
+                       id="naturezaJuridica"
+                       name="naturezaJuridica"
+                       readonly>
+              </td>
+            </tr>
+
+            <!-- Linha 4: Situação Cadastral e Data Situação -->
+            <tr>
+              <td style="width: 16%;">
+                <label for="situacaoCadastral">Situação Cadastral:</label>
+              </td>
+              <td style="width: 24%;">
+                <input type="text" [(ngModel)]="dadosEmpresa.situacaoCadastral"
+                       class="form-control"
+                       id="situacaoCadastral"
+                       name="situacaoCadastral"
+                       readonly>
+              </td>
+              <td style="width: 12%;">
+                <label for="dataSituacao">Data Situação:</label>
+              </td>
+              <td colspan="3" style="width: 48%;">
+                <input type="text" [(ngModel)]="dadosEmpresa.dataSituacaoCadastral"
+                       class="form-control"
+                       id="dataSituacao"
+                       name="dataSituacao"
+                       readonly>
+              </td>
+            </tr>
+
+            <!-- Linha 5: Data Início Atividade e Porte -->
+            <tr>
+              <td style="width: 16%;">
+                <label for="dataInicioAtividade">Data Início Atividade:</label>
+              </td>
+              <td style="width: 24%;">
+                <input type="text" [(ngModel)]="dadosEmpresa.dataInicioAtividade"
+                       class="form-control"
+                       id="dataInicioAtividade"
+                       name="dataInicioAtividade"
+                       readonly>
+              </td>
+              <td style="width: 12%;">
+                <label for="porte">Porte:</label>
+              </td>
+              <td colspan="3" style="width: 48%;">
+                <input type="text" [(ngModel)]="dadosEmpresa.porte"
+                       class="form-control"
+                       id="porte"
+                       name="porte"
+                       readonly>
+              </td>
+            </tr>
+
+            <!-- Linha 6: Capital Social -->
+            <tr>
+              <td style="width: 16%;">
+                <label for="capitalSocial">Capital Social:</label>
+              </td>
+              <td colspan="5" style="width: 84%;">
+                <input type="text" [(ngModel)]="dadosEmpresa.capitalSocial"
+                       class="form-control"
+                       id="capitalSocial"
+                       name="capitalSocial"
+                       readonly>
+              </td>
+            </tr>
+
+            <!-- Linha 7: Endereço - Logradouro e Número -->
+            <tr>
+              <td style="width: 16%;">
+                <label for="logradouroEmpresa">Logradouro:</label>
+              </td>
+              <td style="width: 24%;">
+                <input type="text" [(ngModel)]="dadosEmpresa.logradouro"
+                       class="form-control"
+                       id="logradouroEmpresa"
+                       name="logradouroEmpresa"
+                       readonly>
+              </td>
+              <td style="width: 12%;">
+                <label for="numeroEmpresa">Número:</label>
+              </td>
+              <td colspan="3" style="width: 48%;">
+                <input type="text" [(ngModel)]="dadosEmpresa.numero"
+                       class="form-control"
+                       id="numeroEmpresa"
+                       name="numeroEmpresa"
+                       readonly>
+              </td>
+            </tr>
+
+            <!-- Linha 8: Endereço - Complemento e Bairro -->
+            <tr>
+              <td style="width: 16%;">
+                <label for="complementoEmpresa">Complemento:</label>
+              </td>
+              <td style="width: 24%;">
+                <input type="text" [(ngModel)]="dadosEmpresa.complemento"
+                       class="form-control"
+                       id="complementoEmpresa"
+                       name="complementoEmpresa"
+                       readonly>
+              </td>
+              <td style="width: 12%;">
+                <label for="bairroEmpresa">Bairro:</label>
+              </td>
+              <td colspan="3" style="width: 48%;">
+                <input type="text" [(ngModel)]="dadosEmpresa.bairro"
+                       class="form-control"
+                       id="bairroEmpresa"
+                       name="bairroEmpresa"
+                       readonly>
+              </td>
+            </tr>
+
+            <!-- Linha 9: Endereço - CEP, Município e UF -->
+            <tr>
+              <td style="width: 16%;">
+                <label for="cepEmpresa">CEP:</label>
+              </td>
+              <td style="width: 24%;">
+                <input type="text" [(ngModel)]="dadosEmpresa.cep"
+                       class="form-control"
+                       id="cepEmpresa"
+                       name="cepEmpresa"
+                       readonly>
+              </td>
+              <td style="width: 12%;">
+                <label for="municipioEmpresa">Município:</label>
+              </td>
+              <td style="width: 16%;">
+                <input type="text" [(ngModel)]="dadosEmpresa.municipio"
+                       class="form-control"
+                       id="municipioEmpresa"
+                       name="municipioEmpresa"
+                       readonly>
+              </td>
+              <td style="width: 12%;">
+                <label for="ufEmpresa">UF:</label>
+              </td>
+              <td style="width: 20%;">
+                <input type="text" [(ngModel)]="dadosEmpresa.uf"
+                       class="form-control"
+                       id="ufEmpresa"
+                       name="ufEmpresa"
+                       readonly>
+              </td>
+            </tr>
+
+            <!-- Linha 9.5: País -->
+            <tr>
+              <td style="width: 16%;">
+                <label for="paisEmpresa">País:</label>
+              </td>
+              <td colspan="5" style="width: 84%;">
+                <input type="text" [(ngModel)]="dadosEmpresa.pais"
+                       class="form-control"
+                       id="paisEmpresa"
+                       name="paisEmpresa"
+                       readonly>
+              </td>
+            </tr>
+
+            <!-- Linha 10: Telefones -->
+            <tr>
+              <td style="width: 16%;">
+                <label for="telefone1">Telefone 1:</label>
+              </td>
+              <td style="width: 24%;">
+                <input type="text" [(ngModel)]="telefone1Formatado"
+                       class="form-control"
+                       id="telefone1"
+                       name="telefone1"
+                       readonly>
+              </td>
+              <td style="width: 12%;">
+                <label for="telefone2">Telefone 2:</label>
+              </td>
+              <td colspan="3" style="width: 48%;">
+                <input type="text" [(ngModel)]="telefone2Formatado"
+                       class="form-control"
+                       id="telefone2"
+                       name="telefone2"
+                       readonly>
+              </td>
+            </tr>
+
+            <!-- Linha 11: Email -->
+            <tr>
+              <td style="width: 16%;">
+                <label for="emailEmpresa">Email:</label>
+              </td>
+              <td colspan="5" style="width: 84%;">
+                <input type="text" [(ngModel)]="dadosEmpresa.email"
+                       class="form-control"
+                       id="emailEmpresa"
+                       name="emailEmpresa"
+                       readonly>
+              </td>
+            </tr>
+          </ng-container>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Mensagem quando não informar CNPJ -->
+    <div *ngIf="!informarCNPJ" class="alert alert-info">
+      <p>Você optou por não informar os dados do CNPJ.</p>
+    </div>
+
+    <!-- Botão Próximo -->
+    <div class="text-left mt-3">
+      <button type="button" class="btn bg-primary-subtle fw-bold" (click)="cadastrarCNPJ()">Próximo</button>
+    </div>
+
+    <!-- Indicador de status do CNPJ -->
+    <div *ngIf="informarCNPJ" class="mt-2">
+      <small class="text-muted">
+        <span *ngIf="cnpjBuscado" class="text-success">
+          <i class="bi bi-check-circle-fill"></i> Dados da empresa carregados com sucesso
+        </span>
+        <span *ngIf="!cnpjBuscado" class="text-warning">
+          <i class="bi bi-exclamation-triangle-fill"></i> Clique em "Buscar Empresa" para carregar os dados
+        </span>
+      </small>
+    </div>
+  </div>
+</div>
+
+<div class="card my-5">
+  <div class="card-body">
+    <div class="div-tabela">
+      
+
+    <!-- INÍCIO FORMULÁRIO DE CADASTRO DE FORNECEDOR -->
+    <form (ngSubmit)="onSubmit()" #fornecedorForm="ngForm" [class.disabled-form]="!formularioFornecedorHabilitado">
       <div class="div-tabela">
-        <table class="table table-bordered" style="width: 100%; table-layout: fixed;">
+        <table class="table table-bordered" style="width: 100%; table-layout: fixed;" [class.disabled-table]="!formularioFornecedorHabilitado">
           <thead>
           <tr>
             <th colspan="6" class="text-center">Cadastrar um novo fornecedor</th>
           </tr>
           </thead>
           <tbody>
-          <!-- Linha 1: Nome do Fornecedor, CEP e botão Buscar -->
+          <!-- Linha 1: Nome do Fornecedor, CEP e botões -->
           <tr>
             <td style="width: 16%;">
               <span style="color: red">* </span>
@@ -34,12 +370,10 @@
               <label for="cep" class="required">CEP:</label>
             </td>
             <td style="width: 16%;">
-              <input
-                type="text"
+              <input type="text" [(ngModel)]="endereco.cep"
                 class="form-control"
                 id="cep"
                 name="cep"
-                [(ngModel)]="endereco.cep"
                 mask="00000-000"
                 [showMaskTyped]="true"
                 placeholder="00000-000"
@@ -51,14 +385,19 @@
                 O CEP é obrigatório.
               </div>
             </td>
-            <td colspan="2" style="width: 12%;">
+            <td colspan="2" style="width: 32%;">
               <button type="button" 
-                      class="btn btn-secondary" 
+                      class="btn btn-secondary me-2" 
                       (click)="buscarEnderecoPorCep(endereco.cep)"
                       [disabled]="isLoading">
                 <span *ngIf="!isLoading">Buscar</span>
                 <span *ngIf="isLoading" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
                 <span *ngIf="isLoading">Buscando...</span>
+              </button>
+              <button type="button" 
+                      class="btn btn-warning" 
+                      (click)="limparFormularioFornecedor()">
+                Limpar Campos
               </button>
             </td>
           </tr>
@@ -216,22 +555,39 @@
           <!-- Linha 7: Aviso -->
           <tr>
             <td colspan="6" style="width: 100%;">
-              <span style="font-size: 14px; color: red"><strong>AVISO:</strong></span> <span style="font-size: 13px;"> Busque pelo CEP, então todos os campos serão preenchidos automaticamente. Após isso, informe o nome do fornecedor.</span>
+              <span style="font-size: 14px; color: red"><strong>AVISO: </strong></span> <span style="font-size: 13px;"> Busque pelo CEP e informe um Nome para finalizar o cadastro.</span>
             </td>
           </tr>
 
           <!-- Linha 8: Botão Cadastrar -->
           <tr>
             <td colspan="6" class="text-left" style="width: 100%;">
-              <button type="submit" [disabled]="!fornecedorForm.form.valid" class="btn bg-primary-subtle fw-bold">Cadastrar</button>
+              <button type="submit" 
+                      [disabled]="!fornecedorForm.form.valid || !cepBuscado" 
+                      class="btn bg-primary-subtle fw-bold">
+                Cadastrar
+              </button>
+            </td>
+          </tr>
+
+          <!-- Indicador de status do CEP -->
+          <tr>
+            <td colspan="6" style="width: 100%;">
+              <small class="text-muted">
+                <span *ngIf="cepBuscado" class="text-success">
+                  <i class="bi bi-check-circle-fill"></i> Endereço carregado com sucesso
+                </span>
+                <span *ngIf="!cepBuscado" class="text-warning">
+                  <i class="bi bi-exclamation-triangle-fill"></i> Clique em "Buscar" para carregar o endereço
+                </span>
+              </small>
             </td>
           </tr>
           </tbody>
         </table>
       </div>
     </form>
-  </div>
-</div>
+    <!-- FIM FORMULÁRIO DE CADASTRO DE FORNECEDOR -->
 
 <!-- Janela (modal) que abre depois de cadastrar um fornecedor -->
 <ng-template #modalMsgAddFornecedor let-modal>
@@ -264,3 +620,11 @@
     <button type="button" class="btn btn-secondary" (click)="modal.close()">Fechar</button>
   </div>
 </ng-template>
+    </div>
+  </div>
+</div>
+
+<!-- Template alternativo quando dadosEmpresa for null -->
+<div *ngIf="!dadosEmpresa && !informarCNPJ">
+  <p class="text-muted">Dados da empresa não serão informados.</p>
+</div>

@@ -370,7 +370,7 @@
             <button type="submit" 
                     class="btn btn-salvar" 
                     [disabled]="!produtoForm.form.valid" 
-                    (click)="abrirTelaAviso(modalAviso)">
+                    (click)="abrirTelaAviso(modalSalvouProduto)">
               Salvar produto
             </button>
           </div>
@@ -406,7 +406,7 @@
 </ng-template>
 
 <!-- Janela (modal) de AVISO que abre depois de Salvar as atualizações de um produto -->
-<ng-template #modalAviso let-modal>
+<ng-template #modalSalvouProduto let-modal>
   <div class="modal-header">
     <h4 class="modal-title">
       AVISO!
