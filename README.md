@@ -30,6 +30,7 @@ Front-end em Angular e TypeScript do sistema Prodify, parte que consome a API de
 - Layout Modo Dark ON/OFF
 - Integração com Google Cloud APIs para informações de localização
 - Integração com Via CEP API para preenchimento automático e detalhado de endereço
+- Integração com Brasil API para detecção de dados empresariais via CNPJ.
 
 ### Funcionalidades em desenvolvimento
 - Categoria de produtos
