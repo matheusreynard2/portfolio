@@ -398,7 +398,7 @@ p {
   opacity: 0.2; /* Menor opacidade */
 }
 
-.text-overlay {
+.text-bar {
   position: absolute;
   top: 0;
   left: 0;

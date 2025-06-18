@@ -177,16 +177,19 @@ p {
 .text-1 {
   animation: text1-complete 15s infinite;
   animation-fill-mode: both;
+  font-family: 'Courier New', monospace;
 }
 
 .text-2 {
   animation: text2-complete 15s infinite;
   animation-fill-mode: both;
+  font-family: 'Courier New', monospace;
 }
 
 .text-3 {
   animation: text3-complete 15s infinite;
   animation-fill-mode: both;
+  font-family: 'Courier New', monospace;
 }
 
 /* TEXTO 1: "Matheus Reynard" - 0-30% do ciclo */
