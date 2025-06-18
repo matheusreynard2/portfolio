@@ -1,55 +1,119 @@
+/* Estilos do card */
+.card {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  background-color: #fff;
+}
+
+.card-body {
+  padding: 20px;
+}
+
+/* Container da tabela */
 .div-tabela {
   width: 100%;
   margin: 0 auto;
   overflow-x: auto;
-}
-
-.img-right {
-  position: absolute;
-  right: 0;
-  top: 0;
-  opacity: 75%;
-}
-
-.tabela-container {
-  max-width: 100%;
-  overflow-x: auto;
-  overflow-y: auto;
-  max-height: 500px; /* Altura máxima visível */
   border: 1px solid #dee2e6;
+  border-radius: 4px;
 }
 
-.table-fixed {
-  table-layout: fixed;
+/* Estilos da tabela */
+.table {
+  margin-bottom: 0;
+  background-color: #fff;
   width: 100%;
-  min-width: 900px; /* Define um tamanho mínimo para aparecer scroll horizontal */
+  min-width: 900px;
 }
 
+/* Colunas com larguras fixas */
 .coluna_id {
   width: 80px;
-  text-align: center
+  min-width: 60px;
+  max-width: 100px;
+  text-align: center;
 }
 
 .coluna_nome {
   width: 200px;
+  min-width: 150px;
+  max-width: 300px;
   text-align: left !important;
 }
 
 .coluna_razao_social {
   width: 250px;
+  min-width: 200px;
+  max-width: 350px;
   text-align: left !important;
 }
 
 .coluna_logradouro {
-  text-align: left !important;
   width: 300px;
+  min-width: 200px;
+  max-width: 400px;
+  text-align: left !important;
 }
 
+.coluna_acao {
+  width: 80px;
+  min-width: 60px;
+  max-width: 100px;
+}
+
+/* Botões */
 .full-width-btn {
   width: 100%;
+  padding: 4px 8px;
+  font-size: 14px;
 }
 
-/* Estilos para o modal de edição */
+button.btn.bg-primary-subtle.fw-bold.btn-atualizar-lista {
+  background-color: #e7f1ff;
+  border-color: #b6d4fe;
+  color: #084298;
+  font-weight: bold;
+  padding: 8px 16px;
+  margin: 10px 0;
+  transition: all 0.3s ease;
+}
+
+button.btn.bg-primary-subtle.fw-bold.btn-atualizar-lista:hover {
+  background-color: #cfe2ff;
+  border-color: #9ec5fe;
+  color: #084298;
+}
+
+td:has(.btn.bg-primary-subtle.fw-bold.btn-atualizar-lista) {
+  background-color: transparent !important;
+  border: none;
+}
+
+/* Container de informações */
+.info-container {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 5px 0;
+  font-size: 12px;
+}
+
+.info-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.info-label {
+  font-weight: 600;
+  color: #dc3545;
+}
+
+.info-text {
+  color: #6c757d;
+}
+
+/* Modal */
 .modal-container {
   padding: 20px;
 }
@@ -68,19 +132,58 @@
 }
 
 .img-right {
-  margin-left: auto;
+  position: absolute;
+  right: 0;
+  top: 0;
+  opacity: 75%;
 }
 
-.fornecedor-info {
-  font-size: 1.1rem;
-  margin-bottom: 20px;
-  color: #666;
+/* Responsividade */
+@media (max-width: 768px) {
+  .card-body {
+    padding: 10px;
+  }
+
+  .div-tabela {
+    border: none;
+  }
+
+  .table {
+    min-width: 700px;
+  }
+
+  .full-width-btn {
+    padding: 2px 4px;
+    font-size: 12px;
+  }
+
+  .info-container {
+    flex-direction: column;
+    gap: 5px;
+  }
+
+  .info-item {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  button.btn.bg-primary-subtle.fw-bold.btn-atualizar-lista {
+    width: 100%;
+    margin: 5px 0;
+  }
 }
 
-.fornecedor-form {
-  max-width: 100%;
+@media (max-width: 480px) {
+  .table {
+    min-width: 500px;
+  }
+
+  .card-body {
+    padding: 5px;
+  }
 }
 
+/* Formulário */
 .form-section {
   margin-bottom: 25px;
   padding: 15px;
@@ -150,47 +253,10 @@
   background-color: #5a6268;
 }
 
-/* Responsividade */
-@media (max-width: 768px) {
-  .form-row {
-    flex-direction: column;
-    gap: 10px;
-  }
-
-  .button-container {
-    flex-direction: column;
-  }
-
-  .modal-container {
-    padding: 10px;
-  }
-}
-
-/* Estilos para as informações */
-.info-container {
-  display: flex;
-  align-items: center;
-  gap: 15px;
-  padding: 5px 0;
+/* Validação */
+.validation-message {
+  color: #dc3545;
   font-size: 12px;
-}
-
-.info-item {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.info-label {
-  font-weight: 600;
-  color: #495057;
-}
-
-.info-text {
-  color: #6c757d;
-}
-
-.info-divider {
-  color: #dee2e6;
-  font-weight: 300;
+  margin-top: 4px;
+  display: block;
 }

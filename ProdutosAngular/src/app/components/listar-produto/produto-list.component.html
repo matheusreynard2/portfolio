@@ -38,22 +38,22 @@
           <th colspan="11" class="text-center">Produtos</th>
         </tr>
         <tr>
-          <th class="text-center coluna_id"><strong>ID</strong></th>
-          <th class="text-left coluna_nome"><strong>Nome</strong></th>
-          <th class="text-left coluna_nome"><strong>Fornecedor</strong></th>
-          <th class="text-center"><strong>Qtde</strong></th>
-          <th class="text-center"><strong>Valor unitário</strong></th>
-          <th class="text-center"><strong>Promoção</strong></th>
-          <th class="text-center"><strong>Vl un desc</strong></th>
-          <th class="text-center"><strong>Valor total</strong></th>
-          <th class="text-center"><strong></strong></th>
-          <th class="text-center"><strong></strong></th>
+          <th class="text-center coluna_id" style="width: 80px; min-width: 60px; max-width: 100px;">ID</th>
+          <th class="text-left coluna_nome" style="width: 400px; min-width: 200px; max-width: 600px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Nome</th>
+          <th class="text-left coluna_fornecedor" style="width: 400px; min-width: 200px; max-width: 600px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Fornecedor</th>
+          <th class="text-center coluna_qtde" style="width: 60px; min-width: 40px; max-width: 80px;">Qtde</th>
+          <th class="text-center coluna_valor" style="width: 200px; min-width: 100px; max-width: 250px;">Valor unitário</th>
+          <th class="text-center coluna_promocao" style="width: 100px; min-width: 60px; max-width: 120px;">Promoção</th>
+          <th class="text-center coluna_valor_desc" style="width: 200px; min-width: 100px; max-width: 250px;">Vl un desc</th>
+          <th class="text-center coluna_valor_total" style="width: 200px; min-width: 100px; max-width: 250px;">Valor total</th>
+          <th class="text-center coluna_acao" style="width: 80px; min-width: 60px; max-width: 100px;"></th>
+          <th class="text-center coluna_acao" style="width: 80px; min-width: 60px; max-width: 100px;"></th>
         </tr>
         </thead>
         <tbody>
         <tr *ngFor="let produto of listaDeProdutos">
-          <td class="text-center coluna_id">{{ produto.id }}</td>
-          <td class="text-left coluna_nome">
+          <td class="text-center coluna_id" style="width: 80px; min-width: 60px; max-width: 100px;">{{ produto.id }}</td>
+          <td class="text-left coluna_nome" style="width: 400px; min-width: 200px; max-width: 600px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
             <div class="stat-item">
               <span class="stat-label passar_mouse" (mouseenter)="mostrarImgPopup(produto)" (mouseleave)="esconderImgPopup()">
                 {{ produto.nome }}
@@ -65,43 +65,39 @@
               </div>
             </div>
           </td>
-          <td class="text-center">{{ produto.fornecedor?.nome }}</td>
-          <td class="text-center">{{ produto.quantia }}</td>
-          <td class="text-center">{{ formatarValor(produto.valor) }}</td>
-            <td class="text-center">
-              <img
-                [src]="produto.promocao ? '/bolinha_verde.png' : '/bolinha_vermelha.png'"
-                [alt]="produto.promocao ? 'Promoção Ativa' : 'Promoção Inativa'"
-                width="25"
-                height="25">
-            </td>
-            <td class="text-center">
-              {{ formatarValor(produto.valorTotalDesc) }}
-            </td>
-            <td class="text-center">
-              {{ formatarValor(produto.somaTotalValores) }}
-            </td>
-            <td class="text-center">
-              <button type="button" class="btn btn-info full-width-btn" id="btn_editar" (click)="atualizarProduto(modalEditar, produto.id, produto)">✎</button>
-            </td>
-            <td class="text-center">
-              <button type="button" class="btn btn-danger full-width-btn" id="btn_excluir" (click)="deletarProduto(modalMsgExcluir, produto.id, produto)">X</button>
-            </td>
-          </tr>
+          <td class="text-left coluna_fornecedor" style="width: 400px; min-width: 200px; max-width: 600px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ produto.fornecedor?.nome }}</td>
+          <td class="text-center coluna_qtde" style="width: 60px; min-width: 40px; max-width: 80px;">{{ produto.quantia }}</td>
+          <td class="text-center coluna_valor" style="width: 200px; min-width: 100px; max-width: 250px;">{{ formatarValor(produto.valor) }}</td>
+          <td class="text-center coluna_promocao" style="width: 100px; min-width: 60px; max-width: 120px;">
+            <img
+              [src]="produto.promocao ? '/bolinha_verde.png' : '/bolinha_vermelha.png'"
+              [alt]="produto.promocao ? 'Promoção Ativa' : 'Promoção Inativa'"
+              width="25"
+              height="25">
+          </td>
+          <td class="text-center coluna_valor_desc" style="width: 200px; min-width: 100px; max-width: 250px;">{{ formatarValor(produto.valorTotalDesc) }}</td>
+          <td class="text-center coluna_valor_total" style="width: 200px; min-width: 100px; max-width: 250px;">{{ formatarValor(produto.somaTotalValores) }}</td>
+          <td class="text-center coluna_acao" style="width: 80px; min-width: 60px; max-width: 100px;">
+            <button type="button" class="btn btn-info full-width-btn" id="btn_editar" (click)="atualizarProduto(modalEditar, produto.id, produto)">✎</button>
+          </td>
+          <td class="text-center coluna_acao" style="width: 80px; min-width: 60px; max-width: 100px;">
+            <button type="button" class="btn btn-danger full-width-btn" id="btn_excluir" (click)="deletarProduto(modalMsgExcluir, produto.id, produto)">X</button>
+          </td>
+        </tr>
 
-          <!-- Label que exibe a variável do produto mais caro -->
-          <tr>
-            <td colspan="11" class="text-left">
-              <div class="stats-container-vertical">
-                <span class="stat-row stat-label-container stat-value-container">
-                  <span class="stat-text">PRODUTO MAIS CARO - ID:</span>
-                  <span class="stat-variable">{{ stringProdutoMaisCaro }}</span>
-                  <span class="stat-text"> | MÉDIA DE PREÇO -</span>
-                  <span class="stat-variable">{{ formatarValor(mediaPreco) }}</span>
-                </span>
-              </div>
-            </td>
-          </tr>
+        <!-- Label que exibe a variável do produto mais caro -->
+        <tr>
+          <td colspan="11" class="text-left">
+            <div class="stats-container-vertical">
+              <span class="stat-row stat-label-container stat-value-container">
+                <span class="stat-text">PRODUTO MAIS CARO - ID:</span>
+                <span class="stat-variable">{{ stringProdutoMaisCaro }}</span>
+                <span class="stat-text"> | MÉDIA DE PREÇO -</span>
+                <span class="stat-variable">{{ formatarValor(mediaPreco) }}</span>
+              </span>
+            </div>
+          </td>
+        </tr>
         <tr>
           <td colspan="10" class="text-left">
             <div class="info-container">
@@ -167,7 +163,11 @@
                      name="nomeProduto"
                      placeholder="Insira o nome do produto"
                      required #nome="ngModel"
-                     maxlength="50">
+                     maxlength="100"
+                     [ngClass]="{'is-invalid': nome.invalid && nome.touched}">
+              <div *ngIf="nome.invalid && nome.touched" class="invalid-feedback">
+                O nome do produto é obrigatório.
+              </div>
             </div>
             <div class="form-group">
               <label for="descricao">Descrição:</label>
@@ -216,15 +216,19 @@
                        id="valorInicial"
                        name="valorInicialProduto"
                        required #valorInicial="ngModel"
-                       maxlength="30">
-                <input type="number" [(ngModel)]="produtoAtualizar.valor"
-                       class="form-control hidden-input"
-                       id="valor"
-                       name="valorProduto"
-                       required #valor="ngModel"
-                       maxlength="30">
+                       max="2000000000"
+                       [ngClass]="{'is-invalid': valorInicial.value > 2000000000}">
                 <div class="valor-display">{{produtoAtualizar.valorInicial | currency : 'BRL'}}</div>
               </div>
+              <div *ngIf="valorInicial.value > 2000000000" class="validation-message">
+                O valor unitário não pode ser maior que 2.000.000.000
+              </div>
+              <input type="number" [(ngModel)]="produtoAtualizar.valor"
+                     class="form-control hidden-input"
+                     id="valor"
+                     name="valorProduto"
+                     required #valor="ngModel"
+                     max="2000000000">
             </div>
             <div class="form-group">
               <label for="quantidade">Quantidade:</label>
@@ -234,8 +238,12 @@
                        id="quantidade"
                        name="quantidadeProduto"
                        required #quantidade="ngModel"
-                       maxlength="1">
+                       max="1000000"
+                       [ngClass]="{'is-invalid': quantidade.value > 1000000}">
                 <div class="valor-display valor-quantidade">{{produtoAtualizar.valor | currency : 'BRL'}}</div>
+              </div>
+              <div *ngIf="quantidade.value > 1000000" class="validation-message">
+                A quantidade não pode ser maior que 1.000.000
               </div>
             </div>
           </div>
@@ -271,6 +279,7 @@
                        id="valorDesconto"
                        name="valorDescontoProduto"
                        required #valorDesconto="ngModel"
+                       maxlength="100"
                        appPorcentagemMask
                        [disabled]="!produtoAtualizar.promocao">
                 <div class="valor-display">{{produtoAtualizar.valorTotalDesc | currency : 'BRL'}}</div>
@@ -309,8 +318,12 @@
                        id="frete"
                        name="freteProduto"
                        required #frete="ngModel"
-                       maxlength="30"
+                       max="2000000000"
+                       [ngClass]="{'is-invalid': frete.value > 2000000000}"
                        [disabled]="!produtoAtualizar.freteAtivo">
+                <div *ngIf="frete.value > 2000000000" class="invalid-feedback">
+                  O valor do frete não pode ser maior que 2.000.000.000
+                </div>
                 <div class="valor-display">{{produtoAtualizar.frete | currency : 'BRL'}}</div>
               </div>
             </div>
@@ -328,7 +341,7 @@
                      id="valorTotalFrete"
                      name="valorTotalFreteProduto"
                      required #valorTotalFrete="ngModel"
-                     maxlength="30"
+                     max="2000000000"
                      [disabled]="true">
               <div class="valor-display-large">{{produtoAtualizar.valorTotalFrete | currency : 'BRL'}}</div>
             </div>
@@ -340,7 +353,7 @@
                      id="somaTotalValores"
                      name="somaTotalValoresProduto"
                      required #somaTotalValores="ngModel"
-                     maxlength="15">
+                     max="2000000000">
               <div class="valor-display-final">{{produtoAtualizar.somaTotalValores | currency : 'BRL'}}</div>
             </div>
           </div>

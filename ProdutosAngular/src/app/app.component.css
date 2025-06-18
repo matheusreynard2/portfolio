@@ -350,3 +350,77 @@ p {
   background-color: #e9ecef;
   color: #212529;
 }
+
+/* Barra personalizada */
+.custom-bar {
+  position: relative;
+  width: 100%;
+  height: 40px;
+  background-color: #212529;
+  margin-bottom: 20px;
+  overflow: hidden;
+  background-image: linear-gradient(rgba(0, 0, 0, 0.3) 0%, rgba(0, 0, 0, 0.3) 100%);
+  border-left: 5px solid var(--bs-secondary) !important;
+  border-right: 5px solid var(--bs-secondary) !important;
+  border-bottom: 5px solid var(--bs-secondary) !important;
+  border-top: none !important;
+}
+
+.image-bar-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: flex-start; /* Volta para o alinhamento à esquerda */
+  gap: 5px; /* Reduz o espaçamento entre as imagens */
+  opacity: 0.7;
+  padding-left: 20px; /* Mantém apenas o padding à esquerda */
+}
+
+.background-bar-image {
+  height: 200%; /* Dobro do tamanho original */
+  width: auto;
+  object-fit: contain;
+  transform: translateY(-25%); /* Ajusta a posição vertical para centralizar */
+}
+
+.image-bar-1 {
+  opacity: 0.7; /* Maior opacidade */
+}
+
+.image-bar-2 {
+  opacity: 0.4; /* Opacidade média */
+}
+
+.image-bar-3 {
+  opacity: 0.2; /* Menor opacidade */
+}
+
+.text-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 18px;
+  font-weight: bold;
+  z-index: 1;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+}
+
+/* Responsividade para mobile */
+@media (max-width: 768px) {
+  .custom-bar {
+    height: 30px; /* Altura menor para mobile */
+  }
+  
+  .text-overlay {
+    font-size: 14px;
+  }
+}

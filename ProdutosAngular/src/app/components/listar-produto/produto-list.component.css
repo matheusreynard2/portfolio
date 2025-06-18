@@ -1130,3 +1130,11 @@ td.coluna_nome {
   border-color: rgba(255, 255, 255, 0.1);
   background-color: rgba(0, 0, 0, 0.2);
 }
+
+.validation-message {
+  color: #dc3545;
+  font-size: 0.875rem;
+  margin-top: 0.25rem;
+  display: block;
+  text-align: left;
+}

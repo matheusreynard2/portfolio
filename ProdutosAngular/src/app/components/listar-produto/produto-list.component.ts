@@ -1,6 +1,6 @@
 import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import { ProdutoService } from '../../service/produto/produto.service';
-import {CurrencyPipe, NgForOf, NgIf, NgOptimizedImage} from '@angular/common';
+import {CommonModule, CurrencyPipe, NgForOf, NgIf, NgOptimizedImage} from '@angular/common';
 import {NgbModal, NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { ProdutoFunctionsService } from '../../service/produto/produto-functions.service';
@@ -27,7 +27,8 @@ import {FornecedorDTO} from '../../model/dto/FornecedorDTO';
     PorcentagemMaskDirective,
     NgIf,
     NgxPaginationModule,
-    MatPaginatorModule
+    MatPaginatorModule,
+    CommonModule
   ]
 })
 
