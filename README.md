@@ -9,6 +9,9 @@
 ## ProdutosAngular 
 Front-end em Angular e TypeScript do sistema Prodify, parte que consome a API de produtos.
 
+## Conceitos técnicos
+- Pageable, FormData e Lobs, Lombok, RabbitMQ e WebSocket, Swagger, DTOs, REST API Sprig MVC, Clean Architecture UseCases, Spring Security, Spring Data / JPA / Hibernate, NativeQuery / JPQL, Design Patterns, integração com APIs externas (ViaCEP, Brasil API, Google Maps, ip.info), uso predominante de boas práticas de desenvolvimento e Clean Code. Testes unitários e de integração com JUnit 5 e Mockito.
+
 ### Funcionalidades concluídas
 - CRUD de produtos e fornecedores
 - Relação Produto X Fornecedor
