@@ -5,12 +5,12 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -96,15 +96,15 @@ class ProdutoUnitaryUseCaseTests {
         produto.setId(1L);
         produto.setNome("Produto Teste");
         produto.setDescricao("Descrição do produto teste");
-        produto.setValor(100.0);
-        produto.setQuantia(10);
+        produto.setValor(BigDecimal.valueOf(100.0));
+        produto.setQuantia(10L);
         
         produtoDTO = new ProdutoDTO();
         produtoDTO.setId(1L);
         produtoDTO.setNome("Produto Teste");
         produtoDTO.setDescricao("Descrição do produto teste");
-        produtoDTO.setValor(100.0);
-        produtoDTO.setQuantia(10);
+        produtoDTO.setValor(BigDecimal.valueOf(100.0));
+        produtoDTO.setQuantia(10L);
         
         produtoFormDTO = new ProdutoFormDTO();
         produtoFormDTO.setProdutoJson("{\"id\":1,\"nome\":\"Produto Teste\",\"descricao\":\"Descrição do produto teste\",\"valor\":100.0,\"quantia\":10}");
@@ -280,7 +280,7 @@ class ProdutoUnitaryUseCaseTests {
     @DisplayName("Deve obter média de preço com sucesso")
     void deveObterMediaPrecoComSucesso() {
         // Arrange
-        when(produtoRepository.obterMediaPreco(1L)).thenReturn(150.0);
+        when(produtoRepository.obterMediaPreco(1L)).thenReturn(BigDecimal.valueOf(150.0));
 
         // Act
         Double resultado = consultasProduto.obterMediaPreco(1L);
@@ -294,7 +294,7 @@ class ProdutoUnitaryUseCaseTests {
     @DisplayName("Deve retornar zero quando média de preço for zero")
     void deveRetornarZeroQuandoMediaPrecoForZero() {
         // Arrange
-        when(produtoRepository.obterMediaPreco(1L)).thenReturn(0.0);
+        when(produtoRepository.obterMediaPreco(1L)).thenReturn(BigDecimal.valueOf(0.0));
 
         // Act
         Double resultado = consultasProduto.obterMediaPreco(1L);

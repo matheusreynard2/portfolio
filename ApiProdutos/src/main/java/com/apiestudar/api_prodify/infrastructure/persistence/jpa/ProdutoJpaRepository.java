@@ -1,5 +1,6 @@
 package com.apiestudar.api_prodify.infrastructure.persistence.jpa;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import org.springframework.data.domain.Page;
@@ -19,7 +20,7 @@ public interface ProdutoJpaRepository extends JpaRepository<Produto, Long> {
 	List<Produto> listarProdutoMaisCaro(@Param("idUsuario") Long idUsuario);
 
 	@Query(value = "SELECT AVG(valor) AS media_valor FROM produto WHERE id_usuario = :idUsuario", nativeQuery = true)
-	Double obterMediaPreco(@Param("idUsuario") Long idUsuario);
+	BigDecimal obterMediaPreco(@Param("idUsuario") Long idUsuario);
 
 	@Query(value = "SELECT * FROM produto WHERE id = :valorPesquisa AND id_usuario = :idUsuario", nativeQuery = true)
 	List<Produto> efetuarPesquisaById(@Param("valorPesquisa") Long valorPesquisa, @Param("idUsuario") Long idUsuario);

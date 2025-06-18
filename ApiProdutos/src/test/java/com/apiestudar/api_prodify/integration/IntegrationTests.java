@@ -2,6 +2,7 @@ package com.apiestudar.api_prodify.integration;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.math.BigDecimal;
 import java.nio.file.Files;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -154,13 +155,13 @@ public class IntegrationTests {
         ProdutoDTO produto = new ProdutoDTO();
         produto.setNome("Produto Teste");
         produto.setDescricao("Descrição do produto teste");
-        produto.setValor(100.0);
-        produto.setQuantia(10);
+        produto.setValor(BigDecimal.valueOf(100.0));
+        produto.setQuantia(10L);
         produto.setIdUsuario(1L);
         produto.setFornecedor(fornecedorCriado);
-        produto.setFrete(10.0);
-        produto.setValorInicial(100.0);
-        produto.setValorDesconto(0.0);
+        produto.setFrete(BigDecimal.valueOf(10.0));
+        produto.setValorInicial(BigDecimal.valueOf(100.0));
+        produto.setValorDesconto(BigDecimal.valueOf(0.0));
         
         // Converter produto para JSON
         String produtoJSON = objectMapper.writeValueAsString(produto);

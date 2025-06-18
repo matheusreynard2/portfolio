@@ -1,5 +1,6 @@
 package com.apiestudar.api_prodify.application.usecase.produto;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -16,7 +17,6 @@ public class CalculosSobreProdutosUseCase {
 
 	private final ProdutoRepository produtoRepository;
 
-	@Autowired
 	public CalculosSobreProdutosUseCase(ProdutoRepository produtoRepository) {
 		this.produtoRepository = produtoRepository;
 	}
@@ -30,9 +30,10 @@ public class CalculosSobreProdutosUseCase {
 	@Transactional(rollbackFor = Exception.class)
 	public Double obterMediaPreco(long idUsuario) {
 		Helper.verificarNull(idUsuario);
-		Double valor = produtoRepository.obterMediaPreco(idUsuario);
+		BigDecimal valor = produtoRepository.obterMediaPreco(idUsuario);
 		return Optional.ofNullable(valor)
-			       .filter(v -> v > 0)
+			       .filter(v -> v.compareTo(BigDecimal.ZERO) > 0)
+				   .map(BigDecimal::doubleValue)
 			       .orElse(0.0);
 	}
 

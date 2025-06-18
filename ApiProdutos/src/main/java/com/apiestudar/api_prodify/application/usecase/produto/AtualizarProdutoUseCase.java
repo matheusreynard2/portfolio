@@ -52,13 +52,13 @@ public class AtualizarProdutoUseCase {
 		produtoExistente.setNome(produtoParaAtualizar.getNome());
 		produtoExistente.setDescricao(produtoParaAtualizar.getDescricao());
 		produtoExistente.setFrete(produtoParaAtualizar.getFrete());
-		produtoExistente.setPromocao(produtoParaAtualizar.isPromocao());
+		produtoExistente.setPromocao(produtoParaAtualizar.getPromocao());
 		produtoExistente.setValorTotalDesc(produtoParaAtualizar.getValorTotalDesc());
 		produtoExistente.setValorTotalFrete(produtoParaAtualizar.getValorTotalFrete());
 		produtoExistente.setValor(produtoParaAtualizar.getValor());
 		produtoExistente.setQuantia(produtoParaAtualizar.getQuantia());
 		produtoExistente.setSomaTotalValores(produtoParaAtualizar.getSomaTotalValores());
-		produtoExistente.setFreteAtivo(produtoParaAtualizar.isFreteAtivo());
+		produtoExistente.setFreteAtivo(produtoParaAtualizar.getFreteAtivo());
 		produtoExistente.setValorDesconto(produtoParaAtualizar.getValorDesconto());
 		produtoExistente.setImagem(produtoParaAtualizar.getImagem());
 		produtoExistente.setFornecedor(produtoParaAtualizar.getFornecedor());

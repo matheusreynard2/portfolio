@@ -1,5 +1,7 @@
 package com.apiestudar.api_prodify.domain.model;
 
+import java.math.BigDecimal;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -10,6 +12,7 @@ import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.validation.constraints.Max;
+import javax.validation.constraints.NotNull;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
@@ -30,29 +33,38 @@ public class Produto {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "produto_seq")
+	@Column(nullable = false)
+	@NotNull(message = "ID do produto é obrigatório")
 	@Schema(description = "ID do produto")
-	private long id;
+	private Long id;
 
+	@Column(nullable = false)
+	@NotNull(message = "O ID Usuário é obrigatório")
 	@Schema(description = "ID do usuário")
-	private long idUsuario;
+	private Long idUsuario;
 
-	@Column(length = 100)
+	@Column(length = 100, nullable = false)
+	@NotNull(message = "O nome é obrigatório")
 	@Schema(description = "Nome do produto")
 	private String nome;
 	
 	@Lob
-	@Column(name = "imagem")
+	@Column(name = "imagem", nullable = true)
 	@Schema(description = "Imagem do produto")
 	private byte[] imagem;
 	
+	@Column(length = 5, nullable = false)
+	@NotNull(message = "Promoção é obrigatório")
 	@Schema(description = "Se o produto está em promoção")
-	private boolean promocao;
+	private Boolean promocao;
 	
+	@Column(nullable = true, length = 100)
 	@Schema(description = "Valor total com desconto")
-	private Double valorTotalDesc;
-	
+	private BigDecimal valorTotalDesc;
+
+	@Column(nullable = true, length = 100)
 	@Schema(description = "Soma total dos valores")
-	private Double somaTotalValores;
+	private BigDecimal somaTotalValores;
 	
 	// Relação Muitos-para-Um
     @ManyToOne
@@ -60,30 +72,40 @@ public class Produto {
     @Schema(description = "Fornecedor do produto")
     private Fornecedor fornecedor;
 	
+	@Column(nullable = true, length = 100)
 	@Schema(description = "Valor do produto")
-	private Double valor;
+	private BigDecimal valor;
 
+	@Column(nullable = true, length = 100)
 	@Schema(description = "Valor total do frete")
-	private Double valorTotalFrete;
+	private BigDecimal valorTotalFrete;
 
+	@Column(nullable = true, length = 100)
+	@NotNull(message = "Descrição do produto é obrigatória")
 	@Schema(description = "Descrição do produto")
-	@Column(length = 100)
 	private String descricao; 
-
-	@Schema(description = "Valor do frete")
-	private Double frete; 
 	
+	@Column(nullable = true, length = 100)
+	@NotNull(message = "Valor do frete é obrigatório")
+	@Schema(description = "Valor do frete")
+	private BigDecimal frete; 
+	
+	@Column(nullable = true, length = 100)
 	@Schema(description = "Valor inicial")
 	@Max(value = 2000000000, message = "O valor inicial não pode ser maior que 2.000.000.000")
-	private double valorInicial;
+	private BigDecimal valorInicial;
 
+	@Column(nullable = true, length = 100)
 	@Schema(description = "Quantidade")
 	@Max(value = 1000000, message = "A quantidade não pode ser maior que 1.000.000")
-	private int quantia;
+	private Long quantia;
 
+	@Column(nullable = false, length = 5)
+	@NotNull(message = "Frete ativo é obrigatório")
 	@Schema(description = "Se o frete está ativo")
-	private boolean freteAtivo; 
+	private Boolean freteAtivo; 
 
 	@Schema(description = "Valor do desconto")
-	private double valorDesconto; 
+	@Column(nullable = true, length = 100)
+	private BigDecimal valorDesconto; 
 }

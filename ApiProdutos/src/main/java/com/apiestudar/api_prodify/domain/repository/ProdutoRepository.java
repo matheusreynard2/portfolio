@@ -1,5 +1,6 @@
 package com.apiestudar.api_prodify.domain.repository;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,7 +23,7 @@ public interface ProdutoRepository {
 
     List<Produto> listarProdutoMaisCaro(Long idUsuario);
 
-    Double obterMediaPreco(Long idUsuario);
+    BigDecimal obterMediaPreco(Long idUsuario);
 
     List<Produto> efetuarPesquisaById(Long valorPesquisa, Long idUsuario);
 

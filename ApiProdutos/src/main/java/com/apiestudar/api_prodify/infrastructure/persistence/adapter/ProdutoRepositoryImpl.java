@@ -1,5 +1,6 @@
 package com.apiestudar.api_prodify.infrastructure.persistence.adapter;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -53,7 +54,7 @@ public class ProdutoRepositoryImpl implements ProdutoRepository {
     }
 
     @Override
-    public Double obterMediaPreco(Long idUsuario) {
+    public BigDecimal obterMediaPreco(Long idUsuario) {
         return produtoJpaRepository.obterMediaPreco(idUsuario);
     }
 
