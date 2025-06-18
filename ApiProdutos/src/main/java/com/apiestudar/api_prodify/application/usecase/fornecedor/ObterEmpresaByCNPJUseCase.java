@@ -3,8 +3,8 @@ package com.apiestudar.api_prodify.application.usecase.fornecedor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
-import com.apiestudar.api_prodify.domain.model.brasilapi.DadosEmpresa;
-import com.apiestudar.api_prodify.interfaces.dto.brasilapi.DadosEmpresaDTO;
+import com.apiestudar.api_prodify.domain.model.brasilapi_model.DadosEmpresa;
+import com.apiestudar.api_prodify.interfaces.dto.brasilapi_dto.DadosEmpresaDTO;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 

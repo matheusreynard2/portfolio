@@ -15,7 +15,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 
-import com.apiestudar.api_prodify.domain.model.brasilapi.DadosEmpresa;
+import com.apiestudar.api_prodify.domain.model.brasilapi_model.DadosEmpresa;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import io.swagger.v3.oas.annotations.media.Schema;

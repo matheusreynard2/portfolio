@@ -6,7 +6,7 @@ import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
-import com.apiestudar.api_prodify.domain.model.brasilapi.DadosEmpresa;
+import com.apiestudar.api_prodify.domain.model.brasilapi_model.DadosEmpresa;
 
 public interface DadosEmpresaRepository {
 

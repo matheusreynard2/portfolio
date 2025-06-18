@@ -1,4 +1,4 @@
-package com.apiestudar.api_prodify.interfaces.dto.brasilapi;
+package com.apiestudar.api_prodify.interfaces.dto.brasilapi_dto;
 
 import java.util.List;
 

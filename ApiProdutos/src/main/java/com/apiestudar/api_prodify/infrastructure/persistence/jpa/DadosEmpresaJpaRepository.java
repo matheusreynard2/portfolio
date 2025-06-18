@@ -8,7 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import com.apiestudar.api_prodify.domain.model.brasilapi.DadosEmpresa;
+import com.apiestudar.api_prodify.domain.model.brasilapi_model.DadosEmpresa;
 
 @Repository
 public interface DadosEmpresaJpaRepository extends JpaRepository<DadosEmpresa, Long> {

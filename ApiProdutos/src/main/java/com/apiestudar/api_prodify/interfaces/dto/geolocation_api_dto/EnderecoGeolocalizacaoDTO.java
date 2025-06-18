@@ -1,4 +1,4 @@
-package com.apiestudar.api_prodify.interfaces.dto.google_maps_geolocation_api;
+package com.apiestudar.api_prodify.interfaces.dto.geolocation_api_dto;
 
 import java.util.List;
 

@@ -28,7 +28,7 @@ import com.apiestudar.api_prodify.application.usecase.fornecedor.ListarFornecedo
 import com.apiestudar.api_prodify.application.usecase.fornecedor.ObterEmpresaByCNPJUseCase;
 import com.apiestudar.api_prodify.application.usecase.fornecedor.BuscarFornecedorUseCase;
 import com.apiestudar.api_prodify.interfaces.dto.FornecedorDTO;
-import com.apiestudar.api_prodify.interfaces.dto.brasilapi.DadosEmpresaDTO;
+import com.apiestudar.api_prodify.interfaces.dto.brasilapi_dto.DadosEmpresaDTO;
 
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;

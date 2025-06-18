@@ -8,7 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.apiestudar.api_prodify.domain.model.brasilapi.DadosEmpresa;
+import com.apiestudar.api_prodify.domain.model.brasilapi_model.DadosEmpresa;
 import com.apiestudar.api_prodify.domain.repository.DadosEmpresaRepository;
 import com.apiestudar.api_prodify.infrastructure.persistence.jpa.DadosEmpresaJpaRepository;
 

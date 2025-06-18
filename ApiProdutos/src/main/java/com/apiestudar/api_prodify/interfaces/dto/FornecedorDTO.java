@@ -3,7 +3,7 @@ package com.apiestudar.api_prodify.interfaces.dto;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.apiestudar.api_prodify.interfaces.dto.brasilapi.DadosEmpresaDTO;
+import com.apiestudar.api_prodify.interfaces.dto.brasilapi_dto.DadosEmpresaDTO;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import io.swagger.v3.oas.annotations.media.Schema;

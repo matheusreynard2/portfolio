@@ -9,6 +9,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
+import javax.validation.constraints.Max;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
@@ -35,6 +36,7 @@ public class Produto {
 	@Schema(description = "ID do usuário")
 	private long idUsuario;
 
+	@Column(length = 100)
 	@Schema(description = "Nome do produto")
 	private String nome;
 	
@@ -65,15 +67,18 @@ public class Produto {
 	private Double valorTotalFrete;
 
 	@Schema(description = "Descrição do produto")
+	@Column(length = 100)
 	private String descricao; 
 
 	@Schema(description = "Valor do frete")
 	private Double frete; 
 	
 	@Schema(description = "Valor inicial")
+	@Max(value = 2000000000, message = "O valor inicial não pode ser maior que 2.000.000.000")
 	private double valorInicial;
 
 	@Schema(description = "Quantidade")
+	@Max(value = 1000000, message = "A quantidade não pode ser maior que 1.000.000")
 	private int quantia;
 
 	@Schema(description = "Se o frete está ativo")

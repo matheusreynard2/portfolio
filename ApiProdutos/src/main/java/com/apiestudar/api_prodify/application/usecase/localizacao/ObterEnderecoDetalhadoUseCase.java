@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.apiestudar.api_prodify.interfaces.controller.LocalizacaoController;
-import com.apiestudar.api_prodify.interfaces.dto.google_maps_geolocation_api.EnderecoGeolocalizacaoDTO;
+import com.apiestudar.api_prodify.interfaces.dto.geolocation_api_dto.EnderecoGeolocalizacaoDTO;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import kong.unirest.Unirest;

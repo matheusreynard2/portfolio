@@ -18,7 +18,7 @@ import com.apiestudar.api_prodify.application.usecase.localizacao.ObterGeolocati
 import com.apiestudar.api_prodify.interfaces.dto.EnderecoFornecedorDTO;
 import com.apiestudar.api_prodify.interfaces.dto.GeolocationDTO;
 import com.apiestudar.api_prodify.interfaces.dto.LatitudeLongitudeDTO;
-import com.apiestudar.api_prodify.interfaces.dto.google_maps_geolocation_api.EnderecoGeolocalizacaoDTO;
+import com.apiestudar.api_prodify.interfaces.dto.geolocation_api_dto.EnderecoGeolocalizacaoDTO;
 import com.apiestudar.api_prodify.shared.exception.GeoLocationException;
 
 import io.swagger.annotations.ApiOperation;

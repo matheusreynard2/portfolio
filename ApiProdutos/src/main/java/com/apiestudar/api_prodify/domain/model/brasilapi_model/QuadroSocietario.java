@@ -1,4 +1,4 @@
-package com.apiestudar.api_prodify.domain.model.brasilapi;
+package com.apiestudar.api_prodify.domain.model.brasilapi_model;
 
 import javax.persistence.Embeddable;
 
