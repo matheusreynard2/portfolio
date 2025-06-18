@@ -423,4 +423,18 @@ p {
   .text-overlay {
     font-size: 14px;
   }
+
+  .text-overlay span {
+    font-size: 11px !important; /* Força a sobreposição do estilo inline */
+    line-height: 1.2;
+    padding: 0 10px;
+    text-align: center;
+    display: block;
+  }
+}
+
+@media (max-width: 480px) {
+  .text-overlay span {
+    font-size: 10px !important;
+  }
 }

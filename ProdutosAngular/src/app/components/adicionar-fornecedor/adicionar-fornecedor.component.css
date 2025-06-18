@@ -9,17 +9,43 @@
   width: 100%;
   margin: 0 auto;
   overflow-x: auto;
-  overflow-y: auto;
+  border: 1px solid #dee2e6;
+  border-radius: 4px;
+  background-color: #fff;
+}
+
+/* Estilos da tabela */
+.table {
+  margin-bottom: 0;
+  background-color: #fff;
+  width: 100%;
+  min-width: 900px;
+}
+
+/* Colunas */
+.coluna-label {
+  width: 16%;
+  background-color: #f8f9fa;
+  font-weight: bold;
+  vertical-align: middle;
+}
+
+.coluna-input {
+  width: 48%;
+}
+
+.coluna-input-menor {
+  width: 24%;
 }
 
 /* Ajustes para responsividade em dispositivos móveis */
 @media (max-width: 768px) {
   .div-tabela {
-    min-width: 800px; /* Garante uma largura mínima para a tabela */
+    border: none;
   }
 
   .table {
-    margin-bottom: 0;
+    min-width: 700px;
   }
 
   .table td {
@@ -46,6 +72,12 @@
   .card-body {
     padding: 1rem;
     overflow-x: auto;
+  }
+}
+
+@media (max-width: 480px) {
+  .table {
+    min-width: 500px;
   }
 }
 
@@ -124,6 +156,6 @@
 }
 
 .style-btn-form {
-  width: 200px;
-  margin-top: 0.5rem;
+  margin: 5px;
+  min-width: 120px;
 }

@@ -65,9 +65,9 @@
     </div>
 
     <!-- Campos relacionados ao CNPJ -->
-    <div *ngIf="informarCNPJ && formularioCNPJVisivel">
-      <table class="table table-bordered" style="width: 100%; table-layout: fixed;">
-        <thead>
+    <div *ngIf="informarCNPJ && formularioCNPJVisivel" class="div-tabela">
+      <table class="table table-bordered table-striped">
+        <thead class="thead-dark">
           <tr>
             <th colspan="6" class="text-center">Dados da Empresa (CNPJ)</th>
           </tr>
@@ -75,10 +75,10 @@
         <tbody>
           <!-- Linha 1: CNPJ -->
           <tr>
-            <td style="width: 16%;">
+            <td class="coluna-label">
               <label for="cnpjEmpresa">CNPJ:</label>
             </td>
-            <td colspan="5" style="width: 84%;">
+            <td colspan="5" class="coluna-input">
               <input type="text" [(ngModel)]="cnpjEmpresa"
                      class="form-control"
                      id="cnpjEmpresa"
@@ -96,20 +96,20 @@
           <ng-container *ngIf="dadosEmpresa">
             <!-- Linha 2: Razão Social e Nome Fantasia -->
             <tr>
-              <td style="width: 16%;">
+              <td class="coluna-label">
                 <label for="razaoSocial">Razão Social:</label>
               </td>
-              <td style="width: 24%;">
+              <td class="coluna-input-menor">
                 <input type="text" [ngModel]="dadosEmpresa.razaoSocial"
                        class="form-control"
                        id="razaoSocial"
                        name="razaoSocial"
                        maxlength="100">
               </td>
-              <td style="width: 12%;">
+              <td class="coluna-label">
                 <label for="nomeFantasia">Nome Fantasia:</label>
               </td>
-              <td colspan="3" style="width: 48%;">
+              <td colspan="3" class="coluna-input">
                 <input type="text" [ngModel]="dadosEmpresa.nomeFantasia"
                        class="form-control"
                        id="nomeFantasia"
@@ -120,20 +120,20 @@
 
             <!-- Linha 3: CNAE Fiscal e Natureza Jurídica -->
             <tr>
-              <td style="width: 16%;">
+              <td class="coluna-label">
                 <label for="cnaeFiscal">CNAE Fiscal:</label>
               </td>
-              <td style="width: 24%;">
+              <td class="coluna-input-menor">
                 <input type="text" [(ngModel)]="dadosEmpresa.cnaeFiscal"
                        class="form-control"
                        id="cnaeFiscal"
                        name="cnaeFiscal"
                        maxlength="100">
               </td>
-              <td style="width: 12%;">
+              <td class="coluna-label">
                 <label for="naturezaJuridica">Natureza Jurídica:</label>
               </td>
-              <td colspan="3" style="width: 48%;">
+              <td colspan="3" class="coluna-input">
                 <input type="text" [(ngModel)]="dadosEmpresa.descricaoNaturezaJuridica"
                        class="form-control"
                        id="naturezaJuridica"
@@ -144,20 +144,20 @@
 
             <!-- Linha 4: Situação Cadastral e Data Situação -->
             <tr>
-              <td style="width: 16%;">
+              <td class="coluna-label">
                 <label for="situacaoCadastral">Situação Cadastral:</label>
               </td>
-              <td style="width: 24%;">
+              <td class="coluna-input-menor">
                 <input type="text" [(ngModel)]="dadosEmpresa.situacaoCadastral"
                        class="form-control"
                        id="situacaoCadastral"
                        name="situacaoCadastral"
                        maxlength="100">
               </td>
-              <td style="width: 12%;">
+              <td class="coluna-label">
                 <label for="dataSituacao">Data Situação:</label>
               </td>
-              <td colspan="3" style="width: 48%;">
+              <td colspan="3" class="coluna-input">
                 <input type="text" [(ngModel)]="dadosEmpresa.dataSituacaoCadastral"
                        class="form-control"
                        id="dataSituacao"
@@ -168,20 +168,20 @@
 
             <!-- Linha 5: Data Início Atividade e Porte -->
             <tr>
-              <td style="width: 16%;">
+              <td class="coluna-label">
                 <label for="dataInicioAtividade">Data Início Atividade:</label>
               </td>
-              <td style="width: 24%;">
+              <td class="coluna-input-menor">
                 <input type="text" [(ngModel)]="dadosEmpresa.dataInicioAtividade"
                        class="form-control"
                        id="dataInicioAtividade"
                        name="dataInicioAtividade"
                        maxlength="100">
               </td>
-              <td style="width: 12%;">
+              <td class="coluna-label">
                 <label for="porte">Porte:</label>
               </td>
-              <td colspan="3" style="width: 48%;">
+              <td colspan="3" class="coluna-input">
                 <input type="text" [(ngModel)]="dadosEmpresa.porte"
                        class="form-control"
                        id="porte"
@@ -192,10 +192,10 @@
 
             <!-- Linha 6: Capital Social -->
             <tr>
-              <td style="width: 16%;">
+              <td class="coluna-label">
                 <label for="capitalSocial">Capital Social:</label>
               </td>
-              <td colspan="5" style="width: 84%;">
+              <td colspan="5" class="coluna-input">
                 <input type="text" [(ngModel)]="dadosEmpresa.capitalSocial"
                        class="form-control"
                        id="capitalSocial"
@@ -206,20 +206,20 @@
 
             <!-- Linha 7: Endereço - Logradouro e Número -->
             <tr>
-              <td style="width: 16%;">
+              <td class="coluna-label">
                 <label for="logradouroEmpresa">Logradouro:</label>
               </td>
-              <td style="width: 24%;">
+              <td class="coluna-input-menor">
                 <input type="text" [(ngModel)]="dadosEmpresa.logradouro"
                        class="form-control"
                        id="logradouroEmpresa"
                        name="logradouroEmpresa"
                        maxlength="100">
               </td>
-              <td style="width: 12%;">
+              <td class="coluna-label">
                 <label for="numeroEmpresa">Número:</label>
               </td>
-              <td colspan="3" style="width: 48%;">
+              <td colspan="3" class="coluna-input">
                 <input type="text" [(ngModel)]="dadosEmpresa.numero"
                        class="form-control"
                        id="numeroEmpresa"
@@ -230,20 +230,20 @@
 
             <!-- Linha 8: Endereço - Complemento e Bairro -->
             <tr>
-              <td style="width: 16%;">
+              <td class="coluna-label">
                 <label for="complementoEmpresa">Complemento:</label>
               </td>
-              <td style="width: 24%;">
+              <td class="coluna-input-menor">
                 <input type="text" [(ngModel)]="dadosEmpresa.complemento"
                        class="form-control"
                        id="complementoEmpresa"
                        name="complementoEmpresa"
                        maxlength="100">
               </td>
-              <td style="width: 12%;">
+              <td class="coluna-label">
                 <label for="bairroEmpresa">Bairro:</label>
               </td>
-              <td colspan="3" style="width: 48%;">
+              <td colspan="3" class="coluna-input">
                 <input type="text" [(ngModel)]="dadosEmpresa.bairro"
                        class="form-control"
                        id="bairroEmpresa"
@@ -254,30 +254,30 @@
 
             <!-- Linha 9: Endereço - CEP, Município e UF -->
             <tr>
-              <td style="width: 16%;">
+              <td class="coluna-label">
                 <label for="cepEmpresa">CEP:</label>
               </td>
-              <td style="width: 24%;">
+              <td class="coluna-input-menor">
                 <input type="text" [(ngModel)]="dadosEmpresa.cep"
                        class="form-control"
                        id="cepEmpresa"
                        name="cepEmpresa"
                        maxlength="100">
               </td>
-              <td style="width: 12%;">
+              <td class="coluna-label">
                 <label for="municipioEmpresa">Município:</label>
               </td>
-              <td style="width: 16%;">
+              <td class="coluna-input-menor">
                 <input type="text" [(ngModel)]="dadosEmpresa.municipio"
                        class="form-control"
                        id="municipioEmpresa"
                        name="municipioEmpresa"
                        maxlength="100">
               </td>
-              <td style="width: 12%;">
+              <td class="coluna-label">
                 <label for="ufEmpresa">UF:</label>
               </td>
-              <td style="width: 20%;">
+              <td class="coluna-input">
                 <input type="text" [(ngModel)]="dadosEmpresa.uf"
                        class="form-control"
                        id="ufEmpresa"
@@ -288,10 +288,10 @@
 
             <!-- Linha 10: País -->
             <tr>
-              <td style="width: 16%;">
+              <td class="coluna-label">
                 <label for="paisEmpresa">País:</label>
               </td>
-              <td colspan="5" style="width: 84%;">
+              <td colspan="5" class="coluna-input">
                 <input type="text" [(ngModel)]="dadosEmpresa.pais"
                        class="form-control"
                        id="paisEmpresa"
@@ -302,20 +302,20 @@
 
             <!-- Linha 11: Telefones -->
             <tr>
-              <td style="width: 16%;">
+              <td class="coluna-label">
                 <label for="telefone1">Telefone 1:</label>
               </td>
-              <td style="width: 24%;">
+              <td class="coluna-input-menor">
                 <input type="text" [(ngModel)]="dadosEmpresa.telefone1"
                        class="form-control"
                        id="telefone1"
                        name="telefone1"
                        maxlength="100">
               </td>
-              <td style="width: 12%;">
+              <td class="coluna-label">
                 <label for="telefone2">Telefone 2:</label>
               </td>
-              <td colspan="3" style="width: 48%;">
+              <td colspan="3" class="coluna-input">
                 <input type="text" [(ngModel)]="dadosEmpresa.telefone2"
                        class="form-control"
                        id="telefone2"
@@ -326,10 +326,10 @@
 
             <!-- Linha 12: Email -->
             <tr>
-              <td style="width: 16%;">
+              <td class="coluna-label">
                 <label for="emailEmpresa">Email:</label>
               </td>
-              <td colspan="5" style="width: 84%;">
+              <td colspan="5" class="coluna-input">
                 <input type="text" [(ngModel)]="dadosEmpresa.email"
                        class="form-control"
                        id="emailEmpresa"
