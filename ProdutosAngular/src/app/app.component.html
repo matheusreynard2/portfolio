@@ -158,8 +158,8 @@
       <img src="/angular_img.png" alt="Imagem 3" class="background-bar-image image-bar-3">
     </div>  
     <div class="text-bar">
-      <span *ngIf="!isMobileOrTablet" style="font-size: 14px;">Quer ter acesso ao código do Sistema PRODIFY? Envie uma mensagem para (41) 99539-7044 ou matheusreynardkolling2&#64;gmail.com e solicite acesso ao GitHub por apenas R$ 199,90.</span>
-      <span *ngIf="isMobileOrTablet" style="font-size: 11px;">GitHub Prodify por R$199,90 - MSG Para (41)99539-7044 / matheusreynardkolling2&#64;gmail.com</span>
+      <span *ngIf="!isMobileOrTablet" style="font-size: 14px;">Deseja ter acesso ao código deste projeto? <a routerLink="/sobreTab2">Clique aqui</a> e saiba como!</span>
+      <span *ngIf="isMobileOrTablet" style="font-size: 11px;">Acesse o GitHub do Prodify - <a routerLink="/sobreTab2">Clique aqui!</a></span>
     </div>
   </div>
 
@@ -173,22 +173,13 @@
           <div class="d-flex flex-wrap align-items-center">
             <span class="me-2 fonte-rodape">(41) 99539-7044 |</span>
             <span class="me-2 fonte-rodape">Acessos: {{numeroVisitas}} |</span>
-            <span class="me-2 fonte-rodape">MATHEUS REYNARD - </span>
             <span class="me-1 fonte-rodape"><a href="https://www.linkedin.com/in/matheus-reynard" target="_blank">Conheça o Desenvolvedor!</a></span>
           </div>
         </div>
       </div>
-
-      <!-- Contêiner da notícia rolante -->
-      <div class="news-container">
-        <div class="news-marquee">
-          <marquee behavior="scroll" scrollamount="10" direction="left">
-            <span>PRODIFY - Sistema de gerenciamento de produtos - Desenvolvido em Java, Spring e Angular por Matheus Reynard. Saiba mais sobre mim, minha carreira e projetos em www.linkedin.com/in/matheus-reynard</span>
-          </marquee>
-        </div>
+      <div class="position-absolute end-0 bottom-0 d-flex align-items-end">
+        <img src="/logo_sacolas.png" alt="Logo" width="150" height="110">
       </div>
-
-      <img src="/logo_sacolas.png" alt="Logo" class="position-absolute end-0 bottom-0" width="150" height="110">
     </div>
   </div>
 </div>

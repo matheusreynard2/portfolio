@@ -29,6 +29,13 @@ export class AdicionarFornecedorComponent implements OnInit {
   @ViewChild('modalMsgAviso') modalMsgAviso!: TemplateRef<any>;
 
   nomeFornecedor: string = '';
+  cepFornecedor: string = '';
+  logradouroFornecedor: string = '';
+  complementoFornecedor: string = '';
+  bairroFornecedor: string = '';
+  localidadeFornecedor: string = '';
+  ufFornecedor: string = '';
+  estadoFornecedor: string = '';
   nrResidenciaFornecedor: string = '';
   adicionouFornecedor: boolean = false;
   mensagemErro: string = '';
@@ -88,7 +95,6 @@ export class AdicionarFornecedorComponent implements OnInit {
     id: 0,
     idUsuario: 0,
     nome: '',
-    nrResidencia: '',
     enderecoFornecedor: this.endereco,
     produtos: [],
     dadosEmpresa: null
@@ -293,10 +299,10 @@ export class AdicionarFornecedorComponent implements OnInit {
       id: 0,
       idUsuario: this.authService.getUsuarioLogado().idUsuario,
       nome: this.nomeFornecedor,
-      nrResidencia: this.nrResidenciaFornecedor,
       enderecoFornecedor: {
         ...this.endereco,
-        cep: cepFormatado // Garante que o CEP seja enviado apenas com números
+        cep: cepFormatado, // Garante que o CEP seja enviado apenas com números
+        nrResidencia: this.nrResidenciaFornecedor
       },
       produtos: [],
       dadosEmpresa: this.dadosEmpresa
@@ -357,7 +363,8 @@ export class AdicionarFornecedorComponent implements OnInit {
       gia: '',
       ddd: '',
       siafi: '',
-      erro: ''
+      erro: '',
+      nrResidencia: ''
     };
     this.fornecedorCadastradoComSucesso = false; // Remover mensagem de sucesso do fornecedor
   }

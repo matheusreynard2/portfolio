@@ -6,7 +6,6 @@ export interface FornecedorDTO {
   id: number;
   idUsuario: number;
   nome: string;
-  nrResidencia: string;
   enderecoFornecedor: EnderecoFornecedorDTO;
   produtos: ProdutoDTO[];
   dadosEmpresa: DadosEmpresaDTO | null;

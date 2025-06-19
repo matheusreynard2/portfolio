@@ -198,7 +198,6 @@ export class ProdutoListComponent implements OnInit {
         id: this.fornecedorSelecionado.id,
         idUsuario: this.authService.getUsuarioLogado().idUsuario,
         nome: this.fornecedorSelecionado.nome,
-        nrResidencia: this.fornecedorSelecionado.nrResidencia,
         enderecoFornecedor: this.fornecedorSelecionado.enderecoFornecedor,
         produtos: [],
         dadosEmpresa: this.fornecedorSelecionado.dadosEmpresa // Array vazio para evitar referência circular

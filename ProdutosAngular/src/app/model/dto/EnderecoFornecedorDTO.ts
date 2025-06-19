@@ -1,4 +1,6 @@
 export interface EnderecoFornecedorDTO {
+  id?: number;
+  nrResidencia?: string;
   cep: string;
   logradouro?: string;
   complemento: string;

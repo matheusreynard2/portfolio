@@ -387,7 +387,7 @@ p {
 }
 
 .image-bar-1 {
-  opacity: 0.7; /* Maior opacidade */
+  opacity: 1.0; /* Maior opacidade */
 }
 
 .image-bar-2 {
@@ -436,5 +436,59 @@ p {
 @media (max-width: 480px) {
   .text-overlay span {
     font-size: 10px !important;
+  }
+}
+
+/* Estilos para o footer-image-bar-container */
+.footer-image-bar-container {
+  display: flex;
+  justify-content: flex-end;
+  gap: 60px; /* Espaçamento ainda maior */
+  opacity: 0.7;
+  height: 180px; /* Altura maior para acomodar imagens ainda maiores */
+  align-items: center;
+  overflow: hidden;
+}
+
+.footer-bar-image {
+  height: 170px; /* Imagens bem maiores */
+  width: auto;
+  object-fit: contain;
+  transition: opacity 0.3s ease;
+  transform: translateY(50px); /* Move mais para baixo, reforçando o efeito */
+}
+
+.footer-image-1 {
+  opacity: 0.2;
+}
+
+.footer-image-2 {
+  opacity: 0.2;
+}
+
+.footer-image-3 {
+  opacity: 0.2;
+}
+
+/* Responsividade para o footer-image-bar-container */
+@media (max-width: 768px) {
+  .footer-image-bar-container {
+    height: 120px;
+    gap: 30px;
+  }
+  .footer-bar-image {
+    height: 100px;
+    transform: translateY(30px);
+  }
+}
+
+@media (max-width: 480px) {
+  .footer-image-bar-container {
+    height: 90px;
+    gap: 15px;
+  }
+  .footer-bar-image {
+    height: 70px;
+    transform: translateY(15px);
   }
 }
