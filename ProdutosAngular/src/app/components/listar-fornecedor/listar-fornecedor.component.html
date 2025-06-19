@@ -7,24 +7,24 @@
             <th colspan="9" class="text-center">Fornecedores</th>
           </tr>
           <tr>
-            <th class="text-center coluna_id" style="width: 80px; min-width: 60px; max-width: 100px;">ID</th>
-            <th class="text-left coluna_nome" style="width: 200px; min-width: 150px; max-width: 300px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Nome fornecedor</th>
-            <th class="text-left coluna_razao_social" style="width: 250px; min-width: 200px; max-width: 350px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Razão Social CNPJ</th>
-            <th class="text-left coluna_logradouro" style="width: 300px; min-width: 200px; max-width: 400px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Logradouro</th>
-            <th class="text-center" style="width: 150px; min-width: 100px; max-width: 200px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Bairro</th>
-            <th class="text-center" style="width: 100px; min-width: 80px; max-width: 150px;">Estado</th>
-            <th class="text-center" style="width: 120px; min-width: 100px; max-width: 150px;">CEP</th>
-            <th class="text-center coluna_acao" style="width: 80px; min-width: 60px; max-width: 100px;"></th>
-            <th class="text-center coluna_acao" style="width: 80px; min-width: 60px; max-width: 100px;"></th>
+            <th class="text-center coluna_id_header">ID</th>
+            <th class="text-left coluna_nome_header">Nome fornecedor</th>
+            <th class="text-left coluna_razao_social_header">Razão Social CNPJ</th>
+            <th class="text-left coluna_logradouro_header">Logradouro</th>
+            <th class="text-center coluna_bairro_header">Bairro</th>
+            <th class="text-center coluna_estado_header">Estado</th>
+            <th class="text-center coluna_cep_header">CEP</th>
+            <th class="text-center coluna_acao_header"></th>
+            <th class="text-center coluna_acao_header"></th>
           </tr>
         </thead>
         <tbody>
           <tr *ngFor="let fornecedor of listaFornecedores">
             <td class="text-center coluna_id">{{ fornecedor.id }}</td>
-            <td class="text-left coluna_nome" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ fornecedor.nome }}</td>
-            <td class="text-left coluna_razao_social" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ fornecedor.dadosEmpresa?.razaoSocial || '-' }}</td>
-            <td class="text-left coluna_logradouro" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ fornecedor.enderecoFornecedor.logradouro }}<span *ngIf="fornecedor.enderecoFornecedor.nrResidencia"> - N° {{ fornecedor.enderecoFornecedor.nrResidencia }}</span></td>
-            <td class="text-center" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ fornecedor.enderecoFornecedor.bairro }}</td>
+            <td class="text-left coluna_nome cell-ellipsis">{{ fornecedor.nome }}</td>
+            <td class="text-left coluna_razao_social cell-ellipsis">{{ fornecedor.dadosEmpresa?.razaoSocial || '-' }}</td>
+            <td class="text-left coluna_logradouro cell-ellipsis">{{ fornecedor.enderecoFornecedor.logradouro }}<span *ngIf="fornecedor.enderecoFornecedor.nrResidencia"> - N° {{ fornecedor.enderecoFornecedor.nrResidencia }}</span></td>
+            <td class="text-center cell-ellipsis">{{ fornecedor.enderecoFornecedor.bairro }}</td>
             <td class="text-center">{{ fornecedor.enderecoFornecedor.estado }}</td>
             <td class="text-center">{{ fornecedor.enderecoFornecedor.cep }}</td>
             <td class="text-center">
@@ -35,7 +35,7 @@
             </td>
           </tr>
           <tr>
-            <td colspan="9" style="width: 100%;">
+            <td colspan="9" class="full-width">
               <div class="info-container">
                 <div class="info-item">
                   <span class="info-label">AVISO:</span>
@@ -99,7 +99,7 @@
           <h6 class="section-title">Informações Básicas</h6>
           <div class="form-row">
             <div class="form-group">
-              <span style="color: red">* </span>
+              <span class="text-red">* </span>
               <label for="nome" class="required">Nome:</label>
               <input type="text" [(ngModel)]="fornecedorAtualizar.nome"
                      class="form-control"
@@ -108,13 +108,13 @@
                      placeholder="Insira o nome do fornecedor"
                      required #nome="ngModel"
                      [ngClass]="{'is-invalid': nome.invalid && nome.touched}"
-                     maxlength="50">
+                     maxlength="100">
               <div *ngIf="nome.invalid && nome.touched" class="invalid-feedback">
                 O nome do fornecedor é obrigatório.
               </div>
             </div>
             <div class="form-group">
-              <span style="color: red">* </span>
+              <span class="text-red">* </span>
               <label for="cep" class="required">CEP:</label>
               <input type="text" [(ngModel)]="fornecedorAtualizar.enderecoFornecedor.cep"
                      class="form-control"
@@ -124,7 +124,8 @@
                      [showMaskTyped]="true"
                      placeholder="00000-000"
                      required #cep="ngModel"
-                     [ngClass]="{'is-invalid': cep.invalid && cep.touched}">
+                     [ngClass]="{'is-invalid': cep.invalid && cep.touched}"
+                     maxlength="20">
               <div *ngIf="cep.invalid && cep.touched" class="invalid-feedback">
                 O CEP é obrigatório.
               </div>
@@ -160,7 +161,8 @@
               <input type="text" [(ngModel)]="fornecedorAtualizar.enderecoFornecedor.complemento"
                      class="form-control"
                      id="complemento"
-                     name="complementoFornecedor">
+                     name="complementoFornecedor"
+                     maxlength="100">
             </div>
             <div class="form-group">
               <label for="bairro">Bairro:</label>
@@ -221,7 +223,7 @@
     <img ngSrc="/codigo_barras.png" height="60" width="60" class="img-right"/>
   </div>
   <div class="modal-body">
-    <a style="font-size: 15px;">Informações atualizadas!</a><br>
+    <a class="font-size-15">Informações atualizadas!</a><br>
   </div>
   <div class="modal-footer">
     <button type="button" class="btn btn-secondary" (click)="modal.close()">Fechar</button>

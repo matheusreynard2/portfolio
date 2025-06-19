@@ -423,6 +423,7 @@
                 required
                 #cepInput="ngModel"
                 [ngClass]="{'is-invalid': cepInput.invalid && cepInput.touched}"
+                maxlength="20"
               />
               <div *ngIf="cepInput.invalid && cepInput.touched" class="invalid-feedback">
                 O CEP é obrigatório.
@@ -512,7 +513,7 @@
                      class="form-control"
                      id="uf"
                      name="ufFornecedor"
-                     maxlength="100">
+                     maxlength="50">
             </td>
             <td style="width: 12%;">
               <label for="estado">Estado:</label>
@@ -522,7 +523,7 @@
                      class="form-control"
                      id="estado"
                      name="estadoFornecedor"
-                     maxlength="100">
+                     maxlength="50">
             </td>
           </tr>
 
@@ -570,7 +571,7 @@
                      class="form-control"
                      id="ddd"
                      name="dddFornecedor"
-                     maxlength="100">
+                     maxlength="5">
             </td>
             <td style="width: 12%;">
               <label for="siafi">SIAFI:</label>

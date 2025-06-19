@@ -61,6 +61,89 @@
   max-width: 100px;
 }
 
+/* Classes para larguras específicas do cabeçalho */
+.coluna_id_header {
+  width: 80px;
+  min-width: 60px;
+  max-width: 100px;
+}
+
+.coluna_nome_header {
+  width: 200px;
+  min-width: 150px;
+  max-width: 300px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.coluna_razao_social_header {
+  width: 250px;
+  min-width: 200px;
+  max-width: 350px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.coluna_logradouro_header {
+  width: 300px;
+  min-width: 200px;
+  max-width: 400px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.coluna_bairro_header {
+  width: 150px;
+  min-width: 100px;
+  max-width: 200px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.coluna_estado_header {
+  width: 100px;
+  min-width: 80px;
+  max-width: 150px;
+}
+
+.coluna_cep_header {
+  width: 120px;
+  min-width: 100px;
+  max-width: 150px;
+}
+
+.coluna_acao_header {
+  width: 80px;
+  min-width: 60px;
+  max-width: 100px;
+}
+
+/* Classes para células com ellipsis */
+.cell-ellipsis {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Classe para largura total */
+.full-width {
+  width: 100%;
+}
+
+/* Classe para texto vermelho */
+.text-red {
+  color: red;
+}
+
+/* Classe para tamanho de fonte */
+.font-size-15 {
+  font-size: 15px;
+}
+
 /* Botões */
 .full-width-btn {
   width: 100%;
