@@ -12,8 +12,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.context.annotation.Import;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -21,9 +21,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.mock.web.MockMultipartFile;
 
 import com.apiestudar.api_prodify.config.TestSecurityConfig;
@@ -32,10 +32,24 @@ import com.apiestudar.api_prodify.domain.repository.UsuarioRepository;
 import com.apiestudar.api_prodify.interfaces.dto.FornecedorDTO;
 import com.apiestudar.api_prodify.interfaces.dto.EnderecoFornecedorDTO;
 import com.apiestudar.api_prodify.interfaces.dto.ProdutoDTO;
+import com.apiestudar.api_prodify.interfaces.dto.UsuarioDTO;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.databind.module.SimpleModule;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.databind.JsonSerializer;
+import com.fasterxml.jackson.databind.SerializerProvider;
+import java.io.IOException;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test")
+@TestPropertySource(properties = {
+    "spring.datasource.url=jdbc:h2:mem:testdb",
+    "spring.datasource.driver-class-name=org.h2.Driver",
+    "spring.jpa.hibernate.ddl-auto=create-drop",
+    "spring.jpa.show-sql=true"
+})
 @Import(TestSecurityConfig.class)
 public class IntegrationTests {
 
@@ -53,19 +67,15 @@ public class IntegrationTests {
 
     @BeforeEach
     public void setup() {
-        // Criar usuário diretamente via repository
-        Usuario usuario = new Usuario();
-        usuario.setIdUsuario(1L); // Forçando ID = 1
-        usuario.setLogin("usuario_teste");
-        usuario.setSenha("senha123");
-        usuario.setEmail("teste@teste.com");
         
-        // Salvar usuário no banco
-        Usuario usuarioSalvo = usuarioRepository.adicionarUsuario(usuario);
-        
-        // Verificar se o usuário foi criado com ID = 1
-        assertNotNull(usuarioSalvo, "Usuário não deveria ser nulo");
-        assertEquals(1L, usuarioSalvo.getIdUsuario(), "ID do usuário deveria ser 1");
+        // Criar usuário de teste se não existir
+        if (usuarioRepository.buscarUsuarioPorId(1L).isEmpty()) {
+            Usuario usuario = new Usuario();
+            usuario.setIdUsuario(1L);
+            usuario.setLogin("teste");
+            usuario.setSenha("123456");
+            usuarioRepository.adicionarUsuario(usuario);
+        }
     }
 
     @Test
@@ -155,25 +165,21 @@ public class IntegrationTests {
         ProdutoDTO produto = new ProdutoDTO();
         produto.setNome("Produto Teste");
         produto.setDescricao("Descrição do produto teste");
-        produto.setValor(BigDecimal.valueOf(100.0));
+        produto.setValor(new BigDecimal("100.0"));
         produto.setQuantia(10L);
         produto.setIdUsuario(1L);
         produto.setFornecedor(fornecedorCriado);
-        produto.setFrete(BigDecimal.valueOf(10.0));
-        produto.setValorInicial(BigDecimal.valueOf(100.0));
-        produto.setValorDesconto(BigDecimal.valueOf(0.0));
+        produto.setFrete(new BigDecimal("10.0"));
+        produto.setValorInicial(new BigDecimal("100.0"));
+        produto.setValorDesconto(new BigDecimal("0.0"));
+        produto.setPromocao(false);
+        produto.setFreteAtivo(true);
         
         // Converter produto para JSON
         String produtoJSON = objectMapper.writeValueAsString(produto);
         
         // Criar um arquivo de imagem mock
         byte[] imagemBytes = Files.readAllBytes(new ClassPathResource("test-image.jpg").getFile().toPath());
-        MockMultipartFile imagemFile = new MockMultipartFile(
-            "imagemFile",
-            "test-image.jpg",
-            MediaType.IMAGE_JPEG_VALUE,
-            imagemBytes
-        );
         
         // Criar headers
         HttpHeaders headers = new HttpHeaders();

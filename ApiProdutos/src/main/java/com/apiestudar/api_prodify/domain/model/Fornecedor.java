@@ -14,6 +14,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
+import javax.validation.constraints.NotNull;
 
 import com.apiestudar.api_prodify.domain.model.brasilapi_model.DadosEmpresa;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -37,19 +38,24 @@ public class Fornecedor {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "fornecedor_seq")
+	@Column(name="id", nullable = false)
+	@NotNull(message = "ID do fornecedor é obrigatório")
 	@Schema(description = "ID do fornecedor")
-	private long id;
+	private Long id;
 	
-	@Column(length = 100)
+	@Column(length = 100, nullable = false)
+	@NotNull(message = "Nome do fornecedor é obrigatório")
 	@Schema(description = "Nome do fornecedor")
 	private String nome;
 	
-	@Column(length = 100)
+	@Column(length = 100, nullable = true)
 	@Schema(description = "Número da residência")
 	private String nrResidencia; 
 	
 	@Schema(description = "ID do usuário")
-	private long idUsuario;
+	@Column(nullable = false)
+	@NotNull(message = "ID do usuário é obrigatório")
+	private Long idUsuario;
 	
 	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "endereco_id", referencedColumnName = "id")

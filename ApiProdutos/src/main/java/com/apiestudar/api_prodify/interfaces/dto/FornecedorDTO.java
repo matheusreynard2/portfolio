@@ -2,6 +2,8 @@ package com.apiestudar.api_prodify.interfaces.dto;
 
 import java.util.List;
 
+import javax.validation.constraints.NotNull;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.apiestudar.api_prodify.interfaces.dto.brasilapi_dto.DadosEmpresaDTO;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -23,16 +25,19 @@ import lombok.ToString;
 public class FornecedorDTO {
     
     @Schema(description = "ID do fornecedor")
-    private long id;
+    @NotNull(message = "ID do fornecedor é obrigatório")
+    private Long id;
     
     @Schema(description = "Nome do fornecedor")
+    @NotNull(message = "Nome do fornecedor é obrigatório")
     private String nome;
     
     @Schema(description = "Número da residência")
     private String nrResidencia;
     
     @Schema(description = "ID do usuário")
-    private long idUsuario;
+    @NotNull(message = "ID do usuário é obrigatório")
+    private Long idUsuario;
     
     @Schema(description = "Endereço do fornecedor")
     private EnderecoFornecedorDTO enderecoFornecedor;

@@ -12,6 +12,7 @@ import javax.persistence.Id;
 import javax.persistence.Lob;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -40,24 +41,32 @@ public class Usuario implements UserDetails {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "usuario_seq")
-	@Column(name="id")
+	@Column(name="id", nullable = false)
+	@NotNull(message = "ID do produto é obrigatório")
 	@Schema(description = "ID do usuário")
-	private long idUsuario;
+	private Long idUsuario;
 
+	@Column(nullable = false, length = 100)
+	@NotNull(message = "Login do usuário é obrigatório")
 	@Schema(description = "Login do usuário")
 	private String login;
 	
+	@Column(nullable = false, length = 100)
+	@NotNull(message = "Senha do usuário é obrigatório")
 	@Schema(description = "Senha do usuário")
 	private String senha;
 	
+	@Column(nullable = false, length = 100)
+	@NotNull(message = "Email do usuário é obrigatório")
 	@Schema(description = "Email do usuário")
 	private String email;
 	
+	@Column(nullable = true)
 	@Schema(description = "Token do usuário")
 	private String token;
 	
     @Lob
-    @Column(name = "imagem")
+    @Column(nullable = true)
     @Schema(description = "Imagem do usuário")
     private byte[] imagem;
 
