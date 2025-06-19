@@ -74,7 +74,7 @@ public class EnderecoFornecedor {
 	@Schema(description = "Estado")
 	private String estado;
 	
-	@Column(nullable = true, length = 10)
+	@Column(nullable = true, length = 100)
 	@Schema(description = "Região")
 	private String regiao;
 	
