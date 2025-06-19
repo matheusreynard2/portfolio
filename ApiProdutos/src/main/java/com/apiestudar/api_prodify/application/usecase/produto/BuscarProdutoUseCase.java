@@ -35,7 +35,7 @@ public class BuscarProdutoUseCase {
         }
 
         Produto produto = produtoRepository.buscarProdutoPorId(id)
-            .filter(prod -> prod.getIdUsuario() == idUsuario)
+            .filter(prod -> prod.getIdUsuario().equals(idUsuario))
             .orElseThrow(RegistroNaoEncontradoException::new);
 
         ProdutoDTO produtoDTO = modelMapper.map(produto, ProdutoDTO.class);

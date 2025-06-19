@@ -68,7 +68,8 @@ public class Produto {
 	
 	// Relação Muitos-para-Um
     @ManyToOne
-    @JoinColumn(name = "fornecedor_id")
+    @JoinColumn(name = "fornecedor_id", nullable = false)
+	@NotNull(message = "Fornecedor é obrigatório")
     @Schema(description = "Fornecedor do produto")
     private Fornecedor fornecedor;
 	

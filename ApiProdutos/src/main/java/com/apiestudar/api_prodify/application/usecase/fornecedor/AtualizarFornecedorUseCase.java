@@ -9,14 +9,12 @@ import com.apiestudar.api_prodify.domain.model.Fornecedor;
 import com.apiestudar.api_prodify.domain.repository.FornecedorRepository;
 import com.apiestudar.api_prodify.interfaces.dto.FornecedorDTO;
 import com.apiestudar.api_prodify.shared.exception.RegistroNaoEncontradoException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Service
 public class AtualizarFornecedorUseCase {
 
     private final FornecedorRepository fornecedorRepository;
 
-    @Autowired
     public AtualizarFornecedorUseCase(FornecedorRepository fornecedorRepository) {
         this.fornecedorRepository = fornecedorRepository;
     }
@@ -46,7 +44,6 @@ public class AtualizarFornecedorUseCase {
     // Método auxiliar para atualizar todos os campos do fornecedor
     private void atualizarDadosFornecedor(Fornecedor fornecedorExistente, Fornecedor fornecedorAtualizado) {
         fornecedorExistente.setNome(fornecedorAtualizado.getNome());
-        fornecedorExistente.setNrResidencia(fornecedorAtualizado.getNrResidencia());
         fornecedorExistente.setEnderecoFornecedor(fornecedorAtualizado.getEnderecoFornecedor());
     }
 } 

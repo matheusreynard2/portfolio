@@ -32,9 +32,6 @@ public class FornecedorDTO {
     @NotNull(message = "Nome do fornecedor é obrigatório")
     private String nome;
     
-    @Schema(description = "Número da residência")
-    private String nrResidencia;
-    
     @Schema(description = "ID do usuário")
     @NotNull(message = "ID do usuário é obrigatório")
     private Long idUsuario;

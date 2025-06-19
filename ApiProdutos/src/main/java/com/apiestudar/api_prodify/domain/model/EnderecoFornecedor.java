@@ -1,5 +1,6 @@
 package com.apiestudar.api_prodify.domain.model;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -7,8 +8,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
+import javax.validation.constraints.NotNull;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -32,48 +33,68 @@ public class EnderecoFornecedor {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "end_fornecedor_seq")
+	@Column(nullable = false)
+	@NotNull(message = "ID do endereço é obrigatório")
 	@Schema(description = "ID do endereço")
 	private long id;
+
+	@Column(length = 10, nullable = true)
+	@Schema(description = "Número da residência")
+	private String nrResidencia; 
 	
+	@Column(nullable = true, length = 20)
 	@Schema(description = "CEP")
 	private String cep;
 	
+	@Column(nullable = true, length = 100)
 	@Schema(description = "Logradouro")
 	private String logradouro;
 	
+	@Column(nullable = true, length = 100)
 	@Schema(description = "Complemento")
 	private String complemento;
 	
+	@Column(nullable = true, length = 100)
 	@Schema(description = "Unidade")
 	private String unidade;
 	
+	@Column(nullable = true, length = 100)
 	@Schema(description = "Bairro")
 	private String bairro;
 	
+	@Column(nullable = true, length = 100)
 	@Schema(description = "Localidade")
 	private String localidade;
 	
+	@Column(nullable = true, length = 50)
 	@Schema(description = "UF")
 	private String uf;
 	
+	@Column(nullable = true, length = 50)
 	@Schema(description = "Estado")
 	private String estado;
 	
+	@Column(nullable = true, length = 10)
 	@Schema(description = "Região")
 	private String regiao;
 	
+	@Column(nullable = true, length = 100)
 	@Schema(description = "IBGE")
 	private String ibge;
 	
+	@Column(nullable = true, length = 100)
 	@Schema(description = "GIA")
 	private String gia;
 	
+	@Column(nullable = true, length = 5)
 	@Schema(description = "DDD")
 	private String ddd;
 	
+	@Column(nullable = true, length = 100)
 	@Schema(description = "SIAFI")
 	private String siafi;
 	
+	@Column(nullable = true)
 	@Schema(description = "Erro")
 	private String erro;
 	

@@ -48,17 +48,14 @@ public class Fornecedor {
 	@Schema(description = "Nome do fornecedor")
 	private String nome;
 	
-	@Column(length = 100, nullable = true)
-	@Schema(description = "Número da residência")
-	private String nrResidencia; 
-	
 	@Schema(description = "ID do usuário")
 	@Column(nullable = false)
 	@NotNull(message = "ID do usuário é obrigatório")
 	private Long idUsuario;
 	
 	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinColumn(name = "endereco_id", referencedColumnName = "id")
+    @JoinColumn(name = "endereco_id", referencedColumnName = "id", nullable = false)
+	@NotNull(message = "Endereço do fornecedor é obrigatório")
     @Schema(description = "Endereço do fornecedor")
 	private EnderecoFornecedor enderecoFornecedor;
 

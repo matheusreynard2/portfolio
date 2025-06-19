@@ -1,5 +1,7 @@
 package com.apiestudar.api_prodify.interfaces.dto;
 
+import javax.validation.constraints.NotNull;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -18,7 +20,11 @@ import lombok.ToString;
 public class EnderecoFornecedorDTO {
     
     @Schema(description = "ID do endereço")
+    @NotNull(message = "ID do endereço é obrigatório")
     private long id;
+
+    @Schema(description = "Número da residência")
+    private String nrResidencia;
     
     @Schema(description = "CEP")
     private String cep;

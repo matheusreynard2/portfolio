@@ -74,6 +74,7 @@ public class IntegrationTests {
             usuario.setIdUsuario(1L);
             usuario.setLogin("teste");
             usuario.setSenha("123456");
+            usuario.setEmail("teste@teste.com");
             usuarioRepository.adicionarUsuario(usuario);
         }
     }
@@ -93,9 +94,11 @@ public class IntegrationTests {
         // Criar fornecedor
         FornecedorDTO fornecedor = new FornecedorDTO();
         fornecedor.setNome("Fornecedor Teste");
-        fornecedor.setNrResidencia("123");
         fornecedor.setIdUsuario(1L);
         fornecedor.setEnderecoFornecedor(endereco);
+        
+        // Definir número da residência no endereço
+        fornecedor.getEnderecoFornecedor().setNrResidencia("123");
         
         // Criar headers
         HttpHeaders headers = new HttpHeaders();
@@ -132,7 +135,6 @@ public class IntegrationTests {
             assertNotNull(fornecedorCriado, "Fornecedor criado não deveria ser nulo");
             assertTrue(fornecedorCriado.getId() > 0, "ID do fornecedor deveria ser maior que zero");
             assertEquals(fornecedor.getNome(), fornecedorCriado.getNome(), "Nome do fornecedor não corresponde");
-            assertEquals(fornecedor.getNrResidencia(), fornecedorCriado.getNrResidencia(), "Número da residência não corresponde");
             assertEquals(fornecedor.getIdUsuario(), fornecedorCriado.getIdUsuario(), "ID do usuário não corresponde");
             
             // Verificar endereço
@@ -142,6 +144,7 @@ public class IntegrationTests {
             assertEquals(endereco.getBairro(), fornecedorCriado.getEnderecoFornecedor().getBairro(), "Bairro não corresponde");
             assertEquals(endereco.getLocalidade(), fornecedorCriado.getEnderecoFornecedor().getLocalidade(), "Localidade não corresponde");
             assertEquals(endereco.getUf(), fornecedorCriado.getEnderecoFornecedor().getUf(), "UF não corresponde");
+            assertEquals(fornecedor.getEnderecoFornecedor().getNrResidencia(), fornecedorCriado.getEnderecoFornecedor().getNrResidencia(), "Número da residência não corresponde");
             
         } catch (Exception e) {
             fail("Erro ao adicionar fornecedor: " + e.getMessage() + 
@@ -261,9 +264,11 @@ public class IntegrationTests {
         // Criar fornecedor
         FornecedorDTO fornecedor = new FornecedorDTO();
         fornecedor.setNome("Fornecedor Teste");
-        fornecedor.setNrResidencia("123");
         fornecedor.setIdUsuario(1L);
         fornecedor.setEnderecoFornecedor(endereco);
+        
+        // Definir número da residência no endereço
+        fornecedor.getEnderecoFornecedor().setNrResidencia("123");
         
         // Criar headers
         HttpHeaders headers = new HttpHeaders();
