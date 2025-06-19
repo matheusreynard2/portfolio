@@ -25,7 +25,7 @@
                        name="loginUsuario"
                        placeholder="Insira o seu usuário."
                        required #login="ngModel"
-                       maxlength="30">
+                       maxlength="100">
                   <div *ngIf="login.invalid && login.touched" class="invalid-feedback">
                     Usuário é obrigatório.
                   </div>
@@ -48,7 +48,7 @@
                        name="senhaUsuario"
                        placeholder="Insira sua senha."
                        required #senha="ngModel"
-                       maxlength="30">
+                       maxlength="100">
                   <span class="input-group-text" style="cursor: pointer;" (click)="toggleSenha()">
                     <i [class]="mostrarSenha ? 'bi bi-eye-slash' : 'bi bi-eye'"></i></span>
                   <div *ngIf="senha.invalid && senha.touched" class="invalid-feedback">
@@ -71,7 +71,7 @@
                          name="emailUsuario"
                          required #email="ngModel"
                          placeholder="Insira seu E-mail."
-                         maxlength="30">
+                         maxlength="100">
                   <div *ngIf="email.invalid && email.touched" class="invalid-feedback">
                     email é obrigatório.
                   </div>

@@ -44,7 +44,7 @@
                      id="quantidade"
                      name="quantidadeProduto"
                      required #quantidade="ngModel"
-                     max="1000000"
+                     maxlength="7"
                      [ngClass]="{'is-invalid': quantidade.value > 1000000}">
               <div *ngIf="quantidade.value > 1000000" class="invalid-feedback">
                 A quantidade não pode ser maior que 1.000.000
@@ -211,7 +211,7 @@
                    id="somaTotalValores"
                    name="somaTotalValoresProduto"
                    required #somaTotalValores="ngModel"
-                   maxlength="15"
+                   max="2000000000"
                    style="display: none;">
             <td colspan="5">
               <div class="mt-1">{{produto.somaTotalValores | currency : 'BRL'}}</div>
