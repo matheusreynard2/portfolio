@@ -96,4 +96,12 @@ public class GlobalExceptionHandler {
         errorResponse.put("mensagem", ex.getMessage());
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorResponse);
     }
+
+    @ExceptionHandler(FornecedorPossuiProdutoRelacionadoException.class)
+    public ResponseEntity<Map<String, String>> handleFornecedorPossuiProdutoException(FornecedorPossuiProdutoRelacionadoException ex) {
+        Map<String, String> errorResponse = new HashMap<>();
+        errorResponse.put("erro", "FORNECEDOR_POSSUI_PRODUTO");
+        errorResponse.put("mensagem", ex.getMessage());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
+    }
 }

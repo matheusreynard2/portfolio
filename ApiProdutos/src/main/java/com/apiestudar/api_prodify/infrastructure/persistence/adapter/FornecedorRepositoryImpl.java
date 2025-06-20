@@ -63,4 +63,9 @@ public class FornecedorRepositoryImpl implements FornecedorRepository {
 		return fornecedorJpaRepository.findByIdAndIdUsuario(id, idUsuario);
 	}
 
+	@Override
+	public Integer contarProdutosPorFornecedor(Long idFornecedor) {
+		return fornecedorJpaRepository.countProdutosByFornecedorId(idFornecedor);
+	}
+
 }

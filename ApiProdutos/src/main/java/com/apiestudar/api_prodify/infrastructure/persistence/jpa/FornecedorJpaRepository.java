@@ -3,6 +3,7 @@ package com.apiestudar.api_prodify.infrastructure.persistence.jpa;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import com.apiestudar.api_prodify.domain.model.Fornecedor;
@@ -21,4 +22,7 @@ public interface FornecedorJpaRepository extends JpaRepository<Fornecedor, Long>
 
     @EntityGraph(attributePaths = {"enderecoFornecedor", "produtos"})
     Optional<Fornecedor> findByIdAndIdUsuario(Long id, Long idUsuario);
+
+    @Query("SELECT COUNT(p) FROM Produto p WHERE p.fornecedor.id = :idFornecedor")
+    Integer countProdutosByFornecedorId(Long idFornecedor);
 }
