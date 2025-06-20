@@ -229,3 +229,17 @@
     <button type="button" class="btn btn-secondary" (click)="modal.close()">Fechar</button>
   </div>
 </ng-template>
+
+<!-- Modal de erro -->
+<ng-template #modalMsgErro let-modal class="modal">
+  <div class="modal-header">
+    <h4 class="modal-title">Erro</h4>
+    <img ngSrc="/codigo_barras.png" height="60" width="60" class="img-right"/>
+  </div>
+  <div class="modal-body">
+    <a>Impossível excluir este fornecedor pois possui produto(s) relacionado(s).</a>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="modal.close()">Fechar</button>
+  </div>
+</ng-template>

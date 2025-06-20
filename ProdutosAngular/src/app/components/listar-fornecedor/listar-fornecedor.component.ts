@@ -47,6 +47,7 @@ export class ListarFornecedorComponent implements OnInit {
 
   @ViewChild('searchBar') searchBar!: ElementRef
   @ViewChild('modalAviso') modalAviso!: any;
+  @ViewChild('modalMsgErro') modalMsgErro!: any;
   isMobileOrTablet: boolean = false;
 
   constructor(
@@ -109,6 +110,17 @@ export class ListarFornecedorComponent implements OnInit {
         if (response.status === 200) {
           this.fornecedorExcluido = fornecedor;
           this.abrirTelaExclusao(modalDeletar);
+        }
+      },
+      error: (error) => {
+        // Tratamento do erro 400 FORNECEDOR POSSUI PRODUTO RELACIONADO
+        if (error.status === 400) {
+          const errorBody = error.error;
+          if (errorBody.erro === 'FORNECEDOR_POSSUI_PRODUTO') {
+            setTimeout(() => {
+              this.modalService.open(this.modalMsgErro, {size: 'lg'});
+            }, 100);
+          }
         }
       }
     });
