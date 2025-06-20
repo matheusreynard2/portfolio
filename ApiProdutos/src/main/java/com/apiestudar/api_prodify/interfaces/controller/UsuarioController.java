@@ -19,14 +19,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
 
 import com.apiestudar.api_prodify.application.usecase.usuario.AdicionarUsuarioUseCase;
 import com.apiestudar.api_prodify.application.usecase.usuario.DeletarUsuarioUseCase;
 import com.apiestudar.api_prodify.application.usecase.usuario.ListarUsuariosUseCase;
 import com.apiestudar.api_prodify.application.usecase.usuario.RealizarLoginUseCase;
 import com.apiestudar.api_prodify.application.usecase.usuario.UsuarioHelper;
-import com.apiestudar.api_prodify.domain.model.Usuario;
 import com.apiestudar.api_prodify.interfaces.dto.UsuarioDTO;
 import com.apiestudar.api_prodify.interfaces.dto.UsuarioFormDTO;
 
@@ -60,7 +58,7 @@ public class UsuarioController {
 	@ApiOperation(value = "Soma o total de acessos (IPs) que ja entraram no site.", notes = "Faz a somatória de acessos (IPs) que já entraram no site e exibe o total no rodapé.")
 	@ApiResponse(code = 200, message = "Total contabilizado.")
 	@GetMapping("/getAllAcessosIp")
-	public ResponseEntity<Long> getAllAcessosIp() throws IOException {
+	public ResponseEntity<Long> getAllAcessosIp() {
 		return ResponseEntity.status(HttpStatus.OK).body(usuarioHelper.getTotalAcessos());
 	}
 

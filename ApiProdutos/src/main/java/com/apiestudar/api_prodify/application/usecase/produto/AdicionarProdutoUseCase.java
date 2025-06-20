@@ -29,7 +29,7 @@ public class AdicionarProdutoUseCase {
 	}
 
 	@Transactional(rollbackFor = Exception.class)
-	public ProdutoDTO executar(ProdutoFormDTO produtoFormDTO, MultipartFile imagemFile) throws SQLException, IOException {
+	public ProdutoDTO executar(ProdutoFormDTO produtoFormDTO, MultipartFile imagemFile) throws IOException {
 		Helper.verificarNull(produtoFormDTO);
 		ProdutoDTO produtoDTO = objectMapper.readValue(produtoFormDTO.getProdutoJson(), ProdutoDTO.class);
 		Produto produto = modelMapper.map(produtoDTO, Produto.class);	

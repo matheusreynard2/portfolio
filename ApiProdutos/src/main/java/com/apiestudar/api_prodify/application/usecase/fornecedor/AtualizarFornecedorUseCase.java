@@ -23,7 +23,7 @@ public class AtualizarFornecedorUseCase {
     private ModelMapper modelMapper;
 
     @Transactional(rollbackFor = Exception.class)
-    public FornecedorDTO executar(long id, FornecedorDTO fornecedorDTO, Long idUsuario) throws Exception {
+    public FornecedorDTO executar(long id, FornecedorDTO fornecedorDTO, Long idUsuario) {
         Fornecedor fornecedorAtualizado = modelMapper.map(fornecedorDTO, Fornecedor.class);
         
         // Busca o fornecedor pelo id e idUsuario e lança exceção se não encontrar

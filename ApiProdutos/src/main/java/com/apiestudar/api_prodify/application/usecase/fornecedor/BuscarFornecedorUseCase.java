@@ -17,7 +17,6 @@ public class BuscarFornecedorUseCase {
     private ModelMapper modelMapper;
     private final FornecedorRepository fornecedorRepository;
 
-    @Autowired
     public BuscarFornecedorUseCase(FornecedorRepository fornecedorRepository) {
         this.fornecedorRepository = fornecedorRepository;
     }

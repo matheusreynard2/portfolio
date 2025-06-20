@@ -71,7 +71,7 @@ public class ProdutoController {
 	@ApiOperation(value = "Adiciona/cadastra um novo produto.", notes = "Cria um novo registro de produto no banco de dados.")
 	@ApiResponse(code = 200, message = "Produto cadastrado.")
 	@PostMapping("/adicionarProduto")
-	public ResponseEntity<ProdutoDTO> adicionarProduto(@ModelAttribute ProdutoFormDTO produtoFormDTO) throws IOException, SQLException {
+	public ResponseEntity<ProdutoDTO> adicionarProduto(@ModelAttribute ProdutoFormDTO produtoFormDTO) throws IOException {
 		return ResponseEntity.status(HttpStatus.CREATED).body(adicionarProduto.executar(produtoFormDTO, produtoFormDTO.getImagemFile()));
 	}
 
