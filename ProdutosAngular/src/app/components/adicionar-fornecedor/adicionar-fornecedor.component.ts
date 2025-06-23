@@ -62,7 +62,7 @@ export class AdicionarFornecedorComponent implements OnInit {
     erro: ''
   };
 
-  dadosEmpresa: DadosEmpresaDTO | null = {
+  dadosEmpresa: DadosEmpresaDTO = {
     cnpj: '',
     razaoSocial: '',
     nomeFantasia: '',
@@ -97,7 +97,7 @@ export class AdicionarFornecedorComponent implements OnInit {
     nome: '',
     enderecoFornecedor: this.endereco,
     produtos: [],
-    dadosEmpresa: null
+    dadosEmpresa: this.dadosEmpresa
   };
 
   informarCNPJ: boolean = true;
@@ -106,6 +106,8 @@ export class AdicionarFornecedorComponent implements OnInit {
   cepBuscado: boolean = false;
   cnpjCadastradoComSucesso: boolean = false; // Nova variável para controlar se o CNPJ foi cadastrado
   formularioCNPJVisivel: boolean = true; // Nova variável para controlar a visibilidade do formulário de CNPJ
+  botoesFormulario1Bloqueados: boolean = false; // Controla se os botões do primeiro formulário estão bloqueados
+  mensagemContinuacaoFluxo: string = ''; // Mensagem a ser exibida na continuação do fluxo
   fornecedorCadastradoComSucesso: boolean = false; // Nova variável para controlar a mensagem de sucesso do fornecedor
 
   // Opções da máscara de CEP
@@ -126,38 +128,34 @@ export class AdicionarFornecedorComponent implements OnInit {
   }
 
   resetDadosEmpresa() {
-    if (this.informarCNPJ) {
-      this.dadosEmpresa = {
-        cnpj: '',
-        razaoSocial: '',
-        nomeFantasia: '',
-        cnaeFiscal: '',
-        codigoNaturezaJuridica: '',
-        descricaoNaturezaJuridica: '',
-        situacaoCadastral: '',
-        dataSituacaoCadastral: '',
-        dataInicioAtividade: '',
-        porte: '',
-        capitalSocial: '',
-        logradouro: '',
-        numero: '',
-        complemento: '',
-        bairro: '',
-        cep: '',
-        municipio: '',
-        uf: '',
-        pais: '',
-        dddTelefone1: '',
-        telefone1: '',
-        dddTelefone2: '',
-        telefone2: '',
-        email: '',
-        cnaesSecundarios: [],
-        qsa: []
-      };
-    } else {
-      this.dadosEmpresa = null;
-    }
+    this.dadosEmpresa = {
+      cnpj: '',
+      razaoSocial: '',
+      nomeFantasia: '',
+      cnaeFiscal: '',
+      codigoNaturezaJuridica: '',
+      descricaoNaturezaJuridica: '',
+      situacaoCadastral: '',
+      dataSituacaoCadastral: '',
+      dataInicioAtividade: '',
+      porte: '',
+      capitalSocial: '',
+      logradouro: '',
+      numero: '',
+      complemento: '',
+      bairro: '',
+      cep: '',
+      municipio: '',
+      uf: '',
+      pais: '',
+      dddTelefone1: '',
+      telefone1: '',
+      dddTelefone2: '',
+      telefone2: '',
+      email: '',
+      cnaesSecundarios: [],
+      qsa: []
+    };
   }
 
   buscarEnderecoPorCep(cep: string): void {
@@ -294,7 +292,6 @@ export class AdicionarFornecedorComponent implements OnInit {
   gerarDadosFornecedor() {
     // Certifique-se de que o CEP está limpo antes de enviar
     const cepFormatado = this.endereco.cep.replace(/\D/g, '');
-
     this.novoFornecedor = {
       id: 0,
       idUsuario: this.authService.getUsuarioLogado().idUsuario,
@@ -310,46 +307,69 @@ export class AdicionarFornecedorComponent implements OnInit {
   }
 
   onInformarCNPJChange() {
+    // Se mudou para "sim" (informar CNPJ), resetar ao estado inicial da página
+    if (this.informarCNPJ) {
+      this.resetarTodosOsCamposAoEstadoInicial();
+      return;
+    }
+    
+    // Se mudou para "não", apenas resetar dados específicos do CNPJ
     this.resetDadosEmpresa();
     this.cnpjEmpresa = '';
     this.formularioFornecedorHabilitado = false;
     this.cnpjBuscado = false;
     this.cepBuscado = false;
-    this.cnpjCadastradoComSucesso = false; // Resetar o estado de CNPJ cadastrado
-    this.formularioCNPJVisivel = true; // Mostrar o formulário de CNPJ novamente
-    this.fornecedorCadastradoComSucesso = false; // Remover mensagem de sucesso do fornecedor
+    this.cnpjCadastradoComSucesso = false;
+    this.formularioCNPJVisivel = true;
+    this.fornecedorCadastradoComSucesso = false;
+    this.botoesFormulario1Bloqueados = false;
+    this.mensagemContinuacaoFluxo = '';
   }
 
   cadastrarCNPJ() {
-    // Se escolheu informar CNPJ, verificar se pelo menos o CNPJ foi preenchido
-    if (this.informarCNPJ && !this.cnpjEmpresa.trim()) {
-      this.mensagemErro = "Por favor, digite um CNPJ antes de prosseguir.";
+    // ALTERAÇÃO 1: Verificar se o CNPJ foi buscado quando o radio button está selecionado
+    if (this.informarCNPJ && !this.cnpjBuscado) {
+      this.mensagemErro = "Por favor, clique em 'Buscar Empresa' antes de prosseguir.";
       this.modalService.open(this.modalMsgAviso);
       return;
     }
-    
-    if (!this.informarCNPJ) {
-      this.dadosEmpresa = null;
-    }
-    
-    // Marcar que o CNPJ foi cadastrado com sucesso
+
+    // ALTERAÇÃO 2: Bloquear os 3 botões e exibir mensagem de continuação
+    this.botoesFormulario1Bloqueados = true;
+
+    // Continuar com a lógica existente
     this.cnpjCadastradoComSucesso = true;
+    this.formularioCNPJVisivel = false;
     this.formularioFornecedorHabilitado = true;
-    this.formularioCNPJVisivel = false; // Esconder o formulário de CNPJ
   }
 
   limparFormularioCNPJ() {
-    this.cnpjEmpresa = '';
-    this.resetDadosEmpresa();
-    this.cnpjBuscado = false;
-    this.fornecedorCadastradoComSucesso = false; // Remover mensagem de sucesso do fornecedor
+    // Resetar completamente ambos os formulários ao estado inicial
+    this.resetarTodosOsCamposAoEstadoInicial();
   }
 
   limparFormularioFornecedor(): void {
+    // Resetar completamente ambos os formulários ao estado inicial
+    this.resetarTodosOsCamposAoEstadoInicial();
+  }
+
+  resetarTodosOsCamposAoEstadoInicial() {
+    // Resetar dados do CNPJ e empresa
+    this.cnpjEmpresa = '';
+    this.resetDadosEmpresa();
+    this.cnpjBuscado = false;
+    this.cnpjCadastradoComSucesso = false;
+    this.formularioCNPJVisivel = true;
+    this.isLoadingCNPJ = false;
+    this.botoesFormulario1Bloqueados = false; // Resetar bloqueio dos botões
+    this.mensagemContinuacaoFluxo = ''; // Limpar mensagem de continuação
+    
+    // Resetar dados do fornecedor
     this.nomeFornecedor = '';
     this.nrResidenciaFornecedor = '';
-    this.cepBuscado = false;
     this.endereco = {
+      id: 0,
+      nrResidencia: '',
       cep: '',
       logradouro: '',
       complemento: '',
@@ -363,31 +383,25 @@ export class AdicionarFornecedorComponent implements OnInit {
       gia: '',
       ddd: '',
       siafi: '',
-      erro: '',
-      nrResidencia: ''
+      erro: ''
     };
-    this.fornecedorCadastradoComSucesso = false; // Remover mensagem de sucesso do fornecedor
+    this.cepBuscado = false;
+    this.isLoading = false;
+    this.formularioFornecedorHabilitado = false;
+    this.fornecedorCadastradoComSucesso = false;
+    
+    // Resetar radio button para estado inicial
+    this.informarCNPJ = true;
+    
+    // Resetar mensagens de erro
+    this.mensagemErro = '';
   }
 
   resetarTelaAoEstadoInicial() {
-    // Resetar dados do CNPJ
-    this.cnpjEmpresa = '';
-    this.resetDadosEmpresa();
-    this.cnpjBuscado = false;
-    this.cnpjCadastradoComSucesso = false;
-    this.formularioCNPJVisivel = true;
+    // Usar o método completo de reset
+    this.resetarTodosOsCamposAoEstadoInicial();
     
-    // Resetar dados do fornecedor
-    this.limparFormularioFornecedor();
-    this.cepBuscado = false;
-    
-    // Resetar estados dos formulários
-    this.formularioFornecedorHabilitado = false;
-    
-    // Manter radio button "SIM" selecionado
-    this.informarCNPJ = true;
-    
-    // Ativar mensagem de sucesso do fornecedor
+    // Ativar mensagem de sucesso do fornecedor apenas neste caso
     this.fornecedorCadastradoComSucesso = true;
   }
 }

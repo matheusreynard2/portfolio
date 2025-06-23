@@ -19,7 +19,7 @@
         <button type="button" 
                 class="btn btn-secondary me-2 style-btn-form" 
                 (click)="buscarEmpresaPorCNPJ(cnpjEmpresa)"
-                [disabled]="isLoadingCNPJ || !informarCNPJ">
+                [disabled]="botoesFormulario1Bloqueados || isLoadingCNPJ || !informarCNPJ">
           <span *ngIf="!isLoadingCNPJ">Buscar Empresa</span>
           <span *ngIf="isLoadingCNPJ" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
           <span *ngIf="isLoadingCNPJ">Buscando...</span>
@@ -27,12 +27,13 @@
         <button type="button" 
                 class="btn btn-warning me-2 style-btn-form" 
                 (click)="limparFormularioCNPJ()"
-                [disabled]="!informarCNPJ">
+                [disabled]="botoesFormulario1Bloqueados || !informarCNPJ">
           Limpar Campos
         </button>
         <button type="button" 
                 class="btn bg-primary-subtle fw-bold style-btn-form" 
-                (click)="cadastrarCNPJ()">
+                (click)="cadastrarCNPJ()"
+                [disabled]="botoesFormulario1Bloqueados || (informarCNPJ && !cnpjBuscado)">
           Próximo
         </button>
       </div>
@@ -52,6 +53,11 @@
           </span>
         </small>
       </div>
+    </div>
+
+    <!-- Mensagem de continuação do fluxo -->
+    <div *ngIf="mensagemContinuacaoFluxo" class="alert alert-info mt-3">
+      <i class="bi bi-info-circle-fill"></i> {{ mensagemContinuacaoFluxo }}
     </div>
 
     <!-- Mensagem quando não informar CNPJ -->

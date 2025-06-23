@@ -3,6 +3,7 @@ import { QuadroSocietarioDTO } from './QuadroSocietarioDTO';
 import { FornecedorDTO } from './FornecedorDTO';
 
 export interface DadosEmpresaDTO {
+    id?: number; // ID da entidade no banco de dados
     cnpj: string;
     razaoSocial: string;
     nomeFantasia: string;

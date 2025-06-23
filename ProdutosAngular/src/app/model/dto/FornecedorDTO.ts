@@ -8,5 +8,5 @@ export interface FornecedorDTO {
   nome: string;
   enderecoFornecedor: EnderecoFornecedorDTO;
   produtos: ProdutoDTO[];
-  dadosEmpresa: DadosEmpresaDTO | null;
+  dadosEmpresa: DadosEmpresaDTO;
 }

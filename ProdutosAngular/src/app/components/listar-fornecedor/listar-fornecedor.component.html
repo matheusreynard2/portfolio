@@ -3,10 +3,10 @@
     <div class="div-tabela">
       <table class="table table-bordered table-striped">
         <thead class="thead-dark">
-          <tr>
+        <tr>
             <th colspan="9" class="text-center">Fornecedores</th>
-          </tr>
-          <tr>
+        </tr>
+        <tr>
             <th class="text-center coluna_id_header">ID</th>
             <th class="text-left coluna_nome_header">Nome fornecedor</th>
             <th class="text-left coluna_razao_social_header">Razão Social CNPJ</th>
@@ -16,25 +16,25 @@
             <th class="text-center coluna_cep_header">CEP</th>
             <th class="text-center coluna_acao_header"></th>
             <th class="text-center coluna_acao_header"></th>
-          </tr>
+        </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let fornecedor of listaFornecedores">
+        <tr *ngFor="let fornecedor of listaFornecedores">
             <td class="text-center coluna_id">{{ fornecedor.id }}</td>
             <td class="text-left coluna_nome cell-ellipsis">{{ fornecedor.nome }}</td>
-            <td class="text-left coluna_razao_social cell-ellipsis">{{ fornecedor.dadosEmpresa?.razaoSocial || '-' }}</td>
+            <td class="text-left coluna_razao_social cell-ellipsis">{{ fornecedor.dadosEmpresa.razaoSocial || '-' }}</td>
             <td class="text-left coluna_logradouro cell-ellipsis">{{ fornecedor.enderecoFornecedor.logradouro }}<span *ngIf="fornecedor.enderecoFornecedor.nrResidencia"> - N° {{ fornecedor.enderecoFornecedor.nrResidencia }}</span></td>
             <td class="text-center cell-ellipsis">{{ fornecedor.enderecoFornecedor.bairro }}</td>
-            <td class="text-center">{{ fornecedor.enderecoFornecedor.estado }}</td>
-            <td class="text-center">{{ fornecedor.enderecoFornecedor.cep }}</td>
-            <td class="text-center">
-              <button type="button" class="btn btn-info full-width-btn" id="btn_editar" (click)="atualizarFornecedor(modalEditar, fornecedor.id, fornecedor)">✎</button>
-            </td>
-            <td class="text-center">
-              <button type="button" class="btn btn-danger full-width-btn" id="btn_excluir" (click)="deletarFornecedor(modalMsgExcluir, fornecedor.id, fornecedor)">X</button>
-            </td>
-          </tr>
-          <tr>
+          <td class="text-center">{{ fornecedor.enderecoFornecedor.estado }}</td>
+          <td class="text-center">{{ fornecedor.enderecoFornecedor.cep }}</td>
+          <td class="text-center">
+            <button type="button" class="btn btn-info full-width-btn" id="btn_editar" (click)="atualizarFornecedor(modalEditar, fornecedor.id, fornecedor)">✎</button>
+          </td>
+          <td class="text-center">
+            <button type="button" class="btn btn-danger full-width-btn" id="btn_excluir" (click)="deletarFornecedor(modalMsgExcluir, fornecedor.id, fornecedor)">X</button>
+          </td>
+        </tr>
+        <tr>
             <td colspan="9" class="full-width">
               <div class="info-container">
                 <div class="info-item">
@@ -46,9 +46,9 @@
           </tr>
           <tr>
             <td colspan="9">
-              <button class="btn bg-primary-subtle fw-bold btn-atualizar-lista" (click)="atualizarLista()" role="button">Atualizar</button>
-            </td>
-          </tr>
+            <button class="btn bg-primary-subtle fw-bold btn-atualizar-lista" (click)="atualizarLista()" role="button">Atualizar</button>
+          </td>
+        </tr>
         </tbody>
       </table>
     </div>
@@ -94,28 +94,21 @@
         <!-- Campo ID oculto -->
         <input type="hidden" [(ngModel)]="fornecedorAtualizar.id" name="idFornecedor">
 
-        <!-- Informações Básicas -->
+        <!-- Dados Básicos -->
         <div class="form-section">
-          <h6 class="section-title">Informações Básicas</h6>
+          <h6 class="section-title">Dados Básicos</h6>
           <div class="form-row">
             <div class="form-group">
-              <span class="text-red">* </span>
-              <label for="nome" class="required">Nome:</label>
+              <label for="nome"><span class="text-red">* </span>Nome:</label>
               <input type="text" [(ngModel)]="fornecedorAtualizar.nome"
                      class="form-control"
                      id="nome"
                      name="nomeFornecedor"
-                     placeholder="Insira o nome do fornecedor"
-                     required #nome="ngModel"
-                     [ngClass]="{'is-invalid': nome.invalid && nome.touched}"
+                     placeholder="Nome do fornecedor"
                      maxlength="100">
-              <div *ngIf="nome.invalid && nome.touched" class="invalid-feedback">
-                O nome do fornecedor é obrigatório.
-              </div>
             </div>
             <div class="form-group">
-              <span class="text-red">* </span>
-              <label for="cep" class="required">CEP:</label>
+              <label for="cep"><span class="text-red">* </span>CEP:</label>
               <input type="text" [(ngModel)]="fornecedorAtualizar.enderecoFornecedor.cep"
                      class="form-control"
                      id="cep"
@@ -123,12 +116,41 @@
                      mask="00000-000"
                      [showMaskTyped]="true"
                      placeholder="00000-000"
-                     required #cep="ngModel"
-                     [ngClass]="{'is-invalid': cep.invalid && cep.touched}"
                      maxlength="20">
-              <div *ngIf="cep.invalid && cep.touched" class="invalid-feedback">
-                O CEP é obrigatório.
+            </div>
+          </div>
+        </div>
+
+        <!-- Busca de CEP -->
+        <div class="form-section">
+          <h6 class="section-title">Buscar Endereço por CEP</h6>
+          <div class="search-controls">
+            <div class="form-row">
+              <div class="form-group button-group">
+                <button type="button" 
+                        class="btn btn-secondary me-2" 
+                        (click)="buscarEnderecoPorCep(fornecedorAtualizar.enderecoFornecedor.cep)"
+                        [disabled]="isLoading">
+                  <span *ngIf="!isLoading">Buscar CEP</span>
+                  <span *ngIf="isLoading" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                  <span *ngIf="isLoading">Buscando...</span>
+                </button>
+                <button type="button" 
+                        class="btn btn-warning" 
+                        (click)="limparCamposCEP()">
+                  Limpar CEP
+                </button>
               </div>
+            </div>
+            <div class="status-message">
+              <small class="text-muted">
+                <span *ngIf="cepBuscado" class="text-success">
+                  <i class="bi bi-check-circle-fill"></i> Endereço carregado
+                </span>
+                <span *ngIf="!cepBuscado" class="text-info">
+                  <i class="bi bi-info-circle-fill"></i> Digite um CEP acima e clique em "Buscar CEP"
+                </span>
+              </small>
             </div>
           </div>
         </div>
@@ -138,12 +160,13 @@
           <h6 class="section-title">Endereço</h6>
           <div class="form-row">
             <div class="form-group">
-              <label for="logradouro">Logradouro:</label>
+              <label for="logradouro"><span class="text-red">* </span>Logradouro:</label>
               <input type="text" [(ngModel)]="fornecedorAtualizar.enderecoFornecedor.logradouro"
                      class="form-control"
                      id="logradouro"
                      name="logradouroFornecedor"
-                     readonly>
+                     placeholder="Ex: Rua das Flores"
+                     maxlength="100">
             </div>
             <div class="form-group">
               <label for="nrResidencia">Nº Residência:</label>
@@ -151,7 +174,7 @@
                      class="form-control"
                      id="nrResidencia"
                      name="nrResidenciaFornecedor"
-                     placeholder="Número"
+                     placeholder="Ex: 123"
                      maxlength="10">
             </div>
           </div>
@@ -162,25 +185,50 @@
                      class="form-control"
                      id="complemento"
                      name="complementoFornecedor"
+                     placeholder="Ex: Apto 101"
                      maxlength="100">
             </div>
+            <div class="form-group">
+              <label for="unidade">Unidade:</label>
+              <input type="text" [(ngModel)]="fornecedorAtualizar.enderecoFornecedor.unidade"
+                     class="form-control"
+                     id="unidade"
+                     name="unidadeFornecedor"
+                     placeholder="Ex: Bloco A"
+                     maxlength="100">
+            </div>
+          </div>
+          <div class="form-row">
             <div class="form-group">
               <label for="bairro">Bairro:</label>
               <input type="text" [(ngModel)]="fornecedorAtualizar.enderecoFornecedor.bairro"
                      class="form-control"
                      id="bairro"
                      name="bairroFornecedor"
-                     readonly>
+                     placeholder="Ex: Centro"
+                     maxlength="100">
             </div>
-          </div>
-          <div class="form-row">
             <div class="form-group">
-              <label for="cidade">Cidade:</label>
+              <label for="cidade"><span class="text-red">* </span>Cidade:</label>
               <input type="text" [(ngModel)]="fornecedorAtualizar.enderecoFornecedor.localidade"
                      class="form-control"
                      id="cidade"
                      name="cidadeFornecedor"
-                     readonly>
+                     placeholder="Ex: São Paulo"
+                     maxlength="100">
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="uf"><span class="text-red">* </span>UF:</label>
+              <input type="text" [(ngModel)]="fornecedorAtualizar.enderecoFornecedor.uf"
+                     class="form-control"
+                     id="uf"
+                     name="ufFornecedor"
+                     style="text-transform: uppercase"
+                     pattern="[A-Za-z]{2}"
+                     placeholder="Ex: SP"
+                     maxlength="2">
             </div>
             <div class="form-group">
               <label for="estado">Estado:</label>
@@ -188,7 +236,261 @@
                      class="form-control"
                      id="estado"
                      name="estadoFornecedor"
-                     readonly>
+                     placeholder="Ex: São Paulo"
+                     maxlength="50">
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="regiao">Região:</label>
+              <input type="text" [(ngModel)]="fornecedorAtualizar.enderecoFornecedor.regiao"
+                     class="form-control"
+                     id="regiao"
+                     name="regiaoFornecedor"
+                     maxlength="100">
+            </div>
+            <div class="form-group">
+              <label for="ddd">DDD:</label>
+              <input type="text" [(ngModel)]="fornecedorAtualizar.enderecoFornecedor.ddd"
+                     class="form-control"
+                     id="ddd"
+                     name="dddFornecedor"
+                     mask="00"
+                     [showMaskTyped]="true"
+                     placeholder="00"
+                     maxlength="2">
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="ibge">IBGE:</label>
+              <input type="text" [(ngModel)]="fornecedorAtualizar.enderecoFornecedor.ibge"
+                     class="form-control"
+                     id="ibge"
+                     name="ibgeFornecedor"
+                     mask="0000000"
+                     [showMaskTyped]="true"
+                     placeholder="0000000"
+                     maxlength="7">
+            </div>
+            <div class="form-group">
+              <label for="gia">GIA:</label>
+              <input type="text" [(ngModel)]="fornecedorAtualizar.enderecoFornecedor.gia"
+                     class="form-control"
+                     id="gia"
+                     name="giaFornecedor"
+                     maxlength="100">
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="siafi">SIAFI:</label>
+              <input type="text" [(ngModel)]="fornecedorAtualizar.enderecoFornecedor.siafi"
+                     class="form-control"
+                     id="siafi"
+                     name="siafiFornecedor"
+                     mask="0000"
+                     [showMaskTyped]="true"
+                     placeholder="0000"
+                     maxlength="4">
+            </div>
+          </div>
+        </div>
+
+        <!-- Busca de Empresa (CNPJ) -->
+        <div class="form-section">
+          <h6 class="section-title">Buscar Empresa por CNPJ</h6>
+          <div class="search-controls">
+            <div class="form-row">
+              <div class="form-group">
+                <label for="cnpjBusca">CNPJ para Busca:</label>
+                <input type="text" [(ngModel)]="cnpjEmpresa"
+                       class="form-control"
+                       id="cnpjBusca"
+                       name="cnpjBusca"
+                       mask="00.000.000/0000-00"
+                       [showMaskTyped]="true"
+                       placeholder="00.000.000/0000-00"
+                       maxlength="18">
+              </div>
+              <div class="form-group button-group">
+                <button type="button" 
+                        class="btn btn-secondary me-2" 
+                        (click)="buscarEmpresaPorCNPJ(cnpjEmpresa)"
+                        [disabled]="isLoadingCNPJ">
+                  <span *ngIf="!isLoadingCNPJ">Buscar Empresa</span>
+                  <span *ngIf="isLoadingCNPJ" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                  <span *ngIf="isLoadingCNPJ">Buscando...</span>
+                </button>
+                <button type="button" 
+                        class="btn btn-warning" 
+                        (click)="limparCamposCNPJ()">
+                  Limpar CNPJ
+                </button>
+              </div>
+            </div>
+            <div class="status-message">
+              <small class="text-muted">
+                <span *ngIf="cnpjBuscado" class="text-success">
+                  <i class="bi bi-check-circle-fill"></i> Dados da empresa carregados
+                </span>
+                <span *ngIf="!cnpjBuscado" class="text-info">
+                  <i class="bi bi-info-circle-fill"></i> Digite um CNPJ e clique em "Buscar Empresa"
+                </span>
+              </small>
+            </div>
+          </div>
+        </div>
+
+        <!-- Dados da Empresa -->
+        <div class="form-section">
+          <h6 class="section-title">Dados da Empresa <small class="text-muted">(Opcional)</small></h6>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="cnpj">CNPJ:</label>
+              <input type="text" [(ngModel)]="fornecedorAtualizar.dadosEmpresa.cnpj"
+                     class="form-control"
+                     id="cnpj"
+                     name="cnpjEmpresa"
+                     mask="00.000.000/0000-00"
+                     [showMaskTyped]="true"
+                     placeholder="00.000.000/0000-00"
+                     maxlength="18">
+            </div>
+            <div class="form-group">
+              <label for="razaoSocial">Razão Social:</label>
+              <input type="text" [(ngModel)]="fornecedorAtualizar.dadosEmpresa.razaoSocial"
+                     class="form-control"
+                     id="razaoSocial"
+                     name="razaoSocialEmpresa"
+                     placeholder="Ex: Empresa LTDA"
+                     maxlength="100">
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="nomeFantasia">Nome Fantasia:</label>
+              <input type="text" [(ngModel)]="fornecedorAtualizar.dadosEmpresa.nomeFantasia"
+                     class="form-control"
+                     id="nomeFantasia"
+                     name="nomeFantasiaEmpresa"
+                     placeholder="Ex: Loja da Esquina"
+                     maxlength="100">
+            </div>
+            <div class="form-group">
+              <label for="situacaoCadastral">Situação Cadastral:</label>
+              <input type="text" [(ngModel)]="fornecedorAtualizar.dadosEmpresa.situacaoCadastral"
+                     class="form-control"
+                     id="situacaoCadastral"
+                     name="situacaoCadastralEmpresa"
+                     placeholder="Ex: Ativa"
+                     maxlength="100">
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="cnaeFiscal">CNAE Fiscal:</label>
+              <input type="text" [(ngModel)]="fornecedorAtualizar.dadosEmpresa.cnaeFiscal"
+                     class="form-control"
+                     id="cnaeFiscal"
+                     name="cnaeFiscalEmpresa"
+                     placeholder="Ex: 47.11-3-02"
+                     maxlength="100">
+            </div>
+            <div class="form-group">
+              <label for="porte">Porte:</label>
+              <input type="text" [(ngModel)]="fornecedorAtualizar.dadosEmpresa.porte"
+                     class="form-control"
+                     id="porte"
+                     name="porteEmpresa"
+                     placeholder="Ex: Micro Empresa"
+                     maxlength="100">
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="capitalSocial">Capital Social:</label>
+              <input type="text" [(ngModel)]="fornecedorAtualizar.dadosEmpresa.capitalSocial"
+                     class="form-control"
+                     id="capitalSocial"
+                     name="capitalSocialEmpresa"
+                     placeholder="Ex: R$ 10.000,00"
+                     maxlength="100">
+            </div>
+            <div class="form-group">
+              <label for="dataInicioAtividade">Data Início Atividade:</label>
+              <input type="text" [(ngModel)]="fornecedorAtualizar.dadosEmpresa.dataInicioAtividade"
+                     class="form-control"
+                     id="dataInicioAtividade"
+                     name="dataInicioAtividadeEmpresa"
+                     mask="00/00/0000"
+                     [showMaskTyped]="true"
+                     placeholder="dd/mm/aaaa"
+                     maxlength="10">
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="descricaoNaturezaJuridica">Natureza Jurídica:</label>
+              <input type="text" [(ngModel)]="fornecedorAtualizar.dadosEmpresa.descricaoNaturezaJuridica"
+                     class="form-control"
+                     id="descricaoNaturezaJuridica"
+                     name="descricaoNaturezaJuridicaEmpresa"
+                     placeholder="Ex: Sociedade Limitada"
+                     maxlength="100">
+            </div>
+            <div class="form-group">
+              <label for="emailEmpresa">E-mail:</label>
+              <input type="email" [(ngModel)]="fornecedorAtualizar.dadosEmpresa.email"
+                     class="form-control"
+                     id="emailEmpresa"
+                     name="emailEmpresa"
+                     placeholder="Ex: contato@empresa.com"
+                     maxlength="100">
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="telefone1">Telefone 1:</label>
+              <div class="telefone-group">
+                <input type="text" [(ngModel)]="fornecedorAtualizar.dadosEmpresa.dddTelefone1"
+                       class="form-control ddd-input"
+                       id="dddTelefone1"
+                       name="dddTelefone1Empresa"
+                       mask="00"
+                       [showMaskTyped]="true"
+                       placeholder="00"
+                       maxlength="2">
+                <input type="text" [(ngModel)]="fornecedorAtualizar.dadosEmpresa.telefone1"
+                       class="form-control telefone-input"
+                       id="telefone1"
+                       name="telefone1Empresa"
+                       mask="00000-0000||0000-0000"
+                       [showMaskTyped]="true"
+                       placeholder="00000-0000"
+                       maxlength="10">
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="telefone2">Telefone 2:</label>
+              <div class="telefone-group">
+                <input type="text" [(ngModel)]="fornecedorAtualizar.dadosEmpresa.dddTelefone2"
+                       class="form-control ddd-input"
+                       id="dddTelefone2"
+                       name="dddTelefone2Empresa"
+                       mask="00"
+                       [showMaskTyped]="true"
+                       placeholder="00"
+                       maxlength="2">
+                <input type="text" [(ngModel)]="fornecedorAtualizar.dadosEmpresa.telefone2"
+                       class="form-control telefone-input"
+                       id="telefone2"
+                       name="telefone2Empresa"
+                       mask="00000-0000||0000-0000"
+                       [showMaskTyped]="true"
+                       placeholder="00000-0000"
+                       maxlength="10">
+              </div>
             </div>
           </div>
         </div>
@@ -197,8 +499,7 @@
         <div class="form-section">
           <div class="button-container">
             <button type="submit" 
-                    class="btn btn-salvar" 
-                    [disabled]="!fornecedorForm.form.valid">
+                    class="btn btn-salvar">
               Salvar fornecedor
             </button>
           </div>
@@ -238,6 +539,20 @@
   </div>
   <div class="modal-body">
     <a>Impossível excluir este fornecedor pois possui produto(s) relacionado(s).</a>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="modal.close()">Fechar</button>
+  </div>
+</ng-template>
+
+<!-- Modal de Mensagem de Aviso para Buscas -->
+<ng-template #modalMsgAviso let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title">Aviso</h4>
+    <img ngSrc="/codigo_barras.png" height="60" width="60" class="img-right"/>
+  </div>
+  <div class="modal-body">
+    <p>{{ mensagemErro }}</p>
   </div>
   <div class="modal-footer">
     <button type="button" class="btn btn-secondary" (click)="modal.close()">Fechar</button>
