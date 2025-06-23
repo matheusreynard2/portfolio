@@ -250,7 +250,7 @@ td:has(.btn.bg-primary-subtle.fw-bold.btn-atualizar-lista) {
   .info-container {
     flex-direction: column;
     gap: 5px;
-  }
+}
 
   .info-item {
     flex-direction: column;
@@ -266,7 +266,7 @@ td:has(.btn.bg-primary-subtle.fw-bold.btn-atualizar-lista) {
 @media (max-width: 480px) {
   .table {
     min-width: 500px;
-  }
+}
 
   .card-body {
     padding: 5px;
@@ -420,7 +420,7 @@ td:has(.btn.bg-primary-subtle.fw-bold.btn-atualizar-lista) {
     flex-direction: column;
     gap: 10px;
   }
-  
+
   .ddd-input,
   .telefone-input {
     width: 100%;
@@ -429,7 +429,7 @@ td:has(.btn.bg-primary-subtle.fw-bold.btn-atualizar-lista) {
   .form-row {
     flex-direction: column;
   }
-  
+
   .form-group {
     margin-bottom: 15px;
   }

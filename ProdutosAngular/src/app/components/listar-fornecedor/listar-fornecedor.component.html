@@ -102,21 +102,31 @@
               <label for="nome"><span class="text-red">* </span>Nome:</label>
               <input type="text" [(ngModel)]="fornecedorAtualizar.nome"
                      class="form-control"
+                     [class.is-invalid]="nome.invalid && nome.touched"
                      id="nome"
                      name="nomeFornecedor"
                      placeholder="Nome do fornecedor"
-                     maxlength="100">
+                     maxlength="100"
+                     required #nome="ngModel">
+                     <div *ngIf="nome.invalid && nome.touched" class="invalid-feedback text-danger">
+                      Nome é obrigatório.
+                    </div>
             </div>
             <div class="form-group">
               <label for="cep"><span class="text-red">* </span>CEP:</label>
               <input type="text" [(ngModel)]="fornecedorAtualizar.enderecoFornecedor.cep"
                      class="form-control"
+                     [class.is-invalid]="cep.invalid && cep.touched"
                      id="cep"
                      name="cepFornecedor"
                      mask="00000-000"
                      [showMaskTyped]="true"
                      placeholder="00000-000"
-                     maxlength="20">
+                     maxlength="20"
+                     required #cep="ngModel">
+                     <div *ngIf="cep.invalid && cep.touched" class="invalid-feedback text-danger">
+                      CEP é obrigatório.
+                    </div>
             </div>
           </div>
         </div>
@@ -127,10 +137,11 @@
           <div class="search-controls">
             <div class="form-row">
               <div class="form-group button-group">
-                <button type="button" 
+                <button #btnBuscarCEP
+                        type="button" 
                         class="btn btn-secondary me-2" 
                         (click)="buscarEnderecoPorCep(fornecedorAtualizar.enderecoFornecedor.cep)"
-                        [disabled]="isLoading">
+                        [disabled]="isLoading || !isCepValido">
                   <span *ngIf="!isLoading">Buscar CEP</span>
                   <span *ngIf="isLoading" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
                   <span *ngIf="isLoading">Buscando...</span>
@@ -162,11 +173,16 @@
             <div class="form-group">
               <label for="logradouro"><span class="text-red">* </span>Logradouro:</label>
               <input type="text" [(ngModel)]="fornecedorAtualizar.enderecoFornecedor.logradouro"
+                     [class.is-invalid]="logradouro.invalid && logradouro.touched"
                      class="form-control"
                      id="logradouro"
                      name="logradouroFornecedor"
                      placeholder="Ex: Rua das Flores"
-                     maxlength="100">
+                     maxlength="100"
+                     required #logradouro="ngModel">
+                <div *ngIf="logradouro.invalid && logradouro.touched" class="invalid-feedback text-danger">
+                Logradouro é obrigatório.
+              </div>
             </div>
             <div class="form-group">
               <label for="nrResidencia">Nº Residência:</label>
@@ -212,10 +228,15 @@
               <label for="cidade"><span class="text-red">* </span>Cidade:</label>
               <input type="text" [(ngModel)]="fornecedorAtualizar.enderecoFornecedor.localidade"
                      class="form-control"
+                     [class.is-invalid]="cidade.invalid && cidade.touched"
                      id="cidade"
                      name="cidadeFornecedor"
                      placeholder="Ex: São Paulo"
-                     maxlength="100">
+                     maxlength="100"
+                     required #cidade="ngModel">
+                     <div *ngIf="cidade.invalid && cidade.touched" class="invalid-feedback text-danger">
+                      Cidade é obrigatória.
+                    </div>
             </div>
           </div>
           <div class="form-row">
@@ -223,12 +244,17 @@
               <label for="uf"><span class="text-red">* </span>UF:</label>
               <input type="text" [(ngModel)]="fornecedorAtualizar.enderecoFornecedor.uf"
                      class="form-control"
+                     [class.is-invalid]="uf.invalid && uf.touched"
                      id="uf"
                      name="ufFornecedor"
                      style="text-transform: uppercase"
                      pattern="[A-Za-z]{2}"
                      placeholder="Ex: SP"
-                     maxlength="2">
+                     maxlength="2"
+                     required #uf="ngModel">
+                     <div *ngIf="uf.invalid && uf.touched" class="invalid-feedback text-danger">
+                      UF é obrigatória.
+                    </div>
             </div>
             <div class="form-group">
               <label for="estado">Estado:</label>
@@ -307,17 +333,17 @@
                 <input type="text" [(ngModel)]="cnpjEmpresa"
                        class="form-control"
                        id="cnpjBusca"
-                       name="cnpjBusca"
+                       name="cnpjEmpresaBusca"
+                       placeholder="00.000.000/0000-00"
                        mask="00.000.000/0000-00"
                        [showMaskTyped]="true"
-                       placeholder="00.000.000/0000-00"
-                       maxlength="18">
+                       maxlength="50">
               </div>
               <div class="form-group button-group">
                 <button type="button" 
                         class="btn btn-secondary me-2" 
                         (click)="buscarEmpresaPorCNPJ(cnpjEmpresa)"
-                        [disabled]="isLoadingCNPJ">
+                        [disabled]="isLoadingCNPJ || !isCnpjValido">
                   <span *ngIf="!isLoadingCNPJ">Buscar Empresa</span>
                   <span *ngIf="isLoadingCNPJ" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
                   <span *ngIf="isLoadingCNPJ">Buscando...</span>
@@ -351,11 +377,11 @@
               <input type="text" [(ngModel)]="fornecedorAtualizar.dadosEmpresa.cnpj"
                      class="form-control"
                      id="cnpj"
-                     name="cnpjEmpresa"
+                     name="cnpjEmpresaDados"
                      mask="00.000.000/0000-00"
                      [showMaskTyped]="true"
                      placeholder="00.000.000/0000-00"
-                     maxlength="18">
+                     maxlength="50">
             </div>
             <div class="form-group">
               <label for="razaoSocial">Razão Social:</label>
@@ -499,7 +525,8 @@
         <div class="form-section">
           <div class="button-container">
             <button type="submit" 
-                    class="btn btn-salvar">
+                    class="btn btn-salvar"
+                    [disabled]="!isCamposObrigatoriosValidos">
               Salvar fornecedor
             </button>
           </div>
@@ -525,6 +552,7 @@
   </div>
   <div class="modal-body">
     <a class="font-size-15">Informações atualizadas!</a><br>
+    <p class="mt-2"><strong>Fornecedor ID {{ fornecedorAtualizar?.id }} - {{ fornecedorAtualizar?.nome }}</strong> foi atualizado com sucesso!</p>
   </div>
   <div class="modal-footer">
     <button type="button" class="btn btn-secondary" (click)="modal.close()">Fechar</button>

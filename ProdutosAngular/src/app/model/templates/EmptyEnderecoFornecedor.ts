@@ -1,0 +1,17 @@
+export interface EmptyEnderecoFornecedor {
+  nrResidencia: '';
+  cep: '';
+  logradouro: '';
+  complemento: '';
+  unidade: '';
+  bairro: '';
+  localidade: '';
+  uf: '';
+  estado: '';
+  regiao: '';
+  ibge: '';
+  gia: '';
+  ddd: '';
+  siafi: '';
+  erro: '';
+} 

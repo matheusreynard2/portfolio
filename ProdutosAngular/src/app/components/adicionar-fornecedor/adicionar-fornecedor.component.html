@@ -19,7 +19,7 @@
         <button type="button" 
                 class="btn btn-secondary me-2 style-btn-form" 
                 (click)="buscarEmpresaPorCNPJ(cnpjEmpresa)"
-                [disabled]="botoesFormulario1Bloqueados || isLoadingCNPJ || !informarCNPJ">
+                [disabled]="botoesFormulario1Bloqueados || isLoadingCNPJ || !informarCNPJ || !isCnpjValido">
           <span *ngIf="!isLoadingCNPJ">Buscar Empresa</span>
           <span *ngIf="isLoadingCNPJ" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
           <span *ngIf="isLoadingCNPJ">Buscando...</span>
@@ -358,7 +358,7 @@
         <button type="button" 
                 class="btn btn-secondary me-2 style-btn-form" 
                 (click)="buscarEnderecoPorCep(endereco.cep)"
-                [disabled]="isLoading">
+                [disabled]="isLoading || !isCepValido">
           <span *ngIf="!isLoading">Buscar CEP</span>
           <span *ngIf="isLoading" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
           <span *ngIf="isLoading">Buscando...</span>

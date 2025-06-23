@@ -15,6 +15,8 @@ import { MatSortModule } from '@angular/material/sort';
 import { GeolocalizacaoService } from '../../service/geolocalizacao/geolocalizacao.service';
 import { EnderecoFornecedorDTO } from '../../model/dto/EnderecoFornecedorDTO';
 import { DadosEmpresaDTO } from '../../model/dto/DadosEmpresaDTO';
+import { EmptyDadosEmpresa } from '../../model/templates/EmptyDadosEmpresa';
+import { EmptyEnderecoFornecedor } from '../../model/templates/EmptyEnderecoFornecedor';
 
 @Component({
   selector: 'app-listar-fornecedor',  // Corrigido para 'app-produto-list', sem a barra inicial
@@ -44,10 +46,13 @@ export class ListarFornecedorComponent implements OnInit {
   @ViewChild('modalAviso') modalAviso!: TemplateRef<any>;
   @ViewChild('modalMsgErro') modalMsgErro!: TemplateRef<any>;
   @ViewChild('modalMsgAviso') modalMsgAviso!: TemplateRef<any>;
+  
 
   listaFornecedores!: FornecedorDTO[];
   fornecedorAtualizar!: FornecedorDTO;
   fornecedorExcluido!: FornecedorDTO;
+  emptyDadosEmpresa!: EmptyDadosEmpresa;
+  emptyEnderecoFornecedor!: EmptyEnderecoFornecedor;
 
   // Variáveis de paginação
   currentPage: number = 0;
@@ -88,19 +93,14 @@ export class ListarFornecedorComponent implements OnInit {
         this.fornecedorAtualizar = fornecedor;
         
         // Resetar variáveis de busca
+        this.cnpjEmpresa = ''; // Limpar o campo de busca de CNPJ
         this.cnpjBuscado = false;
         this.cepBuscado = false;
         this.isLoading = false;
         this.isLoadingCNPJ = false;
         this.mensagemErro = '';
+
         
-        // Inicializar cnpjEmpresa com o CNPJ dos dados da empresa se existir
-        this.cnpjEmpresa = this.fornecedorAtualizar.dadosEmpresa?.cnpj || '';
-        
-        this.abrirTelaEdicao(modalEditar);
-      },
-      error: (error) => {
-        this.fornecedorAtualizar = fornecedor;
         this.abrirTelaEdicao(modalEditar);
       }
     });
@@ -113,19 +113,6 @@ export class ListarFornecedorComponent implements OnInit {
 
   // Função para salvar as alterações do fornecedor
   onSubmitSalvar(modal: any) {
-    // Validações obrigatórias
-    if (!this.fornecedorAtualizar.nome || !this.fornecedorAtualizar.nome.trim()) {
-      this.mensagemErro = "O nome do fornecedor é obrigatório.";
-      this.modalService.open(this.modalMsgAviso);
-      return;
-    }
-
-    if (!this.fornecedorAtualizar.enderecoFornecedor.cep || !this.fornecedorAtualizar.enderecoFornecedor.cep.trim()) {
-      this.mensagemErro = "O CEP é obrigatório.";
-      this.modalService.open(this.modalMsgAviso);
-      return;
-    }
-
     // Validar se o CEP tem pelo menos 8 dígitos
     const cepLimpo = this.fornecedorAtualizar.enderecoFornecedor.cep.replace(/\D/g, '');
     if (cepLimpo.length !== 8) {
@@ -134,30 +121,6 @@ export class ListarFornecedorComponent implements OnInit {
       return;
     }
 
-    // Validar se logradouro está preenchido (campo básico de endereço)
-    if (!this.fornecedorAtualizar.enderecoFornecedor.logradouro || !this.fornecedorAtualizar.enderecoFornecedor.logradouro.trim()) {
-      this.mensagemErro = "O logradouro é obrigatório.";
-      this.modalService.open(this.modalMsgAviso);
-      return;
-    }
-
-    // Validar se cidade está preenchida (campo básico de endereço)
-    if (!this.fornecedorAtualizar.enderecoFornecedor.localidade || !this.fornecedorAtualizar.enderecoFornecedor.localidade.trim()) {
-      this.mensagemErro = "A cidade é obrigatória.";
-      this.modalService.open(this.modalMsgAviso);
-      return;
-    }
-
-    // Validar se UF está preenchida (campo básico de endereço)
-    if (!this.fornecedorAtualizar.enderecoFornecedor.uf || !this.fornecedorAtualizar.enderecoFornecedor.uf.trim()) {
-      this.mensagemErro = "A UF é obrigatória.";
-      this.modalService.open(this.modalMsgAviso);
-      return;
-    }
-
-    // Dados da empresa são opcionais - não há validação obrigatória
-    // Se não há dados de empresa, pode prosseguir normalmente
-
     this.fornecedorService.atualizarFornecedor(
       this.fornecedorAtualizar.id, 
       this.authService.getUsuarioLogado().idUsuario,
@@ -165,6 +128,7 @@ export class ListarFornecedorComponent implements OnInit {
     ).subscribe({
       next: (fornecedorAtualizado: FornecedorDTO) => {
         modal.close();
+        this.atualizarLista(); // Atualizar a lista após salvar
         this.modalService.open(this.modalAviso);
       },
       error: (error) => {
@@ -223,23 +187,11 @@ export class ListarFornecedorComponent implements OnInit {
     this.pageSize = event.pageSize;
     this.atualizarLista();
   }
-
   // Métodos de busca copiados do componente de adicionar fornecedor
   buscarEnderecoPorCep(cep: string): void {
-    if (!cep) {
-      this.mensagemErro = "Por favor, digite um CEP.";
-      this.modalService.open(this.modalMsgAviso);
-      return;
-    }
 
     // Remover caracteres não numéricos do CEP
     const cepFormatado = cep.replace(/\D/g, '');
-
-    if (cepFormatado.length !== 8) {
-      this.mensagemErro = "CEP inválido. Por favor, digite um CEP com 8 dígitos.";
-      this.modalService.open(this.modalMsgAviso);
-      return;
-    }
 
     // Ativar loading
     this.isLoading = true;
@@ -263,13 +215,11 @@ export class ListarFornecedorComponent implements OnInit {
 
         // PRESERVAR O ID ORIGINAL: Atualizar apenas os dados, mantendo o ID existente
         const idOriginalEndereco = this.fornecedorAtualizar.enderecoFornecedor?.id;
-        const nrResidenciaAtual = this.fornecedorAtualizar.enderecoFornecedor?.nrResidencia;
         
         this.fornecedorAtualizar.enderecoFornecedor = {
           ...endereco,
           id: idOriginalEndereco, // Preservar o ID original para evitar criação de novo registro
-          nrResidencia: nrResidenciaAtual || '', // Preservar número da residência atual
-          // Garantir que nenhum campo seja undefined
+          nrResidencia: endereco.nrResidencia || '',
           complemento: endereco.complemento || '',
           unidade: endereco.unidade || '',
           ibge: endereco.ibge || '',
@@ -288,20 +238,8 @@ export class ListarFornecedorComponent implements OnInit {
   }
 
   buscarEmpresaPorCNPJ(cnpj: string): void {
-    if (!cnpj) {
-      this.mensagemErro = "Por favor, digite um CNPJ.";
-      this.modalService.open(this.modalMsgAviso);
-      return;
-    }
-
     // Remover caracteres não numéricos do CNPJ
     const cnpjLimpo = cnpj.replace(/\D/g, '');
-
-    if (cnpjLimpo.length !== 14) {
-      this.mensagemErro = "CNPJ inválido. Por favor, digite um CNPJ com 14 dígitos.";
-      this.modalService.open(this.modalMsgAviso);
-      return;
-    }
 
     // Ativar loading
     this.isLoadingCNPJ = true;
@@ -335,61 +273,53 @@ export class ListarFornecedorComponent implements OnInit {
   limparCamposCNPJ() {
     this.cnpjEmpresa = '';
     this.cnpjBuscado = false;
-    // PRESERVAR O ID ORIGINAL: Resetar dadosEmpresa mas manter o ID existente
+    
     const idOriginal = this.fornecedorAtualizar.dadosEmpresa?.id;
     this.fornecedorAtualizar.dadosEmpresa = {
-      id: idOriginal, // Preservar o ID original
-      cnpj: '',
-      razaoSocial: '',
-      nomeFantasia: '',
-      situacaoCadastral: '',
-      cnaeFiscal: '',
-      porte: '',
-      capitalSocial: '',
-      dataInicioAtividade: '',
-      descricaoNaturezaJuridica: '',
-      email: '',
-      dddTelefone1: '',
-      telefone1: '',
-      dddTelefone2: '',
-      telefone2: '',
-      bairro: '',
-      cep: '',
-      complemento: '',
-      logradouro: '',
-      municipio: '',
-      numero: '',
-      pais: '',
-      uf: '',
-      codigoNaturezaJuridica: '',
-      dataSituacaoCadastral: '',
-      cnaesSecundarios: [],
-      qsa: []
+      ...this.emptyDadosEmpresa,
+      id: idOriginal
     };
+    this.fornecedorAtualizar.dadosEmpresa.id = idOriginal;
+
   }
 
   limparCamposCEP() {
     this.cepBuscado = false;
-    // PRESERVAR O ID ORIGINAL: Resetar enderecoFornecedor mas manter o ID existente
+    
+    // Limpa todos os campos garantindo que o ID seja preservado
     const idOriginalEndereco = this.fornecedorAtualizar.enderecoFornecedor?.id;
     this.fornecedorAtualizar.enderecoFornecedor = {
-      id: idOriginalEndereco, // Preservar o ID original
-      nrResidencia: '',
-      cep: '',
-      logradouro: '',
-      complemento: '',
-      unidade: '',
-      bairro: '',
-      localidade: '',
-      uf: '',
-      estado: '',
-      regiao: '',
-      ibge: '',
-      gia: '',
-      ddd: '',
-      siafi: '',
-      erro: ''
+      ...this.emptyEnderecoFornecedor,
+      id: idOriginalEndereco
     };
+    this.fornecedorAtualizar.enderecoFornecedor.id = idOriginalEndereco;
+  }
+
+  // Getter para validação de CNPJ (14 dígitos)
+  get isCnpjValido(): boolean {
+    if (!this.cnpjEmpresa) return false;
+    const cnpjLimpo = this.cnpjEmpresa.replace(/\D/g, '');
+    return cnpjLimpo.length === 14;
+  }
+
+  // Getter para validação de CEP (8 dígitos)
+  get isCepValido(): boolean {
+    if (!this.fornecedorAtualizar?.enderecoFornecedor?.cep) return false;
+    const cepLimpo = this.fornecedorAtualizar.enderecoFornecedor.cep.replace(/\D/g, '');
+    return cepLimpo.length === 8;
+  }
+
+  // Getter para validação dos campos obrigatórios
+  get isCamposObrigatoriosValidos(): boolean {
+    if (!this.fornecedorAtualizar) return false;
+    
+    const nomeValido = this.fornecedorAtualizar.nome.trim();
+    const cepValido = this.isCepValido;
+    const logradouroValido = this.fornecedorAtualizar.enderecoFornecedor.logradouro?.trim();
+    const cidadeValida = this.fornecedorAtualizar.enderecoFornecedor.localidade.trim();
+    const ufValida = this.fornecedorAtualizar.enderecoFornecedor.uf.trim();
+
+    return !!(nomeValido && cepValido && logradouroValido && cidadeValida && ufValida);
   }
 
 }
