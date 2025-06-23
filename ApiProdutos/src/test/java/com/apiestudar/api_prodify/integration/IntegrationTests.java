@@ -70,11 +70,11 @@ public class IntegrationTests {
         
         // Criar usuário de teste se não existir
         if (usuarioRepository.buscarUsuarioPorId(1L).isEmpty()) {
-            Usuario usuario = new Usuario();
+        Usuario usuario = new Usuario();
             usuario.setIdUsuario(1L);
             usuario.setLogin("teste");
             usuario.setSenha("123456");
-            usuario.setEmail("teste@teste.com");
+        usuario.setEmail("teste@teste.com");
             usuarioRepository.adicionarUsuario(usuario);
         }
     }

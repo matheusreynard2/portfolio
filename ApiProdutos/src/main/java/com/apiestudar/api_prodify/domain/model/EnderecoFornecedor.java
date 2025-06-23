@@ -47,7 +47,7 @@ public class EnderecoFornecedor {
 	@Schema(description = "CEP")
 	private String cep;
 	
-	@Column(nullable = true, length = 100)
+	@Column(nullable = false, length = 100)
 	@Schema(description = "Logradouro")
 	private String logradouro;
 	
@@ -63,11 +63,12 @@ public class EnderecoFornecedor {
 	@Schema(description = "Bairro")
 	private String bairro;
 	
-	@Column(nullable = true, length = 100)
+	// CIDADE
+	@Column(nullable = false, length = 100)
 	@Schema(description = "Localidade")
 	private String localidade;
 	
-	@Column(nullable = true, length = 50)
+	@Column(nullable = false, length = 50)
 	@Schema(description = "UF")
 	private String uf;
 	

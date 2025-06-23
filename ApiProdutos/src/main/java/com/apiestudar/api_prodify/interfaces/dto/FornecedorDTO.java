@@ -2,6 +2,7 @@ package com.apiestudar.api_prodify.interfaces.dto;
 
 import java.util.List;
 
+import javax.persistence.Column;
 import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -36,6 +37,8 @@ public class FornecedorDTO {
     @NotNull(message = "ID do usuário é obrigatório")
     private Long idUsuario;
     
+    @Column(nullable = false)
+    @NotNull(message = "Endereço do fornecedor é obrigatório")
     @Schema(description = "Endereço do fornecedor")
     private EnderecoFornecedorDTO enderecoFornecedor;
     
