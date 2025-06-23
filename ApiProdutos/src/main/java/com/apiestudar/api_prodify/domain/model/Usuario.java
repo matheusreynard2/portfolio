@@ -74,6 +74,8 @@ public class Usuario implements UserDetails {
 		return serialVersionUID;
 	}
 
+	// A PARTIR DAQUI SÃO MÉTODOS DO SPRING SECURITY
+
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		return new ArrayList<>(List.of(new SimpleGrantedAuthority("ROLE_USER")));

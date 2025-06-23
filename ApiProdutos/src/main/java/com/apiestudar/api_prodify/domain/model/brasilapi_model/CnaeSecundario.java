@@ -1,6 +1,8 @@
 package com.apiestudar.api_prodify.domain.model.brasilapi_model;
 
 import javax.persistence.Embeddable;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.AllArgsConstructor;
@@ -11,6 +13,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Embeddable
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class CnaeSecundario {
     
     @JsonProperty("codigo")

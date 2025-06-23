@@ -42,7 +42,8 @@ public class EnderecoFornecedor {
 	@Schema(description = "Número da residência")
 	private String nrResidencia; 
 	
-	@Column(nullable = true, length = 20)
+	@Column(nullable = false, length = 20)
+	@NotNull(message = "CEP do endereço é obrigatório")
 	@Schema(description = "CEP")
 	private String cep;
 	

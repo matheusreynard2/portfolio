@@ -2,6 +2,8 @@ package com.apiestudar.api_prodify.interfaces.dto.brasilapi_dto;
 
 import java.util.List;
 
+import javax.validation.constraints.NotNull;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.apiestudar.api_prodify.interfaces.dto.FornecedorDTO;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -22,6 +24,7 @@ import lombok.ToString;
 @Builder
 public class DadosEmpresaDTO {
     
+    @NotNull(message = "ID dos dados da empresa é obrigatório")
     @Schema(description = "ID dos dados da empresa")
     private Long id;
     

@@ -37,7 +37,7 @@ public class ListarFornecedoresUseCase {
 	}
 
 	@Transactional
-	public Optional<Fornecedor> executar(Long id, Long idUsuario) {
+	public Fornecedor executar(Long id, Long idUsuario) {
 		return fornecedorRepository.buscarFornecedorPorIdEUsuario(id, idUsuario);
 	}
 }

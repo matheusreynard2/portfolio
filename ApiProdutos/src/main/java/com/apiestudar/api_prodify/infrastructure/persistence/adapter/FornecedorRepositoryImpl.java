@@ -59,7 +59,7 @@ public class FornecedorRepositoryImpl implements FornecedorRepository {
 	}
 
 	@Override
-	public Optional<Fornecedor> buscarFornecedorPorIdEUsuario(Long id, Long idUsuario) {
+	public Fornecedor buscarFornecedorPorIdEUsuario(Long id, Long idUsuario) {
 		return fornecedorJpaRepository.findByIdAndIdUsuario(id, idUsuario);
 	}
 

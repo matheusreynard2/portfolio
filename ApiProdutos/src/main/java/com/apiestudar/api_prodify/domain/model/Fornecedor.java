@@ -53,21 +53,22 @@ public class Fornecedor {
 	@NotNull(message = "ID do usuário é obrigatório")
 	private Long idUsuario;
 	
-	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
     @JoinColumn(name = "endereco_id", referencedColumnName = "id", nullable = false)
-	@NotNull(message = "Endereço do fornecedor é obrigatório")
+    @NotNull(message = "Endereço do fornecedor é obrigatório")
     @Schema(description = "Endereço do fornecedor")
-	private EnderecoFornecedor enderecoFornecedor;
+    private EnderecoFornecedor enderecoFornecedor;
 
-	@JsonIgnore
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    @Schema(description = "Lista de produtos do fornecedor")
-	@JoinColumn(name = "fornecedor", referencedColumnName = "id")
-	@Builder.Default
-    private List<Produto> produtos = new ArrayList<>();
-
-	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
     @JoinColumn(name = "dados_empresa_id", referencedColumnName = "id")
     @Schema(description = "Empresa do fornecedor")
-	private DadosEmpresa dadosEmpresa;
+    private DadosEmpresa dadosEmpresa;
+	
+	@JsonIgnore
+	@OneToMany(fetch = FetchType.LAZY)
+	@Schema(description = "Lista de produtos do fornecedor")
+	@JoinColumn(name = "fornecedor", referencedColumnName = "id")
+	@Builder.Default
+	private List<Produto> produtos = new ArrayList<>();
+	
 }

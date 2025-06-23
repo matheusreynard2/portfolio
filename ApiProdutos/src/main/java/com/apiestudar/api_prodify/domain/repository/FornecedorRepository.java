@@ -24,7 +24,7 @@ public interface FornecedorRepository {
 	
 	List<Fornecedor> listarFornecedoresPorUsuario(Long idUsuario);
 	
-	Optional<Fornecedor> buscarFornecedorPorIdEUsuario(Long id, Long idUsuario);
+	Fornecedor buscarFornecedorPorIdEUsuario(Long id, Long idUsuario);
 
 	Integer contarProdutosPorFornecedor(Long idFornecedor);
 }

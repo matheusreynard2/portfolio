@@ -21,7 +21,7 @@ public interface FornecedorJpaRepository extends JpaRepository<Fornecedor, Long>
     List<Fornecedor> findByIdUsuario(Long idUsuario);
 
     @EntityGraph(attributePaths = {"enderecoFornecedor", "produtos"})
-    Optional<Fornecedor> findByIdAndIdUsuario(Long id, Long idUsuario);
+    Fornecedor findByIdAndIdUsuario(Long id, Long idUsuario);
 
     @Query("SELECT COUNT(p) FROM Produto p WHERE p.fornecedor.id = :idFornecedor")
     Integer countProdutosByFornecedorId(Long idFornecedor);

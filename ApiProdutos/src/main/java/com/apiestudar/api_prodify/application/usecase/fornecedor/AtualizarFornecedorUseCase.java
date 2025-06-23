@@ -8,7 +8,6 @@ import org.springframework.transaction.annotation.Transactional;
 import com.apiestudar.api_prodify.domain.model.Fornecedor;
 import com.apiestudar.api_prodify.domain.repository.FornecedorRepository;
 import com.apiestudar.api_prodify.interfaces.dto.FornecedorDTO;
-import com.apiestudar.api_prodify.shared.exception.RegistroNaoEncontradoException;
 
 @Service
 public class AtualizarFornecedorUseCase {
@@ -24,26 +23,18 @@ public class AtualizarFornecedorUseCase {
 
     @Transactional(rollbackFor = Exception.class)
     public FornecedorDTO executar(long id, FornecedorDTO fornecedorDTO, Long idUsuario) {
-        Fornecedor fornecedorAtualizado = modelMapper.map(fornecedorDTO, Fornecedor.class);
         
-        // Busca o fornecedor pelo id e idUsuario e lança exceção se não encontrar
-        Fornecedor fornecedorSalvo = fornecedorRepository.buscarFornecedorPorIdEUsuario(id, idUsuario)
-            .map(fornecedorExistente -> {
-                // Atualiza todos os atributos do fornecedor existente
-                atualizarDadosFornecedor(fornecedorExistente, fornecedorAtualizado);
-                fornecedorExistente.setIdUsuario(idUsuario);
-
-                // Salva e retorna o fornecedor atualizado
-                return fornecedorRepository.adicionarFornecedor(fornecedorExistente, idUsuario);
-            })
-            .orElseThrow(RegistroNaoEncontradoException::new);
+        // Busca a entidade
+        Fornecedor fornecedorExistente = fornecedorRepository.buscarFornecedorPorIdEUsuario(id, idUsuario);
         
-        return modelMapper.map(fornecedorSalvo, FornecedorDTO.class);
+        // ModelMapper copia tudo automaticamente
+        // Cascade + orphanRemoval cuidam dos objetos relacionados
+        modelMapper.map(fornecedorDTO, fornecedorExistente);
+        
+        // Garante que o idUsuario seja preservado e só tem em algumas classes
+        fornecedorExistente.setIdUsuario(idUsuario);
+        
+        // JPA detecta mudanças automaticamente - nem precisa de save()!
+        return modelMapper.map(fornecedorExistente, FornecedorDTO.class);
     }
-
-    // Método auxiliar para atualizar todos os campos do fornecedor
-    private void atualizarDadosFornecedor(Fornecedor fornecedorExistente, Fornecedor fornecedorAtualizado) {
-        fornecedorExistente.setNome(fornecedorAtualizado.getNome());
-        fornecedorExistente.setEnderecoFornecedor(fornecedorAtualizado.getEnderecoFornecedor());
-    }
-} 
+ }
