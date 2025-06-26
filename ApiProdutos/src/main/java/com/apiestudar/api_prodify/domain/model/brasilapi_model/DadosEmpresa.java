@@ -1,6 +1,7 @@
 package com.apiestudar.api_prodify.domain.model.brasilapi_model;
 
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.CollectionTable;
 import javax.persistence.Column;
@@ -178,7 +179,7 @@ public class DadosEmpresa {
         name = "dados_empresa_cnaes",  // ← Nome da tabela de relacionamento
         joinColumns = @JoinColumn(name = "dados_empresa_id")  // ← FK para DadosEmpresa
     )
-    private List<CnaeSecundario> cnaesSecundarios;
+    private Set<CnaeSecundario> cnaesSecundarios;
     
     @JsonProperty("qsa")
     @ElementCollection(fetch = FetchType.LAZY)
@@ -186,5 +187,5 @@ public class DadosEmpresa {
         name = "dados_empresa_qsa",  // ← Nome da tabela de relacionamento
         joinColumns = @JoinColumn(name = "dados_empresa_id")  // ← FK para DadosEmpresa
     )
-    private List<QuadroSocietario> qsa;
+    private Set<QuadroSocietario> qsa;
 } 

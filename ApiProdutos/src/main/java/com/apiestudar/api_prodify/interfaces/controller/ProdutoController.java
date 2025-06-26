@@ -3,6 +3,7 @@ package com.apiestudar.api_prodify.interfaces.controller;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
@@ -71,8 +72,8 @@ public class ProdutoController {
 	@ApiOperation(value = "Adiciona/cadastra um novo produto.", notes = "Cria um novo registro de produto no banco de dados.")
 	@ApiResponse(code = 200, message = "Produto cadastrado.")
 	@PostMapping("/adicionarProduto")
-	public ResponseEntity<ProdutoDTO> adicionarProduto(@ModelAttribute ProdutoFormDTO produtoFormDTO) throws IOException {
-		return ResponseEntity.status(HttpStatus.CREATED).body(adicionarProduto.executar(produtoFormDTO, produtoFormDTO.getImagemFile()));
+	public CompletableFuture<ResponseEntity<ProdutoDTO>> adicionarProduto(@ModelAttribute ProdutoFormDTO produtoFormDTO) throws IOException, InterruptedException {
+		return adicionarProduto.executar(produtoFormDTO, produtoFormDTO.getImagemFile()).thenApply(dto -> ResponseEntity.status(HttpStatus.CREATED).body(dto));
 	}
 
 	@ApiOperation(value = "Atualiza as informações de um produto.", notes = "Atualiza as informações registradas no banco de dados de um produto de acordo com o número de id passado como parâmetro.")
@@ -116,11 +117,10 @@ public class ProdutoController {
 	@ApiOperation(value = "Pesquisar registros por 'id' ou por 'nome'.", notes = "Faz uma busca de registros no banco de dados utilizando como filtro o id do produto ou o nome do produto.")
 	@ApiResponse(code = 200, message = "Produtos encontrados.")
 	@GetMapping("/efetuarPesquisa/{tipoPesquisa}/{valorPesquisa}/{idUsuario}")
-	public ResponseEntity<List<ProdutoDTO>> efetuarPesquisa(@PathVariable String tipoPesquisa,
-			@PathVariable String valorPesquisa, @PathVariable long idUsuario) {
-		List<Produto> produtos = pesquisasUseCase.efetuarPesquisa(tipoPesquisa, valorPesquisa, idUsuario);
-		List<ProdutoDTO> produtoDTOs = Helper.mapClassToDTOList(produtos, ProdutoDTO.class);
-		return ResponseEntity.status(HttpStatus.OK).body(produtoDTOs);
+	public CompletableFuture<ResponseEntity<List<ProdutoDTO>>> efetuarPesquisa(@PathVariable String tipoPesquisa,
+	@PathVariable String valorPesquisa, @PathVariable long idUsuario) {
+		return pesquisasUseCase.efetuarPesquisa(tipoPesquisa, valorPesquisa, idUsuario)
+			.thenApply(resultado -> ResponseEntity.status(HttpStatus.OK).body(resultado));
 	}
 
 	@SuppressWarnings("rawtypes")

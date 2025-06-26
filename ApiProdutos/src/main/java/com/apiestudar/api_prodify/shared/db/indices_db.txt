@@ -1,0 +1,12 @@
+-- índice composto para consultas por id + id_usuario
+CREATE INDEX IF NOT EXISTS idx_produto_pk_usr
+          ON produto (id, id_usuario);
+
+-- extensão pg_trgm para LIKE '%foo%' em nome
+CREATE EXTENSION IF NOT EXISTS pg_trgm;
+
+-- índice GIN case-insensitive no nome do produto limitado ao usuário
+CREATE INDEX IF NOT EXISTS idx_produto_nome_trgm
+          ON produto
+       USING gin (lower(nome) gin_trgm_ops)
+       WHERE id_usuario IS NOT NULL;

@@ -33,6 +33,13 @@
   <!-- INICIO DEPENDENCIAS -->
   
   <dependencies>
+
+ <!-- Dependencia para o THREAD POOL -->
+    <dependency>
+        <groupId>com.google.guava</groupId>
+        <artifactId>guava</artifactId>
+        <version>33.1.0-jre</version> <!-- ou versão mais recente -->
+    </dependency>
 	  
 	 <dependency>
 	    <groupId>org.projectlombok</groupId>
@@ -228,6 +235,19 @@
                 </excludes>
             </configuration>
         </plugin>
+
+        <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId> <!-- para exibir os testes no console -->
+        <configuration>
+            <!-- NÃO redireciona para arquivo -->
+            <useFile>false</useFile>
+
+            <!-- (opcional) continua mostrando o resumo dos testes -->
+            <printSummary>true</printSummary>
+        </configuration>
+        </plugin>
+
     </plugins>
 </build>
 

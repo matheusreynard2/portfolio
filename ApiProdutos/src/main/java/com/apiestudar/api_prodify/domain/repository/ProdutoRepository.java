@@ -25,8 +25,8 @@ public interface ProdutoRepository {
 
     BigDecimal obterMediaPreco(Long idUsuario);
 
-    List<Produto> efetuarPesquisaById(Long valorPesquisa, Long idUsuario);
+    List<Produto> findByIdAndUser(Long valorPesquisa, Long idUsuario);
 
-    List<Produto> efetuarPesquisaByNome(String valorPesquisa, Long idUsuario);
+    List<Produto> findByNomeAndUser(String valorPesquisa, Long idUsuario);
     
 }

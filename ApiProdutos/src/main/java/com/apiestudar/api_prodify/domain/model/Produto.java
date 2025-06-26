@@ -10,7 +10,11 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedAttributeNode;
+import javax.persistence.NamedEntityGraph;
+import javax.persistence.NamedSubgraph;
 import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.NotNull;
 
@@ -21,10 +25,40 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+@Entity
+@Table(name = "produto")
+@NamedEntityGraph(
+    name = "Produto.GrafoCompleto",
+    attributeNodes = {
+        /* 1º nível —— fornecedor */
+        @NamedAttributeNode(value = "fornecedor",
+                            subgraph = "fornecedorSub")
+    },
+    subgraphs = {
+
+        /* 2º nível —— dentro de fornecedor */
+        @NamedSubgraph(
+            name = "fornecedorSub",
+            attributeNodes = {
+                @NamedAttributeNode(value = "produtos"),          //         f.produtos
+                @NamedAttributeNode(value = "dadosEmpresa",
+                                    subgraph = "dadosEmpresaSub") //         f.dadosEmpresa →
+            }
+        ),
+
+        /* 3º nível —— dentro de dadosEmpresa */
+        @NamedSubgraph(
+            name  = "dadosEmpresaSub",
+            attributeNodes = {
+                @NamedAttributeNode("cnaesSecundarios"),          // de.cnaesSecundarios
+                @NamedAttributeNode("qsa")                        // de.qsa
+            }
+        )
+    }
+)
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity
 @ToString
 @SequenceGenerator(name = "produto_seq", sequenceName = "produto_sequence", allocationSize = 1)
 @Schema(name = "Produto Entity")

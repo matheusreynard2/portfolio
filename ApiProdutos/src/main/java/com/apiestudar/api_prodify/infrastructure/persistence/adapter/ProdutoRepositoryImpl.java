@@ -59,12 +59,12 @@ public class ProdutoRepositoryImpl implements ProdutoRepository {
     }
 
     @Override
-    public List<Produto> efetuarPesquisaById(Long valorPesquisa, Long idUsuario) {
-        return produtoJpaRepository.efetuarPesquisaById(valorPesquisa, idUsuario);
+    public List<Produto> findByIdAndUser(Long valorPesquisa, Long idUsuario) {
+        return produtoJpaRepository.findByIdAndUser(valorPesquisa, idUsuario);
     }
 
     @Override
-    public List<Produto> efetuarPesquisaByNome(String valorPesquisa, Long idUsuario) {
-        return produtoJpaRepository.efetuarPesquisaByNome(valorPesquisa, idUsuario);
+    public List<Produto> findByNomeAndUser(String valorPesquisa, Long idUsuario) {
+        return produtoJpaRepository.findByNomeAndUser(valorPesquisa, idUsuario);
     }
 }

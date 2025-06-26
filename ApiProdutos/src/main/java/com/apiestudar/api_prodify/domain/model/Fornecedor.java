@@ -1,7 +1,7 @@
 package com.apiestudar.api_prodify.domain.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -21,7 +21,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -33,7 +32,6 @@ import lombok.ToString;
 @SequenceGenerator(name = "fornecedor_seq", sequenceName = "fornecedor_sequence", allocationSize = 1)
 @ToString
 @Schema(name = "Fornecedor Entity")
-@Builder
 public class Fornecedor {
 	
 	@Id
@@ -68,7 +66,6 @@ public class Fornecedor {
 	@OneToMany(fetch = FetchType.LAZY)
 	@Schema(description = "Lista de produtos do fornecedor")
 	@JoinColumn(name = "fornecedor", referencedColumnName = "id")
-	@Builder.Default
-	private List<Produto> produtos = new ArrayList<>();
+	private Set<Produto> produtos = new HashSet<>();
 	
 }
