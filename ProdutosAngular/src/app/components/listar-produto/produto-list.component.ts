@@ -38,7 +38,7 @@ export class ProdutoListComponent implements OnInit {
   listaProdutoMaisCaro: ProdutoDTO[] = [];
   stringProdutoMaisCaro: string = '';
   mediaPreco: number = 0;
-  tipoPesquisaSelecionado: string = 'id';
+  tipoPesquisaSelecionado: string = 'nome';
   popUpVisivel = false;  // Controle de visibilidade do pop-up
   imgBase64: string = ''  // Variável para armazenar a imagem do produto
 
@@ -62,6 +62,9 @@ export class ProdutoListComponent implements OnInit {
   @ViewChild('searchBar') searchBar!: ElementRef
   @ViewChild('modalAvisoToken') modalAvisoToken!: ElementRef
   isMobileOrTablet: boolean = false;
+  searchValue: string = '';
+  searchNomeFornecedor: string = '';
+  searchValorInicial: number | null = null;
 
   constructor(private produtoService: ProdutoService,
               private produtoFunctionsService: ProdutoFunctionsService,
@@ -227,15 +230,27 @@ export class ProdutoListComponent implements OnInit {
 
 // Função chamada ao clicar no botão Pesquisar
   efetuarPesquisa() {
-    let searchBar_value = this.searchBar.nativeElement.value;
     const usuarioLogadoId = this.authService.getUsuarioLogado().idUsuario;
-
-    this.produtoService.efetuarPesquisa(this.tipoPesquisaSelecionado, searchBar_value, this.authService.getUsuarioLogado().idUsuario).subscribe(data => {
-      this.listaDeProdutos = data
-        .filter(produto => produto.idUsuario === usuarioLogadoId) // Filtra os produtos pelo usuário logado
-        .sort((a, b) => a.id - b.id); // Ordena os produtos pelo ID
-    });
-
+    const searchBar_value = this.searchValue;
+    const nomeFornecedor = this.searchNomeFornecedor;
+    const valorInicial = this.searchValorInicial;
+    if (this.tipoPesquisaSelecionado == 'id') {
+      //PESQUISA POR ID
+      const id = Number(searchBar_value);
+      this.produtoService.efetuarPesquisa(this.authService.getUsuarioLogado().idUsuario, id, null, null, null).subscribe(data => {
+        this.listaDeProdutos = data
+          .filter(produto => produto.idUsuario === usuarioLogadoId) // Filtra os produtos pelo usuário logado
+          .sort((a, b) => a.id - b.id); // Ordena os produtos pelo ID
+      });
+    } else if (this.tipoPesquisaSelecionado == 'nome') {
+      // PESQUISA POR NOME
+      const nome = searchBar_value;
+      this.produtoService.efetuarPesquisa(this.authService.getUsuarioLogado().idUsuario, null, nome, nomeFornecedor, valorInicial).subscribe(data => {
+        this.listaDeProdutos = data
+          .filter(produto => produto.idUsuario === usuarioLogadoId) // Filtra os produtos pelo usuário logado
+          .sort((a, b) => a.id - b.id); // Ordena os produtos pelo ID
+      });
+    }
     this.listarProdutoMaisCaro(usuarioLogadoId);
     this.calcularMedia(usuarioLogadoId);
   }
@@ -262,15 +277,6 @@ export class ProdutoListComponent implements OnInit {
     this.modalService.open(modalSalvouProduto, {size: 'sm'});
   }
 
-  // Função chamada ao mudar de valor na ComboBox Tipo de Pesquisa
-  trocarTipoPesquisa() {
-    if (this.tipoPesquisaSelecionado =='id' || this.tipoPesquisaSelecionado =='nome') {
-      this.tipoPesquisaSelecionado ='nome'
-    } else {
-      this.tipoPesquisaSelecionado ='id'
-    }
-  }
-
   // Método chamado quando o mouse entra no elemento para abrir pop-up de mostrar imagem
   mostrarImgPopup(produto: any) {
     this.imgBase64 = produto.imagem;  // Armazenar a imagem do produto
@@ -289,11 +295,6 @@ export class ProdutoListComponent implements OnInit {
 
   // Faz o cálculo dos valores em relação a quantidade
   async calcularValorXQuantia(produto: ProdutoDTO): Promise<void> {
-    // Inicializa valorUnitario na primeira vez se não existir
-    if (!produto.valorInicial) {
-      produto.valorInicial = produto.valor;
-    }
-
     // Só calcula se a quantidade ou o valor unitário mudaram
     if (produto.valorInicial !== this.valorInicialAnterior ||
       produto.quantia !== this.quantiaAnterior) {
@@ -313,6 +314,13 @@ export class ProdutoListComponent implements OnInit {
     this.fornecedorSelecionado = fornecedor;
     if (this.produtoAtualizar) {
       this.produtoAtualizar.fornecedor = fornecedor;
+    }
+  }
+
+  // Atualiza valorInicial dinamicamente ao digitar na edição
+  onValorInicialChangeAtualizar(novoValor: number) {
+    if (this.produtoAtualizar) {
+      this.produtoAtualizar.valorInicial = novoValor;
     }
   }
 

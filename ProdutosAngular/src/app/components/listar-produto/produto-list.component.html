@@ -5,23 +5,26 @@
       <table class="w-100">
         <tr>
           <td id="searchBar_td">
-            <input *ngIf="tipoPesquisaSelecionado === 'id'"
-                   type="number"
-                   placeholder="Barra de pesquisa..."
-                   class="searchBar_input btn-outline-secondary"
-                   #searchBar/>
-            <input *ngIf="tipoPesquisaSelecionado === 'nome'"
-                   type="text"
-                   placeholder="Barra de pesquisa..."
-                   class="searchBar_input btn-outline-secondary"
-                   #searchBar/>
+            <div style="display: flex; gap: 12px; align-items: center; width: 100%;">
+              <input type="text"
+                     placeholder="Nome do produto..."
+                     class="searchBar_input btn-outline-secondary"
+                     [(ngModel)]="searchValue" name="searchBarNome"
+                     style="flex: 1 1 33%; min-width: 0;"/>
+              <input type="text"
+                     placeholder="Nome do fornecedor..."
+                     class="searchBar_input btn-outline-secondary"
+                     [(ngModel)]="searchNomeFornecedor" name="searchBarNomeFornecedor"
+                     style="flex: 1 1 33%; min-width: 0;"/>
+              <input type="number"
+                     placeholder="Valor unitário..."
+                     class="searchBar_input btn-outline-secondary"
+                     [(ngModel)]="searchValorInicial" name="searchBarValorInicial"
+                     style="flex: 1 1 33%; min-width: 0;"/>
+            </div>
           </td>
           <td>
-            <select id="combo_tipo_pesquisa" required
-                    (change)=trocarTipoPesquisa()>
-              <option selected>ID</option>
-              <option>Nome</option>
-            </select>
+            <!-- Removido o combobox de tipo de pesquisa -->
           </td>
           <td>
             <button class="btn btn-outline-secondary fw-bold" id="btn_pesquisar" (click)="efetuarPesquisa()">Pesquisar</button>
@@ -67,7 +70,7 @@
           </td>
           <td class="text-left coluna_fornecedor" style="width: 400px; min-width: 200px; max-width: 600px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ produto.fornecedor?.nome }}</td>
           <td class="text-center coluna_qtde" style="width: 60px; min-width: 40px; max-width: 80px;">{{ produto.quantia }}</td>
-          <td class="text-center coluna_valor" style="width: 200px; min-width: 100px; max-width: 250px;">{{ formatarValor(produto.valor) }}</td>
+          <td class="text-center coluna_valor" style="width: 200px; min-width: 100px; max-width: 250px;">{{ formatarValor(produto.valorInicial) }}</td>
           <td class="text-center coluna_promocao" style="width: 100px; min-width: 60px; max-width: 120px;">
             <img
               [src]="produto.promocao ? '/bolinha_verde.png' : '/bolinha_vermelha.png'"
@@ -217,7 +220,8 @@
                        name="valorInicialProduto"
                        required #valorInicial="ngModel"
                        max="2000000000"
-                       [ngClass]="{'is-invalid': valorInicial.value > 2000000000}">
+                       [ngClass]="{'is-invalid': valorInicial.value > 2000000000}"
+                       (ngModelChange)="onValorInicialChangeAtualizar($event)">
                 <div class="valor-display">{{produtoAtualizar.valorInicial | currency : 'BRL'}}</div>
               </div>
               <div *ngIf="valorInicial.value > 2000000000" class="validation-message">

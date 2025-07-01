@@ -31,9 +31,24 @@ export class ProdutoService extends HttpBaseService {
       .pipe(catchError(error => this.catchErrorTokenExpirado(error)));
   }
 
-  efetuarPesquisa(tipoPesquisa: string, valorPesquisa: string, idUsuario: number): Observable<ProdutoDTO[]> {
+  efetuarPesquisa(idUsuario: number, id?: number | null, nome?: string | null, nomeFornecedor?: string | null, valorInicial?: number | null): Observable<ProdutoDTO[]> {
+    let params = new HttpParams().set('idUsuario', idUsuario.toString());
+    if (id !== undefined && id !== null) {
+      params = params.set('idProduto', id.toString());
+    }
+    if (nome !== undefined && nome !== null && nome !== '') {
+      params = params.set('nomeProduto', nome);
+    }
+    if (nomeFornecedor !== undefined && nomeFornecedor !== null && nomeFornecedor !== '') {
+      params = params.set('nomeFornecedor', nomeFornecedor);
+    }
+    if (valorInicial !== undefined && valorInicial !== null) {
+      params = params.set('valorInicial', valorInicial.toString());
+    }
+    console.log(params)
     return this.http.get<ProdutoDTO[]>(
-      `${this.produtosUrl}/efetuarPesquisa/${tipoPesquisa}/${valorPesquisa}/${idUsuario}`
+      `${this.produtosUrl}/efetuarPesquisa`,
+      { params }
     ).pipe(catchError(error => this.catchErrorTokenExpirado(error)));
   }
 

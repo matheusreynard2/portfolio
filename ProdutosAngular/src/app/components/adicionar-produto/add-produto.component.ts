@@ -163,4 +163,9 @@ export class AddProdutoComponent implements OnInit {
     this.fornecedorSelecionado = fornecedor;
     this.produto.fornecedor = fornecedor;
   }
+
+  // Atualiza valorInicial dinamicamente ao digitar
+  onValorInicialChange(novoValor: number) {
+    this.produto.valorInicial = novoValor;
+  }
 }

@@ -107,7 +107,8 @@
                      name="valorInicialProduto"
                      required #valorInicial="ngModel"
                      max="2000000000"
-                     [ngClass]="{'is-invalid': valorInicial.value > 2000000000}">
+                     [ngClass]="{'is-invalid': valorInicial.value > 2000000000}"
+                     (ngModelChange)="onValorInicialChange($event)">
               <div *ngIf="valorInicial.value > 2000000000" class="invalid-feedback">
                 O valor unitário não pode ser maior que 2.000.000.000
               </div>
