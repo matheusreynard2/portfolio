@@ -6,14 +6,17 @@ import java.util.Optional;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.apiestudar.api_prodify.domain.model.Produto;
 
+@Transactional
 public interface ProdutoRepository {
 
-    Produto adicionarProduto(Produto produto);
-    
     Produto salvarProduto(Produto produto);
+
+    Produto adicionarProduto(Produto produto);
 
     Optional<Produto> buscarProdutoPorId(Long id);
 
@@ -25,8 +28,12 @@ public interface ProdutoRepository {
 
     BigDecimal obterMediaPreco(Long idUsuario);
 
-    List<Produto> findByIdAndUser(Long valorPesquisa, Long idUsuario);
+    /**
+     * Busca produtos usando Specification, incluindo filtros dinâmicos e JOIN com fornecedor.
+     */
+    List<Produto> findAll(Specification<Produto> spec);
 
-    List<Produto> findByNomeAndUser(String valorPesquisa, Long idUsuario);
-    
+    Optional<Produto> findByIdJoinFetch(Long id);
+
+    List<Produto> findAllJoinFetchByIds(List<Long> ids);
 }

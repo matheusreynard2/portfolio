@@ -12,6 +12,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
@@ -22,6 +23,7 @@ import lombok.ToString;
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Schema(name = "DadosEmpresa")
 @Builder
+@EqualsAndHashCode(exclude = "fornecedor")
 public class DadosEmpresaDTO {
     
     @NotNull(message = "ID dos dados da empresa é obrigatório")

@@ -3,7 +3,6 @@ package com.apiestudar.api_prodify.domain.repository;
 import java.util.List;
 import java.util.Optional;
 
-import com.apiestudar.api_prodify.domain.model.Produto;
 import com.apiestudar.api_prodify.domain.model.Usuario;
 
 public interface UsuarioRepository {

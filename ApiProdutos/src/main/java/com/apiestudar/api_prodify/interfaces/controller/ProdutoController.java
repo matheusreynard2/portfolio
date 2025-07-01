@@ -79,8 +79,9 @@ public class ProdutoController {
 	@ApiOperation(value = "Atualiza as informações de um produto.", notes = "Atualiza as informações registradas no banco de dados de um produto de acordo com o número de id passado como parâmetro.")
 	@ApiResponse(code = 200, message = "Produto atualizado.")
 	@PutMapping("/atualizarProduto/{id}")
-	public ResponseEntity<ProdutoDTO> atualizarProduto(@PathVariable long id, @ModelAttribute ProdutoFormDTO produtoFormDTO) throws IOException {
-		return ResponseEntity.status(HttpStatus.OK).body(atualizarProduto.executar(id, produtoFormDTO, produtoFormDTO.getImagemFile()));
+	public CompletableFuture<ResponseEntity<ProdutoDTO>> atualizarProduto(@PathVariable long id, @ModelAttribute ProdutoFormDTO produtoFormDTO) {
+		return atualizarProduto.executar(id, produtoFormDTO, produtoFormDTO.getImagemFile())
+			.thenApply(dto -> ResponseEntity.status(HttpStatus.OK).body(dto));
 	}
 
 	@ApiOperation(value = "Deleta/exclui um produto.", notes = "Faz a exclusão de um produto do banco de dados de acordo com o número de id passado como parâmetro.")
@@ -116,10 +117,14 @@ public class ProdutoController {
 	// front-end. Filtra por id ou por nome dependendo do que o usuário escolheu
 	@ApiOperation(value = "Pesquisar registros por 'id' ou por 'nome'.", notes = "Faz uma busca de registros no banco de dados utilizando como filtro o id do produto ou o nome do produto.")
 	@ApiResponse(code = 200, message = "Produtos encontrados.")
-	@GetMapping("/efetuarPesquisa/{tipoPesquisa}/{valorPesquisa}/{idUsuario}")
-	public CompletableFuture<ResponseEntity<List<ProdutoDTO>>> efetuarPesquisa(@PathVariable String tipoPesquisa,
-	@PathVariable String valorPesquisa, @PathVariable long idUsuario) {
-		return pesquisasUseCase.efetuarPesquisa(tipoPesquisa, valorPesquisa, idUsuario)
+	@GetMapping("/efetuarPesquisa")
+	public CompletableFuture<ResponseEntity<List<ProdutoDTO>>> efetuarPesquisa(
+		@RequestParam long idUsuario,
+		@RequestParam(required = false) Long idProduto, 
+		@RequestParam(required = false) String nomeProduto,
+		@RequestParam(required = false) String nomeFornecedor,
+		@RequestParam(required = false) Long valorInicial) {
+		return pesquisasUseCase.efetuarPesquisa(idUsuario, idProduto, nomeProduto, nomeFornecedor, valorInicial)
 			.thenApply(resultado -> ResponseEntity.status(HttpStatus.OK).body(resultado));
 	}
 

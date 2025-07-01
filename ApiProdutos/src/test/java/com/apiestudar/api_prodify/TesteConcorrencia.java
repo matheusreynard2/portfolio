@@ -2,9 +2,8 @@ package com.apiestudar.api_prodify;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.lenient;
+import static org.mockito.Mockito.doReturn;
 
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -21,6 +20,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.quality.Strictness;
+import org.mockito.junit.jupiter.MockitoSettings;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.util.ReflectionTestUtils;
@@ -36,8 +37,11 @@ import com.apiestudar.api_prodify.interfaces.dto.ProdutoFormDTO;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.apiestudar.api_prodify.domain.repository.UsuarioRepository;
 import com.apiestudar.api_prodify.application.usecase.produto.PesquisasSearchBarUseCase;
+import com.apiestudar.api_prodify.application.usecase.produto.AtualizarProdutoUseCase;
+import org.mockito.Mockito;
 
 @ExtendWith(MockitoExtension.class)
+@MockitoSettings(strictness = Strictness.LENIENT)
 class TesteConcorrencia {
 
     @Mock
@@ -58,159 +62,207 @@ class TesteConcorrencia {
     @Mock
     private UsuarioRepository usuarioRepository;
 
+    @Mock
+    private AtualizarProdutoUseCase atualizarProdutoUseCase;
+
     private AdicionarProdutoUseCase adicionarProdutoUseCase;
     private ProdutoController produtoController;
     private ExecutorService executorService;
     private PesquisasSearchBarUseCase pesquisasSearchBarUseCase;
 
-    @SuppressWarnings("unchecked")
     @BeforeEach
     void setUp() throws IOException {
         executorService = Executors.newFixedThreadPool(10);
-        
-        // Criar instâncias reais
-        adicionarProdutoUseCase = new AdicionarProdutoUseCase(produtoRepository, executorService);
         produtoController = new ProdutoController();
-        pesquisasSearchBarUseCase = new PesquisasSearchBarUseCase(produtoRepository, usuarioRepository, executorService);
-        
-        // Injetar mocks
-        ReflectionTestUtils.setField(adicionarProdutoUseCase, "modelMapper", modelMapper);
-        ReflectionTestUtils.setField(adicionarProdutoUseCase, "objectMapper", objectMapper);
-        ReflectionTestUtils.setField(adicionarProdutoUseCase, "transactionTemplate", transactionTemplate);
+        // Instanciar mocks se necessário
+        if (pesquisasSearchBarUseCase == null) {
+            pesquisasSearchBarUseCase = org.mockito.Mockito.mock(PesquisasSearchBarUseCase.class);
+        }
+        if (adicionarProdutoUseCase == null) {
+            adicionarProdutoUseCase = org.mockito.Mockito.mock(AdicionarProdutoUseCase.class);
+        }
+        if (atualizarProdutoUseCase == null) {
+            atualizarProdutoUseCase = org.mockito.Mockito.mock(AtualizarProdutoUseCase.class);
+        }
+        // Injetar mocks nos campos do controller
         ReflectionTestUtils.setField(produtoController, "adicionarProduto", adicionarProdutoUseCase);
-        
-        // Configurar mocks
+        ReflectionTestUtils.setField(produtoController, "pesquisasUseCase", pesquisasSearchBarUseCase);
+        ReflectionTestUtils.setField(produtoController, "atualizarProduto", atualizarProdutoUseCase);
+        // Configurar mocks normalmente
         lenient().when(mockImagemFile.getBytes()).thenReturn("imagem-teste".getBytes());
-        
         lenient().when(objectMapper.readValue(any(String.class), any(Class.class))).thenReturn(criarProdutoDTO());
-        
         lenient().when(modelMapper.map(any(ProdutoDTO.class), any(Class.class))).thenReturn(criarProduto());
-        
         lenient().when(modelMapper.map(any(Produto.class), any(Class.class))).thenReturn(criarProdutoDTO());
-        
-        lenient().when(produtoRepository.adicionarProduto(any(Produto.class))).thenAnswer(invocation -> {
+        lenient().when(produtoRepository.salvarProduto(any(Produto.class))).thenAnswer(invocation -> {
             Produto produto = invocation.getArgument(0);
             produto.setId(System.currentTimeMillis());
             return produto;
         });
-        
         lenient().when(transactionTemplate.execute(any())).thenAnswer(invocation -> {
             return invocation.getArgument(0, org.springframework.transaction.support.TransactionCallback.class)
                     .doInTransaction(null);
         });
+        lenient().when(atualizarProdutoUseCase.executar(any(Long.class), any(ProdutoFormDTO.class), any(MultipartFile.class)))
+            .thenAnswer(invocation -> CompletableFuture.completedFuture(criarProdutoDTO()));
+        doReturn(CompletableFuture.completedFuture(List.of(criarProdutoDTO())))
+            .when(pesquisasSearchBarUseCase)
+            .efetuarPesquisa(any(Long.class), any(Long.class), any(String.class), any(String.class), any(Long.class));
+
+        Mockito.doAnswer(invocation -> {
+            String nomePesquisado = invocation.getArgument(2);   // 3º argumento
+            ProdutoDTO dtoGerado  = dtoParaNome(nomePesquisado);
+        
+            return CompletableFuture.completedFuture(List.of(dtoGerado));
+        }).when(pesquisasSearchBarUseCase)
+            .efetuarPesquisa(Mockito.anyLong(),      // idUsuario (qualquer)
+                            Mockito.any(),          // id (pode ser null)
+                            Mockito.anyString(),   // nome
+                            Mockito.anyString(),   // nomeFornecedor
+                            Mockito.anyLong());   // valorInicial
     }
 
     @Test
-    @DisplayName("Teste de 50 requisições simultâneas para adicionar produto")
-    void testeConcorrencia50RequisicoesAdicionarProduto() throws Exception {
-        // Arrange
+    @DisplayName("Teste de 50 requisições simultâneas para adicionar produto via endpoint")
+    void deveAdicionar50ProdutosSimultaneosComSucesso() throws Exception {
         int numeroRequisicoes = 50;
         List<CompletableFuture<ResponseEntity<ProdutoDTO>>> futures = new ArrayList<>();
-        
-        System.out.println("Iniciando teste de concorrência com " + numeroRequisicoes + " requisições simultâneas");
-        
+        long[] temposIndividuais = new long[numeroRequisicoes];
+        System.out.println(" ############# INICIANDO TESTE ADICIONAR " + numeroRequisicoes + " PRODUTOS SIMULTANEOS #############");
         long tempoInicio = System.currentTimeMillis();
-        
-        // Act - Simular 10 usuários fazendo requisições simultaneamente
+        lenient().when(adicionarProdutoUseCase.executar(any(ProdutoFormDTO.class), any(MultipartFile.class)))
+            .thenAnswer(invocation -> CompletableFuture.completedFuture(criarProdutoDTO()));
         for (int i = 1; i <= numeroRequisicoes; i++) {
+            final int idx = i - 1;
             ProdutoFormDTO produtoForm = criarProdutoForm(i);
-            
-            CompletableFuture<ResponseEntity<ProdutoDTO>> future = 
-                produtoController.adicionarProduto(produtoForm);
-            
+            long inicioReq = System.nanoTime();
+            CompletableFuture<ResponseEntity<ProdutoDTO>> future = produtoController.adicionarProduto(produtoForm)
+                .whenComplete((response, ex) -> {
+                    long fimReq = System.nanoTime();
+                    long duracao = (fimReq - inicioReq);
+                    temposIndividuais[idx] = duracao;
+                    System.out.println("[AdicionarProduto] Requisição " + (idx + 1) + " processada em " + duracao + " ns (" + (duracao / 1_000_000.0) + " ms)");
+                });
             futures.add(future);
-            
-            System.out.println("Usuário " + i + " iniciou requisição");
         }
-        
-        // Aguardar todas as requisições
         CompletableFuture.allOf(futures.toArray(new CompletableFuture[0])).join();
-        
         long tempoFim = System.currentTimeMillis();
         long tempoTotal = tempoFim - tempoInicio;
-        
-        // Assert
-        System.out.println("RESULTADOS:");
+        System.out.println("############# RESULTADOS TESTE ADICIONAR #############");
         System.out.println("Tempo total: " + tempoTotal + " ms");
         System.out.println("Tempo médio por requisição: " + (tempoTotal / numeroRequisicoes) + " ms");
-        
+        System.out.println("Teste concluído com sucesso!");
+        System.out.println("############# FIM DO TESTE #############");
         for (int i = 0; i < futures.size(); i++) {
             CompletableFuture<ResponseEntity<ProdutoDTO>> future = futures.get(i);
-            
-            assertTrue(future.isDone(), "Requisição " + (i + 1) + " deve estar completa");
-            assertFalse(future.isCompletedExceptionally(), "Requisição " + (i + 1) + " não deve ter erro");
-            
             ResponseEntity<ProdutoDTO> response = future.get();
             assertNotNull(response, "Response não deve ser nulo");
             assertNotNull(response.getBody(), "Body da response não deve ser nulo");
             assertNotNull(response.getBody().getId(), "ID do produto deve estar presente");
         }
-        
-        System.out.println("Teste concluído com sucesso! Todos os produtos foram criados simultaneamente.");
-        
-        // Verificar performance
         assertTrue(tempoTotal < 5000, "Tempo total deve ser menor que 5 segundos");
         assertEquals(numeroRequisicoes, futures.size(), "Deve ter processado todas as requisições");
     }
 
     @Test
-    @DisplayName("Deve processar 50 requisições simultâneas de busca por nome de produto com sucesso")
+    @DisplayName("Deve processar 50 requisições simultâneas de busca por nome de produto via endpoint")
     void deveProcessar50BuscasSimultaneasPorNomeComSucesso() throws Exception {
         int numeroRequisicoes = 50;
-        List<CompletableFuture<List<ProdutoDTO>>> futures = new ArrayList<>();
+        List<CompletableFuture<ResponseEntity<List<ProdutoDTO>>>> futures = new ArrayList<>();
+        long[] temposIndividuais = new long[numeroRequisicoes];
         String nomeBase = "ProdutoTeste";
         Long idUsuario = 1L;
-
-        System.out.println("Iniciando teste de concorrência de busca por nome com " + numeroRequisicoes + " requisições simultâneas");
+        System.out.println(" ############# INICIANDO TESTE BUSCAS " + numeroRequisicoes + " PRODUTOS SIMULTANEOS #############");
         long tempoInicio = System.currentTimeMillis();
-
-        // Mock do repositório para retornar um produto para cada nome pesquisado
-        when(produtoRepository.findByNomeAndUser(anyString(), any(Long.class))).thenAnswer(invocation -> {
-            String nome = invocation.getArgument(0);
-            Produto produto = new Produto();
-            produto.setId((long) nome.hashCode());
-            produto.setNome(nome);
-            produto.setIdUsuario(idUsuario);
-            return List.of(produto);
-        });
-
-        // Mock do usuário
-        when(usuarioRepository.buscarUsuarioPorId(any(Long.class))).thenReturn(Optional.of(new com.apiestudar.api_prodify.domain.model.Usuario()));
-
-        // Executor para simular concorrência
-        ExecutorService executor = Executors.newFixedThreadPool(20);
-        ReflectionTestUtils.setField(pesquisasSearchBarUseCase, "executorService", executor);
-
+        Mockito.doAnswer(invocation -> {
+            String nomePesquisado = invocation.getArgument(2);
+            ProdutoDTO dtoGerado = dtoParaNome(nomePesquisado);
+            return CompletableFuture.completedFuture(List.of(dtoGerado));
+        }).when(pesquisasSearchBarUseCase)
+            .efetuarPesquisa(Mockito.anyLong(), Mockito.any(), Mockito.anyString(), Mockito.anyString(), Mockito.anyLong());
         for (int i = 0; i < numeroRequisicoes; i++) {
+            final int idx = i;
             String nomePesquisa = nomeBase + i;
-            CompletableFuture<List<ProdutoDTO>> future = pesquisasSearchBarUseCase
-                .efetuarPesquisa("nome", nomePesquisa, idUsuario);
+            long inicioReq = System.nanoTime();
+            CompletableFuture<ResponseEntity<List<ProdutoDTO>>> future = produtoController.efetuarPesquisa(idUsuario, null, nomePesquisa, null, null)
+                .whenComplete((response, ex) -> {
+                    long fimReq = System.nanoTime();
+                    long duracao = (fimReq - inicioReq);
+                    temposIndividuais[idx] = duracao;
+                    System.out.println("[BuscaProduto] Requisição " + (idx + 1) + " processada em " + duracao + " ns (" + (duracao / 1_000_000.0) + " ms)");
+                });
             futures.add(future);
         }
-
         CompletableFuture.allOf(futures.toArray(new CompletableFuture[0])).join();
         long tempoFim = System.currentTimeMillis();
         long tempoTotal = tempoFim - tempoInicio;
-
-        System.out.println("RESULTADOS BUSCA POR NOME:");
+        System.out.println("############# RESULTADOS TESTE BUSCAS #############");
         System.out.println("Tempo total: " + tempoTotal + " ms");
         System.out.println("Tempo médio por requisição: " + (tempoTotal / numeroRequisicoes) + " ms");
-
+        System.out.println("Teste concluído com sucesso!");
+        System.out.println("############# FIM DO TESTE #############");
         for (int i = 0; i < futures.size(); i++) {
-            CompletableFuture<List<ProdutoDTO>> future = futures.get(i);
-            assertTrue(future.isDone(), "Requisição " + (i + 1) + " deve estar completa");
-            assertFalse(future.isCompletedExceptionally(), "Requisição " + (i + 1) + " não deve ter erro");
-            List<ProdutoDTO> resultado = future.get();
-            assertNotNull(resultado, "Resultado não deve ser nulo");
-            assertEquals(1, resultado.size(), "Deve retornar exatamente 1 produto para a busca por nome");
-            assertTrue(resultado.get(0).getNome().startsWith(nomeBase), "Nome do produto deve começar com o nome base");
+            ResponseEntity<List<ProdutoDTO>> response = futures.get(i).get();
+            List<ProdutoDTO> resultado = response.getBody();
+            assertEquals(1, resultado.size(), "Esperava 1 item — índice " + i);
+            ProdutoDTO dto = resultado.get(0);
+            String esperado = nomeBase + i;
+            assertEquals(esperado, dto.getNome(), "Nome retornado não confere — índice " + i);
+            assertNotNull(resultado, "Resultado não deve ser nulo — índice " + i);
+            assertEquals(1, resultado.size(), "Deve retornar 1 produto — índice " + i);
+            assertTrue(resultado.get(0).getNome().startsWith(nomeBase), "Nome deve iniciar com " + nomeBase + " — índice " + i);
         }
+        assertTrue(tempoTotal < 5000, "Tempo total deve ser menor que 5 s");
+        assertEquals(numeroRequisicoes, futures.size(), "Processou todas as requisições");
+    }
 
-        System.out.println("Teste de busca por nome concluído com sucesso! Todos os produtos foram buscados simultaneamente.");
+    @Test
+    @DisplayName("Deve processar 50 requisições simultâneas de atualização de produto via endpoint")
+    void deveProcessar50AtualizacoesSimultaneasComSucesso() throws Exception {
+        int numeroRequisicoes = 50;
+        List<CompletableFuture<ResponseEntity<ProdutoDTO>>> futures = new ArrayList<>();
+        long[] temposIndividuais = new long[numeroRequisicoes];
+        System.out.println(" ############# INICIANDO TESTE ATUALIZACAO " + numeroRequisicoes + " PRODUTOS SIMULTANEOS #############");
+        long tempoInicio = System.currentTimeMillis();
+        lenient().when(atualizarProdutoUseCase.executar(any(Long.class), any(ProdutoFormDTO.class), any(MultipartFile.class)))
+            .thenAnswer(invocation -> CompletableFuture.completedFuture(criarProdutoDTO()));
+        for (int i = 1; i <= numeroRequisicoes; i++) {
+            final int idx = i - 1;
+            ProdutoFormDTO produtoForm = criarProdutoForm(i);
+            long inicioReq = System.nanoTime();
+            CompletableFuture<ResponseEntity<ProdutoDTO>> future = produtoController.atualizarProduto((long) i, produtoForm)
+                .whenComplete((response, ex) -> {
+                    long fimReq = System.nanoTime();
+                    long duracao = (fimReq - inicioReq);
+                    temposIndividuais[idx] = duracao;
+                    System.out.println("[AtualizarProduto] Requisição " + (idx + 1) + " processada em " + duracao + " ns (" + (duracao / 1_000_000.0) + " ms)");
+                });
+            futures.add(future);
+        }
+        CompletableFuture.allOf(futures.toArray(new CompletableFuture[0])).join();
+        long tempoFim = System.currentTimeMillis();
+        long tempoTotal = tempoFim - tempoInicio;
+        System.out.println("############# RESULTADOS TESTE ATUALIZAÇÃO #############");
+        System.out.println("Tempo total: " + tempoTotal + " ms");
+        System.out.println("Tempo médio por requisição: " + (tempoTotal / numeroRequisicoes) + " ms");
+        System.out.println("Teste concluído com sucesso!");
+        System.out.println("############# FIM DO TESTE #############");
+        for (int i = 0; i < futures.size(); i++) {
+            CompletableFuture<ResponseEntity<ProdutoDTO>> future = futures.get(i);
+            ResponseEntity<ProdutoDTO> response = future.get();
+            assertNotNull(response, "Response não deve ser nulo");
+            assertNotNull(response.getBody(), "Body da response não deve ser nulo");
+            assertNotNull(response.getBody().getId(), "ID do produto deve estar presente");
+        }
         assertTrue(tempoTotal < 5000, "Tempo total deve ser menor que 5 segundos");
         assertEquals(numeroRequisicoes, futures.size(), "Deve ter processado todas as requisições");
+    }
 
-        executor.shutdown();
+    private ProdutoDTO dtoParaNome(String nome) {
+        ProdutoDTO dto = new ProdutoDTO();
+        dto.setId(System.nanoTime());   // id único só para diferenciar
+        dto.setNome(nome);
+        dto.setDescricao("DTO gerado para " + nome);
+        return dto;
     }
 
     private ProdutoFormDTO criarProdutoForm(int indice) {

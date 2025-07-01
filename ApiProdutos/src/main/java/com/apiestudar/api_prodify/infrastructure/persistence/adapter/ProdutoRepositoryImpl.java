@@ -4,8 +4,18 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Fetch;
+import javax.persistence.criteria.JoinType;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,6 +26,9 @@ import com.apiestudar.api_prodify.infrastructure.persistence.jpa.ProdutoJpaRepos
 @Repository
 @Transactional
 public class ProdutoRepositoryImpl implements ProdutoRepository {
+
+    @PersistenceContext
+    private EntityManager em;
 
     private final ProdutoJpaRepository produtoJpaRepository;
 
@@ -59,12 +72,17 @@ public class ProdutoRepositoryImpl implements ProdutoRepository {
     }
 
     @Override
-    public List<Produto> findByIdAndUser(Long valorPesquisa, Long idUsuario) {
-        return produtoJpaRepository.findByIdAndUser(valorPesquisa, idUsuario);
+    public List<Produto>findAll(Specification<Produto> spec) {
+         return produtoJpaRepository.findAll(spec);
     }
 
     @Override
-    public List<Produto> findByNomeAndUser(String valorPesquisa, Long idUsuario) {
-        return produtoJpaRepository.findByNomeAndUser(valorPesquisa, idUsuario);
+    public Optional<Produto> findByIdJoinFetch(Long id) {
+        return produtoJpaRepository.findByIdJoinFetch(id);
+    }
+
+    @Override
+    public List<Produto> findAllJoinFetchByIds(List<Long> ids) {
+        return produtoJpaRepository.findAllJoinFetchByIds(ids);
     }
 }

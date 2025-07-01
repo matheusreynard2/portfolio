@@ -27,35 +27,6 @@ import lombok.ToString;
 
 @Entity
 @Table(name = "produto")
-@NamedEntityGraph(
-    name = "Produto.GrafoCompleto",
-    attributeNodes = {
-        /* 1º nível —— fornecedor */
-        @NamedAttributeNode(value = "fornecedor",
-                            subgraph = "fornecedorSub")
-    },
-    subgraphs = {
-
-        /* 2º nível —— dentro de fornecedor */
-        @NamedSubgraph(
-            name = "fornecedorSub",
-            attributeNodes = {
-                @NamedAttributeNode(value = "produtos"),          //         f.produtos
-                @NamedAttributeNode(value = "dadosEmpresa",
-                                    subgraph = "dadosEmpresaSub") //         f.dadosEmpresa →
-            }
-        ),
-
-        /* 3º nível —— dentro de dadosEmpresa */
-        @NamedSubgraph(
-            name  = "dadosEmpresaSub",
-            attributeNodes = {
-                @NamedAttributeNode("cnaesSecundarios"),          // de.cnaesSecundarios
-                @NamedAttributeNode("qsa")                        // de.qsa
-            }
-        )
-    }
-)
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

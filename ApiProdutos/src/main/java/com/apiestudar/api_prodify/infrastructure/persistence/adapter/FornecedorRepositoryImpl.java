@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -49,6 +50,11 @@ public class FornecedorRepositoryImpl implements FornecedorRepository {
 	}
 
 	@Override
+	public List<Fornecedor> findAll(Specification<Fornecedor> spec) {
+		return fornecedorJpaRepository.findAll(spec);
+	}
+
+	@Override
 	public Page<Fornecedor> listarFornecedoresPorUsuario(Long idUsuario, Pageable pageable) {
 		return fornecedorJpaRepository.findByIdUsuario(idUsuario, pageable);
 	}
@@ -66,6 +72,11 @@ public class FornecedorRepositoryImpl implements FornecedorRepository {
 	@Override
 	public Integer contarProdutosPorFornecedor(Long idFornecedor) {
 		return fornecedorJpaRepository.countProdutosByFornecedorId(idFornecedor);
+	}
+
+	@Override
+	public Optional<Fornecedor> findById(Long id) {
+		return fornecedorJpaRepository.findById(id);
 	}
 
 }

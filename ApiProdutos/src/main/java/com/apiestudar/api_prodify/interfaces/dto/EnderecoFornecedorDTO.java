@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
@@ -17,6 +18,7 @@ import lombok.ToString;
 @ToString
 @Schema(name = "EnderecoFornecedor")
 @Builder
+@EqualsAndHashCode(exclude = "fornecedor")
 public class EnderecoFornecedorDTO {
     
     @Schema(description = "ID do endereço")

@@ -6,11 +6,9 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.transaction.support.TransactionTemplate;
 
 import com.apiestudar.api_prodify.domain.model.Produto;
 import com.apiestudar.api_prodify.domain.repository.ProdutoRepository;
@@ -21,59 +19,83 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Service
 public class AdicionarProdutoUseCase {
-	
-	@Autowired
-	private final ModelMapper modelMapper = new ModelMapper();
-	private final ProdutoRepository produtoRepository;
-	private final ExecutorService executorService;
-	private final ObjectMapper objectMapper = new ObjectMapper();
 
-	@Autowired
-	private TransactionTemplate transactionTemplate;
+    private final ProdutoRepository repo;
+    private final ExecutorService   cpuPool;   // CPU-bound
+    private final ExecutorService   ioPool;    // File/network I/O
+    private final ExecutorService   dbPool;    // Banco de dados
+    private final ModelMapper       mapper = new ModelMapper();
+    private final ObjectMapper      json   = new ObjectMapper();
 
-	public AdicionarProdutoUseCase(ProdutoRepository produtoRepository, ExecutorService executorService) {
-		this.produtoRepository = produtoRepository;
-		this.executorService = executorService;
-	}
+    public AdicionarProdutoUseCase(
+            ProdutoRepository repo,
+            @Qualifier("cpuPool") ExecutorService cpuPool,
+            @Qualifier("ioPool")  ExecutorService ioPool,
+            @Qualifier("dbPool")  ExecutorService dbPool) {
+        this.repo    = repo;
+        this.cpuPool = cpuPool;
+        this.ioPool  = ioPool;
+        this.dbPool  = dbPool;
+    }
 
-	@Transactional(rollbackFor = Exception.class)
-	public CompletableFuture<ProdutoDTO> executar(ProdutoFormDTO produtoFormDTO, MultipartFile imagemFile) throws IOException, InterruptedException {
+    /** Assíncrono, usando 3 pools otimizados */
+    public CompletableFuture<ProdutoDTO> executar(
+            ProdutoFormDTO form, MultipartFile imagem) {
 
-		// Marcando o tempo de início
-		long startTime = System.currentTimeMillis();
+        long t0 = System.nanoTime();
 
-		CompletableFuture<Produto> gerar = CompletableFuture.supplyAsync(() -> gerarProduto(produtoFormDTO, imagemFile), executorService);
-        CompletableFuture<ProdutoDTO> produtoDTO = gerar.thenApplyAsync(this::salvarProduto, executorService);
-		// Marcando o tempo de fim
-		long endTime = System.currentTimeMillis();
+        /* ───────────── 1️⃣  Parse JSON (CPU) ───────────── */
+        CompletableFuture<Produto> base =
+            CompletableFuture.supplyAsync(() -> {
+                Helper.verificarNull(form);
+                try {
+                    ProdutoDTO dto = json.readValue(form.getProdutoJson(), ProdutoDTO.class);
+                    return mapper.map(dto, Produto.class); // ainda SEM imagem
+                } catch (IOException e) {
+                    throw new UncheckedIOException(e);
+                }
+            }, cpuPool);
 
-		// Calculando tempos de execução
-		long executionTimeMs = endTime - startTime;
-		System.out.println("################ ADICIONAR PRODUTO #################");
-		System.out.println("TEMPO DE EXECUÇÃO: " + executionTimeMs + " ms");
-		System.out.println("####################################################");
+        /* ───────────── 2️⃣  Ler bytes da imagem (I/O) ───────────── */
+        CompletableFuture<byte[]> bytes =
+            CompletableFuture.supplyAsync(() -> {
+                Helper.verificarNull(imagem);
+                try {
+                    return imagem.getBytes();
+                } catch (IOException e) {
+                    throw new UncheckedIOException(e);
+                }
+            }, ioPool);
 
-		return produtoDTO;
-	}
+        /* ───────────── 3️⃣  Unir entidade + bytes ───────────── */
+        CompletableFuture<Produto> completo =
+            base.thenCombine(bytes, (p, imgBytes) -> {
+                p.setImagem(imgBytes);
+                return p;
+            });
 
-	private Produto gerarProduto(ProdutoFormDTO form, MultipartFile imagem) {
-		Helper.verificarNull(form);
-		Helper.verificarNull(imagem);
+        /* ───────────── 4️⃣  Salvar + reler com JOIN FETCH (DB) ───────────── */
+        CompletableFuture<Produto> salvoCarregado =
+            completo.thenApplyAsync(prod -> {
 
-		try {
-			ProdutoDTO dto = objectMapper.readValue(form.getProdutoJson(), ProdutoDTO.class);
-			Produto produto = modelMapper.map(dto, Produto.class);
-			produto.setImagem(imagem.getBytes());
-			return produto;
-		} catch (IOException e) {
-			throw new UncheckedIOException("Falha ao gerar Produto", e);
-		}
-	}
+                Produto salvo = repo.salvarProduto(prod); // INSERT
+                // RE-LEITURA com JOIN FETCH para trazer coleções carregadas
+                return repo.findByIdJoinFetch(salvo.getId())
+                           .orElseThrow(() ->
+                              new IllegalStateException("Produto não relido"));
+            }, dbPool);
 
-	private ProdutoDTO salvarProduto(Produto produto) {
-        return transactionTemplate.execute(status -> {
-            Produto produtoSalvo = produtoRepository.adicionarProduto(produto);
-            return modelMapper.map(produtoSalvo, ProdutoDTO.class);
+        /* ───────────── 5️⃣  Mapear para DTO (CPU) ───────────── */
+        CompletableFuture<ProdutoDTO> resultado =
+            salvoCarregado.thenApplyAsync(prod -> mapper.map(prod, ProdutoDTO.class), cpuPool);
+
+        /* ───────────── Métrica ───────────── */
+        return resultado.whenComplete((ok, ex) -> {
+            long ns = System.nanoTime() - t0;
+            System.out.println("##############################");
+            System.out.printf("### ADD PRODUTO %d ns ( %d ms)%n",
+                              ns, ns / 1_000_000);
+            System.out.println("##############################");
         });
     }
 }
