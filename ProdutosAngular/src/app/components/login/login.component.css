@@ -184,6 +184,7 @@ p {
   animation: text2-complete 15s infinite;
   animation-fill-mode: both;
   font-family: 'Courier New', monospace;
+  font-size: 18px;
 }
 
 .text-3 {
