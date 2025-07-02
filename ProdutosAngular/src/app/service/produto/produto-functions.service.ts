@@ -71,52 +71,60 @@ export class ProdutoFunctionsService {
   }
 
 
-  calcularValores(produto: ProdutoDTO) {
-    // Desconto SIM e Frete SIM
-    if (produto.promocao && produto.freteAtivo) {
+  calcularValores(produto: ProdutoDTO): Promise<void> {
+    return new Promise((resolve) => {
+      // Desconto SIM e Frete SIM
+      if (produto.promocao && produto.freteAtivo) {
         this.calcularDesconto(produto).then(() => {
-        this.zone.run(() => {
-          produto.valorTotalDesc = this.resultadoDesconto
-          produto.valorDesconto = this.valorDescontoNumber
-          produto.valorTotalFrete = produto.valorTotalDesc + this.calcularFrete(produto)
-          produto.frete = this.calcularFrete(produto)
-          produto.somaTotalValores = produto.valorTotalDesc + produto.frete
-        });
-      });
-    }
-    // Desconto SIM e Frete NÃO
-    if (produto.promocao && !produto.freteAtivo) {
-        this.calcularDesconto(produto).then(() => {
-        this.zone.run(() => {
-          produto.valorTotalDesc = this.resultadoDesconto
-          produto.valorDesconto = this.valorDescontoNumber
-          produto.frete = 0
-          produto.valorTotalFrete = 0
-          produto.somaTotalValores = produto.valorTotalDesc
+          this.zone.run(() => {
+            produto.valorTotalDesc = this.resultadoDesconto
+            produto.valorDesconto = this.valorDescontoNumber
+            produto.valorTotalFrete = produto.valorTotalDesc + this.calcularFrete(produto)
+            produto.frete = this.calcularFrete(produto)
+            produto.somaTotalValores = produto.valorTotalDesc + produto.frete
+            resolve();
           });
-      });
-    }
-    // Desconto NÃO e Frete SIM
-    if (!produto.promocao && produto.freteAtivo) {
-      this.calcularDesconto(produto).then(() => {
-        this.zone.run(() => {
-          produto.valorTotalDesc = this.resultadoDesconto
-          produto.frete = this.calcularFrete(produto)
-          produto.valorTotalFrete = produto.valor + this.calcularFrete(produto)
-          produto.somaTotalValores = produto.valorTotalFrete
-        })
-      });
-   }
-    // Desconto NÃO e Frete NÃO
-    if (!produto.promocao && !produto.freteAtivo) {
-      produto.frete = 0
-      produto.valorTotalFrete = 0
-      this.zone.run(() => {
+        });
+      }
+      // Desconto SIM e Frete NÃO
+      else if (produto.promocao && !produto.freteAtivo) {
         this.calcularDesconto(produto).then(() => {
-          produto.valorTotalDesc = this.resultadoDesconto
-          produto.somaTotalValores = produto.valor
-        })
-      });
-    }
+          this.zone.run(() => {
+            produto.valorTotalDesc = this.resultadoDesconto
+            produto.valorDesconto = this.valorDescontoNumber
+            produto.frete = 0
+            produto.valorTotalFrete = 0
+            produto.somaTotalValores = produto.valorTotalDesc
+            resolve();
+          });
+        });
+      }
+      // Desconto NÃO e Frete SIM
+      else if (!produto.promocao && produto.freteAtivo) {
+        this.calcularDesconto(produto).then(() => {
+          this.zone.run(() => {
+            produto.valorTotalDesc = this.resultadoDesconto
+            produto.frete = this.calcularFrete(produto)
+            produto.valorTotalFrete = produto.valor + this.calcularFrete(produto)
+            produto.somaTotalValores = produto.valorTotalFrete
+            resolve();
+          })
+        });
+      }
+      // Desconto NÃO e Frete NÃO
+      else if (!produto.promocao && !produto.freteAtivo) {
+        produto.frete = 0
+        produto.valorTotalFrete = 0
+        this.zone.run(() => {
+          this.calcularDesconto(produto).then(() => {
+            produto.valorTotalDesc = this.resultadoDesconto
+            produto.somaTotalValores = produto.valor
+            resolve();
+          })
+        });
+      } else {
+        resolve();
+      }
+    });
   }
 }

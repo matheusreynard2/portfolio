@@ -85,8 +85,8 @@ export class AddProdutoComponent implements OnInit {
   }
 
   // Função que é chamada ao clicar no botão Submit do formulário HTML (ngModel) ao criar um produto
-  onSubmit() {
-    this.calcularValores(this.produto);
+  async onSubmit() {
+    await this.calcularValores(this.produto);
     this.produto.idUsuario = this.authService.getUsuarioLogado().idUsuario;
 
     // Limpa o campo valorDesconto antes de enviar
@@ -131,9 +131,9 @@ export class AddProdutoComponent implements OnInit {
   }
 
   // Faz os calculos gerais após calcular valor X quantia
-  calcularValores(produto: ProdutoDTO) {
-    this.calcularValorXQuantia(produto).then(() => {(
-      this.produtoFunctionsService.calcularValores(produto));
+  calcularValores(produto: ProdutoDTO): Promise<void> {
+    return this.calcularValorXQuantia(produto).then(() => {
+      return this.produtoFunctionsService.calcularValores(produto);
     });
   }
 

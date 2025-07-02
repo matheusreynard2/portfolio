@@ -210,8 +210,7 @@ export class ProdutoListComponent implements OnInit {
   }
 
   // Função chamada ao clicar no botão de Submit (Salvar) do formulário de Edição de produtos
-  onSubmitSalvar(modal: any) {
-    this.calcularValores(this.produtoAtualizar);
+  async onSubmitSalvar(modal: any) {
     this.criarFornecedor();
 
     // Limpa o campo valorDesconto antes de enviar
@@ -220,7 +219,9 @@ export class ProdutoListComponent implements OnInit {
       this.produtoAtualizar.valorDesconto = Number(cleaned);
     }
 
-    // CHAMA O ATUALIZAR PRODUTO
+    // Aguarda o cálculo dos valores antes de enviar ao backend
+    await this.calcularValores(this.produtoAtualizar);
+
     this.produtoService.atualizarProduto(this.produtoAtualizar.id, this.produtoAtualizar, this.imagemFile).subscribe({
       next: (produtoAtualizado) => {
         modal.close();
@@ -233,7 +234,13 @@ export class ProdutoListComponent implements OnInit {
     });
   }
 
-// Função chamada ao clicar no botão Pesquisar
+  calcularValores(produto: ProdutoDTO): Promise<void> {
+    return this.calcularValorXQuantia(produto).then(() => {
+      return this.produtoFunctionsService.calcularValores(produto);
+    });
+  }
+
+  // Função chamada ao clicar no botão Pesquisar
   efetuarPesquisa() {
     const usuarioLogadoId = this.authService.getUsuarioLogado().idUsuario;
     const searchBar_value = this.searchValue;
@@ -258,13 +265,6 @@ export class ProdutoListComponent implements OnInit {
     }
     this.listarProdutoMaisCaro(usuarioLogadoId);
     this.calcularMedia(usuarioLogadoId);
-  }
-
-  // Faz os calculos gerais após calcular valor X quantia
-  calcularValores(produto: ProdutoDTO) {
-    this.calcularValorXQuantia(produto).then(() => {(
-      this.produtoFunctionsService.calcularValores(produto));
-    });
   }
 
   // Função chamada ao mudar de valor na ComboBox de Promoção no ngModel
