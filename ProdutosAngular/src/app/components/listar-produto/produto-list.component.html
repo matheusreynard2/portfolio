@@ -283,7 +283,6 @@
                        id="valorDesconto"
                        name="valorDescontoProduto"
                        required #valorDesconto="ngModel"
-                       maxlength="100"
                        appPorcentagemMask
                        [disabled]="!produtoAtualizar.promocao">
                 <div class="valor-display">{{produtoAtualizar.valorTotalDesc | currency : 'BRL'}}</div>

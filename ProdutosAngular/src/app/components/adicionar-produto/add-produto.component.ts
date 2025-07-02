@@ -87,10 +87,14 @@ export class AddProdutoComponent implements OnInit {
   // Função que é chamada ao clicar no botão Submit do formulário HTML (ngModel) ao criar um produto
   onSubmit() {
     this.calcularValores(this.produto);
+    this.produto.idUsuario = this.authService.getUsuarioLogado().idUsuario;
 
-    this.produto.idUsuario = this.authService.getUsuarioLogado().idUsuario
+    // Limpa o campo valorDesconto antes de enviar
+    if (this.produto.valorDesconto !== undefined && this.produto.valorDesconto !== null) {
+      const cleaned = String(this.produto.valorDesconto).replace('%', '');
+      this.produto.valorDesconto = Number(cleaned);
+    }
 
-    // Adiciona o produto no banco depois chama a mensagem de sucesso de adição de produto "msgAddProduto"
     this.produtoService.adicionarProduto(this.produto, this.imagemFile).subscribe({
       next: (produtoAdicionado: ProdutoDTO) => {
         this.novoProduto = produtoAdicionado

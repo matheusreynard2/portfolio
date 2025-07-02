@@ -212,8 +212,13 @@ export class ProdutoListComponent implements OnInit {
   // Função chamada ao clicar no botão de Submit (Salvar) do formulário de Edição de produtos
   onSubmitSalvar(modal: any) {
     this.calcularValores(this.produtoAtualizar);
-    
     this.criarFornecedor();
+
+    // Limpa o campo valorDesconto antes de enviar
+    if (this.produtoAtualizar.valorDesconto !== undefined && this.produtoAtualizar.valorDesconto !== null) {
+      const cleaned = String(this.produtoAtualizar.valorDesconto).replace('%', '');
+      this.produtoAtualizar.valorDesconto = Number(cleaned);
+    }
 
     // CHAMA O ATUALIZAR PRODUTO
     this.produtoService.atualizarProduto(this.produtoAtualizar.id, this.produtoAtualizar, this.imagemFile).subscribe({

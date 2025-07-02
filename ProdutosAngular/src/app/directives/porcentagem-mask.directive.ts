@@ -36,5 +36,8 @@ export class PorcentagemMaskDirective {
 
     // Adiciona o símbolo '%' ao final
     input.value = numericValue + '%';
+
+    // Garante que o cursor fique antes do '%'
+    input.setSelectionRange(input.value.length - 1, input.value.length - 1);
   }
 }

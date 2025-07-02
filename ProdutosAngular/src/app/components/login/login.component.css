@@ -86,7 +86,7 @@ p {
 
 /* ///////////////////////////////////// PARTE DE CSS DO CARD ANIMADO DA TELA DE LOGIN /////////////////////////////////////////// */
 
-/* IMAGEM DE FUNDO COM OPACITY */
+/* IMAGEM DE FUNDO 1 COM OPACITY */
 .card-container::before {
   content: '';
   position: absolute;
@@ -100,6 +100,42 @@ p {
   background-repeat: no-repeat;
   opacity: 0.5; /* OPACITY DA IMAGEM - Altere aqui (0.1 = muito transparente, 1.0 = opaco) */
   z-index: 1;
+  animation: imageTransition1 8s infinite;
+}
+
+/* IMAGEM DE FUNDO 2 COM OPACITY */
+.card-container::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url('/foto_website_index_2.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  opacity: 0; /* Começa invisível */
+  z-index: 1;
+  animation: imageTransition2 8s infinite;
+}
+
+/* ANIMAÇÃO PARA A PRIMEIRA IMAGEM */
+@keyframes imageTransition1 {
+  0% { opacity: 0.5; }
+  45% { opacity: 0.5; }
+  50% { opacity: 0; }
+  95% { opacity: 0; }
+  100% { opacity: 0.5; }
+}
+
+/* ANIMAÇÃO PARA A SEGUNDA IMAGEM */
+@keyframes imageTransition2 {
+  0% { opacity: 0; }
+  45% { opacity: 0; }
+  50% { opacity: 0.5; }
+  95% { opacity: 0.5; }
+  100% { opacity: 0; }
 }
 
 /* CONTAINER PRINCIPAL */
@@ -414,6 +450,12 @@ GUIA DE ALTERAÇÕES RÁPIDAS:
 6. CURSOR PISCANDO:
    - @keyframes blink: altere o tempo "1s" para mais rápido/lento
 
+7. TRANSIÇÃO DE IMAGENS:
+   - Primeira imagem: /foto_website_index.jpg
+   - Segunda imagem: /foto_website_index2.jpg
+   - Ciclo: 10s total (5s cada imagem)
+   - Para alterar velocidade, mude "10s" nas animações imageTransition1 e imageTransition2
+
 TIMING ATUAL:
 - Texto 1: 0-30% (4.5s)
 - Pausa: 30-35% (0.75s)
@@ -422,4 +464,9 @@ TIMING ATUAL:
 - Texto 3: 70-95% (3.75s)
 - Pausa: 95-100% (0.75s)
 - TOTAL: 15s por ciclo
+
+TIMING IMAGENS:
+- Imagem 1: 0-50% (5s)
+- Imagem 2: 50-100% (5s)
+- TOTAL: 10s por ciclo
 */

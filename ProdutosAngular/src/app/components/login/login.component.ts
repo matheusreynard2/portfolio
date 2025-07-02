@@ -35,6 +35,10 @@ export class LoginComponent implements OnInit {
   @ViewChild('modalMsgCredenciais') modalMsgCredenciais: any
   mostrarSenha = false;
 
+  // Propriedade para alternar as imagens de fundo
+  bgImgIndex = 0;
+  private bgImgInterval: any;
+
   constructor(private authService: AuthService, private router: Router,
               private modalService: NgbModal) {}
 
@@ -45,7 +49,18 @@ export class LoginComponent implements OnInit {
         this.modalService.open(this.modalMsgToken, {size: 'lg'});
       }, 100);
     }
-    this.authService.removerTokenExpirado()
+    this.authService.removerTokenExpirado();
+
+    // Alternância das imagens de fundo
+    this.bgImgInterval = setInterval(() => {
+      this.bgImgIndex = this.bgImgIndex === 0 ? 1 : 0;
+    }, 5000);
+  }
+
+  ngOnDestroy() {
+    if (this.bgImgInterval) {
+      clearInterval(this.bgImgInterval);
+    }
   }
 
   onSubmit() {
