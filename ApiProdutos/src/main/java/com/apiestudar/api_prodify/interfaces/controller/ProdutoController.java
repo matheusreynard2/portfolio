@@ -87,8 +87,8 @@ public class ProdutoController {
 	@ApiOperation(value = "Deleta/exclui um produto.", notes = "Faz a exclusão de um produto do banco de dados de acordo com o número de id passado como parâmetro.")
 	@ApiResponse(code = 200, message = "Produto excluído.")
 	@DeleteMapping("/deletarProduto/{id}")
-	public ResponseEntity<Boolean> deletarProduto(@PathVariable int id) {
-		return ResponseEntity.status(HttpStatus.OK).body(deletarProduto.executar(id));
+	public CompletableFuture<ResponseEntity<Boolean>> deletarProduto(@PathVariable int id) {
+		return deletarProduto.executar(id).thenApply(dto -> ResponseEntity.status(HttpStatus.OK).body(dto));
 	}
 
 	@ApiOperation(value = "Exibe o produto mais caro.", notes = "Exibe o valor unitário do produto mais caro entre todos os produtos registrados no banco de dados.")

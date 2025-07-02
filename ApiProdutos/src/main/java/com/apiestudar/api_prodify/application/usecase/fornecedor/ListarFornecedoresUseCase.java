@@ -19,7 +19,6 @@ public class ListarFornecedoresUseCase {
 
     private final FornecedorRepository fornecedorRepository;
 
-    @Autowired
     public ListarFornecedoresUseCase(FornecedorRepository fornecedorRepository) {
         this.fornecedorRepository = fornecedorRepository;
     }

@@ -44,8 +44,6 @@ public class AtualizarProdutoUseCase {
     public CompletableFuture<ProdutoDTO> executar(
             long id, ProdutoFormDTO form, MultipartFile imagem) {
 
-        long t0 = System.nanoTime();
-
         /* 1️⃣  Parse JSON (CPU) */
         CompletableFuture<Produto> parsed =
             CompletableFuture.supplyAsync(() -> gerarProduto(form), cpuPool);
@@ -53,6 +51,8 @@ public class AtualizarProdutoUseCase {
         /* 2️⃣  Ler bytes da imagem (I/O) */
         CompletableFuture<byte[]> bytes =
             CompletableFuture.supplyAsync(() -> getBytes(imagem), ioPool);
+            
+            long t0 = System.nanoTime();
 
         /* 3️⃣  Mesclar entidade + bytes */
         CompletableFuture<Produto> combinado =
