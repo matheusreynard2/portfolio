@@ -34,10 +34,13 @@ Front-end em Angular e TypeScript do sistema Prodify, parte que consome a API de
 - Integração com Google Cloud APIs para informações de localização
 - Integração com Via CEP API para preenchimento automático e detalhado de endereço
 - Integração com Brasil API para detecção de dados empresariais via CNPJ.
+- Sistema multithread assincrono com capacidade para múltiplas requisições simultâneas
 
 ### Funcionalidades em desenvolvimento
 - Categoria de produtos
 - Relatórios com JasperReports
+- PDV (Ponto De Venda)
+- Controle de pedidos
   
 =================================================
 
