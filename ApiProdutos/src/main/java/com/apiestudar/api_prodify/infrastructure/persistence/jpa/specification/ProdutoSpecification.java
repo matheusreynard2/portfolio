@@ -1,4 +1,4 @@
-package com.apiestudar.api_prodify.infrastructure.persistence.jpa.utils;
+package com.apiestudar.api_prodify.infrastructure.persistence.jpa.specification;
 
 import org.springframework.data.jpa.domain.Specification;
 import javax.persistence.criteria.*;

@@ -3,6 +3,7 @@ package com.apiestudar.api_prodify.interfaces.controller;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
@@ -64,9 +65,11 @@ public class ProdutoController {
 	@ApiOperation(value = "Listagem de todos os produtos cadastrados.", notes = "Faz uma busca no banco de dados retornando uma lista com todos os produtos cadastrados.")
 	@ApiResponse(code = 200, message = "Produtos encontrados.")
 	@GetMapping("/listarProdutos")
-	public Page<ProdutoDTO> listarProdutos(@RequestParam(defaultValue = "0") int page,
+	public CompletableFuture<ResponseEntity<Page<ProdutoDTO>>> listarProdutos(@RequestParam(defaultValue = "0") int page,
 			@RequestParam(defaultValue = "10") int size, @RequestParam Long idUsuario) {
-		return listarProdutosPorUsuario.executar(PageRequest.of(page, size), idUsuario);
+		Pageable pageable = PageRequest.of(page, size);
+		return listarProdutosPorUsuario.executar(pageable, idUsuario)
+				.thenApply(ResponseEntity::ok);
 	}
 
 	@ApiOperation(value = "Adiciona/cadastra um novo produto.", notes = "Cria um novo registro de produto no banco de dados.")
@@ -94,7 +97,7 @@ public class ProdutoController {
 	@ApiOperation(value = "Exibe o produto mais caro.", notes = "Exibe o valor unitário do produto mais caro entre todos os produtos registrados no banco de dados.")
 	@ApiResponse(code = 200, message = "Cálculo de preço mais caro efetuado.")
 	@GetMapping("/produtoMaisCaro/{idUsuario}")
-	public ResponseEntity<Object> listarProdutoMaisCaro(@PathVariable long idUsuario) {
+	public ResponseEntity<Optional<Produto>> listarProdutoMaisCaro(@PathVariable long idUsuario) {
 		return ResponseEntity.status(HttpStatus.OK).body(consultasProduto.listarProdutoMaisCaro(idUsuario));
 	}
 
@@ -108,9 +111,11 @@ public class ProdutoController {
 	@ApiOperation(value = "Cálculo de valor de desconto.", notes = "Calcula o valor que será reduzido do preço do produto de acordo com a porcentagem de desconto passada pelo usuário.")
 	@ApiResponse(code = 200, message = "Cálculo de desconto efetuado.")
 	@GetMapping("/calcularDesconto/{valorProduto}/{valorDesconto}")
-	public ResponseEntity<Object> calcularValorDesconto(@PathVariable double valorProduto,
+	public CompletableFuture<ResponseEntity<Double>> calcularValorDesconto(@PathVariable double valorProduto,
 			@PathVariable double valorDesconto) {
-		return ResponseEntity.status(HttpStatus.OK).body(consultasProduto.calcularValorComDesconto(valorProduto, valorDesconto));
+				return consultasProduto
+                .calcularValorComDescontoAsync(valorProduto, valorDesconto)
+                .thenApply(ResponseEntity::ok);                     
 	}
 
 	// Método responsável por retornar o resultado da barra de pesquisa do
@@ -125,7 +130,7 @@ public class ProdutoController {
 		@RequestParam(required = false) String nomeFornecedor,
 		@RequestParam(required = false) Long valorInicial) {
 		return pesquisasUseCase.efetuarPesquisa(idUsuario, idProduto, nomeProduto, nomeFornecedor, valorInicial)
-			.thenApply(resultado -> ResponseEntity.status(HttpStatus.OK).body(resultado));
+			.thenApply(ResponseEntity::ok);
 	}
 
 	@SuppressWarnings("rawtypes")

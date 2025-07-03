@@ -13,8 +13,8 @@ import org.springframework.stereotype.Service;
 
 import com.apiestudar.api_prodify.domain.model.Produto;
 import com.apiestudar.api_prodify.domain.repository.UsuarioRepository;
+import com.apiestudar.api_prodify.infrastructure.persistence.jpa.specification.ProdutoSpecification;
 import com.apiestudar.api_prodify.domain.repository.ProdutoRepository;
-import com.apiestudar.api_prodify.infrastructure.persistence.jpa.utils.ProdutoSpecification;
 import com.apiestudar.api_prodify.interfaces.dto.ProdutoDTO;
 import com.apiestudar.api_prodify.shared.exception.RegistroNaoEncontradoException;
 
@@ -23,22 +23,26 @@ public class PesquisasSearchBarUseCase {
 
     private final ProdutoRepository repo;
     private final UsuarioRepository usuarioRepo;
-    private final ExecutorService   ioPool;   // consultas DB
-    private final ExecutorService   cpuPool;  // map-to-DTO
+    private final ExecutorService   ioPool;     // I/O não-bloqueante
+    private final ExecutorService   cpuPool;    // CPU-bound
+    private final ExecutorService   dbPool;     // chamadas a BD
     private final ModelMapper       mapper = new ModelMapper();
 
     public PesquisasSearchBarUseCase(
             ProdutoRepository repo,
             UsuarioRepository usuarioRepo,
             @Qualifier("ioPool")  ExecutorService ioPool,
-            @Qualifier("cpuPool") ExecutorService cpuPool) {
-        this.repo = repo;
+            @Qualifier("cpuPool") ExecutorService cpuPool,
+            @Qualifier("dbPool")  ExecutorService dbPool) {
+
+        this.repo        = repo;
         this.usuarioRepo = usuarioRepo;
         this.ioPool      = ioPool;
         this.cpuPool     = cpuPool;
+        this.dbPool      = dbPool;
     }
 
-    /** Pesquisa por vários parâmetros; tudo assíncrono */
+    /** Pesquisa por vários parâmetros — cadeia totalmente assíncrona. */
     public CompletableFuture<List<ProdutoDTO>> efetuarPesquisa(
             long   idUsuario,
             Long   idProd,
@@ -48,37 +52,56 @@ public class PesquisasSearchBarUseCase {
 
         long t0 = System.nanoTime();
 
-        /*───────── monta Specification ─────────*/
-        Specification<Produto> spec = Specification
-                .where(ProdutoSpecification.userId(idUsuario))
-                .and(ProdutoSpecification.idEquals(idProd))
-                .and(ProdutoSpecification.nomeLike(nomeProd))
-                .and(ProdutoSpecification.nomeFornecedorLike(nomeFornecedor))
-                .and(ProdutoSpecification.valorInicialEquals(valorInicial));
-
-        CompletableFuture<List<ProdutoDTO>> futuro =
+        /*───────── 1  Valida usuário + cria Specification (DB pool) ─────────*/
+        CompletableFuture<Specification<Produto>> specFuture =
             CompletableFuture.supplyAsync(() -> {
-                // valida o usuário antes da query
-                if (usuarioRepo.buscarUsuarioPorId(idUsuario).isEmpty())
+
+                /* ← consulta em BD dentro do mesmo pool */
+                if (usuarioRepo.buscarUsuarioPorId(idUsuario).isEmpty()) {
                     throw new RegistroNaoEncontradoException();
+                }
 
-                // 1. Busca os produtos filtrados (apenas IDs)
-                List<Produto> produtosFiltrados = repo.findAll(spec);
-                List<Long> ids = produtosFiltrados.stream().map(Produto::getId).collect(Collectors.toList());
-                if (ids.isEmpty()) return List.of();
+                return Specification
+                        .where(ProdutoSpecification.userId(idUsuario))
+                        .and(ProdutoSpecification.idEquals(idProd))
+                        .and(ProdutoSpecification.nomeLike(nomeProd))
+                        .and(ProdutoSpecification.nomeFornecedorLike(nomeFornecedor))
+                        .and(ProdutoSpecification.valorInicialEquals(valorInicial));
 
-                // 2. Busca os produtos completos com JOIN FETCH
-                List<Produto> produtosCompletos = repo.findAllJoinFetchByIds(ids);
+            }, dbPool);
 
-                // 3. Mapping para DTO
-                return produtosCompletos.stream()
+        /*───────── 2  Executa a query filtrada (DB) ─────────*/
+        CompletableFuture<List<Produto>> filtradosFuture =
+            specFuture.thenComposeAsync(
+                spec -> CompletableFuture.supplyAsync(() -> repo.findAll(spec), dbPool),
+                dbPool);
+
+        /*───────── 3️ Extrai os IDs (CPU) ─────────*/
+        CompletableFuture<List<Long>> idsFuture =
+            filtradosFuture.thenApplyAsync(
+                list -> list.stream().map(Produto::getId).collect(Collectors.toList()),
+                cpuPool);
+
+        /*───────── 4️ JOIN FETCH pelos IDs (DB) ─────────*/
+        CompletableFuture<List<Produto>> completosFuture =
+            idsFuture.thenComposeAsync(ids -> {
+                if (ids.isEmpty()) {
+                    return CompletableFuture.completedFuture(List.of());
+                }
+                return CompletableFuture.supplyAsync(() -> repo.findAllJoinFetchByIds(ids), dbPool);
+            }, dbPool);
+
+        /*───────── 5️ Map → DTO + distinct (CPU) ─────────*/
+        CompletableFuture<List<ProdutoDTO>> dtoFuture =
+            completosFuture.thenApplyAsync(list ->
+                    list.stream()
                         .map(p -> mapper.map(p, ProdutoDTO.class))
                         .distinct()
-                        .collect(Collectors.toList());
-            }, ioPool)
-            .thenApplyAsync(r -> (List<ProdutoDTO>) r, cpuPool);
+                        .collect(Collectors.toList()),
+                cpuPool);
 
-        return futuro.whenComplete((r, ex) -> {
+        /*───────── Métrica ─────────*/
+        return dtoFuture.whenComplete((r, ex) -> {
             long ns = System.nanoTime() - t0;
             System.out.println("##############################");
             System.out.printf("### PESQUISAR PRODUTOS %d ns (≈ %d ms)%n",

@@ -20,8 +20,13 @@ import com.apiestudar.api_prodify.domain.model.Produto;
 @Transactional
 public interface ProdutoJpaRepository extends JpaRepository<Produto, Long>, JpaSpecificationExecutor<Produto> {
 
-	@Query(value = "SELECT * FROM produto WHERE id_usuario = :idUsuario ORDER BY soma_total_valores DESC LIMIT 1", nativeQuery = true)
-	List<Produto> listarProdutoMaisCaro(@Param("idUsuario") Long idUsuario);
+	@Query("""
+	SELECT p FROM Produto p
+	WHERE p.idUsuario = :idUsuario AND p.somaTotalValores = (
+	  SELECT MAX(p2.somaTotalValores) FROM Produto p2 WHERE p2.idUsuario = :idUsuario
+	)
+	""")
+	Optional<Produto> listarProdutoMaisCaro(@Param("idUsuario") Long idUsuario);
 
 	@Query(value = "SELECT AVG(valor) AS media_valor FROM produto WHERE id_usuario = :idUsuario", nativeQuery = true)
 	BigDecimal obterMediaPreco(@Param("idUsuario") Long idUsuario);

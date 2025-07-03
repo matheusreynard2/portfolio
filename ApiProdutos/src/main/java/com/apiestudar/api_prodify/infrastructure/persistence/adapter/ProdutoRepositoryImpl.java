@@ -62,7 +62,7 @@ public class ProdutoRepositoryImpl implements ProdutoRepository {
     }
 
     @Override
-    public List<Produto> listarProdutoMaisCaro(Long idUsuario) {
+    public Optional<Produto> listarProdutoMaisCaro(Long idUsuario) {
         return produtoJpaRepository.listarProdutoMaisCaro(idUsuario);
     }
 

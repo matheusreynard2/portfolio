@@ -21,6 +21,10 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.core.io.ByteArrayResource;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.*;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.util.LinkedMultiValueMap;
@@ -60,6 +64,18 @@ class TesteConcorrencia {
 
     @BeforeEach
     void configurarStubs() {
+
+        Produto prod = new Produto();
+        prod.setId(1L);
+        prod.setNome("Mock-Produto");
+        prod.setValor(BigDecimal.TEN);
+        prod.setQuantia(1L);
+
+        Page<Produto> pPage =
+        new PageImpl<>(List.of(prod),
+                       PageRequest.of(0,10),
+                       1L);
+
         when(adicionarUseCase.executar(any(), any()))
             .thenAnswer(inv -> CompletableFuture.completedFuture(criarProdutoDTO(1)));
     
@@ -68,6 +84,9 @@ class TesteConcorrencia {
 
         when(deletarUseCase.executar(anyLong()))
             .thenReturn(CompletableFuture.completedFuture(true));     // ❷ garante true
+
+            when(produtoRepo.listarProdutosByIdUsuario(any(Pageable.class), eq(1L)))
+            .thenReturn(pPage); 
     
             when(pesquisasUseCase.efetuarPesquisa(
                 anyLong(),                       // idUsuario
@@ -312,6 +331,83 @@ class TesteConcorrencia {
             ResponseEntity<Boolean> response = future.get();
             assertNotNull(response.getBody(), "Body da response não deve ser nulo");
             assertTrue(response.getBody(), "Body deve ser true (deleção bem-sucedida)");
+            assertEquals(HttpStatus.OK, response.getStatusCode(), "Status deve ser 200 OK");
+        }
+    }
+
+    @Test
+    void deveCalcularDesconto50RequisicoesSimultaneasComSucesso() throws Exception {
+        int numeroRequisicoes = 50;
+        List<CompletableFuture<ResponseEntity<Double>>> futures = new ArrayList<>();
+        long[] temposIndividuais = new long[numeroRequisicoes];
+        String baseUrl = "http://localhost:" + port + "/api/produtos/calcularDesconto/";
+        System.out.println("############# INICIANDO TESTE CALCULAR DESCONTO " + numeroRequisicoes + " REQUISIÇÕES SIMULTANEAS #############");
+        long tempoInicio = System.nanoTime();
+        for (int i = 0; i < numeroRequisicoes; i++) {
+            final int idx = i;
+            double valorProduto = 100.0 + i;
+            double valorDesconto = 5.0 + (i % 20); // Varia de 5 a 24
+            String url = baseUrl + valorProduto + "/" + valorDesconto;
+            long inicioReq = System.nanoTime();
+            CompletableFuture<ResponseEntity<Double>> future = CompletableFuture.supplyAsync(() -> {
+                ResponseEntity<Double> resp = rest.exchange(url, HttpMethod.GET, null, Double.class);
+                long fimReq = System.nanoTime();
+                long duracao = fimReq - inicioReq;
+                temposIndividuais[idx] = duracao;
+                System.out.println("[CalcularDesconto] Requisição " + (idx + 1) + " processada em " + duracao + " ns (" + (duracao / 1_000_000.0) + " ms)");
+                System.out.println("Status: " + resp.getStatusCode());
+                return resp;
+            });
+            futures.add(future);
+        }
+        CompletableFuture.allOf(futures.toArray(new CompletableFuture[0])).join();
+        long tempoFim = System.nanoTime();
+        long tempoTotal = tempoFim - tempoInicio;
+        System.out.println("############# RESULTADOS TESTE CALCULAR DESCONTO #############");
+        System.out.println("Tempo total: " + tempoTotal + " ns (" + (tempoTotal / 1_000_000.0) + " ms)");
+        System.out.println("Tempo médio por requisição: " + (tempoTotal / numeroRequisicoes) + " ns (" + ((tempoTotal / numeroRequisicoes) / 1_000_000.0) + " ms)");
+        System.out.println("Teste concluído com sucesso!");
+        System.out.println("############# FIM DO TESTE #############");
+        for (CompletableFuture<ResponseEntity<Double>> future : futures) {
+            ResponseEntity<Double> response = future.get();
+            assertNotNull(response.getBody(), "Body da response não deve ser nulo");
+            assertEquals(HttpStatus.OK, response.getStatusCode(), "Status deve ser 200 OK");
+        }
+    }
+
+    @Test
+    void deveListarProdutos50RequisicoesSimultaneasComSucesso() throws Exception {
+        int numeroRequisicoes = 50;
+        List<CompletableFuture<ResponseEntity<String>>> futures = new ArrayList<>();
+        long[] temposIndividuais = new long[numeroRequisicoes];
+        String baseUrl = "http://localhost:" + port + "/api/produtos/listarProdutos?page=0&size=10&idUsuario=1";
+        System.out.println("############# INICIANDO TESTE LISTAR PRODUTOS " + numeroRequisicoes + " REQUISIÇÕES SIMULTANEAS #############");
+        long tempoInicio = System.nanoTime();
+        for (int i = 0; i < numeroRequisicoes; i++) {
+            final int idx = i;
+            long inicioReq = System.nanoTime();
+            CompletableFuture<ResponseEntity<String>> future = CompletableFuture.supplyAsync(() -> {
+                ResponseEntity<String> resp = rest.exchange(baseUrl, HttpMethod.GET, null, String.class);
+                long fimReq = System.nanoTime();
+                long duracao = fimReq - inicioReq;
+                temposIndividuais[idx] = duracao;
+                System.out.println("[ListarProdutos] Requisição " + (idx + 1) + " processada em " + duracao + " ns (" + (duracao / 1_000_000.0) + " ms)");
+                System.out.println("Status: " + resp.getStatusCode());
+                return resp;
+            });
+            futures.add(future);
+        }
+        CompletableFuture.allOf(futures.toArray(new CompletableFuture[0])).join();
+        long tempoFim = System.nanoTime();
+        long tempoTotal = tempoFim - tempoInicio;
+        System.out.println("############# RESULTADOS TESTE LISTAR PRODUTOS #############");
+        System.out.println("Tempo total: " + tempoTotal + " ns (" + (tempoTotal / 1_000_000.0) + " ms)");
+        System.out.println("Tempo médio por requisição: " + (tempoTotal / numeroRequisicoes) + " ns (" + ((tempoTotal / numeroRequisicoes) / 1_000_000.0) + " ms)");
+        System.out.println("Teste concluído com sucesso!");
+        System.out.println("############# FIM DO TESTE #############");
+        for (CompletableFuture<ResponseEntity<String>> future : futures) {
+            ResponseEntity<String> response = future.get();
+            assertNotNull(response.getBody(), "Body da response não deve ser nulo");
             assertEquals(HttpStatus.OK, response.getStatusCode(), "Status deve ser 200 OK");
         }
     }

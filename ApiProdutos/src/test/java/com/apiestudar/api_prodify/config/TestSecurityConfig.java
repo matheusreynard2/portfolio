@@ -27,6 +27,7 @@ public class TestSecurityConfig {
                 .requestMatchers(new AntPathRequestMatcher("/api/**")).permitAll()
                 .antMatchers(HttpMethod.POST, "/api/fornecedores/adicionarFornecedor/**").permitAll()
                 .antMatchers(HttpMethod.GET, "/api/produtos/efetuarPesquisa**").permitAll()
+                .antMatchers(HttpMethod.GET, "/api/produtos/listarProdutos**").permitAll()
                 .antMatchers(HttpMethod.POST, "/api/produtos/adicionarProduto**").permitAll()
                 .antMatchers(HttpMethod.PUT, "/api/produtos/atualizarProduto/{id}").permitAll()
                 .antMatchers(HttpMethod.DELETE, "/api/produtos/deletarProduto/{id}").permitAll()

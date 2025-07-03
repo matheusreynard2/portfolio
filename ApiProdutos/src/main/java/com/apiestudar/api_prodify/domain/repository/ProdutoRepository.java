@@ -24,7 +24,7 @@ public interface ProdutoRepository {
 
     void deletarProdutoPorId(Long id);
 
-    List<Produto> listarProdutoMaisCaro(Long idUsuario);
+    Optional<Produto> listarProdutoMaisCaro(Long idUsuario);
 
     BigDecimal obterMediaPreco(Long idUsuario);
 
