@@ -80,8 +80,8 @@ export class ProdutoService extends HttpBaseService {
       .pipe(catchError(error => this.catchErrorTokenExpirado(error)));
   }
 
-  listarProdutoMaisCaro(idUsuario: number): Observable<ProdutoDTO[]> {
-    return this.http.get<ProdutoDTO[]>(this.produtosUrl + "/produtoMaisCaro/" + idUsuario)
+  listarProdutoMaisCaro(idUsuario: number): Observable<ProdutoDTO> {
+    return this.http.get<ProdutoDTO>(this.produtosUrl + "/produtoMaisCaro/" + idUsuario)
       .pipe(catchError(error => this.catchErrorTokenExpirado(error)));
   }
 

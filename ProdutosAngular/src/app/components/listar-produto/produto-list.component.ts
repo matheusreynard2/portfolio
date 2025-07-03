@@ -35,7 +35,7 @@ import {FornecedorDTO} from '../../model/dto/FornecedorDTO';
 export class ProdutoListComponent implements OnInit {
 
   // Variáveis
-  listaProdutoMaisCaro: ProdutoDTO[] = [];
+  produtoMaisCaro!: ProdutoDTO;
   stringProdutoMaisCaro: string = '';
   mediaPreco: number = 0;
   tipoPesquisaSelecionado: string = 'nome';
@@ -98,12 +98,12 @@ export class ProdutoListComponent implements OnInit {
 
   // Função que busca o produto com Valor Total mais caro
   listarProdutoMaisCaro(idUsuario: number) {
-  this.produtoService.listarProdutoMaisCaro(idUsuario).subscribe((produtos: ProdutoDTO[]) => {
-    this.listaProdutoMaisCaro = produtos;
+  this.produtoService.listarProdutoMaisCaro(idUsuario).subscribe((produto: ProdutoDTO) => {
+    this.produtoMaisCaro = produto;
 
-    // Checa se existe registro na lista para preencher a string e exibir na tela
-    if (this.listaProdutoMaisCaro[0] != null) {
-      this.stringProdutoMaisCaro = '' + this.listaProdutoMaisCaro[0].id + ' - ' + this.listaProdutoMaisCaro[0].nome
+    // Checa se existe registro no produtoMaisCaro
+    if (this.produtoMaisCaro != null) {
+      this.stringProdutoMaisCaro = '' + this.produtoMaisCaro.id + ' - ' + this.produtoMaisCaro.nome
     } else {
       this.stringProdutoMaisCaro = '';
     }
