@@ -1,5 +1,0 @@
-{
-    "terminal.integrated.scrollback": 100000000,
-    "java.test.console.lineLimit": 0  ,
-    "java.compile.nullAnalysis.mode": "disabled"
-}
