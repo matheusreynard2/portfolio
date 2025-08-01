@@ -1,16 +1,16 @@
 # PRODIFY - Sistema de gerenciamento de produtos
 # https://www.sistemaprodify.com
 
-## ApiProdutos
-- API do sistema de gerenciamento de produtos.
-- REST API - MVC com Spring Framework. ( Boot / Data / Security ).
-- Código com boas práticas. ( Clean Code / Clean Architecture / Strategy Pattern ).
-
-## ProdutosAngular 
-Front-end em Angular e TypeScript do sistema Prodify, parte que consome a API de produtos.
+  ## Detalhes das pastas do repositório
+- api-gateway (Gateway com rotas dos serviços e Spring Security JWT auth)
+- eureka-server (Discovery dos serviços)
+- produto-service (Microsserviço do módulo de produtos)
+- ApiProdutos (Módulo com o restante dos serviços, como Fornecedor, Usuário, etc)
+- ProdutosAngular (Front em Angular / TypeScript)
+- Pasta react-app e reactApi - Externo ao Prodify (WebSocket + RabbitMQ na criação de um chat)
 
 ## Conceitos técnicos
-- Pageable, FormData e Lobs, Lombok, RabbitMQ e WebSocket, Swagger, DTOs, REST API Sprig MVC, Clean Architecture UseCases, Spring Security, Spring Data / JPA / Hibernate, NativeQuery / JPQL, Design Patterns, integração com APIs externas (ViaCEP, Brasil API, Google Maps, ip.info), uso predominante de boas práticas de desenvolvimento e Clean Code. Testes unitários e de integração com JUnit 5 e Mockito.
+- Pageable, FormData e Lobs, Lombok, RabbitMQ e WebSocket, Swagger, DTOs, REST API Sprig MVC, Clean Architecture + Microsserviços, Spring Security, Spring Data / JPA / Hibernate, NativeQuery / JPQL, Design Patterns, integração com APIs externas (ViaCEP, Brasil API, Google Maps, ip.info), uso predominante de boas práticas de desenvolvimento e Clean Code. Testes unitários e de integração com JUnit 5 e Mockito.
 
 ### Funcionalidades concluídas
 - CRUD de produtos e fornecedores
@@ -35,6 +35,8 @@ Front-end em Angular e TypeScript do sistema Prodify, parte que consome a API de
 - Integração com Via CEP API para preenchimento automático e detalhado de endereço
 - Integração com Brasil API para detecção de dados empresariais via CNPJ.
 - Sistema multithread assincrono com capacidade para múltiplas requisições simultâneas
+-  Separação da camada de Produtos em microsserviço com Spring Cloud
+- Utilização de API Gateway para rotas dos microsserviços com Spring Cloud
 
 ### Funcionalidades em desenvolvimento
 - Categoria de produtos
