@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Configuration;
  * 
  * http://localhost:8080/swagger-ui.html
 ou
-http://localhost:8080/swagger-ui/index.html
+http://localhost:8080/swagger-ui/index.html <-- ESSE É O QUE FUNCIONA
  * 
  */
 

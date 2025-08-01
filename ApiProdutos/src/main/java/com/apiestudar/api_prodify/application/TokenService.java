@@ -22,7 +22,7 @@ public class TokenService {
 				.withSubject(usuario.getLogin())                  // quem é o dono do token
 				.withClaim("id", usuario.getIdUsuario())          // ID do usuário
 				.withExpiresAt(Date.from(LocalDateTime.now()
-										.plusMinutes(1)
+										.plusMinutes(15)
 										.toInstant(ZoneOffset.of("-03:00"))))  // expiração correta
 				.sign(Algorithm.HMAC256(JWT_SECRET));             // assinatura HMAC com segredo
 	}

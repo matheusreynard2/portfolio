@@ -36,6 +36,8 @@ public class SecurityConfig {
                 "/api/usuarios/adicionarUsuario",
                 "/swagger-ui/**",
                 "/v2/api-docs/**",
+                "/v3/api-docs/**",
+                "/swagger-ui.html",
                 "/webjars/**",
                 "/swagger-resources/**",
                 "/chat/**"
