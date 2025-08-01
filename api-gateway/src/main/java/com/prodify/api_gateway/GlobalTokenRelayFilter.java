@@ -63,7 +63,7 @@ public class GlobalTokenRelayFilter implements GlobalFilter, Ordered {
 
                 // Verificar se o token tem a estrutura correta
                 if (!"AppProdify".equals(decodedJWT.getIssuer())) {
-                    System.err.println("[API Gateway] ❌ Token com issuer incorreto: " + decodedJWT.getIssuer());
+                    System.err.println("[API Gateway] Token com issuer incorreto: " + decodedJWT.getIssuer());
                     return createErrorResponse(exchange, "Token com issuer incorreto");
                 }
 
@@ -76,7 +76,7 @@ public class GlobalTokenRelayFilter implements GlobalFilter, Ordered {
                     .build()
                     .verify(token);
 
-                System.out.println("[API Gateway] ✅ Token válido! Repassando para o serviço...");
+                System.out.println("[API Gateway] Token válido! Repassando para o serviço...");
 
                 // Repassa o token
                 ServerHttpRequest mutated = exchange.getRequest().mutate()
@@ -86,7 +86,7 @@ public class GlobalTokenRelayFilter implements GlobalFilter, Ordered {
                 return chain.filter(exchange.mutate().request(mutated).build());
 
             } catch (TokenExpiredException e) {
-                System.err.println("[API Gateway] ❌ Token expirado: " + e.getMessage());
+                System.err.println("[API Gateway] Token expirado: " + e.getMessage());
                 // Estrutura de erro esperada pelo frontend
                 String body = "{\"status\": 401, \"error\": {\"message\": \"Tempo limite de conexão com o sistema excedido. TOKEN Expirado\"}}";
 
@@ -97,11 +97,6 @@ public class GlobalTokenRelayFilter implements GlobalFilter, Ordered {
                 return exchange.getResponse().writeWith(Mono.just(exchange.getResponse()
                         .bufferFactory().wrap(bytes)));
             } catch (SignatureVerificationException e) {
-                System.err.println("[API Gateway] ❌ ASSINATURA INVÁLIDA - Token foi gerado com secret diferente!");
-                System.err.println("[API Gateway] Erro: " + e.getMessage());
-                System.err.println("[API Gateway] Isso indica que o token foi gerado com um secret diferente do atual.");
-                System.err.println("[API Gateway] Sugestão: Limpar localStorage do frontend e fazer novo login.");
-                
                 // Retornar erro específico para assinatura inválida
                 String body = "{\"status\": 401, \"error\": {\"message\": \"Tempo limite de conexão com o sistema excedido. TOKEN Expirado\"}}";
                 
@@ -113,7 +108,7 @@ public class GlobalTokenRelayFilter implements GlobalFilter, Ordered {
                         .bufferFactory().wrap(bytes)));
             } catch (Exception e) {
                 // Log do erro para debug
-                System.err.println("[API Gateway] ❌ Erro na validação do token: " + e.getClass().getSimpleName() + " - " + e.getMessage());
+                System.err.println("[API Gateway] Erro na validação do token: " + e.getClass().getSimpleName() + " - " + e.getMessage());
                 e.printStackTrace();
                 
                 // Estrutura de erro padronizada para token inválido
@@ -126,9 +121,6 @@ public class GlobalTokenRelayFilter implements GlobalFilter, Ordered {
                         .bufferFactory().wrap(bytes)));
             }
         }
-
-        System.out.println("[API Gateway] Nenhum token encontrado, seguindo para o serviço...");
-        // Se não tiver token, apenas segue a requisição (validação fica nos serviços)
         return chain.filter(exchange);
     }
 

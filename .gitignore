@@ -1,2 +1,8 @@
 /.metadata/
 /.reactApi/
+.claude/
+.vscode/
+/prodify-workspace/
+/projeto-prodify/
+lombok.jar
+prodify-cursor-workspace.code-workspace
