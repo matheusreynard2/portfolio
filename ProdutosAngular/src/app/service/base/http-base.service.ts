@@ -11,13 +11,12 @@ export class HttpBaseService {
   constructor(
     protected authService: AuthService,
     protected router: Router
-  ) {}
+  ) { }
 
   protected catchErrorTokenExpirado(error: HttpErrorResponse): Observable<never> {
-    if (error.status === 403) {
-      this.handleTokenExpired();
-    }
-    if (error.status === 401 && error.error.message === 'Tempo limite de conexão com o sistema excedido. TOKEN Expirado') {
+    const errorMessage = error?.error?.error?.message;
+
+    if (error.status === 401 && errorMessage === 'Tempo limite de conexão com o sistema excedido. TOKEN Expirado') {
       this.handleTokenExpired();
     }
     return throwError(() => error);
@@ -33,7 +32,7 @@ export class HttpBaseService {
 
   protected createFormData(data: any, file?: File, jsonParamName: string = 'json'): FormData {
     const formData = new FormData();
-    
+
     // Para @ModelAttribute, precisamos enviar cada campo individualmente
     Object.keys(data).forEach(key => {
       const value = data[key];
@@ -48,7 +47,7 @@ export class HttpBaseService {
         }
       }
     });
-    
+
     if (file) {
       formData.append('imagemFile', file);
     }
@@ -57,16 +56,13 @@ export class HttpBaseService {
 
   protected createProdutoFormData(produto: any, file?: File): FormData {
     const formData = new FormData();
-    
-    // Para o backend que espera ProdutoFormDTO
-    // Enviar o produto como JSON stringificado
+  
     formData.append('produtoJson', JSON.stringify(produto));
-    
-    // Enviar o arquivo de imagem se existir
+  
     if (file) {
       formData.append('imagemFile', file);
     }
-    
+  
     return formData;
   }
 
@@ -74,12 +70,12 @@ export class HttpBaseService {
     const formData = new FormData();
 
     formData.append('usuarioJson', JSON.stringify(usuario));
-    
+
     // Enviar o arquivo de imagem se existir
     if (file) {
       formData.append('imagemFile', file);
     }
-    
+
     return formData;
   }
 } 

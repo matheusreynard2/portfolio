@@ -29,7 +29,7 @@ export class AddProdutoComponent implements OnInit {
   // É criado um produto zerado para poder ser acesso pelo ngModel, mas as propriedades são alteradas
   // pelos valores inseridos no formulário, então são passadas para o service da API.
   produto: ProdutoDTO = {
-    id: 0,
+    id: null, // null para novos produtos - o ID será gerado automaticamente pelo banco
     idUsuario: 0,
     nome: '',
     descricao: '',

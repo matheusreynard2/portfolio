@@ -222,7 +222,14 @@ export class ProdutoListComponent implements OnInit {
     // Aguarda o cálculo dos valores antes de enviar ao backend
     await this.calcularValores(this.produtoAtualizar);
 
-    this.produtoService.atualizarProduto(this.produtoAtualizar.id, this.produtoAtualizar, this.imagemFile).subscribe({
+    // Garantir que o ID existe para atualização
+    const produtoId = this.produtoAtualizar.id;
+    if (produtoId === null || produtoId === undefined) {
+      console.error('Erro: ID do produto é obrigatório para atualização');
+      return;
+    }
+
+    this.produtoService.atualizarProduto(produtoId, this.produtoAtualizar, this.imagemFile).subscribe({
       next: (produtoAtualizado) => {
         modal.close();
         this.atualizarLista(); // Atualiza a lista após salvar
@@ -252,7 +259,7 @@ export class ProdutoListComponent implements OnInit {
       this.produtoService.efetuarPesquisa(this.authService.getUsuarioLogado().idUsuario, id, null, null, null).subscribe(data => {
         this.listaDeProdutos = data
           .filter(produto => produto.idUsuario === usuarioLogadoId) // Filtra os produtos pelo usuário logado
-          .sort((a, b) => a.id - b.id); // Ordena os produtos pelo ID
+          .sort((a, b) => (a.id ?? 0) - (b.id ?? 0)); // Ordena os produtos pelo ID
       });
     } else if (this.tipoPesquisaSelecionado == 'nome') {
       // PESQUISA POR NOME
@@ -260,7 +267,7 @@ export class ProdutoListComponent implements OnInit {
       this.produtoService.efetuarPesquisa(this.authService.getUsuarioLogado().idUsuario, null, nome, nomeFornecedor, valorInicial).subscribe(data => {
         this.listaDeProdutos = data
           .filter(produto => produto.idUsuario === usuarioLogadoId) // Filtra os produtos pelo usuário logado
-          .sort((a, b) => a.id - b.id); // Ordena os produtos pelo ID
+          .sort((a, b) => (a.id ?? 0) - (b.id ?? 0)); // Ordena os produtos pelo ID
       });
     }
     this.listarProdutoMaisCaro(usuarioLogadoId);

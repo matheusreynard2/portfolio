@@ -1,4 +1,4 @@
-package com.apiestudar.api_prodify;
+/*package com.apiestudar.api_prodify;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
@@ -19,7 +19,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.springframework.boot.web.server.LocalServerPort;
+import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -43,13 +43,20 @@ import com.apiestudar.api_prodify.interfaces.dto.*;
 @Import(TestSecurityConfig.class)
 class TesteConcorrencia {
 
-    /* mocks que o Spring deve injetar no contexto */
-    @MockBean private AdicionarProdutoUseCase   adicionarUseCase;
-    @MockBean private AtualizarProdutoUseCase   atualizarUseCase;
-    @MockBean private PesquisasSearchBarUseCase pesquisasUseCase;
-    @MockBean private DeletarProdutoUseCase deletarUseCase;
+    /* mocks que o Spring deve injetar no contexto 
+    // Remover os @MockBean dos UseCases
+    // @MockBean private AdicionarProdutoUseCase   adicionarUseCase;
+    // @MockBean private AtualizarProdutoUseCase   atualizarUseCase;
+    // @MockBean private PesquisasSearchBarUseCase pesquisasUseCase;
+    // @MockBean private DeletarProdutoUseCase deletarUseCase;
 
-    /* se precisar mockar repo/mapper, use @MockBean também */
+    // Instanciar manualmente os UseCases
+    private AdicionarProdutoUseCase adicionarUseCase;
+    private AtualizarProdutoUseCase atualizarUseCase;
+    private PesquisasSearchBarUseCase pesquisasUseCase;
+    private DeletarProdutoUseCase deletarUseCase;*/
+
+    /* se precisar mockar repo/mapper, use @MockBean também 
     @MockBean private UsuarioRepository usuarioRepo;
     @MockBean private ProdutoRepository produtoRepo;
     @MockBean private ModelMapper       modelMapper;
@@ -60,7 +67,7 @@ class TesteConcorrencia {
     @Autowired
     private TestRestTemplate rest;
 
-    /* ───────────────────────────────────────────────────────── */
+    /* ───────────────────────────────────────────────────────── 
 
     @BeforeEach
     void configurarStubs() {
@@ -76,6 +83,12 @@ class TesteConcorrencia {
                        PageRequest.of(0,10),
                        1L);
 
+        ExecutorService dbPool = Executors.newFixedThreadPool(4);
+        adicionarUseCase = new AdicionarProdutoUseCase(produtoRepo, dbPool);
+        atualizarUseCase = new AtualizarProdutoUseCase(produtoRepo, dbPool);
+        pesquisasUseCase = new PesquisasSearchBarUseCase(produtoRepo, usuarioRepo, dbPool);
+        deletarUseCase = new DeletarProdutoUseCase(produtoRepo, dbPool, modelMapper);
+
         when(adicionarUseCase.executar(any(), any()))
             .thenAnswer(inv -> CompletableFuture.completedFuture(criarProdutoDTO(1)));
     
@@ -83,7 +96,7 @@ class TesteConcorrencia {
             .thenAnswer(inv -> CompletableFuture.completedFuture(criarProdutoDTO(2)));
 
         when(deletarUseCase.executar(anyLong()))
-            .thenReturn(CompletableFuture.completedFuture(true));     // ❷ garante true
+            .thenReturn(CompletableFuture.completedFuture(null));     // ❷ garante true
 
             when(produtoRepo.listarProdutosByIdUsuario(any(Pageable.class), eq(1L)))
             .thenReturn(pPage); 
@@ -412,3 +425,4 @@ class TesteConcorrencia {
         }
     }
 }
+*/

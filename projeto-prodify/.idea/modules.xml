@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/../ProdutosAngular/ProdutosAngular.iml" filepath="$PROJECT_DIR$/../ProdutosAngular/ProdutosAngular.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../ApiProdutos/api_prodify.iml" filepath="$PROJECT_DIR$/../ApiProdutos/api_prodify.iml" />
+      <module fileurl="file://$PROJECT_DIR$/projeto-prodify.iml" filepath="$PROJECT_DIR$/projeto-prodify.iml" />
+    </modules>
+  </component>
+</project>

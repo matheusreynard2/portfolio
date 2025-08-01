@@ -1,7 +1,7 @@
 import {FornecedorDTO} from './FornecedorDTO';
 
 export interface ProdutoDTO {
-  id: number;
+  id: number | null; // null para novos produtos, number para produtos existentes
   idUsuario: number;
   nome: string;
   imagem?: any;

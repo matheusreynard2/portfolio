@@ -3,6 +3,7 @@ package com.apiestudar.api_prodify.domain.repository;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -22,7 +23,7 @@ public interface ProdutoRepository {
 
     Page<Produto> listarProdutosByIdUsuario(Pageable pageable, Long idUsuario);
 
-    void deletarProdutoPorId(Long id);
+    CompletableFuture<Void> deletarProdutoPorId(Long id);
 
     Optional<Produto> listarProdutoMaisCaro(Long idUsuario);
 

@@ -64,6 +64,9 @@ export class AuthService {
   }
 
   logout(): void {
+    this.storage.removeItem(this.USUARIO_KEY);
+    this.storage.removeItem(this.TOKEN_KEY);
+    this.storage.removeItem(this.TOKEN_EXPIRADO_KEY);
     this.storage.clear();
     this.router.navigate(['/login']);
   }

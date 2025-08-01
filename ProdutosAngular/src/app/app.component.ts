@@ -73,16 +73,8 @@ export class AppComponent implements OnInit {
         this.usuarioService.getAllAcessosIp().subscribe({
           next: (acessos) => {
             this.numeroVisitas = acessos;
-          },
-          error: () => {
-            // Em caso de erro, mantém o valor padrão
-            this.numeroVisitas = 0;
           }
         });
-      },
-      error: () => {
-        // Em caso de erro, mantém o valor padrão
-        this.numeroVisitas = 0;
       }
     });
   }
@@ -156,6 +148,7 @@ export class AppComponent implements OnInit {
 
   // FAZ LOGOUT DO USUÁRIO
   logout() {
+    // Executa o logout
     this.authService.logout()
   }
 

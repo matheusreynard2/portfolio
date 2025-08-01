@@ -1,0 +1,10 @@
+package com.prodify.produto_service.shared.exception;
+
+public class ObterCoordenadasViaCEPException extends Exception {
+	
+	private static final String MESSAGE = "Erro ao obter coordenadas de latitude e longitude via CEP: ";
+
+	public String getMessage() {
+		return MESSAGE;
+	}
+}

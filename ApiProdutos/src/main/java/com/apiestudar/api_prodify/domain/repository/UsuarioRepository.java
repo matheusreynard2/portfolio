@@ -4,7 +4,9 @@ import java.util.List;
 import java.util.Optional;
 
 import com.apiestudar.api_prodify.domain.model.Usuario;
+import org.springframework.transaction.annotation.Transactional;
 
+@Transactional
 public interface UsuarioRepository {
 
     Usuario adicionarUsuario(Usuario usuario);

@@ -3,9 +3,8 @@ package com.apiestudar.api_prodify.interfaces.controller;
 import java.io.IOException;
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
-import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,8 +27,9 @@ import com.apiestudar.api_prodify.application.usecase.usuario.UsuarioHelper;
 import com.apiestudar.api_prodify.interfaces.dto.UsuarioDTO;
 import com.apiestudar.api_prodify.interfaces.dto.UsuarioFormDTO;
 
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 
 @RestController
 @RequestMapping("api/usuarios")
@@ -48,43 +48,55 @@ public class UsuarioController {
 	@Autowired
 	private UsuarioHelper usuarioHelper;
 
-	@ApiOperation(value = "Adiciona novo acesso pelo IP.", notes = "Quando um novo usuário acessa o site, ele registra o IP no banco.")
-	@ApiResponse(code = 200, message = "IP registrado.")
+	@Operation(summary = "Adiciona novo acesso pelo IP.", description = "Quando um novo usuário acessa o site, ele registra o IP no banco.")
+	@ApiResponses({
+		@ApiResponse(responseCode = "200", description = "IP registrado.")
+	})
 	@PostMapping("/addNovoAcessoIp")
 	public ResponseEntity<Boolean> addNovoAcessoIp(HttpServletRequest req){
 		return ResponseEntity.status(HttpStatus.OK).body(usuarioHelper.acessoIP(req));
 	}
 
-	@ApiOperation(value = "Soma o total de acessos (IPs) que ja entraram no site.", notes = "Faz a somatória de acessos (IPs) que já entraram no site e exibe o total no rodapé.")
-	@ApiResponse(code = 200, message = "Total contabilizado.")
+	@Operation(summary = "Soma o total de acessos (IPs) que ja entraram no site.", description = "Faz a somatória de acessos (IPs) que já entraram no site e exibe o total no rodapé.")
+	@ApiResponses({
+		@ApiResponse(responseCode = "200", description = "Total contabilizado.")
+	})
 	@GetMapping("/getAllAcessosIp")
 	public ResponseEntity<Long> getAllAcessosIp() {
 		return ResponseEntity.status(HttpStatus.OK).body(usuarioHelper.getTotalAcessos());
 	}
 
-	@ApiOperation(value = "Listagem de todos os usuários cadastrados.", notes = "Faz uma busca no banco de dados retornando uma lista com todos os usuários cadastrados.")
-	@ApiResponse(code = 200, message = "Usuários encontrados.")
+	@Operation(summary = "Listagem de todos os usuários cadastrados.", description = "Faz uma busca no banco de dados retornando uma lista com todos os usuários cadastrados.")
+	@ApiResponses({
+		@ApiResponse(responseCode = "200", description = "Usuários encontrados.")
+	})
 	@GetMapping("/listarUsuarios")
 	public List<UsuarioDTO> listarUsuarios() {
 		return listarUsuarios.executar();
 	}
 
-	@ApiOperation(value = "Adiciona/cadastra um novo usuário.", notes = "Cria um novo registro de usuário no banco de dados.")
-	@ApiResponse(code = 200, message = "Usuário cadastrado.")
+	@Operation(summary = "Adiciona/cadastra um novo usuário.", description = "Cria um novo registro de usuário no banco de dados.")
+	@ApiResponses({
+		@ApiResponse(responseCode = "201", description = "Usuário cadastrado.")
+	})
 	@PostMapping("/adicionarUsuario")
 	public ResponseEntity<UsuarioDTO> adicionarUsuario(@ModelAttribute UsuarioFormDTO usuarioFormDTO) throws IOException {
 		return ResponseEntity.status(HttpStatus.CREATED).body(adicionarUsuario.executar(usuarioFormDTO, usuarioFormDTO.getImagemFile()));
 	}
 
-	@ApiOperation(value = "Deleta/exclui um usuário.", notes = "Faz a exclusão de um usuário do banco de dados de acordo com o número de id passado como parâmetro.")
-	@ApiResponse(code = 200, message = "Usuário excluído.")
+	@Operation(summary = "Deleta/exclui um usuário.", description = "Faz a exclusão de um usuário do banco de dados de acordo com o número de id passado como parâmetro.")
+	@ApiResponses({
+		@ApiResponse(responseCode = "200", description = "Usuário excluído.")
+	})
 	@DeleteMapping("/deletarUsuario/{id}")
 	public ResponseEntity<Boolean> deletarUsuario(@PathVariable int id) {
 		return ResponseEntity.status(HttpStatus.OK).body(deletarUsuario.executar(id));
 	}
 
-	@ApiOperation(value = "Realiza um login com auntenticação JWT.", notes = "Realiza uma operação de login com autenticação de token via Spring Security - JWT e com senha criptografada.")
-	@ApiResponse(code = 200, message = "Login realizado.")
+	@Operation(summary = "Realiza um login com auntenticação JWT.", description = "Realiza uma operação de login com autenticação de token via Spring Security - JWT e com senha criptografada.")
+	@ApiResponses({
+		@ApiResponse(responseCode = "200", description = "Login realizado.")
+	})
 	@PostMapping("/realizarLogin")
 	public ResponseEntity<UsuarioDTO> realizarLogin(@RequestBody UsuarioDTO usuarioDTO) {
 		return ResponseEntity.status(HttpStatus.OK).body(realizarLogin.executar(usuarioDTO));

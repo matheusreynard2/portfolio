@@ -16,34 +16,35 @@
         <mat-card-content>
           <p>
             <span><img src="/github.png" height="20" width="20"/> - <a href="https://github.com/matheusreynard2/portfolio" target="_blank">REPOSITÓRIO GITHUB - CÓDIGO DO PROJETO</a></span><br><br>
-            <span>Disponível por apenas R$ 199,90. Envie uma mensagem para (41) 99539-7044 ou matheusreynardkolling2&#64;gmail.com e solicite acesso ao GitHub.</span><br>
             <span>Código em constante atualização e manutenção.
               <br><br>
             </span>
             <span>
-              <u><strong>POR QUE ADQUIRIR O CÓDIGO DO PRODIFY?</strong></u><br><br>
+              <u><strong>SOBRE O CÓDIGO DO PRODIFY</strong></u><br><br>
               O sistema conta com as <strong>melhores práticas de programação</strong>, seguindo padrões de
-              <strong>Clean Code e Design Patterns</strong>. Segue a risca a <strong>Clean Architecture</strong> com Use Cases, de forma escalável e desacoplada. Utiliza os recursos técnicos mais requisitados pelo
-              mercado quando o assunto é Java e Spring Framework, e explora muitas funcionalidades de Angular. Se você deseja estudar Java, Spring ou Angular, este projeto é ideal para pegar de exemplo.
-              Se você deseja programar um sistema customizado de gestão em seu estabelecimento e não sabe por onde começar, este projeto também é ideal.<br><br>
+              <strong>Clean Code e Design Patterns</strong>, como Strategy. Segue <strong>Clean Architecture com Microsserviços - Spring Cloud</strong> e utiliza os recursos técnicos mais requisitados pelo
+              mercado quando o assunto é Java e Spring, com Angular no frontend. Se você deseja estudar essas tecnologias, este projeto é ideal para pegar de exemplo.
+              Se você deseja programar um sistema customizado de gestão de estoque em seu estabelecimento e não sabe por onde começar, este projeto também é ideal.<br><br>
             </span>
             <span><u><strong>CONCEITOS TÉCNICOS UTILIZADOS NO PROJETO</strong></u><br><br>
-              <strong>Multi-threading e assincronismo com CompletableFuture em Java</strong>, Pageable, FormData e Lobs, Lombok, <strong>RabbitMQ e WebSocket</strong> (em projeto paralelo, no mesmo repositório), Swagger, DTOs, <strong>REST API Sprig MVC</strong>, <strong>Clean Architecture</strong> UseCases, Spring Security,
-              <strong>Spring Data / JPA / Hibernate, NativeQuery / JPQL</strong>, Design Patterns, <strong>integração com APIs externas</strong> (ViaCEP, Brasil API, Google Maps, ip.info), uso predominante de boas práticas de desenvolvimento e Clean Code.
+              <strong>Multi-threading e assincronismo com CompletableFuture em Java</strong>, Pageable, FormData e Lobs, Lombok, <strong>RabbitMQ e WebSocket</strong> (em projeto paralelo, no mesmo repositório), Swagger, DTOs, <strong>REST API</strong>, <strong>Clean Architecture</strong> Microsserviços, Spring Security,
+              <strong>Spring Data / JPA / Hibernate, NativeQuery / JPQL</strong>, Design Patterns (Strategy), <strong>integração com APIs externas</strong> (ViaCEP, Brasil API, Google Maps, ip.info), uso predominante de boas práticas de desenvolvimento e Clean Code.
               <strong>Testes unitários, testes de integração e testes de carga com JUnit 5 e Mockito</strong>.
             </span><br>
           </p>
           <hr>
           <p>
             Este sistema basicamente consiste em um gerenciamento de produtos, com fornecedores relacionados.<br><br>
-            Na página "Gerenciar produtos > Cadastrar produtos", é possível fazer o cadastro de um produto com as informações fornecidas, e relacionar um
+            Na página "Gerenciar produtos > Cadastrar produtos", é possível fazer o cadastro de um produto fornecendo as informações necessárias, e relacionar um
             fornecedor, que por sua vez é cadastrado na página "Gerenciar fornecedores > Cadastrar fornecedores".<br><br>
             Na página "Lista de produtos", é possível listar todos os produtos cadastrados, consultar um por um através
             dos filtros disponíveis, atualizar as informações do produto e excluir um produto
             já existente.<br><br>
-            Dentre as funcionalidades do sistema estão inclusas: adicionar quantidade, colocar um produto em promoção e aplicar
+            Dentre as funcionalidades do sistema relacionadas a produtos estão inclusas: adicionar quantidade, relacionar um fornecedor, colocar um produto em promoção e aplicar
             sobre ele um desconto de 0 a 100%, calcular frete, vincular uma imagem ao produto, calcular a média de preço dos produtos
             já cadastrados e calcular qual o preço do produto mais caro.<br><br>
+            Em relação aos fornecedores, é possível cadastra-los fornecendo seu CEP e buscando as informações automaticamente, depois relacionar com o CNPJ da sua empresa cujos dados
+            também são buscados automaticamente.
             Também na parte de Localizar Fornecedor, você pode utilizar a integração com o Google
             Maps para localizar o endereço do fornecedor via CEP ou via IP público. De maneiras mais técnica, estão detalhadas
             abaixo as funcionalidades do Sistema PRODIFY:</p><br>
@@ -69,6 +70,8 @@
             <br>- Integração com Google Cloud APIs para informações de localização
             <br>- Integração com Via CEP API para preenchimento automático e detalhado de endereço
             <br>- Integração com Brasil API para detecção de CNPJ e preenchimento automático e detalhado de informações da empresa
+            <br>- Separação da camada de Produtos em microsserviço com Spring Cloud
+            <br>- Utilização de API Gateway para rotas dos microsserviços com Spring Cloud
           </p>
         </mat-card-content>
       </mat-card>

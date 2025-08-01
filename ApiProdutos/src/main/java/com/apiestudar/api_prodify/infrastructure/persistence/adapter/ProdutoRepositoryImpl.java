@@ -3,16 +3,13 @@ package com.apiestudar.api_prodify.infrastructure.persistence.adapter;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutorService;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Fetch;
-import javax.persistence.criteria.JoinType;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -31,9 +28,13 @@ public class ProdutoRepositoryImpl implements ProdutoRepository {
     private EntityManager em;
 
     private final ProdutoJpaRepository produtoJpaRepository;
+    private final ModelMapper mapper;
+    private final ExecutorService dbPool;
 
-    public ProdutoRepositoryImpl(ProdutoJpaRepository produtoJpaRepository) {
+    public ProdutoRepositoryImpl(ProdutoJpaRepository produtoJpaRepository, ModelMapper mapper, ExecutorService dbPool) {
         this.produtoJpaRepository = produtoJpaRepository;
+        this.mapper = mapper;
+        this.dbPool = dbPool;
     }
 
     @Override
@@ -57,8 +58,8 @@ public class ProdutoRepositoryImpl implements ProdutoRepository {
     }
 
     @Override
-    public void deletarProdutoPorId(Long id) {
-        produtoJpaRepository.deleteById(id);
+    public CompletableFuture<Void> deletarProdutoPorId(Long id) {
+        return CompletableFuture.runAsync(() -> produtoJpaRepository.deleteById(id), dbPool);
     }
 
     @Override

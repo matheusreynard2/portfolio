@@ -2,8 +2,7 @@ package com.apiestudar.api_prodify.application.usecase.usuario;
 
 import java.util.Arrays;
 
-import javax.servlet.http.HttpServletRequest;
-
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,8 +23,6 @@ public class UsuarioHelper {
 
     private static final int NR_MAX_REPETICOES = 0;
     
-
-    @Autowired
     public UsuarioHelper(TokenService tokenService, UsuarioRepository usuarioRepository, ContadorIPRepository contadorIPRepository) {
         this.usuarioRepository = usuarioRepository;
         this.contadorIPRepository = contadorIPRepository;

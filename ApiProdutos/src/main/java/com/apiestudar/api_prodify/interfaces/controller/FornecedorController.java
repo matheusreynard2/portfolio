@@ -30,8 +30,9 @@ import com.apiestudar.api_prodify.application.usecase.fornecedor.BuscarFornecedo
 import com.apiestudar.api_prodify.interfaces.dto.FornecedorDTO;
 import com.apiestudar.api_prodify.interfaces.dto.brasilapi_dto.DadosEmpresaDTO;
 
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 
 @RestController
 @RequestMapping("api/fornecedores")
@@ -53,8 +54,10 @@ public class FornecedorController {
     private ObterEmpresaByCNPJUseCase obterEmpresaByCNPJ;
 
 	@Transactional(readOnly = true)
-	@ApiOperation(value = "Listagem de todos os fornecedores cadastrados.", notes = "Faz uma busca no banco de dados retornando uma lista com todos os fornecedores cadastrados.")
-	@ApiResponse(code = 200, message = "Fornecedores encontrados.")
+	@Operation(summary = "Listagem de todos os fornecedores cadastrados.", description = "Faz uma busca no banco de dados retornando uma lista com todos os fornecedores cadastrados.")
+	@ApiResponses({
+        @ApiResponse(responseCode = "200", description = "Fornecedores encontrados.")
+    })
 	@GetMapping("/listarFornecedores/{idUsuario}")
 	public Page<FornecedorDTO> listarFornecedores(
 			@RequestParam(defaultValue = "0") int page,
@@ -64,16 +67,20 @@ public class FornecedorController {
 	}
 
 	@Transactional(readOnly = true)
-	@ApiOperation(value = "Listagem de todos os fornecedores cadastrados em uma List.", notes = "Faz uma busca no banco de dados retornando uma lista com todos os fornecedores cadastrados.")
-	@ApiResponse(code = 200, message = "Fornecedores encontrados.")
+	@Operation(summary = "Listagem de todos os fornecedores cadastrados em uma List.", description = "Faz uma busca no banco de dados retornando uma lista com todos os fornecedores cadastrados.")
+	@ApiResponses({
+        @ApiResponse(responseCode = "200", description = "Fornecedores encontrados.")
+    })
 	@GetMapping("/listarFornecedoresList/{idUsuario}")
 	public List<FornecedorDTO> listarFornecedoresList(@PathVariable Long idUsuario) {
 		return listarFornecedores.executar(idUsuario);
 	}
 
 	@Transactional
-	@ApiOperation(value = "Adiciona/cadastra um novo fornecedor.", notes = "Cria um novo registro de fornecedor no banco de dados.")
-	@ApiResponse(code = 201, message = "Fornecedor cadastrado.")
+	@Operation(summary = "Adiciona/cadastra um novo fornecedor.", description = "Cria um novo registro de fornecedor no banco de dados.")
+	@ApiResponses({
+        @ApiResponse(responseCode = "201", description = "Fornecedor cadastrado.")
+    })
 	@PostMapping("/adicionarFornecedor/{idUsuario}")
 	public ResponseEntity<FornecedorDTO> adicionarFornecedor(
 			@RequestBody FornecedorDTO fornecedorDTO,
@@ -82,22 +89,28 @@ public class FornecedorController {
 	}
 
 	@SuppressWarnings("rawtypes")
-	@ApiOperation(value = "Acessar páginas relacionadas a fornecedores.", notes = "Endpoint usado para validar se o Token já expirou ao acessar páginas de fornecedores.")
-	@ApiResponse(code = 200, message = "Página retornada.")
+	@Operation(summary = "Acessar páginas relacionadas a fornecedores.", description = "Endpoint usado para validar se o Token já expirou ao acessar páginas de fornecedores.")
+	@ApiResponses({
+        @ApiResponse(responseCode = "200", description = "Página retornada.")
+    })
 	@GetMapping("/acessarPaginaFornecedor")
 	public ResponseEntity acessarPaginaFornecedor() {
 		return new ResponseEntity(HttpStatus.OK);
 	}
 
-	@ApiOperation(value = "Deleta/exclui um fornecedor.", notes = "Faz a exclusão de um fornecedor do banco de dados de acordo com o número de id passado como parâmetro.")
-	@ApiResponse(code = 200, message = "Fornecedor excluído.")
+	@Operation(summary = "Deleta/exclui um fornecedor.", description = "Faz a exclusão de um fornecedor do banco de dados de acordo com o número de id passado como parâmetro.")
+	@ApiResponses({
+        @ApiResponse(responseCode = "200", description = "Fornecedor excluído.")
+    })
 	@DeleteMapping("/deletarFornecedor/{id}/{idUsuario}")
 	public ResponseEntity<Boolean> deletarFornecedor(@PathVariable Long id, @PathVariable Long idUsuario) {
 		return ResponseEntity.status(HttpStatus.OK).body(deletarFornecedor.executar(id));
 	}
 
-	@ApiOperation(value = "Atualiza as informações de um fornecedor.", notes = "Atualiza as informações registradas no banco de dados de um fornecedor de acordo com o número de id passado como parâmetro.")
-	@ApiResponse(code = 200, message = "Fornecedor atualizado.")
+	@Operation(summary = "Atualiza as informações de um fornecedor.", description = "Atualiza as informações registradas no banco de dados de um fornecedor de acordo com o número de id passado como parâmetro.")
+	@ApiResponses({
+        @ApiResponse(responseCode = "200", description = "Fornecedor atualizado.")
+    })
 	@PutMapping("/atualizarFornecedor/{id}/{idUsuario}")
 	public ResponseEntity<FornecedorDTO> atualizarFornecedor(
 			@PathVariable long id,
@@ -106,15 +119,19 @@ public class FornecedorController {
 		return ResponseEntity.status(HttpStatus.OK).body(atualizarFornecedor.executar(id, fornecedorDTO, idUsuario));
 	}
 
-	@ApiOperation(value = "Busca um fornecedor pelo ID.", notes = "Retorna os dados de um fornecedor específico de acordo com o ID fornecido.")
-	@ApiResponse(code = 200, message = "Fornecedor encontrado.")
+	@Operation(summary = "Busca um fornecedor pelo ID.", description = "Retorna os dados de um fornecedor específico de acordo com o ID fornecido.")
+	@ApiResponses({
+        @ApiResponse(responseCode = "200", description = "Fornecedor encontrado.")
+    })
 	@GetMapping("/buscarFornecedorPorId/{id}")
 	public ResponseEntity<FornecedorDTO> buscarFornecedorPorId(@PathVariable Long id) {
 		return ResponseEntity.status(HttpStatus.OK).body(buscarFornecedor.executar(id));
 	}
 
-	@ApiOperation(value = "Obtém informações de empresa pelo CNPJ.", notes = "Utiliza a API da BrasilAPI para obter informações de empresas a partir do CNPJ fornecido.")
-	@ApiResponse(code = 200, message = "CNPJ consultado.")
+	@Operation(summary = "Obtém informações de empresa pelo CNPJ.", description = "Utiliza a API da BrasilAPI para obter informações de empresas a partir do CNPJ fornecido.")
+	@ApiResponses({
+        @ApiResponse(responseCode = "200", description = "CNPJ consultado.")
+    })
 	@GetMapping("/consultarCNPJ/{cnpj}")
     public ResponseEntity<DadosEmpresaDTO> obterEmpresaViaCNPJ(@PathVariable String cnpj) {
 		return ResponseEntity.status(HttpStatus.OK).body(obterEmpresaByCNPJ.executar(cnpj));

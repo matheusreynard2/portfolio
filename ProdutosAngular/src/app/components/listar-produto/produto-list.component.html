@@ -81,10 +81,10 @@
           <td class="text-center coluna_valor_desc" style="width: 200px; min-width: 100px; max-width: 250px;">{{ formatarValor(produto.valorTotalDesc) }}</td>
           <td class="text-center coluna_valor_total" style="width: 200px; min-width: 100px; max-width: 250px;">{{ formatarValor(produto.somaTotalValores) }}</td>
           <td class="text-center coluna_acao" style="width: 80px; min-width: 60px; max-width: 100px;">
-            <button type="button" class="btn btn-info full-width-btn" id="btn_editar" (click)="atualizarProduto(modalEditar, produto.id, produto)">✎</button>
+            <button type="button" class="btn btn-info full-width-btn" id="btn_editar" (click)="atualizarProduto(modalEditar, produto.id ?? 0, produto)">✎</button>
           </td>
           <td class="text-center coluna_acao" style="width: 80px; min-width: 60px; max-width: 100px;">
-            <button type="button" class="btn btn-danger full-width-btn" id="btn_excluir" (click)="deletarProduto(modalMsgExcluir, produto.id, produto)">X</button>
+            <button type="button" class="btn btn-danger full-width-btn" id="btn_excluir" (click)="deletarProduto(modalMsgExcluir, produto.id ?? 0, produto)">X</button>
           </td>
         </tr>
 

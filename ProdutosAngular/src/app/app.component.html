@@ -128,7 +128,6 @@
                   </li>
                 </ul>
               </li>
-
               <li>
                 <a routerLink="/sobreTab1" (click)="abrirFecharMenu()">Sobre</a>
               </li>
@@ -155,7 +154,7 @@
       <img src="/angular_img.png" alt="Imagem 3" class="background-bar-image image-bar-3">
     </div>  
     <div class="text-bar">
-      <span *ngIf="!isMobileOrTablet" style="font-size: 14px;">Deseja ter acesso ao código deste projeto? <a routerLink="/sobreTab2">Clique aqui</a> e saiba como!</span>
+      <span *ngIf="!isMobileOrTablet" style="font-size: 14px;">Deseja ter acesso ao código deste projeto? Ou saber mais sobre o sistema ou sobre o desenvolvedor? <a routerLink="/sobreTab2">Clique aqui!</a></span>
       <span *ngIf="isMobileOrTablet" style="font-size: 11px;">Acesse o GitHub do Prodify - <a routerLink="/sobreTab2">Clique aqui!</a></span>
     </div>
   </div>

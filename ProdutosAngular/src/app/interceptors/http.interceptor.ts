@@ -11,9 +11,15 @@ export const httpInterceptor: HttpInterceptorFn = (
 ): Observable<any> => {
   const authService = inject(AuthService);
   const router = inject(Router);
-
-  // Adiciona o token e headers padrão
-  request = addToken(request, authService);
+  
+  // Adiciona o token apenas se não for um endpoint público
+  if (!isPublicEndpoint(request.url)) {
+    const token = authService.getToken();
+    if (token) {
+      request = addToken(request, authService);
+    }
+  }
+  
   request = addDefaultHeaders(request);
 
   return next(request).pipe(
@@ -31,31 +37,43 @@ export const httpInterceptor: HttpInterceptorFn = (
   );
 };
 
-function addToken(request: HttpRequest<unknown>, authService: AuthService): HttpRequest<unknown> {
-  const token = authService.getToken();
-  return request.clone({
-    setHeaders: {
-      Authorization: `Bearer ${token}`
-    }
-  });
+function isPublicEndpoint(url: string): boolean {
+  const publicEndpoints = [
+    '/api/usuarios/realizarLogin',
+    '/api/usuarios/addNovoAcessoIp',
+    '/api/usuarios/getAllAcessosIp',
+    '/api/usuarios/adicionarUsuario'
+  ];
+  
+  return publicEndpoints.some(endpoint => url.includes(endpoint));
 }
 
-function addDefaultHeaders(request: HttpRequest<unknown>): HttpRequest<unknown> {
-  // Se a requisição for FormData, não adiciona o Content-Type
-  if (request.body instanceof FormData) {
+function addToken(request: HttpRequest<unknown>, authService: AuthService): HttpRequest<unknown> {
+  const token = authService.getToken();
+  if (token && token.trim() !== '') {
     return request.clone({
       setHeaders: {
-        'Accept': 'application/json'
+        Authorization: `Bearer ${token}`
       }
     });
   }
+  return request;
+}
 
-  // Para outras requisições, adiciona o Content-Type
+function addDefaultHeaders(request: HttpRequest<unknown>): HttpRequest<unknown> {
+  const headers: { [key: string]: string } = {};
+  
+  // Se a requisição for FormData, adiciona Accept mas NÃO define Content-Type
+  // O Angular define automaticamente Content-Type como multipart/form-data para FormData
+  if (request.body instanceof FormData) {
+    headers['Accept'] = 'application/json';
+  } else {
+    // Só define Content-Type como application/json se NÃO for FormData
+    headers['Content-Type'] = 'application/json';
+  }
+  
   return request.clone({
-    setHeaders: {
-      'Content-Type': 'application/json',
-      'Accept': 'application/json'
-    }
+    setHeaders: headers
   });
 }
 

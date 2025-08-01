@@ -2,7 +2,7 @@ package com.apiestudar.api_prodify.shared.utils.strategypattern;
 
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 public class IpExtractorManager {
 

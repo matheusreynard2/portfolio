@@ -2,19 +2,16 @@ package com.apiestudar.api_prodify.infrastructure.security;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpMethod;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
-import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
+import org.springframework.security.oauth2.server.resource.authentication.JwtGrantedAuthoritiesConverter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -23,110 +20,46 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 @EnableWebSecurity
 public class SecurityConfig {
 
-	@Autowired
-	private FilterToken filterToken;
+    @Bean
+    @Order(1)
+    public SecurityFilterChain publicEndpoints(HttpSecurity http) throws Exception {
+        return http
+            .securityMatcher(
+                "/api/usuarios/realizarLogin",
+                "/api/usuarios/addNovoAcessoIp", 
+                "/api/usuarios/getAllAcessosIp",
+                "/api/usuarios/adicionarUsuario",
+                "/public/**",
+                "/swagger-ui/**",
+                "/v2/api-docs/**",
+                "/webjars/**",
+                "/swagger-resources/**"
+            )
+            .csrf(csrf -> csrf.disable())
+            .authorizeHttpRequests(auth -> auth.anyRequest().permitAll())
+            .build();
+    }
 
-	// Configuração do CORS
-	@Bean
-	public CorsConfigurationSource corsConfigurationSource() {
-    	CorsConfiguration config = new CorsConfiguration();
-    	config.setAllowedOrigins(List.of(
-            	"https://www.sistemaprodify.com:8080",
-            	"https://www.sistemaprodify.com:80",
-            	"https://www.sistemaprodify.com",
-            	"https://191.252.38.22:8080",
-            	"http://localhost:8080",
-            	"http://localhost:4200",
-            	"https://sistemaprodify.com",
-            	"http://sistemaprodify.com",
-            	"http://www.sistemaprodify.com",
-            	"http://localhost:3000"
-    	));
-    	config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-    	config.setAllowedHeaders(List.of(
-            	"Content-Type",
-            	"Authorization",
-            	"X-Requested-With",
-            	"Accept",
-            	"Origin",
-            	"X-CSRF-Token",
-            	"X-Auth-Token"
-    	));
-    	config.setAllowCredentials(true);
-    	UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-    	source.registerCorsConfiguration("/**", config);
-    	return source;
-	}
+    @Bean
+    @Order(2)
+    public SecurityFilterChain secureEndpoints(HttpSecurity http) throws Exception {
+        return http
+            .csrf(csrf -> csrf.disable())
+            .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+            .authorizeHttpRequests(auth -> auth
+                .anyRequest().authenticated()) // Apenas exige login, sem roles
+            .oauth2ResourceServer(oauth2 -> oauth2.jwt()) // sem conversor
+            .build();
+    }
 
-	// Configuração principal do Spring Security
-	@Bean
-	public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
-    	httpSecurity
-        	.csrf(csrf -> csrf.disable()) // Desabilita CSRF (necessário para WebSocket)
-        	.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-        	.authorizeHttpRequests(requests -> requests
-            	// Libera endpoints públicos
-            	.antMatchers("/api/swagger-ui/**", "/api/swagger-ui.html", "/api/v2/api-docs/**", "api/webjars/**", "api/swagger-resources/**").permitAll()
-            	.antMatchers("/swagger-ui/**", "/swagger-ui.html", "/v2/api-docs/**", "/webjars/**", "/swagger-resources/**").permitAll()
-            	.antMatchers("/chat").permitAll() // Libera o endpoint WebSocket
-            	.antMatchers("/chat/**").permitAll() // Libera o endpoint WebSocket
-            	.antMatchers("/app/sendMessage").permitAll() // Libera o destino de envio de mensagens
-            	.antMatchers("/topic/chat").permitAll()
-            	.antMatchers("/api/chat/mensagens").permitAll()
-            	.antMatchers(HttpMethod.POST, "/api/usuarios/addNovoAcessoIp").permitAll()
-            	.antMatchers(HttpMethod.GET, "/api/usuarios/getAllAcessosIp").permitAll()
-            	.antMatchers(HttpMethod.POST, "/api/usuarios/realizarLogin").permitAll()
-            	.antMatchers(HttpMethod.OPTIONS, "/api/usuarios/realizarLogin").permitAll()
-            	.antMatchers(HttpMethod.POST, "/api/usuarios/adicionarUsuario").permitAll()
-            	.antMatchers(HttpMethod.DELETE, "/api/usuarios/deletarUsuario/{id}").permitAll()
-            	.antMatchers(HttpMethod.GET, "/api/usuarios/listarUsuarios").permitAll()
-            	.antMatchers(HttpMethod.GET, "/api/fornecedores/testeJson").permitAll()
+    @Bean
+    public JwtAuthenticationConverter jwtAuthenticationConverter() {
+        JwtGrantedAuthoritiesConverter authoritiesConverter = new JwtGrantedAuthoritiesConverter();
+        authoritiesConverter.setAuthorityPrefix("ROLE_");
+        authoritiesConverter.setAuthoritiesClaimName("authorities");
 
-            	
-            	// Protege endpoints específicos
-				.antMatchers(HttpMethod.GET, "/api/fornecedores/consultarCNPJ/{cnpj}").hasRole("USER")
-            	.antMatchers(HttpMethod.GET, "/api/fornecedores/listarFornecedoresList/{idUsuario}").hasRole("USER")
-            	.antMatchers(HttpMethod.GET, "/api/localizacao/obterCoordenadas/{cep}").hasRole("USER")
-            	.antMatchers(HttpMethod.GET, "/api/fornecedores/listarFornecedores/{idUsuario}").hasRole("USER")
-            	.antMatchers(HttpMethod.GET, "/api/fornecedores/acessarPaginaFornecedor").hasRole("USER")
-            	.antMatchers(HttpMethod.GET, "/api/fornecedores/adicionarFornecedor").hasRole("USER")
-            	.antMatchers(HttpMethod.GET, "/api/fornecedores/buscarFornecedorPorId/{id}").hasRole("USER")
-            	.antMatchers(HttpMethod.PUT, "/api/fornecedores/atualizarFornecedor/{id}/{idUsuario}").hasRole("USER")
-            	.antMatchers(HttpMethod.OPTIONS, "/api/fornecedores/atualizarFornecedor/{id}/{idUsuario}").hasRole("USER")
-            	.antMatchers(HttpMethod.GET, "/api/localizacao/consultarCEP/{cep}").hasRole("USER")
-            	.antMatchers(HttpMethod.GET, "/api/localizacao/enderecoDetalhado").hasRole("USER")
-            	.antMatchers(HttpMethod.GET, "/api/localizacao/localizarIp").hasRole("USER")
-            	.antMatchers(HttpMethod.POST, "/api/produtos/adicionarProduto").hasRole("USER")
-            	.antMatchers(HttpMethod.GET, "/api/produtos/listarProdutos").hasRole("USER")
-            	.antMatchers(HttpMethod.PUT, "/api/produtos/atualizarProduto/{id}").hasRole("USER")
-            	.antMatchers(HttpMethod.OPTIONS, "/api/produtos/atualizarProduto/{id}").hasRole("USER")
-            	.antMatchers(HttpMethod.DELETE, "/api/produtos/deletarProduto/{id}").hasRole("USER")
-            	.antMatchers(HttpMethod.OPTIONS, "/api/produtos/deletarProduto/{id}").hasRole("USER")
-            	.antMatchers(HttpMethod.GET, "/api/produtos/produtoMaisCaro").hasRole("USER")
-            	.antMatchers(HttpMethod.GET, "/api/produtos/mediaPreco").hasRole("USER")
-            	.antMatchers(HttpMethod.GET, "/api/produtos/acessarPaginaCadastro").hasRole("USER")
-            	.antMatchers(HttpMethod.GET, "/api/produtos/calcularDesconto/{valorProduto}/{valorDesconto}")
-                	.hasRole("USER")
-            	.antMatchers(HttpMethod.GET, "/api/produtos/efetuarPesquisa/{tipoPesquisa}/{valorPesquisa}")
-                	.hasRole("USER")
-            	.anyRequest().authenticated()
-        	)
-        	.cors(cors -> cors.configurationSource(corsConfigurationSource()))
-        	.addFilterBefore(filterToken, UsernamePasswordAuthenticationFilter.class);
-
-    	return httpSecurity.build();
-	}
-
-	// GERAR SENHA CRIPTOGRAFADA
-	@Bean
-	PasswordEncoder passwordEncoder() {
-    	return new BCryptPasswordEncoder();
-	}
-
-	// RETORNAR O AUTHENTICATION MANAGER
-	@Bean
-	AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration)
-        	throws Exception {
-    	return authenticationConfiguration.getAuthenticationManager();
-	}
+        JwtAuthenticationConverter converter = new JwtAuthenticationConverter();
+        converter.setJwtGrantedAuthoritiesConverter(authoritiesConverter);
+        return converter;
+    }
 }
