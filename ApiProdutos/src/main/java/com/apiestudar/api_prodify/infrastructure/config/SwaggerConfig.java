@@ -1,9 +1,11 @@
 package com.apiestudar.api_prodify.infrastructure.config;
 
+import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springdoc.core.customizers.OpenApiCustomizer;
 
 /*
  * 
@@ -23,5 +25,15 @@ public class SwaggerConfig {
                 .version("1.0.0")
                 .description("API do sistema de gerenciamento de produtos Prodify")
             );
+    }
+
+    @Bean
+    public OpenApiCustomizer removeSchemasCustomizer() {
+        return openApi -> {
+            Components components = openApi.getComponents();
+            if (components != null) {
+                components.setSchemas(null);
+            }
+        };
     }
 } 
