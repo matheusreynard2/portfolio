@@ -56,10 +56,11 @@
                   </div>
                 </div>
               </td>
+            </tr>
             <tr>
               <td class="coluna-label-1">
                 <span style="color: red">* </span>
-                <label for="whatsapp" class="required">E-mail:</label>
+                <label for="email" class="required">E-mail:</label>
               </td>
               <td>
                 <div class="input-group">
@@ -73,7 +74,7 @@
                          placeholder="Insira seu E-mail."
                          maxlength="100">
                   <div *ngIf="email.invalid && email.touched" class="invalid-feedback">
-                    email é obrigatório.
+                    E-mail é obrigatório.
                   </div>
                 </div>
               </td>
@@ -83,15 +84,15 @@
                 <span>Foto perfil:</span>
               </td>
               <td>
-                <input id="foto_perfil" type="file" (change)="onFileChange($event)" [disabled]="isMobileOrTablet"/>
+                <input id="foto_perfil" type="file" class="form-control" (change)="onFileChange($event)" [disabled]="isMobileOrTablet"/>
                </td>
             </tr>
             <tr>
-              <td>
-                <button type="submit" [disabled]="!cadastrarForm.form.valid" class="btn bg-primary-subtle fw-bold" style="width: 100px">Cadastrar</button>
+              <td class="text-center">
+                <button type="submit" [disabled]="!cadastrarForm.form.valid" class="btn bg-primary-subtle fw-bold">Cadastrar</button>
               </td>
-              <td colspan="4">
-                <button type="button" class="btn bg-secondary-subtle fw-bold" style="width: 100px" (click)="voltarTelaLogin()">Voltar</button>
+              <td class="text-center">
+                <button type="button" class="btn bg-secondary-subtle fw-bold" (click)="voltarTelaLogin()">Voltar</button>
               </td>
             </tr>
             </tbody>

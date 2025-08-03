@@ -13,48 +13,40 @@
   opacity: 75%;
 }
 
-.div-tabela {
+.container {
   width: 100%;
   margin: 0 auto;
   overflow-x: auto;
-  overflow-y: auto;
 }
 
-/* Ajustes para responsividade em dispositivos móveis */
-@media (max-width: 768px) {
-  .div-tabela {
-    min-width: 800px; /* Garante uma largura mínima para a tabela */
-  }
+.profile-card {
+  width: 100%; /* Ocupar 100% da largura disponível */
+  height: auto; /* Altura automática, ajusta-se ao conteúdo */
+  padding: 20px; /* Você pode ajustar conforme necessário */
+  box-shadow: none; /* Remover sombra, se necessário, para um visual mais limpo */
+  text-align: justify;
+}
 
-  .table {
-    margin-bottom: 0;
-  }
+.div-form-cadastrar {
+  display: flex;            /* Ativa o flexbox */
+  flex-direction: column;   /* Alinha os elementos em coluna */
+  justify-content: center;  /* Centraliza o conteúdo verticalmente */
+  align-items: center;      /* Centraliza o conteúdo horizontalmente */
+  height: 100%;             /* Faz com que a div ocupe 100% da altura do mat-card */
+}
 
-  .table td {
-    min-width: 120px; /* Largura mínima para as células */
-    white-space: nowrap; /* Evita quebra de texto */
-  }
+.div-tabela {
+  overflow-x: auto;
+}
 
-  /* Ajusta larguras específicas para algumas colunas */
-  .table td:nth-child(1) { /* Coluna dos labels */
-    min-width: 140px;
-  }
+.table {
+  width: auto; /* Permite que a tabela se ajuste ao conteúdo */
+  table-layout: auto; /* Usa layout automático */
+}
 
-  .table td:nth-child(2) { /* Coluna dos inputs */
-    min-width: 180px;
-  }
-
-  /* Ajusta o tamanho dos inputs */
-  .form-control {
-    min-width: 150px;
-    width: 100%;
-  }
-
-  /* Ajusta o container da tabela para ter scroll horizontal */
-  .card-body {
-    padding: 1rem;
-    overflow-x: auto;
-  }
+.table td {
+  white-space: nowrap; /* Evita quebra de linha dentro da célula */
+  vertical-align: middle; /* Alinha o conteúdo verticalmente */
 }
 
 .required {
@@ -78,47 +70,70 @@
   color: #dc3545;
 }
 
-/* Ajustes adicionais para melhor visualização em mobile */
+/* Responsividade para mobile - alinhada com a página de login */
 @media (max-width: 768px) {
-  .card {
-    margin: 1rem 0;
-  }
-
-  .table-bordered {
-    border: 1px solid #dee2e6;
-  }
-
-  .table td, .table th {
+  .container {
     padding: 0.5rem;
   }
-
-  /* Ajusta o botão de cadastrar para ficar mais visível */
-  .btn.bg-primary-subtle {
+  
+  .profile-card {
+    margin: 0.5rem 0;
+    padding: 15px;
+  }
+  
+  .table {
+    margin-bottom: 0;
+    font-size: 0.9rem;
+  }
+  
+  .table td, .table th {
+    padding: 0.5rem 0.3rem;
+  }
+  
+  /* Ajustes para inputs em mobile */
+  .form-control {
     width: 100%;
-    margin-top: 0.5rem;
+    min-width: auto;
+  }
+  
+  .input-group {
+    width: 100% !important; /* Remover largura fixa */
+    max-width: 300px; /* Largura máxima razoável */
+  }
+  
+  /* Ajustes para botões */
+  .btn {
+    min-width: 80px;
+    font-size: 0.9rem;
+  }
+  
+  /* Quebra de texto em labels se necessário */
+  .coluna-label-1 {
+    width: auto;
+    min-width: 100px;
   }
 }
 
-.container {
-  overflow-x: auto;
-}
-
-.profile-card {
-  width: 100%; /* Ocupar 100% da largura disponível */
-  height: auto; /* Altura automática, ajusta-se ao conteúdo */
-  padding: 20px; /* Você pode ajustar conforme necessário */
-  box-shadow: none; /* Remover sombra, se necessário, para um visual mais limpo */
-  text-align: justify;
-}
-
-.div-form-cadastrar {
-  display: flex;            /* Ativa o flexbox */
-  flex-direction: column;   /* Alinha os elementos em coluna */
-  justify-content: center;  /* Centraliza o conteúdo verticalmente */
-  align-items: center;      /* Centraliza o conteúdo horizontalmente */
-  height: 100%;             /* Faz com que a div ocupe 100% da altura do mat-card */
-}
-
-.input-group {
-  width: 350px;
+@media (max-width: 480px) {
+  .profile-card {
+    padding: 10px;
+  }
+  
+  .table {
+    font-size: 0.8rem;
+  }
+  
+  .table td, .table th {
+    padding: 0.4rem 0.2rem;
+  }
+  
+  .input-group {
+    max-width: 250px;
+  }
+  
+  .btn {
+    min-width: 70px;
+    font-size: 0.8rem;
+    padding: 0.4rem 0.8rem;
+  }
 }

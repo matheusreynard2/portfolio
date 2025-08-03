@@ -391,40 +391,290 @@ p {
   opacity: 0;
 }
 
+/* Container dos cards de login */
+.login-cards-container {
+  min-height: auto;
+  max-height: none;
+  overflow-y: visible;
+}
+
 /* RESPONSIVIDADE */
 @media (max-width: 768px) {
+  .login-cards-container {
+    flex-direction: column !important;
+    gap: 1rem;
+  }
+  
+  .profile-card {
+    margin: 0 !important;
+    flex: none !important;
+  }
+  
+  .card-container {
+    width: min(100%, 90vw) !important;
+    height: min(200px, 40vw) !important;
+    max-width: 100% !important;
+    min-width: 200px !important;
+    min-height: 100px !important;
+  }
+  
+  .text-bar {
+    height: 35px !important;
+    padding: 0 12px !important;
+  }
+  
+  .typing-text {
+    font-size: 16px !important;
+  }
+  
+  .text-2 {
+    font-size: 14px !important;
+  }
+  
+  .text-3 {
+    font-size: 16px !important;
+  }
+  
   .hover-hint {
-      font-size: 10px;
-      padding: 3px 6px;
-      top: 6px;
-      left: 6px;
+    font-size: 10px;
+    padding: 3px 6px;
+    top: 6px;
+    left: 6px;
   }
   
   .overlay-text {
-      padding: 15px;
+    padding: 15px;
   }
   
   .welcome-text {
-      font-size: 14px;
-      line-height: 1.3;
+    font-size: 14px;
+    line-height: 1.3;
+  }
+  
+  /* Ajustar animações para mobile */
+  @keyframes text1-complete {
+    0% { 
+        opacity: 1; 
+        visibility: visible; 
+        width: 0; 
+    }
+    15% { 
+        opacity: 1; 
+        visibility: visible; 
+        width: 280px; 
+    }
+    25% { 
+        opacity: 1; 
+        visibility: visible; 
+        width: 280px; 
+    }
+    30% { 
+        opacity: 0; 
+        visibility: hidden; 
+        width: 0; 
+    }
+    30.1%, 100% { 
+        opacity: 0; 
+        visibility: hidden; 
+        width: 0; 
+    }
+  }
+  
+  @keyframes text2-complete {
+    0%, 34% { 
+        opacity: 0; 
+        visibility: hidden; 
+        width: 0; 
+    }
+    35% { 
+        opacity: 1; 
+        visibility: visible; 
+        width: 0; 
+    }
+    50% { 
+        opacity: 1; 
+        visibility: visible; 
+        width: 280px; 
+    }
+    60% { 
+        opacity: 1; 
+        visibility: visible; 
+        width: 280px; 
+    }
+    65% { 
+        opacity: 0; 
+        visibility: hidden; 
+        width: 0; 
+    }
+    65.1%, 100% { 
+        opacity: 0; 
+        visibility: hidden; 
+        width: 0; 
+    }
+  }
+  
+  @keyframes text3-complete {
+    0%, 69% { 
+        opacity: 0; 
+        visibility: hidden; 
+        width: 0; 
+    }
+    70% { 
+        opacity: 1; 
+        visibility: visible; 
+        width: 0; 
+    }
+    85% { 
+        opacity: 1; 
+        visibility: visible; 
+        width: 280px; 
+    }
+    90% { 
+        opacity: 1; 
+        visibility: visible; 
+        width: 280px; 
+    }
+    95% { 
+        opacity: 0; 
+        visibility: hidden; 
+        width: 0; 
+    }
+    95.1%, 100% { 
+        opacity: 0; 
+        visibility: hidden; 
+        width: 0; 
+    }
   }
 }
 
 @media (max-width: 480px) {
+  
+  .text-bar {
+    height: 30px !important;
+    padding: 0 8px !important;
+  }
+  
+  .typing-text {
+    font-size: 10px !important;
+  }
+  
+  .text-2 {
+    font-size: 10px !important;
+  }
+  
+  .text-3 {
+    font-size: 10px !important;
+  }
+  
   .hover-hint {
-      font-size: 9px;
-      padding: 2px 4px;
-      top: 4px;
-      left: 4px;
+    font-size: 9px;
+    padding: 2px 4px;
+    top: 4px;
+    left: 4px;
   }
   
   .overlay-text {
-      padding: 10px;
+    padding: 10px;
   }
   
   .welcome-text {
-      font-size: 12px;
-      line-height: 1.2;
+    font-size: 10px;
+    line-height: 1.2;
+  }
+  
+  /* Animações ainda menores para dispositivos pequenos */
+  @keyframes text1-complete {
+    0% { 
+        opacity: 1; 
+        visibility: visible; 
+        width: 0; 
+    }
+    15% { 
+        opacity: 1; 
+        visibility: visible; 
+        width: 200px; 
+    }
+    25% { 
+        opacity: 1; 
+        visibility: visible; 
+        width: 200px; 
+    }
+    30% { 
+        opacity: 0; 
+        visibility: hidden; 
+        width: 0; 
+    }
+    30.1%, 100% { 
+        opacity: 0; 
+        visibility: hidden; 
+        width: 0; 
+    }
+  }
+  
+  @keyframes text2-complete {
+    0%, 34% { 
+        opacity: 0; 
+        visibility: hidden; 
+        width: 0; 
+    }
+    35% { 
+        opacity: 1; 
+        visibility: visible; 
+        width: 0; 
+    }
+    50% { 
+        opacity: 1; 
+        visibility: visible; 
+        width: 200px; 
+    }
+    60% { 
+        opacity: 1; 
+        visibility: visible; 
+        width: 200px; 
+    }
+    65% { 
+        opacity: 0; 
+        visibility: hidden; 
+        width: 0; 
+    }
+    65.1%, 100% { 
+        opacity: 0; 
+        visibility: hidden; 
+        width: 0; 
+    }
+  }
+  
+  @keyframes text3-complete {
+    0%, 69% { 
+        opacity: 0; 
+        visibility: hidden; 
+        width: 0; 
+    }
+    70% { 
+        opacity: 1; 
+        visibility: visible; 
+        width: 0; 
+    }
+    85% { 
+        opacity: 1; 
+        visibility: visible; 
+        width: 200px; 
+    }
+    90% { 
+        opacity: 1; 
+        visibility: visible; 
+        width: 200px; 
+    }
+    95% { 
+        opacity: 0; 
+        visibility: hidden; 
+        width: 0; 
+    }
+    95.1%, 100% { 
+        opacity: 0; 
+        visibility: hidden; 
+        width: 0; 
+    }
   }
 }
 
