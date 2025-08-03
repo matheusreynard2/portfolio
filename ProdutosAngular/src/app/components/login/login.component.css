@@ -411,28 +411,33 @@ p {
   }
   
   .card-container {
-    width: min(100%, 90vw) !important;
-    height: min(200px, 40vw) !important;
+    width: min(100%, 95vw) !important;
+    height: min(180px, 35vw) !important;
     max-width: 100% !important;
-    min-width: 200px !important;
-    min-height: 100px !important;
+    min-width: 280px !important;
+    min-height: 90px !important;
   }
   
   .text-bar {
     height: 35px !important;
-    padding: 0 12px !important;
+    padding: 0 8px !important;
   }
   
   .typing-text {
-    font-size: 16px !important;
+    font-size: 10px !important;
+    max-width: 90% !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
   }
   
   .text-2 {
-    font-size: 14px !important;
+    font-size: 8px !important;
+    max-width: 90% !important;
   }
   
   .text-3 {
-    font-size: 16px !important;
+    font-size: 10px !important;
+    max-width: 90% !important;
   }
   
   .hover-hint {
@@ -461,12 +466,12 @@ p {
     15% { 
         opacity: 1; 
         visibility: visible; 
-        width: 280px; 
+        width: 200px; 
     }
     25% { 
         opacity: 1; 
         visibility: visible; 
-        width: 280px; 
+        width: 200px; 
     }
     30% { 
         opacity: 0; 
@@ -494,12 +499,12 @@ p {
     50% { 
         opacity: 1; 
         visibility: visible; 
-        width: 280px; 
+        width: 200px; 
     }
     60% { 
         opacity: 1; 
         visibility: visible; 
-        width: 280px; 
+        width: 200px; 
     }
     65% { 
         opacity: 0; 
@@ -527,12 +532,12 @@ p {
     85% { 
         opacity: 1; 
         visibility: visible; 
-        width: 280px; 
+        width: 200px; 
     }
     90% { 
         opacity: 1; 
         visibility: visible; 
-        width: 280px; 
+        width: 200px; 
     }
     95% { 
         opacity: 0; 
@@ -551,19 +556,24 @@ p {
   
   .text-bar {
     height: 30px !important;
-    padding: 0 8px !important;
+    padding: 0 5px !important;
   }
   
   .typing-text {
     font-size: 10px !important;
+    max-width: 95% !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
   }
   
   .text-2 {
     font-size: 10px !important;
+    max-width: 95% !important;
   }
   
   .text-3 {
     font-size: 10px !important;
+    max-width: 95% !important;
   }
   
   .hover-hint {
@@ -592,12 +602,12 @@ p {
     15% { 
         opacity: 1; 
         visibility: visible; 
-        width: 200px; 
+        width: 140px; 
     }
     25% { 
         opacity: 1; 
         visibility: visible; 
-        width: 200px; 
+        width: 140px; 
     }
     30% { 
         opacity: 0; 
@@ -625,12 +635,12 @@ p {
     50% { 
         opacity: 1; 
         visibility: visible; 
-        width: 200px; 
+        width: 140px; 
     }
     60% { 
         opacity: 1; 
         visibility: visible; 
-        width: 200px; 
+        width: 140px; 
     }
     65% { 
         opacity: 0; 
@@ -658,12 +668,12 @@ p {
     85% { 
         opacity: 1; 
         visibility: visible; 
-        width: 200px; 
+        width: 140px; 
     }
     90% { 
         opacity: 1; 
         visibility: visible; 
-        width: 200px; 
+        width: 140px; 
     }
     95% { 
         opacity: 0; 
