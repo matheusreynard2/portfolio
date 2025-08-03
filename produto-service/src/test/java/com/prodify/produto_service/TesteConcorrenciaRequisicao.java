@@ -37,7 +37,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
 @Import(TestSecurityConfig.class)
-public class TesteConcorrenciaUnificado {
+public class TesteConcorrenciaRequisicao {
 
     @Autowired
     private MockMvc mockMvc;
@@ -66,7 +66,7 @@ public class TesteConcorrenciaUnificado {
     }
 
     @Test
-    public void testeConcorrencia50RequisicoesSimultaneas() throws Exception {
+    public void testeConcorrencia50RequisicoesAdicionarMicroservico() throws Exception {
         System.out.println("==========================================");
         System.out.println("TESTE DE CONCORRÊNCIA - 50 PRODUTOS");
         System.out.println("==========================================");
@@ -88,6 +88,7 @@ public class TesteConcorrenciaUnificado {
         tempoInicioGlobal.set(inicioTestNS);
 
         System.out.println("Iniciando execução das requisições...");
+        System.out.println("==========================================");
         
         // Criar 50 requisições simultâneas
         for (int i = 0; i < NUMERO_PRODUTOS; i++) {
@@ -126,20 +127,38 @@ public class TesteConcorrenciaUnificado {
                     
                     long fimRequisicao = System.nanoTime();
                     long duracaoNS = fimRequisicao - inicioRequisicao;
+                    double duracaoMS = duracaoNS / 1_000_000.0;
                     
                     int numeroRequisicao = contadorRequisicoes.incrementAndGet();
-                    System.out.printf("Requisição %d/%d concluída em %.2f ms%n", 
-                        numeroRequisicao, NUMERO_PRODUTOS, duracaoNS / 1_000_000.0);
+                    
+                    // Log detalhado de sucesso com tempo em MS e NS
+                    synchronized (System.out) {
+                        System.out.printf("SUCESSO - Requisição #%d (Produto: %s) executada com SUCESSO!%n", 
+                            numeroRequisicao, produto.getNome());
+                        System.out.printf("Tempo de execução: %.2f MS (%,d NS)%n", duracaoMS, duracaoNS);
+                        System.out.printf("Progresso: %d/%d requisições concluídas%n", numeroRequisicao, NUMERO_PRODUTOS);
+                        System.out.println("Partindo para a próxima requisição...");
+                        System.out.println("------------------------------------------");
+                    }
                     
                     return new ResultadoRequisicao(indice, duracaoNS, true, null);
                     
                 } catch (Exception e) {
                     long fimRequisicao = System.nanoTime();
                     long duracaoNS = fimRequisicao - tempoInicioGlobal.get();
+                    double duracaoMS = duracaoNS / 1_000_000.0;
                     
                     int numeroRequisicao = contadorRequisicoes.incrementAndGet();
-                    System.out.printf("Requisição %d/%d falhou: %s%n", 
-                        numeroRequisicao, NUMERO_PRODUTOS, e.getMessage());
+                    
+                    // Log detalhado de falha com tempo em MS e NS
+                    synchronized (System.out) {
+                        System.out.printf("FALHA - Requisição #%d FALHOU!%n", numeroRequisicao);
+                        System.out.printf("Tempo até falha: %.2f MS (%,d NS)%n", duracaoMS, duracaoNS);
+                        System.out.printf("Erro: %s%n", e.getMessage());
+                        System.out.printf("Progresso: %d/%d requisições processadas%n", numeroRequisicao, NUMERO_PRODUTOS);
+                        System.out.println("Partindo para a próxima requisição...");
+                        System.out.println("------------------------------------------");
+                    }
                     
                     return new ResultadoRequisicao(indice, duracaoNS, false, e.getMessage());
                 }
@@ -157,6 +176,9 @@ public class TesteConcorrenciaUnificado {
         long fimTestNS = System.nanoTime();
         
         executor.shutdown();
+        
+        System.out.println("TODAS AS 50 REQUISIÇÕES FINALIZADAS!");
+        System.out.println("==========================================");
         
         // Coletar resultados
         List<ResultadoRequisicao> resultados = new ArrayList<>();
@@ -206,9 +228,9 @@ public class TesteConcorrenciaUnificado {
         
         // Métricas de tempo total
         System.out.println("TEMPO TOTAL:");
-        System.out.printf("   • Nanossegundos: %,d NS%n", duracaoTotalNS);
-        System.out.printf("   • Milissegundos: %.2f MS%n", duracaoTotalMS);
-        System.out.printf("   • Segundos: %.3f S%n", duracaoTotalS);
+        System.out.printf("Nanossegundos: %,d NS%n", duracaoTotalNS);
+        System.out.printf("Milissegundos: %.2f MS%n", duracaoTotalMS);
+        System.out.printf("Segundos: %.3f S%n", duracaoTotalS);
         
         // Taxa de sucesso
         System.out.printf("\nSUCESSOS: %d/%d (%.1f%%)%n", sucessos, NUMERO_PRODUTOS, (sucessos * 100.0) / NUMERO_PRODUTOS);

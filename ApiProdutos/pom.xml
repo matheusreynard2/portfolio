@@ -143,12 +143,7 @@
       <artifactId>postgresql</artifactId>
       <scope>runtime</scope>
     </dependency>
-    <dependency>
-        <groupId>org.projectlombok</groupId>
-        <artifactId>lombok</artifactId>
-        <version>1.18.26</version><!--$NO-MVN-MAN-VER$-->
-        <scope>provided</scope>
-    </dependency>
+
 
     <dependency>
   		<groupId>org.springframework.boot</groupId>
@@ -172,18 +167,7 @@
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-test</artifactId>
-    </dependency>
-    
-    <dependency>
-        <groupId>org.junit.jupiter</groupId>
-        <artifactId>junit-jupiter-api</artifactId>
-        <version>5.7.0</version><!--$NO-MVN-MAN-VER$--> <!-- Ou a versão mais recente -->
-    </dependency>
-
-    <dependency>
-        <groupId>org.junit.jupiter</groupId>
-        <artifactId>junit-jupiter-engine</artifactId>
-        <version>5.7.0</version><!--$NO-MVN-MAN-VER$--> <!-- Ou a versão mais recente -->
+      <scope>test</scope>
     </dependency>
 
 	<dependency>

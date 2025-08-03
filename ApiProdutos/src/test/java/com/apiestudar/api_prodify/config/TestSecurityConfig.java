@@ -21,21 +21,14 @@ public class TestSecurityConfig {
     public SecurityFilterChain testSecurityFilterChain(HttpSecurity http) throws Exception {
         http
             .csrf(csrf -> csrf.disable())
+            .cors(cors -> cors.disable()) // Desabilitar CORS também
             .headers(headers -> headers.frameOptions().disable()) // Para H2 Console
-            .authorizeHttpRequests(auth -> auth
-                .requestMatchers(new AntPathRequestMatcher("/h2-console/**")).permitAll()
-                .requestMatchers(new AntPathRequestMatcher("/api/**")).permitAll()
-                .requestMatchers(HttpMethod.POST, "/api/fornecedores/adicionarFornecedor/**").permitAll()
-                .requestMatchers(HttpMethod.GET, "/api/produtos/efetuarPesquisa**").permitAll()
-                .requestMatchers(HttpMethod.GET, "/api/produtos/listarProdutos**").permitAll()
-                .requestMatchers(HttpMethod.POST, "/api/produtos/adicionarProduto**").permitAll()
-                .requestMatchers(HttpMethod.PUT, "/api/produtos/atualizarProduto/{id}").permitAll()
-                .requestMatchers(HttpMethod.DELETE, "/api/produtos/deletarProduto/{id}").permitAll()
-                
-                .anyRequest().permitAll()
-            )
             .sessionManagement(session -> session
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+            )
+            .oauth2ResourceServer(oauth2 -> oauth2.disable()) // Desabilitar OAuth2
+            .authorizeHttpRequests(auth -> auth
+                .anyRequest().permitAll() // Permitir TODAS as requisições
             );
         
         return http.build();
