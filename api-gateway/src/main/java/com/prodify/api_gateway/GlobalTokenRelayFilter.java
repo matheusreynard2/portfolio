@@ -24,7 +24,6 @@ import reactor.core.publisher.Mono;
 @Component
 public class GlobalTokenRelayFilter implements GlobalFilter, Ordered {
 
-    // Secret JWT - DEVE SER O MESMO EM TODOS OS MICROSSERVIÇOS
     private static final String JWT_SECRET = "VGhpc0lzQVNlY3VyZVNlY3JldEtleTIwMjU=";
 
     private static final List<String> PUBLIC_ENDPOINTS = List.of(
@@ -34,9 +33,21 @@ public class GlobalTokenRelayFilter implements GlobalFilter, Ordered {
         "/api/usuarios/adicionarUsuario"
     );
 
+    private static final List<String> ALLOWED_ORIGINS = List.of(
+    "http://localhost:4200",
+    "http://localhost:3000",
+    "http://localhost:8080",
+    "http://localhost:8081",
+    "http://localhost:8082",
+    "https://www.sistemaprodify.com"
+);
+
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, org.springframework.cloud.gateway.filter.GatewayFilterChain chain) {
         String path = exchange.getRequest().getURI().getPath();
+
+        // Adiciona CORS para todas as respostas
+        //addCorsHeaders(exchange);
 
         // Ignorar autenticação para endpoints públicos
         if (PUBLIC_ENDPOINTS.stream().anyMatch(path::startsWith)) {
@@ -53,24 +64,13 @@ public class GlobalTokenRelayFilter implements GlobalFilter, Ordered {
             System.out.println("[API Gateway] Token extraído: " + token);
 
             try {
-                // Primeiro, vamos decodificar o token sem verificar para ver o conteúdo
                 DecodedJWT decodedJWT = JWT.decode(token);
-                System.out.println("[API Gateway] Token Header: " + decodedJWT.getHeader());
-                System.out.println("[API Gateway] Token Payload: " + decodedJWT.getPayload());
-                System.out.println("[API Gateway] Token Issuer: " + decodedJWT.getIssuer());
-                System.out.println("[API Gateway] Token Subject: " + decodedJWT.getSubject());
-                System.out.println("[API Gateway] Token Expires At: " + decodedJWT.getExpiresAt());
 
-                // Verificar se o token tem a estrutura correta
                 if (!"AppProdify".equals(decodedJWT.getIssuer())) {
                     System.err.println("[API Gateway] Token com issuer incorreto: " + decodedJWT.getIssuer());
                     return createErrorResponse(exchange, "Token com issuer incorreto");
                 }
 
-                // Agora vamos validar o token com o secret correto
-                System.out.println("[API Gateway] Validando token com secret: " + JWT_SECRET);
-                System.out.println("[API Gateway] Secret decodificado: " + new String(Base64.getDecoder().decode(JWT_SECRET)));
-                
                 JWT.require(Algorithm.HMAC256(JWT_SECRET))
                     .withIssuer("AppProdify")
                     .build()
@@ -78,7 +78,6 @@ public class GlobalTokenRelayFilter implements GlobalFilter, Ordered {
 
                 System.out.println("[API Gateway] Token válido! Repassando para o serviço...");
 
-                // Repassa o token
                 ServerHttpRequest mutated = exchange.getRequest().mutate()
                         .header(HttpHeaders.AUTHORIZATION, authHeader)
                         .build();
@@ -87,44 +86,36 @@ public class GlobalTokenRelayFilter implements GlobalFilter, Ordered {
 
             } catch (TokenExpiredException e) {
                 System.err.println("[API Gateway] Token expirado: " + e.getMessage());
-                // Estrutura de erro esperada pelo frontend
-                String body = "{\"status\": 401, \"error\": {\"message\": \"Tempo limite de conexão com o sistema excedido. TOKEN Expirado\"}}";
+                return createErrorResponse(exchange, "Tempo limite de conexão com o sistema excedido. TOKEN Expirado");
 
-                exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
-                exchange.getResponse().getHeaders().setContentType(MediaType.APPLICATION_JSON);
-                byte[] bytes = body.getBytes(StandardCharsets.UTF_8);
-
-                return exchange.getResponse().writeWith(Mono.just(exchange.getResponse()
-                        .bufferFactory().wrap(bytes)));
             } catch (SignatureVerificationException e) {
-                // Retornar erro específico para assinatura inválida
-                String body = "{\"status\": 401, \"error\": {\"message\": \"Tempo limite de conexão com o sistema excedido. TOKEN Expirado\"}}";
-                
-                exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
-                exchange.getResponse().getHeaders().setContentType(MediaType.APPLICATION_JSON);
-                byte[] bytes = body.getBytes(StandardCharsets.UTF_8);
+                return createErrorResponse(exchange, "Token com assinatura inválida");
 
-                return exchange.getResponse().writeWith(Mono.just(exchange.getResponse()
-                        .bufferFactory().wrap(bytes)));
             } catch (Exception e) {
-                // Log do erro para debug
                 System.err.println("[API Gateway] Erro na validação do token: " + e.getClass().getSimpleName() + " - " + e.getMessage());
                 e.printStackTrace();
-                
-                // Estrutura de erro padronizada para token inválido
-                String body = "{\"status\": 401, \"error\": {\"message\": \"Token inválido\"}}";
-                exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
-                exchange.getResponse().getHeaders().setContentType(MediaType.APPLICATION_JSON);
-                byte[] bytes = body.getBytes(StandardCharsets.UTF_8);
-
-                return exchange.getResponse().writeWith(Mono.just(exchange.getResponse()
-                        .bufferFactory().wrap(bytes)));
+                return createErrorResponse(exchange, "Token inválido");
             }
         }
+
         return chain.filter(exchange);
     }
 
+    /*private void addCorsHeaders(ServerWebExchange exchange) {
+        String origin = exchange.getRequest().getHeaders().getOrigin();
+        HttpHeaders headers = exchange.getResponse().getHeaders();
+    
+        if (origin != null && ALLOWED_ORIGINS.contains(origin)) {
+            headers.add("Access-Control-Allow-Origin", origin); // origem dinâmica
+            headers.add("Access-Control-Allow-Credentials", "true");
+            headers.add("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+            headers.add("Access-Control-Allow-Headers", "Origin, Content-Type, Accept, Authorization");
+        }
+    }*/
+
     private Mono<Void> createErrorResponse(ServerWebExchange exchange, String message) {
+        //addCorsHeaders(exchange); // 👈 necessário aqui também
+
         String body = "{\"status\": 401, \"error\": {\"message\": \"" + message + "\"}}";
         exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
         exchange.getResponse().getHeaders().setContentType(MediaType.APPLICATION_JSON);

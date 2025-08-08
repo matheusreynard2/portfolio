@@ -63,11 +63,12 @@ function addToken(request: HttpRequest<unknown>, authService: AuthService): Http
 function addDefaultHeaders(request: HttpRequest<unknown>): HttpRequest<unknown> {
   const headers: { [key: string]: string } = {};
   
-  // Se a requisição for FormData, adiciona Accept mas NÃO define Content-Type
+  // Sempre adiciona headers básicos para CORS
+  headers['Accept'] = 'application/json';
+  
+  // Se a requisição for FormData, NÃO define Content-Type
   // O Angular define automaticamente Content-Type como multipart/form-data para FormData
-  if (request.body instanceof FormData) {
-    headers['Accept'] = 'application/json';
-  } else {
+  if (!(request.body instanceof FormData)) {
     // Só define Content-Type como application/json se NÃO for FormData
     headers['Content-Type'] = 'application/json';
   }
