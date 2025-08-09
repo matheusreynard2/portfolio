@@ -33,21 +33,9 @@ public class GlobalTokenRelayFilter implements GlobalFilter, Ordered {
         "/api/usuarios/adicionarUsuario"
     );
 
-    private static final List<String> ALLOWED_ORIGINS = List.of(
-    "http://localhost:4200",
-    "http://localhost:3000",
-    "http://localhost:8080",
-    "http://localhost:8081",
-    "http://localhost:8082",
-    "https://www.sistemaprodify.com"
-);
-
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, org.springframework.cloud.gateway.filter.GatewayFilterChain chain) {
         String path = exchange.getRequest().getURI().getPath();
-
-        // Adiciona CORS para todas as respostas
-        //addCorsHeaders(exchange);
 
         // Ignorar autenticação para endpoints públicos
         if (PUBLIC_ENDPOINTS.stream().anyMatch(path::startsWith)) {
@@ -101,21 +89,7 @@ public class GlobalTokenRelayFilter implements GlobalFilter, Ordered {
         return chain.filter(exchange);
     }
 
-    /*private void addCorsHeaders(ServerWebExchange exchange) {
-        String origin = exchange.getRequest().getHeaders().getOrigin();
-        HttpHeaders headers = exchange.getResponse().getHeaders();
-    
-        if (origin != null && ALLOWED_ORIGINS.contains(origin)) {
-            headers.add("Access-Control-Allow-Origin", origin); // origem dinâmica
-            headers.add("Access-Control-Allow-Credentials", "true");
-            headers.add("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
-            headers.add("Access-Control-Allow-Headers", "Origin, Content-Type, Accept, Authorization");
-        }
-    }*/
-
     private Mono<Void> createErrorResponse(ServerWebExchange exchange, String message) {
-        //addCorsHeaders(exchange); // 👈 necessário aqui também
-
         String body = "{\"status\": 401, \"error\": {\"message\": \"" + message + "\"}}";
         exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
         exchange.getResponse().getHeaders().setContentType(MediaType.APPLICATION_JSON);

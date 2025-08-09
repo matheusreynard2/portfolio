@@ -40,10 +40,9 @@ public class SecurityConfig {
                 "/v3/api-docs/**",
                 "/swagger-ui.html",
                 "/webjars/**",
-                "/swagger-resources/**",
-                "/chat/**"
+                "/swagger-resources/**"
             ))
-            .csrf(ServerHttpSecurity.CsrfSpec::disable)
+            .csrf(csrf -> csrf.disable())
             .cors(cors -> cors.configurationSource(corsConfigurationSource()))
             .authorizeExchange(ex -> ex.anyExchange().permitAll())
             .build();
@@ -53,7 +52,7 @@ public class SecurityConfig {
     @Order(2)
     public SecurityWebFilterChain secureEndpoints(ServerHttpSecurity http) {
         return http
-            .csrf(ServerHttpSecurity.CsrfSpec::disable)
+            .csrf(csrf -> csrf.disable())
             .cors(cors -> cors.configurationSource(corsConfigurationSource()))
             .authorizeExchange(ex -> ex.anyExchange().authenticated()) // Apenas exige login, sem roles
             .oauth2ResourceServer(oauth2 -> oauth2.jwt(jwt -> jwt.jwtAuthenticationConverter(reactiveJwtAuthenticationConverter()))) // sem conversor
@@ -65,8 +64,8 @@ public class SecurityConfig {
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowedOrigins(List.of(
             "http://localhost:4200", "http://localhost:3000", "http://localhost:8080",
-            "http://localhost:8081", "http://localhost:8082",
-            "https://www.sistemaprodify.com"
+            "http://localhost:8081", "http://localhost:8082", "https://sistemaprodify.com/",
+            "https://www.sistemaprodify.com", "https://sistemaprodify.com"
         ));
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS", "HEAD"));
         config.setAllowedHeaders(List.of("Authorization", "Content-Type"));
