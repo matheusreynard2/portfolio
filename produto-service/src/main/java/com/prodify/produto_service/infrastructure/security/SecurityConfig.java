@@ -19,23 +19,6 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 @EnableWebSecurity
 public class SecurityConfig {
 
-    /*@Bean
-    @Order(1)
-    public SecurityFilterChain publicEndpoints(HttpSecurity http) throws Exception {
-        return http
-            .securityMatcher(
-                "/public/**",
-                "/swagger-ui/**",
-                "/v2/api-docs/**",
-                "/webjars/**",
-                "/swagger-resources/**"
-            )
-            .csrf(csrf -> csrf.disable())
-            .cors(cors -> cors.configurationSource(corsConfigurationSource()))
-            .authorizeHttpRequests(auth -> auth.anyRequest().permitAll())
-            .build();
-    }*/
-
     @Bean
     @Order(1)
     public SecurityFilterChain secureEndpoints(HttpSecurity http) throws Exception {
