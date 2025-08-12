@@ -17,7 +17,6 @@ import org.springframework.security.web.server.SecurityWebFilterChain;
 import org.springframework.security.web.server.util.matcher.ServerWebExchangeMatchers;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.reactive.CorsConfigurationSource;
-import org.springframework.web.cors.reactive.CorsWebFilter;
 import org.springframework.web.cors.reactive.UrlBasedCorsConfigurationSource;
 
 import reactor.core.publisher.Mono;
@@ -42,8 +41,7 @@ public class SecurityConfig {
                 "/v3/api-docs/**",
                 "/swagger-ui.html",
                 "/webjars/**",
-                "/swagger-resources/**",
-                "/chat/**"
+                "/swagger-resources/**"
             ))
             .csrf(csrf -> csrf.disable())
             .cors(cors -> cors.configurationSource(corsConfigurationSource()))
@@ -67,8 +65,8 @@ public class SecurityConfig {
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowedOrigins(List.of(
             "http://localhost:4200", "http://localhost:3000", "http://localhost:8080",
-            "http://localhost:8081", "http://localhost:8082",
-            "https://www.sistemaprodify.com"
+            "http://localhost:8081", "http://localhost:8082", "https://sistemaprodify.com/",
+            "https://www.sistemaprodify.com", "https://sistemaprodify.com"
         ));
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS", "HEAD"));
         config.setAllowedHeaders(List.of("Authorization", "Content-Type"));

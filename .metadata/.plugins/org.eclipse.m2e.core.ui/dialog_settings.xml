@@ -14,9 +14,12 @@
 	</section>
 	<section name="MavenProjectImportWizardPage">
 		<list key="rootDirectory">
+			<item value="/home/matheusreynard/eclipse-workspace/produto-service"/>
+			<item value="/home/matheusreynard/eclipse-workspace/ApiProdutos"/>
+			<item value="/home/matheusreynard/eclipse-workspace/eureka-server"/>
+			<item value="/home/matheusreynard/eclipse-workspace/api-gateway"/>
 			<item value="C:\Users\gradi\eclipse-workspace\eureka-server"/>
 			<item value="C:\Users\gradi\eclipse-workspace\ApiProdutos"/>
-			<item value="/home/matheusreynard/eclipse-workspace/ApiProdutos"/>
 			<item value="C:\Users\gradi\eclipse-workspace\ApiProdutos BACKUP"/>
 		</list>
 		<list key="projectNameTemplate">
