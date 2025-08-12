@@ -20,7 +20,9 @@ public class SecurityConfig {
     public SecurityFilterChain publicEndpoints(HttpSecurity http) throws Exception {
         return http
             .securityMatcher(
-                "/api/usuarios/realizarLogin",
+                "/api/auth/realizarLogin",
+                "/api/auth/refresh",
+                "/api/auth/logout",
                 "/api/usuarios/addNovoAcessoIp", 
                 "/api/usuarios/getAllAcessosIp",
                 "/api/usuarios/adicionarUsuario",

@@ -65,27 +65,19 @@ export class LoginComponent implements OnInit {
 
   onSubmit() {
     this.authService.realizarLogin(this.usuario).subscribe({
-      next: (response: UsuarioDTO) => {
-        if (response && response.token) {
-          this.authService.logout(); // Limpa todos os dados do storage
-          this.authService.adicionarUsuarioLogado(response);
-          this.authService.adicionarToken(response.token);
-          this.authService.removerTokenExpirado();
-          this.router.navigate(['/produtos']);
-        }
+      next: (res) => {
+        // recebe accessToken no corpo e cookie HttpOnly de refresh via withCredentials
+        this.authService.setAccessToken(res.accessToken);
+        this.authService.adicionarUsuarioLogado(res.usuario);
+        this.authService.removerTokenExpirado();
+        this.router.navigate(['/produtos']);
       },
       error: (error) => {
-        // Tratamento do erro 401 CREDENCIAIS INVALIDAS
-        if (error.status === 401) {
-          const errorBody = error.error;
-          if (errorBody.erro === 'CREDENCIAIS_INVALIDAS') {
-            setTimeout(() => {
-              this.modalService.open(this.modalMsgCredenciais, {size: 'lg'});
-            }, 100);
-          }
+        if (error.status === 401 && error?.error?.erro === 'CREDENCIAIS_INVALIDAS') {
+          setTimeout(() => this.modalService.open(this.modalMsgCredenciais, { size: 'lg' }), 100);
         }
       }
-    })
+    });
   }
 
   toggleSenha() {

@@ -11,13 +11,10 @@ export const httpInterceptor: HttpInterceptorFn = (
 ): Observable<any> => {
   const authService = inject(AuthService);
   const router = inject(Router);
-  
-  // Adiciona o token apenas se não for um endpoint público
-  if (!isPublicEndpoint(request.url)) {
-    const token = authService.getToken();
-    if (token) {
-      request = addToken(request, authService);
-    }
+  const token = authService.getToken();
+
+  if (token) {
+    request = addToken(request, authService);
   }
   
   request = addDefaultHeaders(request);
@@ -26,10 +23,21 @@ export const httpInterceptor: HttpInterceptorFn = (
     catchError((error: HttpErrorResponse) => {
       // Log do erro
       console.error(`Erro na requisição ${request.method} ${request.url}:`, error);
-
+      
       // Tratamento específico para token expirado
-      if (error.status === 401 && 
-          error.error?.message === 'Tempo limite de conexão com o sistema excedido. TOKEN Expirado') {
+      const message = (
+        (error?.error && typeof error.error === 'string' ? error.error : null) ||
+        error?.error?.error?.message ||
+        error?.error?.mensagem ||
+        error?.error?.message ||
+        error?.message
+      );
+
+      if (
+        error.status === 401 &&
+        message &&
+        (message.includes('TOKEN Expirado') || message.includes('Tempo limite de conexão'))
+      ) {
         handleTokenExpired(authService, router);
       }
       return throwError(() => error);
@@ -39,7 +47,9 @@ export const httpInterceptor: HttpInterceptorFn = (
 
 function isPublicEndpoint(url: string): boolean {
   const publicEndpoints = [
-    '/api/usuarios/realizarLogin',
+    '/api/auth/realizarLogin',
+    '/api/auth/refresh',
+    '/api/auth/logout',
     '/api/usuarios/addNovoAcessoIp',
     '/api/usuarios/getAllAcessosIp',
     '/api/usuarios/adicionarUsuario'
@@ -50,12 +60,14 @@ function isPublicEndpoint(url: string): boolean {
 
 function addToken(request: HttpRequest<unknown>, authService: AuthService): HttpRequest<unknown> {
   const token = authService.getToken();
+  
   if (token && token.trim() !== '') {
-    return request.clone({
+    const requestWithToken = request.clone({
       setHeaders: {
         Authorization: `Bearer ${token}`
       }
     });
+    return requestWithToken;
   }
   return request;
 }
@@ -78,9 +90,12 @@ function addDefaultHeaders(request: HttpRequest<unknown>): HttpRequest<unknown> 
   });
 }
 
-function handleTokenExpired(authService: AuthService, router: Router): void {
+function handleTokenExpired(authService: AuthService, router: Router): void { 
   if (authService.existeToken()) {
     authService.removerToken();
+    authService.adicionarTokenExpirado('true');
+    router.navigate(['/login']);
+  } else {
     authService.adicionarTokenExpirado('true');
     router.navigate(['/login']);
   }

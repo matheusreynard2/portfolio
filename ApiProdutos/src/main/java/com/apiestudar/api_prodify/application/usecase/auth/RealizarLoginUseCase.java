@@ -1,4 +1,4 @@
-package com.apiestudar.api_prodify.application.usecase.usuario;
+package com.apiestudar.api_prodify.application.usecase.auth;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.apiestudar.api_prodify.application.TokenService;
+import com.apiestudar.api_prodify.application.usecase.usuario.UsuarioHelper;
 import com.apiestudar.api_prodify.domain.model.Usuario;
 import com.apiestudar.api_prodify.interfaces.dto.UsuarioDTO;
 import com.apiestudar.api_prodify.shared.exception.CredenciaisInvalidasException;
@@ -34,7 +35,7 @@ public class RealizarLoginUseCase {
 
         if (senhaCriptografada.matches(usuario.getSenha(), senhaArmazenada)) {
             Usuario usuarioLogado = usuarioHelper.findByLogin(usuario.getLogin());
-            String token = tokenService.gerarToken(usuario);
+            String token = tokenService.gerarAccessToken(usuario);
             usuarioLogado.setToken(token);
             return modelMapper.map(usuarioLogado, UsuarioDTO.class);
         } else {

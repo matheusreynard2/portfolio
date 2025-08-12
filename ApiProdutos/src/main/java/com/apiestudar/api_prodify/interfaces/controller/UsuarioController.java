@@ -15,14 +15,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
 import com.apiestudar.api_prodify.application.usecase.usuario.AdicionarUsuarioUseCase;
 import com.apiestudar.api_prodify.application.usecase.usuario.DeletarUsuarioUseCase;
 import com.apiestudar.api_prodify.application.usecase.usuario.ListarUsuariosUseCase;
-import com.apiestudar.api_prodify.application.usecase.usuario.RealizarLoginUseCase;
 import com.apiestudar.api_prodify.application.usecase.usuario.UsuarioHelper;
 import com.apiestudar.api_prodify.interfaces.dto.UsuarioDTO;
 import com.apiestudar.api_prodify.interfaces.dto.UsuarioFormDTO;
@@ -37,8 +34,6 @@ public class UsuarioController {
 
 	private static final Logger log = LoggerFactory.getLogger(UsuarioController.class);
 
-	@Autowired
-	private RealizarLoginUseCase realizarLogin;
 	@Autowired
 	private AdicionarUsuarioUseCase adicionarUsuario;
 	@Autowired
@@ -91,14 +86,5 @@ public class UsuarioController {
 	@DeleteMapping("/deletarUsuario/{id}")
 	public ResponseEntity<Boolean> deletarUsuario(@PathVariable int id) {
 		return ResponseEntity.status(HttpStatus.OK).body(deletarUsuario.executar(id));
-	}
-
-	@Operation(summary = "Realiza um login com auntenticação JWT.", description = "Realiza uma operação de login com autenticação de token via Spring Security - JWT e com senha criptografada.")
-	@ApiResponses({
-		@ApiResponse(responseCode = "200", description = "Login realizado.")
-	})
-	@PostMapping("/realizarLogin")
-	public ResponseEntity<UsuarioDTO> realizarLogin(@RequestBody UsuarioDTO usuarioDTO) {
-		return ResponseEntity.status(HttpStatus.OK).body(realizarLogin.executar(usuarioDTO));
 	}
 }

@@ -5,7 +5,7 @@ import { importProvidersFrom } from '@angular/core';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
 
 import { routes } from './app.routes';
-import {AuthInterceptor} from './auth.interceptor';
+import {AuthInterceptor} from './service/auth/auth.interceptor';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import {environment} from '../environments/environment';
 import {GoogleMapsModule} from '@angular/google-maps';
@@ -58,8 +58,6 @@ export const appConfig: ApplicationConfig = {
     provideZoneChangeDetection({ eventCoalescing: true}),
     importProvidersFrom(HttpClientModule),
     provideAnimationsAsync(),
-    provideHttpClient(
-      withInterceptors([httpInterceptor])
-    )
+    provideHttpClient()
   ]
 };

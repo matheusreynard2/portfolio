@@ -161,6 +161,16 @@
 
   <router-outlet></router-outlet>
 
+  <!-- Toast de redirecionamento -->
+  <ngb-toast
+    *ngIf="showRedirectToast"
+    [autohide]="true"
+    [delay]="1500"
+    class="bg-dark text-white position-fixed bottom-0 end-0 m-3"
+    (hidden)="showRedirectToast = false">
+    {{ toastText }}
+  </ngb-toast>
+
   <div class="bg-dark border border-5 border-secondary position-relative">
     <div class="card-body text-center text-white">
       <div class="bg-gradient p-3">

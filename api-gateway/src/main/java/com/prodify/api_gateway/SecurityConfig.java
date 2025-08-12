@@ -31,7 +31,9 @@ public class SecurityConfig {
     public SecurityWebFilterChain publicEndpoints(ServerHttpSecurity http) {
         return http
             .securityMatcher(ServerWebExchangeMatchers.pathMatchers(
-                "/api/usuarios/realizarLogin",
+                "/api/auth/realizarLogin",
+                "/api/auth/refresh",
+                "/api/auth/logout",
                 "/api/usuarios/addNovoAcessoIp",
                 "/api/usuarios/getAllAcessosIp",
                 "/api/usuarios/adicionarUsuario",
@@ -43,7 +45,7 @@ public class SecurityConfig {
                 "/swagger-resources/**",
                 "/chat/**"
             ))
-            .csrf(ServerHttpSecurity.CsrfSpec::disable)
+            .csrf(csrf -> csrf.disable())
             .cors(cors -> cors.configurationSource(corsConfigurationSource()))
             .authorizeExchange(ex -> ex.anyExchange().permitAll())
             .build();
@@ -53,7 +55,7 @@ public class SecurityConfig {
     @Order(2)
     public SecurityWebFilterChain secureEndpoints(ServerHttpSecurity http) {
         return http
-            .csrf(ServerHttpSecurity.CsrfSpec::disable)
+            .csrf(csrf -> csrf.disable())
             .cors(cors -> cors.configurationSource(corsConfigurationSource()))
             .authorizeExchange(ex -> ex.anyExchange().authenticated()) // Apenas exige login, sem roles
             .oauth2ResourceServer(oauth2 -> oauth2.jwt(jwt -> jwt.jwtAuthenticationConverter(reactiveJwtAuthenticationConverter()))) // sem conversor

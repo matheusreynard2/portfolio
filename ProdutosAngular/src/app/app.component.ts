@@ -2,7 +2,7 @@ import {Component, OnInit, ViewChild} from '@angular/core';
 import {NavigationEnd, Router, RouterLink, RouterOutlet} from '@angular/router';
 import {FormsModule} from '@angular/forms';
 import {HttpClientModule, HttpResponse} from '@angular/common/http';
-import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import {NgbModule, NgbToastModule} from '@ng-bootstrap/ng-bootstrap';
 import {AuthService} from './service/auth/auth.service';
 import {NgClass, NgIf, NgOptimizedImage} from '@angular/common';
 import {filter, firstValueFrom, Observable, of} from 'rxjs';
@@ -13,7 +13,7 @@ import { UsuarioDTO } from './model/dto/UsuarioDTO';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, RouterLink, FormsModule, HttpClientModule, NgbModule, NgIf, NgClass],
+  imports: [RouterOutlet, RouterLink, FormsModule, HttpClientModule, NgbModule, NgbToastModule, NgIf, NgClass],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
 })
@@ -33,11 +33,32 @@ export class AppComponent implements OnInit {
   isMobileOrTablet: boolean = false;
   menuOpen: boolean = false;
 
+  // Toast de redirecionamento
+  showRedirectToast: boolean = false;
+  toastText: string = '';
+
   // Variáveis para contablização de acessos
   carregando: boolean = false;
   erro: string | null = null;
 
   ngOnInit() {
+    // Ao iniciar a aplicação (inclui refresh da página), tenta silenciosamente renovar o access token
+    // Se não conseguir, redireciona para login somente se realmente não houver token válido
+    (async () => {
+      const temToken = this.authService.existeToken();
+      if (!temToken) {
+        const refreshed = await this.authService.trySilentRefresh();
+        if (!refreshed) {
+          this.toastText = 'Redirecionando para a tela de login...';
+          this.showRedirectToast = true;
+          setTimeout(() => {
+            this.router.navigate(['/login']);
+            this.showRedirectToast = false;
+          }, 1500);
+          return;
+        }
+      }
+    })();
     // OBSERVER DE SELEÇÃO DO MENU PARA SABER SE ESTÁ ACESSANDO POR CELULAR/COMPUTADOR
     this.deviceService.isMobileOrTablet.subscribe(isMobile => {
       this.isMobileOrTablet = isMobile;

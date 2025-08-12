@@ -1,12 +1,12 @@
 package com.prodify.api_gateway;
 
 import java.nio.charset.StandardCharsets;
-import java.util.Base64;
 import java.util.List;
 
 import org.springframework.cloud.gateway.filter.GlobalFilter;
 import org.springframework.core.Ordered;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.server.reactive.ServerHttpRequest;
@@ -29,8 +29,10 @@ public class GlobalTokenRelayFilter implements GlobalFilter, Ordered {
     private static final List<String> PUBLIC_ENDPOINTS = List.of(
         "/api/usuarios/addNovoAcessoIp",
         "/api/usuarios/getAllAcessosIp",
-        "/api/usuarios/realizarLogin",
-        "/api/usuarios/adicionarUsuario"
+        "/api/usuarios/adicionarUsuario",
+        "/api/auth/realizarLogin",
+        "/api/auth/refresh",
+        "/api/auth/logout"
     );
 
     private static final List<String> ALLOWED_ORIGINS = List.of(
@@ -46,8 +48,16 @@ public class GlobalTokenRelayFilter implements GlobalFilter, Ordered {
     public Mono<Void> filter(ServerWebExchange exchange, org.springframework.cloud.gateway.filter.GatewayFilterChain chain) {
         String path = exchange.getRequest().getURI().getPath();
 
+        //////////////
         // Adiciona CORS para todas as respostas
-        //addCorsHeaders(exchange);
+       // addCorsHeaders(exchange);
+
+         //Trata preflight OPTIONS imediatamente
+       // if (HttpMethod.OPTIONS.equals(exchange.getRequest().getMethod())) {
+      //      exchange.getResponse().setStatusCode(HttpStatus.OK);
+       //     return exchange.getResponse().setComplete();
+       // }
+///////////////////////////////
 
         // Ignorar autenticação para endpoints públicos
         if (PUBLIC_ENDPOINTS.stream().anyMatch(path::startsWith)) {
@@ -98,23 +108,27 @@ public class GlobalTokenRelayFilter implements GlobalFilter, Ordered {
             }
         }
 
-        return chain.filter(exchange);
+        // Se chegou aqui, não tinha Authorization header ou não era Bearer
+        System.err.println("[API Gateway] Requisição sem token válido para endpoint protegido: " + path);
+        return createErrorResponse(exchange, "Tempo limite de conexão com o sistema excedido. TOKEN Expirado");
     }
+///////////////////////
+  //  private void addCorsHeaders(ServerWebExchange exchange) {
+      //  String origin = exchange.getRequest().getHeaders().getOrigin();
+     //   HttpHeaders headers = exchange.getResponse().getHeaders();
 
-    /*private void addCorsHeaders(ServerWebExchange exchange) {
-        String origin = exchange.getRequest().getHeaders().getOrigin();
-        HttpHeaders headers = exchange.getResponse().getHeaders();
-    
-        if (origin != null && ALLOWED_ORIGINS.contains(origin)) {
-            headers.add("Access-Control-Allow-Origin", origin); // origem dinâmica
-            headers.add("Access-Control-Allow-Credentials", "true");
-            headers.add("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
-            headers.add("Access-Control-Allow-Headers", "Origin, Content-Type, Accept, Authorization");
-        }
-    }*/
-
+      //  if (origin != null && ALLOWED_ORIGINS.contains(origin)) {
+      //      headers.set("Access-Control-Allow-Origin", origin); // origem dinâmica
+      //      headers.set("Vary", "Origin");
+      //      headers.set("Access-Control-Allow-Credentials", "true");
+      //      headers.set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS, HEAD");
+      //      headers.set("Access-Control-Allow-Headers", "Origin, Content-Type, Accept, Authorization, X-Requested-With");
+     //       headers.set("Access-Control-Expose-Headers", "Authorization, X-Total-Count");
+     //   }
+  //  }
+////////////////////////////
     private Mono<Void> createErrorResponse(ServerWebExchange exchange, String message) {
-        //addCorsHeaders(exchange); // 👈 necessário aqui também
+        //addCorsHeaders(exchange); // garante cabeçalhos CORS nas respostas de erro
 
         String body = "{\"status\": 401, \"error\": {\"message\": \"" + message + "\"}}";
         exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
