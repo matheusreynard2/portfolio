@@ -11,6 +11,7 @@ import {GeolocalizacaoComponent} from './components/geolocalizacao/geolocalizaca
 import {Geolocalizacao2Component} from './components/geolocalizacao/geolocalizacao2.component';
 import {AdicionarFornecedorComponent} from './components/adicionar-fornecedor/adicionar-fornecedor.component';
 import {ListarFornecedorComponent} from './components/listar-fornecedor/listar-fornecedor.component';
+import { PontoVendaComponent } from './components/ponto-venda/ponto-venda.component';
 
 export const routes: Routes = [
   { path: 'produtos', component: ProdutoListComponent, canActivate: [AuthGuard] },
@@ -23,6 +24,7 @@ export const routes: Routes = [
   { path: 'geoloc2', component: Geolocalizacao2Component, canActivate: [AuthGuard]  },
   { path: 'addfornecedor', component: AdicionarFornecedorComponent, canActivate: [AuthGuard]  },
   { path: 'listarfornecedores', component: ListarFornecedorComponent, canActivate: [AuthGuard]  },
+  { path: 'pdv', component: PontoVendaComponent, canActivate: [AuthGuard]  },
   { path: '', redirectTo: '/login', pathMatch: 'full' }
 ];
 

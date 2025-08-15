@@ -75,7 +75,7 @@ public class ListarProdutosUseCase {
 				.whenComplete((ok, ex) -> {
 					long ns = System.nanoTime() - t0;
 					System.out.println("##############################");
-					System.out.printf("######## LISTAR PRODUTOS PAGEABLE %d ns ( %d ms) ########%n", ns, ns / 1_000_000);
+					System.out.printf("### LISTAR PRODUTOS %d ns ( %d ms)%n", ns, ns / 1_000_000);
 					System.out.println("##############################");
 				});
 	}

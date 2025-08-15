@@ -1,0 +1,17 @@
+.table td, .table th {
+  vertical-align: middle;
+}
+
+.card {
+  border-radius: 0.5rem;
+}
+
+.card-header {
+  background: #f8f9fa;
+}
+
+.btn-group .btn {
+  min-width: 34px;
+}
+
+

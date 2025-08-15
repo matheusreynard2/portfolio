@@ -96,10 +96,9 @@ public class PesquisasSearchBarUseCase {
         /*───────── Métrica ─────────*/
         return dtoFuture.whenComplete((r, ex) -> {
             long ns = System.nanoTime() - t0;
-            System.out.println("##############################");
-            System.out.printf("### PESQUISAR PRODUTOS %d ns (≈ %d ms)%n",
-                              ns, ns / 1_000_000);
-            System.out.println("##############################");
+			System.out.println("##############################");
+			System.out.printf("### PESQUISAR PRODUTOS %d ns ( %d ms)%n", ns, ns / 1_000_000);
+			System.out.println("##############################");
         });
     }
 }

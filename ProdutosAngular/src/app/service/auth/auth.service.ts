@@ -17,6 +17,11 @@ export class AuthService {
   private readonly LOGOUT_EM_ANDAMENTO_KEY = 'logoutEmAndamento';
   private readonly authUrl = `${environment.API_URL}/auth`;
 
+  // Controle de atividade e refresh proativo
+  private lastActivityAtMs = Date.now();
+  private proactiveTimer: any = null;
+  private accessTokenExpMs: number | null = null;
+
   constructor(
     private http: HttpClient,
     private router: Router,
@@ -30,6 +35,9 @@ export class AuthService {
 
   setAccessToken(token: string | null): void {
     this.accessToken$.next(token);
+    // Atualiza expiração do token e agenda refresh proativo
+    this.accessTokenExpMs = this.extractExpMs(token);
+    this.ensureProactiveRefreshTimer();
   }
 
   realizarLogin(usuario: UsuarioDTO): Observable<{ accessToken: string; usuario: UsuarioDTO }> {
@@ -108,6 +116,54 @@ export class AuthService {
       return false;
     } catch (_) {
       return false;
+    }
+  }
+
+  // ================== Atividade e Refresh Proativo ==================
+  initActivityMonitor(): void {
+    const mark = () => {
+      this.lastActivityAtMs = Date.now();
+    };
+    window.addEventListener('click', mark);
+    window.addEventListener('keydown', mark);
+    window.addEventListener('mousemove', mark);
+    window.addEventListener('touchstart', mark);
+  }
+
+  isUserActiveWithin(ms: number): boolean {
+    return Date.now() - this.lastActivityAtMs <= ms;
+  }
+
+  private ensureProactiveRefreshTimer(): void {
+    if (this.proactiveTimer) {
+      clearInterval(this.proactiveTimer);
+      this.proactiveTimer = null;
+    }
+    // Checa a cada 60s
+    this.proactiveTimer = setInterval(async () => {
+      const token = this.getAccessToken();
+      if (!token || !this.accessTokenExpMs) return;
+      const msLeft = this.accessTokenExpMs - Date.now();
+      // Se faltam < 2min e houve atividade no último 1min, tenta refresh silencioso
+      if (msLeft > 0 && msLeft < 120_000 && this.isUserActiveWithin(60_000)) {
+        await this.trySilentRefresh();
+      }
+    }, 60_000);
+  }
+
+  // EXTRAIR TEMPO DE EXPIRAÇÃO DO TOKEN
+  private extractExpMs(token: string | null): number | null {
+    if (!token) return null;
+    try {
+      const payload = token.split('.')[1];
+      const base64 = payload.replace(/-/g, '+').replace(/_/g, '/');
+      const json = JSON.parse(atob(base64));
+      if (json && typeof json.exp === 'number') {
+        return json.exp * 1000;
+      }
+      return null;
+    } catch {
+      return null;
     }
   }
 }

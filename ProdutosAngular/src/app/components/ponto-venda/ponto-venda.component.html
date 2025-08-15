@@ -1,0 +1,209 @@
+<div class="container my-4">
+  <div class="row">
+    <!-- Lista de Produtos -->
+    <div class="col-md-7">
+      <div class="card">
+        <div class="card-header d-flex justify-content-between align-items-center">
+          <h5 class="mb-0">Produtos</h5>
+          <input class="form-control" style="width: 250px" placeholder="Filtrar por nome/descrição" [(ngModel)]="filtro" (input)="aplicarFiltro()" />
+        </div>
+        <div class="card-body p-2">
+          <div class="mb-2 d-flex align-items-center gap-3">
+            <label class="mb-0 fw-bold">Preço exibido/cálculo:</label>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="modoPreco" id="precoInicial" [checked]="modoPreco === 'valorInicial'" (change)="selecionarModoPreco('valorInicial')">
+              <label class="form-check-label" for="precoInicial">Valor inicial</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="modoPreco" id="precoDesc" [checked]="modoPreco === 'valorTotalDesc'" (change)="selecionarModoPreco('valorTotalDesc')">
+              <label class="form-check-label" for="precoDesc">Com desconto</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="modoPreco" id="precoFrete" [checked]="modoPreco === 'somaTotalValores'" (change)="selecionarModoPreco('somaTotalValores')">
+              <label class="form-check-label" for="precoFrete">Total com frete</label>
+            </div>
+          </div>
+        </div>
+        <div class="card-body p-0">
+          <table class="table table-striped mb-0">
+            <thead>
+              <tr>
+                <th>Nome</th>
+                <th>Descrição</th>
+                <th class="text-end">Valor</th>
+                <th class="text-center">Ações</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let p of produtosFiltrados">
+                <td>{{ p.nome }}</td>
+                <td>{{ p.descricao }}</td>
+                <td class="text-end">{{ obterPreco(p) | currency:'BRL':'symbol':'1.2-2' }}</td>
+                <td class="text-center">
+                  <button class="btn btn-sm btn-primary" (click)="adicionarNoCaixa(p)">Adicionar</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- Caixa -->
+    <div class="col-md-5">
+      <div class="card">
+        <div class="card-header d-flex justify-content-between align-items-center">
+          <h5 class="mb-0">Caixa</h5>
+          <div>
+            <button class="btn btn-success me-2" [disabled]="caixa.length === 0" (click)="salvarCaixa()">Salvar</button>
+            <button class="btn btn-outline-primary" [disabled]="!finalizarHabilitado" (click)="finalizarVenda()">Finalizar</button>
+          </div>
+        </div>
+        <div class="card-body p-0">
+          <table class="table table-hover mb-0" *ngIf="caixa.length > 0; else caixaVazio">
+            <thead>
+              <tr>
+                <th>Produto</th>
+                <th class="text-center">Qtd</th>
+                <th class="text-end">Subtotal</th>
+                <th class="text-center">Ações</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of caixa">
+                <td>
+                  <div class="fw-bold">{{ getNomeProduto(item) }}</div>
+                  <small class="text-muted">{{ getDescricaoProduto(item) }}</small>
+                </td>
+                <td class="text-center">
+                  <div class="btn-group" role="group">
+                    <button class="btn btn-sm btn-outline-secondary" (click)="alterarQuantidade(item, -1)">-</button>
+                    <span class="px-2">{{ item.quantidade }}</span>
+                    <button class="btn btn-sm btn-outline-secondary" (click)="alterarQuantidade(item, 1)">+</button>
+                  </div>
+                </td>
+                <td class="text-end">{{ (obterPrecoItem(item) * item.quantidade) | currency:'BRL':'symbol':'1.2-2' }}</td>
+                <td class="text-center">
+                  <button class="btn btn-sm btn-outline-danger" (click)="removerDoCaixa(item)">Remover</button>
+                </td>
+              </tr>
+            </tbody>
+            <tfoot>
+              <tr>
+                <th>Total</th>
+                <th class="text-center">{{ totalQuantidade }}</th>
+                <th class="text-end">{{ totalValor | currency:'BRL':'symbol':'1.2-2' }}</th>
+                <th></th>
+              </tr>
+            </tfoot>
+          </table>
+          <ng-template #caixaVazio>
+            <div class="p-3 text-center text-muted">Nenhum produto no caixa.</div>
+          </ng-template>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Histórico de vendas (apenas registros com histórico) -->
+<div class="container my-4">
+  <div class="card">
+    <div class="card-header d-flex justify-content-between align-items-center">
+      <h5 class="mb-0">Histórico de Vendas</h5>
+    </div>
+    <div class="card-body p-0">
+      <table class="table table-striped mb-0" *ngIf="historicoVendas.length > 0; else semHistorico">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>ID Usuário</th>
+            <th class="text-center">Total Qtd</th>
+            <th class="text-end">Total Valor</th>
+            <th class="text-center">Ações</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let v of historicoVendas">
+            <td>{{ v.id }}</td>
+            <td>{{ v.idUsuario }}</td>
+            <td class="text-center">{{ v.totalQuantidade }}</td>
+            <td class="text-end">{{ v.totalValor | currency:'BRL':'symbol':'1.2-2' }}</td>
+            <td class="text-center">
+              <button class="btn btn-sm btn-outline-primary" (click)="visualizarHistorico(v)">Visualizar</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <ng-template #semHistorico>
+        <div class="p-3 text-center text-muted">Não há vendas finalizadas no histórico.</div>
+      </ng-template>
+    </div>
+  </div>
+</div>
+
+<!-- Toast de salvar venda -->
+<ngb-toast *ngIf="showSaveToast" [autohide]="true" [delay]="2000"
+           class="bg-dark text-white position-fixed shadow"
+           style="top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 1080;"
+           (hidden)="showSaveToast = false">
+  {{ saveToastText }}
+  </ngb-toast>
+
+<!-- Modal de sucesso ao finalizar -->
+<ng-template #modalVendaSucessoTmpl let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title">Venda finalizada</h5>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modal.close()"></button>
+  </div>
+  <div class="modal-body">
+    <p *ngIf="lastVendaResumo">Venda ID {{ this.lastVendaResumo.id }} finalizada com sucesso.</p>
+    <p *ngIf="lastVendaResumo">Total de itens: {{ this.lastVendaResumo.totalQuantidade }}</p>
+    <p *ngIf="lastVendaResumo">Valor total: {{ this.lastVendaResumo.totalValor | currency:'BRL':'symbol':'1.2-2' }}</p>
+  </div>
+  <div class="modal-footer">
+    <button class="btn btn-secondary" (click)="modal.close()">Fechar</button>
+  </div>
+</ng-template>
+
+<!-- Modal de Visualização de Venda do Histórico -->
+<ng-template #modalVisualizarVenda let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title">Detalhes da venda #{{ vendaParaVisualizar?.id }}</h5>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modal.close()"></button>
+  </div>
+  <div class="modal-body">
+    <table class="table table-striped mb-0" *ngIf="itensVisualizacao.length > 0; else semItens">
+      <thead>
+        <tr>
+          <th>Produto</th>
+          <th>Descrição</th>
+          <th class="text-end">Valor</th>
+          <th class="text-center">Qtd</th>
+          <th class="text-end">Subtotal</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let iv of itensVisualizacao">
+          <td>{{ iv.produto?.nome }}</td>
+          <td><small class="text-muted">{{ iv.produto?.descricao }}</small></td>
+          <td class="text-end">{{ iv.precoUnit | currency:'BRL':'symbol':'1.2-2' }}</td>
+          <td class="text-center">{{ iv.item.quantidade }}</td>
+          <td class="text-end">{{ iv.subtotal | currency:'BRL':'symbol':'1.2-2' }}</td>
+        </tr>
+      </tbody>
+    </table>
+    <ng-template #semItens>
+      <div class="p-3 text-center text-muted">Esta venda não possui itens registrados.</div>
+    </ng-template>
+  </div>
+  <div class="modal-footer">
+    <div class="me-auto">
+      <span class="fw-bold">Total Qtd: </span>{{ vendaParaVisualizar?.totalQuantidade }}
+      <span class="ms-3 fw-bold">Total: </span>{{ vendaParaVisualizar?.totalValor | currency:'BRL':'symbol':'1.2-2' }}
+    </div>
+    <button class="btn btn-secondary" (click)="modal.close()">Fechar</button>
+  </div>
+</ng-template>
+
+

@@ -42,23 +42,16 @@ export class AppComponent implements OnInit {
   erro: string | null = null;
 
   ngOnInit() {
-    // Ao iniciar a aplicação (inclui refresh da página), tenta silenciosamente renovar o access token
-    // Se não conseguir, redireciona para login somente se realmente não houver token válido
-    (async () => {
-      const temToken = this.authService.existeToken();
-      if (!temToken) {
-        const refreshed = await this.authService.trySilentRefresh();
-        if (!refreshed) {
-          this.toastText = 'Redirecionando para a tela de login...';
-          this.showRedirectToast = true;
-          setTimeout(() => {
-            this.router.navigate(['/login']);
-            this.showRedirectToast = false;
-          }, 1500);
-          return;
-        }
-      }
-    })();
+      // Inicia monitoramento de atividade para refresh proativo
+      this.authService.initActivityMonitor();
+      const navEntry = (performance.getEntriesByType('navigation')[0] as PerformanceNavigationTiming | undefined);
+      const isReload = navEntry && 'type' in navEntry ? navEntry.type === 'reload' : false;
+      this.toastText = isReload ? 'Redirecionando para a tela de login...' : '';
+      this.showRedirectToast = true;
+      setTimeout(() => {
+        this.router.navigate(['/login']);
+        this.showRedirectToast = false;
+      }, 2000);
     // OBSERVER DE SELEÇÃO DO MENU PARA SABER SE ESTÁ ACESSANDO POR CELULAR/COMPUTADOR
     this.deviceService.isMobileOrTablet.subscribe(isMobile => {
       this.isMobileOrTablet = isMobile;

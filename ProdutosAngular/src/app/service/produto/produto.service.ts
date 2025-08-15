@@ -26,6 +26,16 @@ export class ProdutoService extends HttpBaseService {
     this.fornecedorUrl = environment.API_URL + '/fornecedores';
   }
 
+  salvarCaixa(payload: any): Observable<void> {
+    return this.http.post<void>(`${this.produtosUrl}/salvarCaixa`, payload)
+      .pipe(catchError(error => this.catchErrorTokenExpirado(error)));
+  }
+
+  finalizarCaixa(payload: any): Observable<void> {
+    return this.http.post<void>(`${this.produtosUrl}/finalizarCaixa`, payload)
+      .pipe(catchError(error => this.catchErrorTokenExpirado(error)));
+  }
+
   acessarPaginaCadastro(): Observable<any> {
     return this.http.get<any>(this.produtosUrl + "/acessarPaginaCadastro")
       .pipe(catchError(error => this.catchErrorTokenExpirado(error)));

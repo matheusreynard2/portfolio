@@ -30,7 +30,7 @@ public class CalculosSobreProdutosUseCase {
 		Helper.verificarNull(idUsuario);
 		long ns = System.nanoTime() - t0;
 		System.out.println("##############################");
-		System.out.printf("### LISTAR PRODUTO MAIS CARO %d ns ( %d ms)%n", ns, ns / 1_000_000);
+		System.out.printf("### PRODUTO MAIS CARO %d ns ( %d ms)%n", ns, ns / 1_000_000);
 		System.out.println("##############################");
 		return produto;
 	}
@@ -45,7 +45,7 @@ public class CalculosSobreProdutosUseCase {
 			       .orElse(0.0);
 		long ns = System.nanoTime() - t0;
 		System.out.println("##############################");
-		System.out.printf("### OBTER MEDIA PRECO %d ns ( %d ms)%n", ns, ns / 1_000_000);
+		System.out.printf("### MEDIA PRECO %d ns ( %d ms)%n", ns, ns / 1_000_000);
 		System.out.println("##############################");
 		return media;
 	}
@@ -70,12 +70,9 @@ public class CalculosSobreProdutosUseCase {
         /* log de desempenho, padrão dos últimos códigos */
         return futuro.whenComplete((r, ex) -> {
             long ns = System.nanoTime() - t0;
-            System.out.printf(
-                "########## DESCONTO CALCULADO ##########%n" +
-                "VALOR FINAL: %.2f%n" +
-                "TEMPO PROCESSAMENTO: %d ns ( %d ms)%n" +
-                "########################################%n",
-                r, ns, ns / 1_000_000);
+			System.out.println("##############################");
+			System.out.printf("### CALCULAR DESCONTO %d ns ( %d ms)%n", ns, ns / 1_000_000);
+			System.out.println("##############################");
         });
     }
 }

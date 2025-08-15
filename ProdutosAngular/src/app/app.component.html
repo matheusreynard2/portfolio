@@ -61,6 +61,9 @@
               </div>
             </li>
             <li class="list-inline-item">
+              <a routerLink="/pdv" class="btn btn-outline-secondary fw-bold">Ponto de venda</a>
+            </li>
+            <li class="list-inline-item">
               <a routerLink="/sobreTab1" class="btn btn-outline-secondary fw-bold">Sobre</a>
             </li>
             <li class="list-inline-item">
@@ -108,6 +111,9 @@
                     <a routerLink="/addproduto" (click)="abrirFecharMenu()">Cadastrar produto</a>
                   </li>
                 </ul>
+              </li>
+              <li>
+                <a routerLink="/pdv" (click)="abrirFecharMenu()">Ponto de venda</a>
               </li>
 
               <!-- Submenu Fornecedores -->
@@ -161,12 +167,13 @@
 
   <router-outlet></router-outlet>
 
-  <!-- Toast de redirecionamento -->
+  <!-- Toast de redirecionamento (logo abaixo do banner, um pouco acima do centro) -->
   <ngb-toast
     *ngIf="showRedirectToast"
     [autohide]="true"
     [delay]="1500"
-    class="bg-dark text-white position-fixed bottom-0 end-0 m-3"
+    class="bg-dark text-white position-fixed shadow"
+    style="top: 40%; left: 50%; transform: translate(-50%, -50%); z-index: 1080;"
     (hidden)="showRedirectToast = false">
     {{ toastText }}
   </ngb-toast>

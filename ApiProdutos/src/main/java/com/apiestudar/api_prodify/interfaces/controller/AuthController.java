@@ -63,6 +63,10 @@ public class AuthController {
         ));
     }
 
+    @Operation(summary = "Realiza um refresh do token JWT", description = "Realiza uma operação de atualizar o token JWT para que o usuário continue logado sem a necessidade de fazer login novamente.")
+	@ApiResponses({
+		@ApiResponse(responseCode = "200", description = "Refresh executado com sucesso.")
+	})
     @PostMapping("/refresh")
     public ResponseEntity<?> refresh(@CookieValue("refresh_token") String refreshToken,
                                      HttpServletResponse res) {
@@ -71,6 +75,10 @@ public class AuthController {
         return ResponseEntity.ok(Map.of("accessToken", novoAccess));
     }
 
+    @Operation(summary = "Realiza logout do usuário", description = "Realiza uma operação de logout do usuário do sistema, removendo o token JWT do usuário.")
+	@ApiResponses({
+		@ApiResponse(responseCode = "200", description = "Logout executado com sucesso.")
+	})
     @PostMapping("/logout")
     public ResponseEntity<?> logout(HttpServletResponse res) {
         ResponseCookie expired = ResponseCookie.from("refresh_token", "")

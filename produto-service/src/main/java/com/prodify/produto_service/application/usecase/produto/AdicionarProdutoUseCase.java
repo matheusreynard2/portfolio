@@ -82,8 +82,7 @@ public class AdicionarProdutoUseCase {
         return resultado.whenComplete((ok, ex) -> {
             long ns = System.nanoTime() - t0;
             System.out.println("##############################");
-            System.out.printf("### ADD PRODUTO %d ns ( %d ms)%n",
-                    ns, ns / 1_000_000);
+            System.out.printf("### ADD PRODUTO %d ns ( %d ms)%n", ns, ns / 1_000_000);
             System.out.println("##############################");
         });
     }
