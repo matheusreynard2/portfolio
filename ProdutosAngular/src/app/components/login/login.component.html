@@ -17,23 +17,22 @@
                   <td class="coluna-1">
                     <label for="login">Usuário:</label>
                   </td>
-                  <td colspan="4" class="coluna-2">
+                  <td colspan="3" class="coluna-2">
                     <input type="text" [(ngModel)]="usuario.login"
                            class="form-control"
                            id="login"
                            name="loginUsuario"
                            placeholder="Insira o seu usuário."
                            required #nome="ngModel"
-                           maxlength="30"
-                           style="width: 200px">
+                           maxlength="30">
                   </td>
                 </tr>
                 <tr>
                   <td>
                     <label for="senha">Senha:</label>
                   </td>
-                  <td colspan="4" class="coluna-2">
-                    <div class="input-group" style="width: 200px">
+                  <td colspan="3" class="coluna-2">
+                    <div class="input-group">
                       <input [type]="mostrarSenha ? 'text' : 'password'"
                              [(ngModel)]="usuario.senha"
                              class="form-control"

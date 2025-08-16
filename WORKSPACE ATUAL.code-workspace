@@ -1,0 +1,22 @@
+{
+	"folders": [
+		{
+			"path": "api-gateway"
+		},
+		{
+			"path": "ApiProdutos"
+		},
+		{
+			"path": "eureka-server"
+		},
+		{
+			"path": "ProdutosAngular"
+		},
+		{
+			"path": "produto-service"
+		}
+	],
+	"settings": {
+		"java.configuration.updateBuildConfiguration": "interactive"
+	}
+}

@@ -3,7 +3,7 @@ package com.apiestudar.api_prodify.domain.repository;
 import java.util.List;
 import java.util.Optional;
 
-
+import com.apiestudar.api_prodify.domain.model.HistoricoVenda;
 import com.apiestudar.api_prodify.domain.model.VendaCaixa;
 
 public interface VendaCaixaRepository {
@@ -19,6 +19,12 @@ public interface VendaCaixaRepository {
     public VendaCaixa adicionarHistorico(VendaCaixa venda);
 
     public List<VendaCaixa> listarVendasComHistorico();
+
+    public void deleteHistoricoByVendaCaixaId(Long vendaCaixaId);
+
+    public Optional<HistoricoVenda> findHistoricoByVendaCaixaId(Long vendaCaixaId);
+    
+    public void deleteCascadeByVendaCaixaId(Long vendaCaixaId);
 
 }
 

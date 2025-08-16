@@ -11,7 +11,8 @@ import org.springframework.http.MediaType;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ServerWebExchange;
-
+import org.springframework.cloud.gateway.filter.GatewayFilterChain
+;
 import com.auth0.jwt.exceptions.TokenExpiredException;
 import com.auth0.jwt.exceptions.SignatureVerificationException;
 import com.auth0.jwt.JWT;
@@ -31,15 +32,22 @@ public class GlobalTokenRelayFilter implements GlobalFilter, Ordered {
         "/api/usuarios/adicionarUsuario",
         "/api/auth/realizarLogin",
         "/api/auth/refresh",
-        "/api/auth/logout"
+        "/api/auth/logout",
+        // Swagger / OpenAPI endpoints
+        "/swagger-ui",
+        "/swagger-ui.html",
+        "/v2/api-docs",
+        "/v3/api-docs",
+        "/swagger-resources",
+        "/webjars"
     );
 
     @Override
-    public Mono<Void> filter(ServerWebExchange exchange, org.springframework.cloud.gateway.filter.GatewayFilterChain chain) {
+    public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
         String path = exchange.getRequest().getURI().getPath();
 
         // Ignorar autenticação para endpoints públicos
-        if (PUBLIC_ENDPOINTS.stream().anyMatch(path::startsWith)) {
+        if (PUBLIC_ENDPOINTS.stream().anyMatch(pub -> path.equals(pub) || path.startsWith(pub + "/") || path.startsWith(pub))) {
             System.out.println("[API Gateway] Endpoint público: " + path);
             return chain.filter(exchange);
         }

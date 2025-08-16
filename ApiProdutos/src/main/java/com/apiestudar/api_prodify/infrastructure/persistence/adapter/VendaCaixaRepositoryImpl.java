@@ -58,4 +58,22 @@ public class VendaCaixaRepositoryImpl implements VendaCaixaRepository {
     public List<VendaCaixa> listarVendasComHistorico() {
         return historicoJpaRepository.findAllVendasReferenciadas();
     }
+
+    @Override
+    public void deleteHistoricoByVendaCaixaId(Long vendaCaixaId) {
+        historicoJpaRepository.deleteHistoricoByVendaCaixaId(vendaCaixaId);
+    }
+
+    @Override
+    public Optional<HistoricoVenda> findHistoricoByVendaCaixaId(Long vendaCaixaId) {
+        return historicoJpaRepository.findHistoricoByVendaCaixaId(vendaCaixaId);
+    }
+
+    public void deleteCascadeByVendaCaixaId(Long vendaCaixaId) {
+        if (vendaCaixaId != null) {
+            historicoJpaRepository.deleteHistoricoByVendaCaixaId(vendaCaixaId);
+            historicoJpaRepository.deleteItensByVendaCaixaId(vendaCaixaId);
+            historicoJpaRepository.deleteVendaCaixaById(vendaCaixaId);
+        }
+    }
 }

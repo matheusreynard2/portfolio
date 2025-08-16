@@ -4,6 +4,7 @@ p {
 
 .container {
   width: 100%;
+  max-width: 100% !important;
   margin: 0 auto;
   overflow-x: auto;
 }
@@ -36,13 +37,32 @@ p {
 }
 
 .table {
-  width: auto; /* Permite que a tabela se ajuste ao conteúdo */
-  table-layout: auto; /* Usa layout automático */
+  width: 100%;
+  table-layout: fixed;
 }
 
 .table td {
   white-space: nowrap; /* Evita quebra de linha dentro da célula */
   vertical-align: middle; /* Alinha o conteúdo verticalmente */
+}
+
+/* Ajustes específicos da tabela de login para alinhamento completo */
+.div-form-login .table td,
+.div-form-login .table th {
+  white-space: normal; /* permite quebra nas células do formulário de login */
+}
+
+.div-form-login .coluna-1 {
+  width: 25%;
+}
+
+.div-form-login .coluna-2 {
+  width: 75%;
+}
+
+.div-form-login .form-control,
+.div-form-login .input-group {
+  width: 100% !important; /* inputs e grupos ocupam toda a largura da coluna */
 }
 
 .maps-info-card, p {

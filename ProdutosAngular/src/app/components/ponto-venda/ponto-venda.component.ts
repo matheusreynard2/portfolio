@@ -3,19 +3,21 @@ import { CommonModule, NgForOf, NgIf } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { NgbModule, NgbModal, NgbToastModule } from '@ng-bootstrap/ng-bootstrap';
+import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { ProdutoDTO } from '../../model/dto/ProdutoDTO';
 import { ProdutoService } from '../../service/produto/produto.service';
 import { AuthService } from '../../service/auth/auth.service';
 import { PontoVendaService } from '../../service/ponto-venda/ponto-venda.service';
 import { CaixaItemDTO } from '../../model/dto/CaixaItemDTO';
 import { VendaCaixaDTO } from '../../model/dto/VendaCaixaDTO';
+import { UsuarioDTO } from '../../model/dto/UsuarioDTO';
 
 interface CaixaItem extends CaixaItemDTO {}
 
 @Component({
   selector: 'app-ponto-venda',
   standalone: true,
-  imports: [CommonModule, NgIf, NgForOf, FormsModule, HttpClientModule, NgbModule, NgbToastModule],
+  imports: [CommonModule, NgIf, NgForOf, FormsModule, HttpClientModule, NgbModule, NgbToastModule, MatPaginatorModule],
   templateUrl: './ponto-venda.component.html',
   styleUrls: ['./ponto-venda.component.css']
 })
@@ -25,6 +27,9 @@ export class PontoVendaComponent implements OnInit {
   vendaId: number = 0;
   produtos: ProdutoDTO[] = [];
   produtosFiltrados: ProdutoDTO[] = [];
+  totalRecords: number = 0;
+  currentPage: number = 0;
+  pageSize: number = 4;
   caixa: CaixaItem[] = [];
   totalQuantidade = 0;
   totalValor = 0;
@@ -34,6 +39,7 @@ export class PontoVendaComponent implements OnInit {
   // Modo de preço selecionado: valorInicial | valorTotalDesc | valorTotalFrete
   modoPreco: 'valorInicial' | 'valorTotalDesc' | 'somaTotalValores' = 'valorInicial';
   historicoVendas: any[] = [];
+  usuarioLogin: string = '';
   vendaParaVisualizar: VendaCaixaDTO | null = null;
   itensVisualizacao: { item: CaixaItem; produto?: ProdutoDTO; precoUnit: number; subtotal: number }[] = [];
   // Toast de salvar
@@ -51,12 +57,16 @@ export class PontoVendaComponent implements OnInit {
 
   ngOnInit(): void {
     this.pdvService.acessarPaginaPdv().subscribe();
-    const idUsuario = this.authService.getUsuarioLogado().idUsuario;
+    const usuario = this.authService.getUsuarioLogado();
+    const idUsuario = usuario.idUsuario;
+    this.usuarioLogin = (usuario as UsuarioDTO)?.login;
     // Carrega lista de produtos do usuário
     this.produtoService.listarProdutos(0, 100, idUsuario).subscribe({
       next: (resp: any) => {
         this.produtos = resp?.content ?? [];
         this.produtosFiltrados = this.produtos;
+        this.totalRecords = this.produtosFiltrados.length;
+        this.currentPage = 0;
         // Carrega histórico após carregar a tela
         this.pdvService.listarHistorico().subscribe({
           next: (lista) => this.historicoVendas = lista ?? []
@@ -71,6 +81,8 @@ export class PontoVendaComponent implements OnInit {
       (p.nome?.toLowerCase().includes(f) ||
        p.descricao?.toLowerCase().includes(f))
     );
+    this.totalRecords = this.produtosFiltrados.length;
+    this.currentPage = 0;
   }
 
   selecionarModoPreco(modo: 'valorInicial' | 'valorTotalDesc' | 'somaTotalValores'): void {
@@ -89,6 +101,16 @@ export class PontoVendaComponent implements OnInit {
     }
     // 'valorTotalFrete'
     return produto.somaTotalValores ?? fallback;
+  }
+
+  get produtosPagina(): ProdutoDTO[] {
+    const inicio = this.currentPage * this.pageSize;
+    return this.produtosFiltrados.slice(inicio, inicio + this.pageSize);
+  }
+
+  trocarPagina(event: PageEvent): void {
+    this.currentPage = event.pageIndex;
+    this.pageSize = event.pageSize;
   }
 
   adicionarNoCaixa(produto: ProdutoDTO): void {
@@ -247,6 +269,34 @@ export class PontoVendaComponent implements OnInit {
     if (this.modalVisualizarVenda) {
       this.modalService.open(this.modalVisualizarVenda, { size: 'lg' });
     }
+  }
+
+  @ViewChild('modalConfirmDelete') modalConfirmDelete!: TemplateRef<any>;
+  vendaParaExcluir: any | null = null;
+
+  abrirModalExcluir(v: any): void {
+    if (!v?.id) return;
+    this.vendaParaExcluir = v;
+    this.modalService.open(this.modalConfirmDelete, { size: 'sm' });
+  }
+
+  confirmarExclusao(modalRef: any): void {
+    if (!this.vendaParaExcluir?.id) { modalRef.dismiss(); return; }
+    const id = this.vendaParaExcluir.id;
+    this.pdvService.excluirHistorico(id).subscribe({
+      next: () => {
+        this.historicoVendas = this.historicoVendas.filter(h => h.id !== id);
+        this.vendaParaExcluir = null;
+        modalRef.close();
+      },
+      error: () => {
+        this.pdvService.listarHistorico().subscribe({
+          next: (lista) => this.historicoVendas = lista ?? []
+        });
+        this.vendaParaExcluir = null;
+        modalRef.dismiss();
+      }
+    });
   }
 }
 

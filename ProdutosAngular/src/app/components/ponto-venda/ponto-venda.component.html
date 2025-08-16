@@ -35,16 +35,24 @@
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let p of produtosFiltrados">
+              <tr *ngFor="let p of produtosPagina">
                 <td>{{ p.nome }}</td>
                 <td>{{ p.descricao }}</td>
                 <td class="text-end">{{ obterPreco(p) | currency:'BRL':'symbol':'1.2-2' }}</td>
                 <td class="text-center">
-                  <button class="btn btn-sm btn-primary" (click)="adicionarNoCaixa(p)">Adicionar</button>
+                  <button class="btn btn-sm btn-primary" (click)="adicionarNoCaixa(p)">+</button>
                 </td>
               </tr>
             </tbody>
           </table>
+        </div>
+        <div class="card-body pt-2 pb-3 d-flex justify-content-center">
+          <mat-paginator [length]="totalRecords"
+                         [pageSize]="pageSize"
+                         [pageIndex]="currentPage"
+                         [pageSizeOptions]="[4]"
+                         (page)="trocarPagina($event)">
+          </mat-paginator>
         </div>
       </div>
     </div>
@@ -117,7 +125,7 @@
         <thead>
           <tr>
             <th>ID</th>
-            <th>ID Usuário</th>
+            <th>Login</th>
             <th class="text-center">Total Qtd</th>
             <th class="text-end">Total Valor</th>
             <th class="text-center">Ações</th>
@@ -126,11 +134,12 @@
         <tbody>
           <tr *ngFor="let v of historicoVendas">
             <td>{{ v.id }}</td>
-            <td>{{ v.idUsuario }}</td>
+            <td>{{ usuarioLogin }}</td>
             <td class="text-center">{{ v.totalQuantidade }}</td>
             <td class="text-end">{{ v.totalValor | currency:'BRL':'symbol':'1.2-2' }}</td>
             <td class="text-center">
-              <button class="btn btn-sm btn-outline-primary" (click)="visualizarHistorico(v)">Visualizar</button>
+              <button class="btn btn-sm btn-outline-primary" (click)="visualizarHistorico(v)" aria-label="Visualizar"><span aria-hidden="true">🔍</span></button>
+              <button class="btn btn-sm btn-outline-danger ms-2" (click)="abrirModalExcluir(v)">X</button>
             </td>
           </tr>
         </tbody>
@@ -163,6 +172,21 @@
   </div>
   <div class="modal-footer">
     <button class="btn btn-secondary" (click)="modal.close()">Fechar</button>
+  </div>
+</ng-template>
+
+<!-- Modal de Confirmação de Exclusão (pequeno) -->
+<ng-template #modalConfirmDelete let-modal>
+  <div class="modal-header py-2">
+    <h6 class="modal-title">Confirmar exclusão</h6>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
+  </div>
+  <div class="modal-body">
+    Tem certeza que deseja excluir a venda do histórico #{{ vendaParaExcluir?.id }}?
+  </div>
+  <div class="modal-footer py-2">
+    <button class="btn btn-sm btn-secondary" (click)="modal.dismiss()">Cancelar</button>
+    <button class="btn btn-sm btn-danger" (click)="confirmarExclusao(modal)">Excluir</button>
   </div>
 </ng-template>
 

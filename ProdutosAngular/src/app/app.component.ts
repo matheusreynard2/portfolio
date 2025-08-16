@@ -46,8 +46,12 @@ export class AppComponent implements OnInit {
       this.authService.initActivityMonitor();
       const navEntry = (performance.getEntriesByType('navigation')[0] as PerformanceNavigationTiming | undefined);
       const isReload = navEntry && 'type' in navEntry ? navEntry.type === 'reload' : false;
-      this.toastText = isReload ? 'Redirecionando para a tela de login...' : '';
-      this.showRedirectToast = true;
+      if (isReload) {
+        this.toastText = 'Redirecionando para a tela de login...';
+        this.showRedirectToast = true;
+      } else {
+        this.showRedirectToast = false; // evita toast vazio no primeiro acesso
+      }
       setTimeout(() => {
         this.router.navigate(['/login']);
         this.showRedirectToast = false;

@@ -183,3 +183,8 @@ google-map {
   border-radius: 4px;
   border: 1px solid #dee2e6;
 }
+
+/* Ajuste para ocupar 100% da largura do site, seguindo o padrão das telas de produtos */
+.container {
+  max-width: 100% !important;
+}

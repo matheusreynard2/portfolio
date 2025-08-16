@@ -14,4 +14,21 @@
   min-width: 34px;
 }
 
+/* Ocupar toda a largura do site (não limitar ao max-width do Bootstrap) */
+.container {
+  width: 100%;
+  max-width: 100% !important;
+  margin: 0 auto;
+}
+
+/* Garantir que as tabelas preencham o espaço e rolem em telas menores */
+.table {
+  width: 100%;
+}
+
+/* Melhor uso do espaço nos cards */
+.card {
+  width: 100%;
+}
+
 

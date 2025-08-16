@@ -39,6 +39,11 @@ export class PontoVendaService extends HttpBaseService {
     return this.http.get<any[]>(`${this.pdvUrl}/listarHistorico`)
       .pipe(catchError(error => this.catchErrorTokenExpirado(error)));
   }
+
+  excluirHistorico(idHistorico: number): Observable<boolean> {
+    return this.http.delete<boolean>(`${this.pdvUrl}/deletarHistorico/${idHistorico}`)
+      .pipe(catchError(error => this.catchErrorTokenExpirado(error)));
+  }
  
 }
 

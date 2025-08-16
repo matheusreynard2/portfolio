@@ -148,3 +148,23 @@
   font-weight: 500;
   padding: 12px 16px;
 }
+
+/* Ajuste para ocupar 100% da largura do site, seguindo o padrão das telas de produtos */
+.container {
+  width: 100%;
+  max-width: 100% !important;
+  margin: 0 auto;
+}
+
+/* Tabelas com rolagem horizontal quando necessário (padrão lista/cadastro) */
+.div-tabela {
+  width: 100%;
+  margin: 0 auto;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.table {
+  min-width: 800px;
+  margin-bottom: 0;
+}
