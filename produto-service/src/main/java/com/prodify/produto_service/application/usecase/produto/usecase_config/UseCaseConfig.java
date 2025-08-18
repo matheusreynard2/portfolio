@@ -10,6 +10,8 @@ import com.prodify.produto_service.application.usecase.produto.BuscarProdutoUseC
 import org.modelmapper.ModelMapper;
 import com.prodify.produto_service.domain.repository.ProdutoRepository;
 import com.prodify.produto_service.domain.repository.UsuarioRepository;
+import com.prodify.produto_service.domain.repository.VendaCaixaRepository;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -39,8 +41,8 @@ public class UseCaseConfig {
     }
 
     @Bean
-    public DeletarProdutoUseCase DeletarProdutoUseCaseConfig(ProdutoRepository repo, ExecutorService dbPool, ModelMapper mapper) {
-        return new DeletarProdutoUseCase(repo, dbPool, mapper);
+    public DeletarProdutoUseCase DeletarProdutoUseCaseConfig(ProdutoRepository repo, VendaCaixaRepository vendaRepo, ExecutorService dbPool) {
+        return new DeletarProdutoUseCase(repo, vendaRepo, dbPool);
     }
 
     @Bean

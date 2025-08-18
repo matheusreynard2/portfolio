@@ -26,6 +26,7 @@ public interface VendaCaixaRepository {
     
     public void deleteCascadeByVendaCaixaId(Long vendaCaixaId);
 
+
 }
 
 

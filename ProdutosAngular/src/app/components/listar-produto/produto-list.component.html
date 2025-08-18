@@ -54,7 +54,7 @@
         </tr>
         </thead>
         <tbody>
-        <tr *ngFor="let produto of listaDeProdutos">
+        <tr *ngFor="let produto of listaDeProdutos" [ngClass]="{'sem-estoque': (produto.quantia || 0) === 0}">
           <td class="text-center coluna_id" style="width: 80px; min-width: 60px; max-width: 100px;">{{ produto.id }}</td>
           <td class="text-left coluna_nome" style="width: 400px; min-width: 200px; max-width: 600px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
             <div class="stat-item">
@@ -431,6 +431,20 @@
   </div>
   <div class="modal-body">
     <a style="font-size: 15px;">Informações atualizadas!</a><br>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="modal.close()">Fechar</button>
+  </div>
+</ng-template>
+
+<!-- Modal de erro ao tentar excluir produto com histórico -->
+<ng-template #modalErroExcluirHistorico let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title">Atenção</h5>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modal.close()"></button>
+  </div>
+  <div class="modal-body">
+    <p>Impossível excluir o produto <b>{{ (produtoExcluido && produtoExcluido.nome) || (produtoAtualizar && produtoAtualizar.nome) }}</b> pois ele possui um histórico relacionado. Exclua o histórico primeiro para poder excluir o produto.</p>
   </div>
   <div class="modal-footer">
     <button type="button" class="btn btn-secondary" (click)="modal.close()">Fechar</button>

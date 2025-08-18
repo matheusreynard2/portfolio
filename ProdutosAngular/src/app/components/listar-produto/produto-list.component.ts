@@ -61,6 +61,7 @@ export class ProdutoListComponent implements OnInit {
   private modalService: NgbModal = new NgbModal();
   @ViewChild('searchBar') searchBar!: ElementRef
   @ViewChild('modalAvisoToken') modalAvisoToken!: ElementRef
+  @ViewChild('modalErroExcluirHistorico') modalErroExcluirHistorico!: ElementRef
   isMobileOrTablet: boolean = false;
   searchValue: string = '';
   searchNomeFornecedor: string = '';
@@ -116,10 +117,18 @@ export class ProdutoListComponent implements OnInit {
         if (response.status === 200) {
           this.produtoExcluido = produto;
           this.abrirTelaExclusao(modalDeletar);
+          this.atualizarLista();
+        }
+      },
+      error: (err) => {
+        const msg: string = (err?.error as string) || '';
+        if (msg.includes('Produto possui histórico de venda relacionado')) {
+          // Exibe modal amigável
+          this.produtoExcluido = produto;
+          this.modalService.open(this.modalErroExcluirHistorico);
         }
       }
     });
-    this.atualizarLista();
   }
 
   // Função para atualizar um produto através do id

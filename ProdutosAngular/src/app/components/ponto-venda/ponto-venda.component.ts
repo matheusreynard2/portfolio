@@ -24,6 +24,7 @@ interface CaixaItem extends CaixaItemDTO {}
 export class PontoVendaComponent implements OnInit {
   @ViewChild('modalVendaSucessoTmpl') modalVendaSucessoTmpl!: TemplateRef<any>;
   @ViewChild('modalVisualizarVenda') modalVisualizarVenda!: TemplateRef<any>;
+  @ViewChild('modalHistorico') modalHistorico!: TemplateRef<any>;
   vendaId: number = 0;
   produtos: ProdutoDTO[] = [];
   produtosFiltrados: ProdutoDTO[] = [];
@@ -47,6 +48,7 @@ export class PontoVendaComponent implements OnInit {
   saveToastText: string = '';
   // Modal de sucesso ao finalizar
   lastVendaResumo: { id: number; totalQuantidade: number; totalValor: number } | null = null;
+  lastVendaItensResumo: { nome: string; quantidade: number; subtotal: number }[] = [];
 
   constructor(
     private produtoService: ProdutoService,
@@ -114,29 +116,53 @@ export class PontoVendaComponent implements OnInit {
   }
 
   adicionarNoCaixa(produto: ProdutoDTO): void {
+    // Impede adicionar além do estoque disponível
+    if ((produto.quantia ?? 0) <= 0) {
+      return;
+    }
     const existente = this.caixa.find(i => i.idProduto === produto.id);
     if (existente) {
       existente.quantidade += 1;
     } else {
       this.caixa.push({ idProduto: produto.id!, quantidade: 1 , tipoPreco: this.modoPreco});
     }
+    // Decrementa o estoque disponível exibido na lista
+    produto.quantia = Math.max(0, (produto.quantia ?? 0) - 1);
     this.recalcularTotais();
-    // estado de finalização será recalculado
   }
 
   removerDoCaixa(item: CaixaItem): void {
     const idx = this.caixa.indexOf(item);
     if (idx >= 0) {
+      // Restaura o estoque disponível para o produto correspondente
+      const prod = this.getProdutoById(item.idProduto);
+      if (prod) {
+        prod.quantia = (prod.quantia ?? 0) + (item.quantidade || 0);
+      }
       this.caixa.splice(idx, 1);
       this.recalcularTotais();
-      // estado de finalização será recalculado
     }
   }
 
   alterarQuantidade(item: CaixaItem, delta: number): void {
-    item.quantidade = Math.max(1, item.quantidade + delta);
+    const prod = this.getProdutoById(item.idProduto);
+    if (!prod) {
+      return;
+    }
+    if (delta > 0) {
+      // Somente incrementa se houver estoque disponível
+      if ((prod.quantia ?? 0) > 0) {
+        item.quantidade += 1;
+        prod.quantia = Math.max(0, (prod.quantia ?? 0) - 1);
+      }
+    } else if (delta < 0) {
+      // Permite decrementar até 1 (para remover totalmente use o botão Remover)
+      if (item.quantidade > 1) {
+        item.quantidade -= 1;
+        prod.quantia = (prod.quantia ?? 0) + 1;
+      }
+    }
     this.recalcularTotais();
-    // estado de finalização será recalculado
   }
 
   private recalcularTotais(): void {
@@ -197,6 +223,17 @@ export class PontoVendaComponent implements OnInit {
           totalQuantidade: this.totalQuantidade,
           totalValor: this.totalValor
         };
+        // Resumo por item da venda (nome, quantidade e subtotal)
+        this.lastVendaItensResumo = (this.caixa || []).map((it) => {
+          const prod = this.getProdutoById(it.idProduto);
+          const nome = prod?.nome ?? '';
+          const precoUnit = prod ? this.obterPreco(prod) : 0;
+          return {
+            nome,
+            quantidade: it.quantidade,
+            subtotal: precoUnit * it.quantidade
+          };
+        });
         // limpa caixa após finalizar
         this.caixa = [];
         this.vendaId = 0;
@@ -209,6 +246,16 @@ export class PontoVendaComponent implements OnInit {
         // Atualiza a lista de histórico após finalizar
         this.pdvService.listarHistorico().subscribe({
           next: (lista) => this.historicoVendas = lista ?? []
+        });
+        // Recarrega o estoque/quantidades da lista de produtos para refletir o backend
+        const idUsuario = this.authService.getUsuarioLogado().idUsuario;
+        this.produtoService.listarProdutos(0, 100, idUsuario).subscribe({
+          next: (resp: any) => {
+            this.produtos = resp?.content ?? [];
+            this.aplicarFiltro(); // reaplica filtro atual
+            this.totalRecords = this.produtosFiltrados.length;
+            this.currentPage = 0;
+          }
         });
       }
     });
@@ -238,6 +285,12 @@ export class PontoVendaComponent implements OnInit {
     });
     if (this.modalVendaSucessoTmpl) {
       // noop; apenas para manter consistência de ViewChild
+    }
+  }
+
+  abrirHistorico(): void {
+    if (this.modalHistorico) {
+      this.modalService.open(this.modalHistorico, { size: 'lg' });
     }
   }
 

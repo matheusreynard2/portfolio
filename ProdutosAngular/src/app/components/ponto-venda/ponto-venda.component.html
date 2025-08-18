@@ -1,8 +1,6 @@
 <div class="container my-4">
-  <div class="row">
-    <!-- Lista de Produtos -->
-    <div class="col-md-7">
-      <div class="card">
+  <!-- Lista de Produtos (ocupando toda a largura) -->
+  <div class="card">
         <div class="card-header d-flex justify-content-between align-items-center">
           <h5 class="mb-0">Produtos</h5>
           <input class="form-control" style="width: 250px" placeholder="Filtrar por nome/descrição" [(ngModel)]="filtro" (input)="aplicarFiltro()" />
@@ -28,19 +26,23 @@
           <table class="table table-striped mb-0">
             <thead>
               <tr>
-                <th>Nome</th>
-                <th>Descrição</th>
+                <th>Produto</th>
                 <th class="text-end">Valor</th>
                 <th class="text-center">Ações</th>
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let p of produtosPagina">
-                <td>{{ p.nome }}</td>
-                <td>{{ p.descricao }}</td>
+              <tr *ngFor="let p of produtosPagina" [ngClass]="{'sem-estoque': (p.quantia || 0) === 0}">
+                <td>
+                  <div class="d-flex justify-content-between align-items-center">
+                    <span>{{ p.nome }}</span>
+                    <small class="text-muted">Qtd disp.: {{ p.quantia || 0 }}</small>
+                  </div>
+                  <div><small class="text-muted">{{ p.descricao }}</small></div>
+                </td>
                 <td class="text-end">{{ obterPreco(p) | currency:'BRL':'symbol':'1.2-2' }}</td>
                 <td class="text-center">
-                  <button class="btn btn-sm btn-primary" (click)="adicionarNoCaixa(p)">+</button>
+                  <button class="btn btn-sm btn-primary" (click)="adicionarNoCaixa(p)" [disabled]="(p.quantia || 0) <= 0">+</button>
                 </td>
               </tr>
             </tbody>
@@ -55,16 +57,15 @@
           </mat-paginator>
         </div>
       </div>
-    </div>
 
-    <!-- Caixa -->
-    <div class="col-md-5">
-      <div class="card">
+  <!-- Caixa (abaixo, ocupando toda a largura) -->
+  <div class="card mt-4">
         <div class="card-header d-flex justify-content-between align-items-center">
           <h5 class="mb-0">Caixa</h5>
           <div>
             <button class="btn btn-success me-2" [disabled]="caixa.length === 0" (click)="salvarCaixa()">Salvar</button>
             <button class="btn btn-outline-primary" [disabled]="!finalizarHabilitado" (click)="finalizarVenda()">Finalizar</button>
+            <button class="btn btn-outline-secondary ms-2" (click)="abrirHistorico()">Histórico de vendas</button>
           </div>
         </div>
         <div class="card-body p-0">
@@ -110,46 +111,46 @@
           </ng-template>
         </div>
       </div>
-    </div>
-  </div>
 </div>
 
-<!-- Histórico de vendas (apenas registros com histórico) -->
-<div class="container my-4">
-  <div class="card">
-    <div class="card-header d-flex justify-content-between align-items-center">
-      <h5 class="mb-0">Histórico de Vendas</h5>
-    </div>
-    <div class="card-body p-0">
-      <table class="table table-striped mb-0" *ngIf="historicoVendas.length > 0; else semHistorico">
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Login</th>
-            <th class="text-center">Total Qtd</th>
-            <th class="text-end">Total Valor</th>
-            <th class="text-center">Ações</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let v of historicoVendas">
-            <td>{{ v.id }}</td>
-            <td>{{ usuarioLogin }}</td>
-            <td class="text-center">{{ v.totalQuantidade }}</td>
-            <td class="text-end">{{ v.totalValor | currency:'BRL':'symbol':'1.2-2' }}</td>
-            <td class="text-center">
-              <button class="btn btn-sm btn-outline-primary" (click)="visualizarHistorico(v)" aria-label="Visualizar"><span aria-hidden="true">🔍</span></button>
-              <button class="btn btn-sm btn-outline-danger ms-2" (click)="abrirModalExcluir(v)">X</button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-      <ng-template #semHistorico>
-        <div class="p-3 text-center text-muted">Não há vendas finalizadas no histórico.</div>
-      </ng-template>
-    </div>
+<!-- Modal: Histórico de vendas -->
+<ng-template #modalHistorico let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title">Histórico de Vendas</h5>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modal.close()"></button>
   </div>
-</div>
+  <div class="modal-body p-0">
+    <table class="table table-striped mb-0" *ngIf="historicoVendas.length > 0; else semHistorico">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Login</th>
+          <th class="text-center">Total Qtd</th>
+          <th class="text-end">Total Valor</th>
+          <th class="text-center">Ações</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let v of historicoVendas">
+          <td>{{ v.id }}</td>
+          <td>{{ usuarioLogin }}</td>
+          <td class="text-center">{{ v.totalQuantidade }}</td>
+          <td class="text-end">{{ v.totalValor | currency:'BRL':'symbol':'1.2-2' }}</td>
+          <td class="text-center">
+            <button class="btn btn-sm btn-outline-primary" (click)="visualizarHistorico(v)" aria-label="Visualizar"><span aria-hidden="true">🔍</span></button>
+            <button class="btn btn-sm btn-outline-danger ms-2" (click)="abrirModalExcluir(v)">X</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <ng-template #semHistorico>
+      <div class="p-3 text-center text-muted">Não há vendas finalizadas no histórico.</div>
+    </ng-template>
+  </div>
+  <div class="modal-footer">
+    <button class="btn btn-secondary" (click)="modal.close()">Fechar</button>
+  </div>
+</ng-template>
 
 <!-- Toast de salvar venda -->
 <ngb-toast *ngIf="showSaveToast" [autohide]="true" [delay]="2000"
@@ -166,9 +167,27 @@
     <button type="button" class="btn-close" aria-label="Close" (click)="modal.close()"></button>
   </div>
   <div class="modal-body">
-    <p *ngIf="lastVendaResumo">Venda ID {{ this.lastVendaResumo.id }} finalizada com sucesso.</p>
-    <p *ngIf="lastVendaResumo">Total de itens: {{ this.lastVendaResumo.totalQuantidade }}</p>
-    <p *ngIf="lastVendaResumo">Valor total: {{ this.lastVendaResumo.totalValor | currency:'BRL':'symbol':'1.2-2' }}</p>
+    <p *ngIf="lastVendaResumo"><b>Venda ID {{ this.lastVendaResumo.id }} finalizada com sucesso.</b></p>
+    <div *ngIf="lastVendaItensResumo && lastVendaItensResumo.length > 0" class="mb-2">
+      <table class="table table-sm mb-2">
+        <thead>
+          <tr>
+            <th>Item</th>
+            <th class="text-center">Quantidade</th>
+            <th class="text-end">Subtotal</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let it of lastVendaItensResumo">
+            <td>{{ it.nome }}</td>
+            <td class="text-center">{{ it.quantidade }}</td>
+            <td class="text-end">{{ it.subtotal | currency:'BRL':'symbol':'1.2-2' }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p *ngIf="lastVendaResumo" class="mb-0"><b>Total de itens:</b> {{ this.lastVendaResumo.totalQuantidade }}</p>
+    <p *ngIf="lastVendaResumo" class="mb-0"><b>Valor total:</b> {{ this.lastVendaResumo.totalValor | currency:'BRL':'symbol':'1.2-2' }}</p>
   </div>
   <div class="modal-footer">
     <button class="btn btn-secondary" (click)="modal.close()">Fechar</button>

@@ -1138,3 +1138,8 @@ td.coluna_nome {
   display: block;
   text-align: left;
 }
+
+/* Linha sem estoque (quantidade == 0) */
+tr.sem-estoque td {
+  color: #b02a37 !important; /* Vermelho escuro */
+}

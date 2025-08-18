@@ -14,6 +14,11 @@
   min-width: 34px;
 }
 
+/* Estilo para linha sem estoque */
+tr.sem-estoque td {
+  color: #b02a37 !important; /* vermelho bootstrap danger escuro */
+}
+
 /* Ocupar toda a largura do site (não limitar ao max-width do Bootstrap) */
 .container {
   width: 100%;
