@@ -1143,3 +1143,11 @@ td.coluna_nome {
 tr.sem-estoque td {
   color: #b02a37 !important; /* Vermelho escuro */
 }
+
+/* Garantir que o NOME do produto fique vermelho mesmo com estilos específicos */
+tr.sem-estoque .coluna_nome .stat-item,
+tr.sem-estoque .coluna_nome .stat-label,
+tr.sem-estoque .coluna_nome .stat-text,
+tr.sem-estoque .coluna_nome .stat-variable {
+  color: #b02a37 !important;
+}

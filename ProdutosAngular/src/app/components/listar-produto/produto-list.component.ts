@@ -43,6 +43,7 @@ export class ProdutoListComponent implements OnInit {
   imgBase64: string = ''  // Variável para armazenar a imagem do produto
 
   listaDeProdutos!: ProdutoDTO[];
+  private listaDeProdutosOriginal: ProdutoDTO[] = [];
   produtoAtualizar!: ProdutoDTO;
   produtoExcluido!: ProdutoDTO;
   imagemFile: File = new File([], 'arquivo_vazio.txt', {})
@@ -78,7 +79,8 @@ export class ProdutoListComponent implements OnInit {
     });
 
     this.produtoService.listarProdutos(this.currentPage, this.pageSize, this.authService.getUsuarioLogado().idUsuario).subscribe(data => {
-      this.listaDeProdutos = data.content
+      this.listaDeProdutos = data.content;
+      this.listaDeProdutosOriginal = data.content;
       this.totalRecords = data.totalElements; // Atualiza o total de registros exibidos
     });
 
@@ -171,8 +173,10 @@ export class ProdutoListComponent implements OnInit {
   // Função que atualiza a lista de produtos
   atualizarLista(): void {
     this.produtoService.listarProdutos(this.currentPage, this.pageSize, this.authService.getUsuarioLogado().idUsuario).subscribe(data => {
-      this.listaDeProdutos = data.content
+      this.listaDeProdutos = data.content;
+      this.listaDeProdutosOriginal = data.content;
       this.totalRecords = data.totalElements; // Atualiza o total de registros exibidos
+      this.aplicarFiltroLocal();
     });
     this.listarProdutoMaisCaro(this.authService.getUsuarioLogado().idUsuario);
     this.calcularMedia(this.authService.getUsuarioLogado().idUsuario);
@@ -256,31 +260,33 @@ export class ProdutoListComponent implements OnInit {
     });
   }
 
-  // Função chamada ao clicar no botão Pesquisar
+  // Pesquisa local (dinâmica) baseada nos 3 campos da barra de pesquisa
   efetuarPesquisa() {
-    const usuarioLogadoId = this.authService.getUsuarioLogado().idUsuario;
-    const searchBar_value = this.searchValue;
-    const nomeFornecedor = this.searchNomeFornecedor;
-    const valorInicial = this.searchValorInicial;
-    if (this.tipoPesquisaSelecionado == 'id') {
-      //PESQUISA POR ID
-      const id = Number(searchBar_value);
-      this.produtoService.efetuarPesquisa(this.authService.getUsuarioLogado().idUsuario, id, null, null, null).subscribe(data => {
-        this.listaDeProdutos = data
-          .filter(produto => produto.idUsuario === usuarioLogadoId) // Filtra os produtos pelo usuário logado
-          .sort((a, b) => (a.id ?? 0) - (b.id ?? 0)); // Ordena os produtos pelo ID
-      });
-    } else if (this.tipoPesquisaSelecionado == 'nome') {
-      // PESQUISA POR NOME
-      const nome = searchBar_value;
-      this.produtoService.efetuarPesquisa(this.authService.getUsuarioLogado().idUsuario, null, nome, nomeFornecedor, valorInicial).subscribe(data => {
-        this.listaDeProdutos = data
-          .filter(produto => produto.idUsuario === usuarioLogadoId) // Filtra os produtos pelo usuário logado
-          .sort((a, b) => (a.id ?? 0) - (b.id ?? 0)); // Ordena os produtos pelo ID
-      });
-    }
-    this.listarProdutoMaisCaro(usuarioLogadoId);
-    this.calcularMedia(usuarioLogadoId);
+    this.aplicarFiltroLocal();
+  }
+
+  private aplicarFiltroLocal(): void {
+    const nomeTerm = (this.searchValue || '').toString().trim().toLowerCase();
+    const fornecedorTerm = (this.searchNomeFornecedor || '').toString().trim().toLowerCase();
+    const valorFiltro = this.searchValorInicial;
+
+    const origem = this.listaDeProdutosOriginal || [];
+    const filtrado = origem.filter(p => {
+      const okNome = nomeTerm ? (p.nome || '').toLowerCase().includes(nomeTerm) : true;
+      const okFornecedor = fornecedorTerm ? ((p.fornecedor?.nome || '').toLowerCase().includes(fornecedorTerm)) : true;
+      const okValor = (valorFiltro !== null && valorFiltro !== undefined && valorFiltro !== '' as any)
+        ? Number(p.valorInicial) === Number(valorFiltro)
+        : true;
+      return okNome && okFornecedor && okValor;
+    });
+
+    this.listaDeProdutos = filtrado;
+    this.totalRecords = filtrado.length;
+  }
+
+  // Dispara filtro automaticamente conforme o usuário digita (como no PDV)
+  onSearchChanged(): void {
+    this.aplicarFiltroLocal();
   }
 
   // Função chamada ao mudar de valor na ComboBox de Promoção no ngModel

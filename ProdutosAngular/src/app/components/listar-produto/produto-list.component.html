@@ -9,17 +9,17 @@
               <input type="text"
                      placeholder="Nome do produto..."
                      class="searchBar_input btn-outline-secondary"
-                     [(ngModel)]="searchValue" name="searchBarNome"
+                     [(ngModel)]="searchValue" name="searchBarNome" (input)="onSearchChanged()"
                      style="flex: 1 1 33%; min-width: 0;"/>
               <input type="text"
                      placeholder="Nome do fornecedor..."
                      class="searchBar_input btn-outline-secondary"
-                     [(ngModel)]="searchNomeFornecedor" name="searchBarNomeFornecedor"
+                     [(ngModel)]="searchNomeFornecedor" name="searchBarNomeFornecedor" (input)="onSearchChanged()"
                      style="flex: 1 1 33%; min-width: 0;"/>
               <input type="number"
                      placeholder="Valor unitário..."
                      class="searchBar_input btn-outline-secondary"
-                     [(ngModel)]="searchValorInicial" name="searchBarValorInicial"
+                     [(ngModel)]="searchValorInicial" name="searchBarValorInicial" (input)="onSearchChanged()"
                      style="flex: 1 1 33%; min-width: 0;"/>
             </div>
           </td>
@@ -27,7 +27,7 @@
             <!-- Removido o combobox de tipo de pesquisa -->
           </td>
           <td>
-            <button class="btn btn-outline-secondary fw-bold" id="btn_pesquisar" (click)="efetuarPesquisa()">Pesquisar</button>
+            
           </td>
         </tr>
       </table>

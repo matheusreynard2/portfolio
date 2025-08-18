@@ -30,7 +30,7 @@ export class PontoVendaComponent implements OnInit {
   produtosFiltrados: ProdutoDTO[] = [];
   totalRecords: number = 0;
   currentPage: number = 0;
-  pageSize: number = 4;
+  pageSize: number = 6;
   caixa: CaixaItem[] = [];
   totalQuantidade = 0;
   totalValor = 0;

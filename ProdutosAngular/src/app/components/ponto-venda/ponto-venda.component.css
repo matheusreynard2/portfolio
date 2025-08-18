@@ -19,6 +19,21 @@ tr.sem-estoque td {
   color: #b02a37 !important; /* vermelho bootstrap danger escuro */
 }
 
+/* Filtro ao lado do título ocupando toda a largura restante */
+.card-header .filtro-produtos {
+  margin-left: 12px;
+  flex: 1 1 auto;
+  max-width: 100%;
+}
+
+/* Botões do PDV com tamanho maior e uniforme */
+.pdv-action-btn {
+  min-width: 220px;
+  height: 44px;
+  font-size: 16px;
+}
+
+
 /* Ocupar toda a largura do site (não limitar ao max-width do Bootstrap) */
 .container {
   width: 100%;
