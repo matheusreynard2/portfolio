@@ -21,28 +21,23 @@ export class PontoVendaService extends HttpBaseService {
   }
 
   salvarCaixa(venda: VendaCaixaDTO): Observable<number> {
-    return this.http.post<number>(`${this.pdvUrl}/salvarCaixa`, venda)
-    .pipe(catchError(error => this.catchErrorTokenExpirado(error)));;
+    return this.http.post<number>(`${this.pdvUrl}/salvarCaixa`, venda);
   }
 
   finalizarVenda(vendaId: number): Observable<void> {
-    return this.http.post<void>(`${this.pdvUrl}/finalizarVenda/${vendaId}`, {})
-    .pipe(catchError(error => this.catchErrorTokenExpirado(error)));;
+    return this.http.post<void>(`${this.pdvUrl}/finalizarVenda/${vendaId}`, {});
   }
 
   acessarPaginaPdv(): Observable<any> {
-    return this.http.get<any>(`${this.pdvUrl}/acessarPaginaPdv`)
-        .pipe(catchError(error => this.catchErrorTokenExpirado(error)));
+    return this.http.get<any>(`${this.pdvUrl}/acessarPaginaPdv`);
   }
 
   listarHistorico(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.pdvUrl}/listarHistorico`)
-      .pipe(catchError(error => this.catchErrorTokenExpirado(error)));
+    return this.http.get<any[]>(`${this.pdvUrl}/listarHistorico`);
   }
 
   excluirHistorico(idHistorico: number): Observable<boolean> {
-    return this.http.delete<boolean>(`${this.pdvUrl}/deletarHistorico/${idHistorico}`)
-      .pipe(catchError(error => this.catchErrorTokenExpirado(error)));
+    return this.http.delete<boolean>(`${this.pdvUrl}/deletarHistorico/${idHistorico}`);
   }
  
 }

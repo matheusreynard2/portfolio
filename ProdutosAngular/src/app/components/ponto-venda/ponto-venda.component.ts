@@ -38,11 +38,14 @@ export class PontoVendaComponent implements OnInit {
   finalizarHabilitado = false; // após primeiro salvar, permanece habilitado até finalizar
   filtro = '';
   // Modo de preço selecionado: valorInicial | valorTotalDesc | valorTotalFrete
-  modoPreco: 'valorInicial' | 'valorTotalDesc' | 'somaTotalValores' = 'valorInicial';
+  modoPreco: 'valorInicial' | 'valorTotalDesc' | 'valorTotalFrete' = 'valorInicial';
   historicoVendas: any[] = [];
+  historicoVendasFiltrado: any[] = [];
+  historicoFiltro: string = '';
   usuarioLogin: string = '';
   vendaParaVisualizar: VendaCaixaDTO | null = null;
   itensVisualizacao: { item: CaixaItem; produto?: ProdutoDTO; precoUnit: number; subtotal: number }[] = [];
+  selectedHistoricoId: number | null = null;
   // Toast de salvar
   showSaveToast: boolean = false;
   saveToastText: string = '';
@@ -62,6 +65,11 @@ export class PontoVendaComponent implements OnInit {
     const usuario = this.authService.getUsuarioLogado();
     const idUsuario = usuario.idUsuario;
     this.usuarioLogin = (usuario as UsuarioDTO)?.login;
+    // Restaura venda em andamento (não finalizada) para sobrescrever ao salvar novamente
+    const persistedVendaId = Number(localStorage.getItem('pdv.vendaId'));
+    if (!isNaN(persistedVendaId) && persistedVendaId > 0) {
+      this.vendaId = persistedVendaId;
+    }
     // Carrega lista de produtos do usuário
     this.produtoService.listarProdutos(0, 100, idUsuario).subscribe({
       next: (resp: any) => {
@@ -71,7 +79,10 @@ export class PontoVendaComponent implements OnInit {
         this.currentPage = 0;
         // Carrega histórico após carregar a tela
         this.pdvService.listarHistorico().subscribe({
-          next: (lista) => this.historicoVendas = lista ?? []
+          next: (lista) => {
+            this.historicoVendas = lista ?? [];
+            this.aplicarFiltroHistorico();
+          }
         });
       }
     });
@@ -87,7 +98,7 @@ export class PontoVendaComponent implements OnInit {
     this.currentPage = 0;
   }
 
-  selecionarModoPreco(modo: 'valorInicial' | 'valorTotalDesc' | 'somaTotalValores'): void {
+  selecionarModoPreco(modo: 'valorInicial' | 'valorTotalDesc' | 'valorTotalFrete'): void {
     this.modoPreco = modo;
     this.recalcularTotais();
     this.recalcularVisualizacao();
@@ -102,7 +113,7 @@ export class PontoVendaComponent implements OnInit {
       return produto.valorTotalDesc ?? fallback;
     }
     // 'valorTotalFrete'
-    return produto.somaTotalValores ?? fallback;
+    return produto.valorTotalFrete ?? fallback;
   }
 
   get produtosPagina(): ProdutoDTO[] {
@@ -204,6 +215,8 @@ export class PontoVendaComponent implements OnInit {
     this.pdvService.salvarCaixa(venda).subscribe({
       next: (response: number) => {
         this.vendaId = response; // mantém o mesmo id para atualizações subsequentes
+        // Persiste o ID da venda em andamento, para sobrescrever caso o usuário saia e retorne
+        localStorage.setItem('pdv.vendaId', String(this.vendaId));
         this.atualizarEstadoFinalizacao();
         // Exibe toast de sucesso
         this.saveToastText = 'Venda salva com sucesso. ID ' + this.vendaId + ' atualizada.';
@@ -257,6 +270,8 @@ export class PontoVendaComponent implements OnInit {
             this.currentPage = 0;
           }
         });
+        // Limpa venda em andamento persistida, pois foi finalizada
+        localStorage.removeItem('pdv.vendaId');
       }
     });
   }
@@ -288,10 +303,51 @@ export class PontoVendaComponent implements OnInit {
     }
   }
 
+  onToggleHistorico(v: any): void {
+    if (this.selectedHistoricoId === v.id) {
+      this.selectedHistoricoId = null;
+      this.vendaParaVisualizar = null;
+      this.itensVisualizacao = [];
+    } else {
+      this.selectedHistoricoId = v.id;
+      // Reutiliza lógica para calcular itens de visualização
+      const vendaDto: VendaCaixaDTO = {
+        id: v.id,
+        idUsuario: v.idUsuario,
+        itens: v.itens || [],
+        totalQuantidade: v.totalQuantidade,
+        totalValor: v.totalValor
+      } as VendaCaixaDTO;
+      this.abrirVisualizacao(vendaDto);
+    }
+  }
+
   abrirHistorico(): void {
     if (this.modalHistorico) {
-      this.modalService.open(this.modalHistorico, { size: 'lg' });
+      this.modalService.open(this.modalHistorico, { size: 'xl' });
     }
+  }
+
+  aplicarFiltroHistorico(): void {
+    const termo = (this.historicoFiltro || '').toLowerCase().trim();
+    if (!termo) {
+      this.historicoVendasFiltrado = this.historicoVendas;
+      return;
+    }
+    // Match por ID de produto (numérico) ou por nome do produto (texto) em qualquer item das vendas
+    const termoNumero = Number(termo);
+    const buscarPorIdProduto = !isNaN(termoNumero);
+    this.historicoVendasFiltrado = (this.historicoVendas || []).filter((v) => {
+      const itens = v.itens || [];
+      return itens.some((it: any) => {
+        const prod = this.getProdutoById(it.idProduto);
+        if (buscarPorIdProduto) {
+          return it.idProduto === termoNumero;
+        }
+        const nome = (prod?.nome || '').toLowerCase();
+        return nome.includes(termo);
+      });
+    });
   }
 
   private recalcularVisualizacao(): void {

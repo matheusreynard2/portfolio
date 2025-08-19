@@ -17,8 +17,8 @@
               <label class="form-check-label" for="precoDesc">Com desconto</label>
             </div>
             <div class="form-check form-check-inline">
-              <input class="form-check-input" type="radio" name="modoPreco" id="precoFrete" [checked]="modoPreco === 'somaTotalValores'" (change)="selecionarModoPreco('somaTotalValores')">
-              <label class="form-check-label" for="precoFrete">Total com frete</label>
+              <input class="form-check-input" type="radio" name="modoPreco" id="valorFrete" [checked]="modoPreco === 'valorTotalFrete'" (change)="selecionarModoPreco('valorTotalFrete')">
+              <label class="form-check-label" for="valorFrete">Total com frete</label>
             </div>
           </div>
         </div>
@@ -35,7 +35,7 @@
               <tr *ngFor="let p of produtosPagina" [ngClass]="{'sem-estoque': (p.quantia || 0) === 0}">
                 <td>
                   <div class="d-flex justify-content-between align-items-center">
-                    <span>{{ p.nome }}</span>
+                    <span><small class="text-muted">ID {{ p.id }}</small> - {{ p.nome }}</span>
                     <small class="text-muted">Qtd disp.: {{ p.quantia || 0 }}</small>
                   </div>
                   <div><small class="text-muted">{{ p.descricao }}</small></div>
@@ -48,7 +48,7 @@
             </tbody>
           </table>
         </div>
-        <div class="card-body pt-2 pb-3 d-flex justify-content-center">
+        <div class="card-body pt-2 pb-3 d-flex justify-content-end">
           <mat-paginator [length]="totalRecords"
                          [pageSize]="pageSize"
                          [pageIndex]="currentPage"
@@ -63,9 +63,9 @@
         <div class="card-header d-flex justify-content-between align-items-center">
           <h5 class="mb-0">Caixa</h5>
           <div>
-            <button class="btn btn-success me-2 pdv-action-btn" [disabled]="caixa.length === 0" (click)="salvarCaixa()">Salvar</button>
-            <button class="btn btn-outline-primary pdv-action-btn" [disabled]="!finalizarHabilitado" (click)="finalizarVenda()">Finalizar</button>
-            <button class="btn btn-outline-secondary ms-2 pdv-action-btn" (click)="abrirHistorico()">Histórico de vendas</button>
+            <button class="btn btn-success me-2 pdv-action-btn" style="opacity: 50%" [disabled]="caixa.length === 0" (click)="salvarCaixa()">Salvar</button>
+            <button class="btn btn-primary pdv-action-btn" style="opacity: 50%" [disabled]="!finalizarHabilitado" (click)="finalizarVenda()">Finalizar</button>
+            <button class="btn btn-secondary ms-2 pdv-action-btn style-btn-form" style="opacity: 50%" (click)="abrirHistorico()">Histórico de vendas</button>
           </div>
         </div>
         <div class="card-body p-0">
@@ -81,7 +81,7 @@
             <tbody>
               <tr *ngFor="let item of caixa">
                 <td>
-                  <div class="fw-bold">{{ getNomeProduto(item) }}</div>
+                  <div class="fw-bold"><small class="text-muted">ID {{ item.idProduto }}</small> - {{ getNomeProduto(item) }}</div>
                   <small class="text-muted">{{ getDescricaoProduto(item) }}</small>
                 </td>
                 <td class="text-center">
@@ -120,27 +120,64 @@
     <button type="button" class="btn-close" aria-label="Close" (click)="modal.close()"></button>
   </div>
   <div class="modal-body p-0">
-    <table class="table table-striped mb-0" *ngIf="historicoVendas.length > 0; else semHistorico">
+    <div class="p-2">
+      <div class="row g-2 align-items-center mb-2">
+        <div class="col-12 col-md-6">
+          <input class="form-control" placeholder="Buscar por ID ou nome do produto" [(ngModel)]="historicoFiltro" (input)="aplicarFiltroHistorico()" />
+        </div>
+      </div>
+      <small class="text-muted">Clique em uma venda para abrir/fechar os detalhes.</small>
+    </div>
+    <table class="table table-striped mb-0" *ngIf="historicoVendasFiltrado.length > 0; else semHistorico">
       <thead>
         <tr>
           <th>ID</th>
-          <th>Login</th>
+          <th>Vendedor</th>
           <th class="text-center">Total Qtd</th>
           <th class="text-end">Total Valor</th>
           <th class="text-center">Ações</th>
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let v of historicoVendas">
-          <td>{{ v.id }}</td>
-          <td>{{ usuarioLogin }}</td>
-          <td class="text-center">{{ v.totalQuantidade }}</td>
-          <td class="text-end">{{ v.totalValor | currency:'BRL':'symbol':'1.2-2' }}</td>
-          <td class="text-center">
-            <button class="btn btn-sm btn-outline-primary" (click)="visualizarHistorico(v)" aria-label="Visualizar"><span aria-hidden="true">🔍</span></button>
-            <button class="btn btn-sm btn-outline-danger ms-2" (click)="abrirModalExcluir(v)">X</button>
-          </td>
-        </tr>
+        <ng-container *ngFor="let v of historicoVendasFiltrado">
+          <tr (click)="onToggleHistorico(v)" style="cursor: pointer;">
+            <td>{{ v.id }}</td>
+            <td>{{ usuarioLogin }}</td>
+            <td class="text-center">{{ v.totalQuantidade }}</td>
+            <td class="text-end">{{ v.totalValor | currency:'BRL':'symbol':'1.2-2' }}</td>
+            <td class="text-center">
+              <button class="btn btn-sm btn-outline-danger" (click)="$event.stopPropagation(); abrirModalExcluir(v)">Excluir</button>
+            </td>
+          </tr>
+          <tr *ngIf="selectedHistoricoId === v.id">
+            <td colspan="5">
+              <div class="historico-detalhes-wrap">
+              <table class="table table-sm mb-0 historico-detalhes">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Produto</th>
+                    <th>Descrição</th>
+                    <th class="text-end">Valor</th>
+                    <th class="text-center">Qtd</th>
+                    <th class="text-end">Subtotal</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let iv of itensVisualizacao">
+                    <td>{{ iv.produto?.id }}</td>
+                    <td>{{ iv.produto?.nome }}</td>
+                    <td><small class="text-muted">{{ iv.produto?.descricao }}</small></td>
+                    <td class="text-end">{{ iv.precoUnit | currency:'BRL':'symbol':'1.2-2' }}</td>
+                    <td class="text-center">{{ iv.item.quantidade }}</td>
+                    <td class="text-end">{{ iv.subtotal | currency:'BRL':'symbol':'1.2-2' }}</td>
+                  </tr>
+                </tbody>
+              </table>
+              </div>
+            </td>
+          </tr>
+        </ng-container>
       </tbody>
     </table>
     <ng-template #semHistorico>

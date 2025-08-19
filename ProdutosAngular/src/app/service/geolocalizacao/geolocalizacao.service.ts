@@ -25,8 +25,7 @@ export class GeolocalizacaoService extends HttpBaseService {
   }
 
   obterGeolocalizacaoPorIP(ipAddress: string): Observable<GeolocalizacaoDTO> {
-    return this.http.get<GeolocalizacaoDTO>(this.localizacaoUrl + "/localizarIp/" + ipAddress)
-      .pipe(catchError(error => this.catchErrorTokenExpirado(error)));
+    return this.http.get<GeolocalizacaoDTO>(this.localizacaoUrl + "/localizarIp/" + ipAddress);
   }
 
   obterEnderecoDetalhado(lat: number, lng: number): Observable<EnderecoGeolocalizacaoDTO> {
@@ -34,8 +33,7 @@ export class GeolocalizacaoService extends HttpBaseService {
       .set('lat', lat.toString())
       .set('lng', lng.toString());
 
-    return this.http.get<EnderecoGeolocalizacaoDTO>(this.localizacaoUrl + "/enderecoDetalhado", {params})
-      .pipe(catchError(error => this.catchErrorTokenExpirado(error)));
+    return this.http.get<EnderecoGeolocalizacaoDTO>(this.localizacaoUrl + "/enderecoDetalhado", {params});
   }
 
   // Método auxiliar para extrair coordenadas do campo 'loc'
@@ -49,8 +47,7 @@ export class GeolocalizacaoService extends HttpBaseService {
     // Remove caracteres não numéricos do CEP
     cep = cep.replace(/\D/g, '');
     // Chama o endpoint do backend que fará a integração com a API de CEP
-    return this.http.get<EnderecoFornecedorDTO>(this.localizacaoUrl + "/consultarCEP/" + cep)
-      .pipe(catchError(error => this.catchErrorTokenExpirado(error)));
+    return this.http.get<EnderecoFornecedorDTO>(this.localizacaoUrl + "/consultarCEP/" + cep);
   }
 
   // OBTEM LATITUDE/LONGITUDE ATRAVÉS DO CEP
@@ -58,6 +55,6 @@ export class GeolocalizacaoService extends HttpBaseService {
     return this.http.get<LatitudeLongitudeDTO>(this.localizacaoUrl + "/obterCoordenadas/" + cep, {
         params: {cep: cep.replace(/\D/g, '')}
       }
-    ).pipe(catchError(error => this.catchErrorTokenExpirado(error)));
+    );
   }
 }

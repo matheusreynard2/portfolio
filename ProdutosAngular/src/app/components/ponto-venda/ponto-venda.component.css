@@ -33,6 +33,39 @@ tr.sem-estoque td {
   font-size: 16px;
 }
 
+/* Harmoniza com estilo de botões de fornecedor (style-btn-form) e garante visibilidade no dark mode */
+.style-btn-form {
+  border-radius: 6px;
+}
+
+.dark-mode .btn-secondary.style-btn-form {
+  color: #fff !important;
+  background-color: #6c757d !important;
+  border-color: #6c757d !important;
+}
+
+.dark-mode .btn-secondary.style-btn-form:hover {
+  background-color: #5a6268 !important;
+  border-color: #545b62 !important;
+}
+
+/* Tabela de detalhes do histórico ligeiramente mais compacta */
+.historico-detalhes {
+  font-size: 0.9rem;
+}
+
+.historico-detalhes th,
+.historico-detalhes td {
+  padding-top: 0.35rem;
+  padding-bottom: 0.35rem;
+}
+
+/* Wrapper para manter os detalhes um pouco menores que a linha principal */
+.historico-detalhes-wrap {
+  max-width: 95%;
+  margin: 0 auto;
+}
+
 
 /* Ocupar toda a largura do site (não limitar ao max-width do Bootstrap) */
 .container {

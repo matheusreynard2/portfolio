@@ -27,18 +27,15 @@ export class UsuarioService extends HttpBaseService {
 
   adicionarUsuario(usuario: UsuarioDTO, imagem: File): Observable<UsuarioDTO> {
     const formData = this.createUsuarioFormData(usuario, imagem);
-    return this.http.post<UsuarioDTO>(this.usuariosUrl + "/adicionarUsuario", formData)
-      .pipe(catchError(error => this.catchErrorTokenExpirado(error)));
+    return this.http.post<UsuarioDTO>(this.usuariosUrl + "/adicionarUsuario", formData);
   }
 
   public addNovoAcessoIp(): Observable<boolean> {
-    return this.http.post<boolean>(this.usuariosUrl + "/addNovoAcessoIp", {})
-      .pipe(catchError(error => this.catchErrorTokenExpirado(error)));
+    return this.http.post<boolean>(this.usuariosUrl + "/addNovoAcessoIp", {});
   }
 
   public getAllAcessosIp(): Observable<number> {
-    return this.http.get<number>(this.usuariosUrl + "/getAllAcessosIp", {})
-      .pipe(catchError(error => this.catchErrorTokenExpirado(error)));
+    return this.http.get<number>(this.usuariosUrl + "/getAllAcessosIp", {});
   }
 }
 

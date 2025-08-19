@@ -4,6 +4,7 @@ import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { AuthService } from '../service/auth/auth.service';
 import { Router } from '@angular/router';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 export const httpInterceptor: HttpInterceptorFn = (
   request: HttpRequest<unknown>,
@@ -11,6 +12,7 @@ export const httpInterceptor: HttpInterceptorFn = (
 ): Observable<any> => {
   const authService = inject(AuthService);
   const router = inject(Router);
+  const modal = inject(NgbModal);
   const token = authService.getToken();
 
   if (token) {
@@ -33,12 +35,27 @@ export const httpInterceptor: HttpInterceptorFn = (
         error?.message
       );
 
-      if (
-        error.status === 401 &&
-        message &&
-        (message.includes('TOKEN Expirado') || message.includes('Tempo limite de conexão'))
-      ) {
-        handleTokenExpired(authService, router);
+      // 440 com mensagem de expiração: abrir modal de token expirado do login e marcar flag para exibir
+      if (error.status === 440) {
+        authService.adicionarTokenExpirado('true');
+        // Abre o modal usando o template do LoginComponent
+        // Como o template está no LoginComponent, navegamos para login e deixamos o ngOnInit abrir o modal
+        router.navigate(['/login']);
+        return throwError(() => error);
+      }
+
+      // Compatibilidade: 401 com mensagem de expiração
+      const compatMessage = (
+        (error?.error && typeof error.error === 'string' ? error.error : null) ||
+        error?.error?.error?.message ||
+        error?.error?.mensagem ||
+        error?.error?.message ||
+        error?.message
+      );
+      if (error.status === 401 && compatMessage && (compatMessage.includes('TOKEN Expirado') || compatMessage.includes('Tempo limite de conexão'))) {
+        authService.adicionarTokenExpirado('true');
+        router.navigate(['/login']);
+        return throwError(() => error);
       }
       return throwError(() => error);
     })
@@ -90,13 +107,4 @@ function addDefaultHeaders(request: HttpRequest<unknown>): HttpRequest<unknown> 
   });
 }
 
-function handleTokenExpired(authService: AuthService, router: Router): void { 
-  if (authService.existeToken()) {
-    authService.removerToken();
-    authService.adicionarTokenExpirado('true');
-    router.navigate(['/login']);
-  } else {
-    authService.adicionarTokenExpirado('true');
-    router.navigate(['/login']);
-  }
-} 
+// A navegação passa a ser responsabilidade do AppComponent após exibir modal

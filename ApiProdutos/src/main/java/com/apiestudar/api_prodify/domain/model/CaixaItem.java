@@ -28,6 +28,6 @@ public class CaixaItem {
 
     @Column(name = "tipo_preco", nullable = false, length = 50)
     @NotNull(message = "Tipo de preço é obrigatório")
-    @Schema(description = "Tipo de preço utilizado: valorInicial | valorTotalDesc | somaTotalValores")
+    @Schema(description = "Tipo de preço utilizado: valorInicial | valorTotalDesc | valorTotalFrete")
     private String tipoPreco;
 }

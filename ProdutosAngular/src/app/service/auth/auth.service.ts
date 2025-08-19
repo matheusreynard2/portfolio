@@ -11,6 +11,7 @@ import { UsuarioDTO } from '../../model/dto/UsuarioDTO';
 })
 export class AuthService {
   private accessToken$ = new BehaviorSubject<string | null>(null);
+  // Removido evento global; deixamos a UI tratar nos próprios components via catch
 
   private readonly USUARIO_KEY = 'usuarioLogado';
   private readonly TOKEN_EXPIRADO_KEY = 'tokenExpirado';

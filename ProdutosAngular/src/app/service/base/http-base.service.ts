@@ -13,44 +13,7 @@ export class HttpBaseService {
     protected router: Router
   ) { }
 
-  protected catchErrorTokenExpirado(error: HttpErrorResponse): Observable<never> {
-    
-    const message = (
-      (error?.error && typeof error.error === 'string' ? error.error : null) ||
-      error?.error?.error?.message ||
-      error?.error?.mensagem ||
-      error?.error?.message ||
-      error?.message
-    );
-
-    if (
-      error.status === 401 &&
-      message &&
-      (message.includes('TOKEN Expirado') || message.includes('Tempo limite de conexão'))
-    ) {
-      this.handleTokenExpired();
-    }
-    return throwError(() => error);
-  }
-
-  protected handleTokenExpired(): void {
-    console.log('=== HttpBaseService handleTokenExpired ===');
-    console.log('Token existe?', this.authService.existeToken());
-    
-    if (this.authService.existeToken()) {
-      console.log('Removendo token...');
-      this.authService.removerToken();
-      console.log('Marcando token como expirado...');
-      this.authService.adicionarTokenExpirado('true');
-      console.log('Navegando para /login...');
-      this.router.navigate(['/login']);
-    } else {
-      console.log('Token não existe, marcando como expirado e navegando...');
-      this.authService.adicionarTokenExpirado('true');
-      this.router.navigate(['/login']);
-    }
-    console.log('=====================================');
-  }
+  // Tratativa de expiração movida para o interceptor global
 
   protected createFormData(data: any, file?: File, jsonParamName: string = 'json'): FormData {
     const formData = new FormData();

@@ -27,18 +27,15 @@ export class ProdutoService extends HttpBaseService {
   }
 
   salvarCaixa(payload: any): Observable<void> {
-    return this.http.post<void>(`${this.produtosUrl}/salvarCaixa`, payload)
-      .pipe(catchError(error => this.catchErrorTokenExpirado(error)));
+    return this.http.post<void>(`${this.produtosUrl}/salvarCaixa`, payload);
   }
 
   finalizarCaixa(payload: any): Observable<void> {
-    return this.http.post<void>(`${this.produtosUrl}/finalizarCaixa`, payload)
-      .pipe(catchError(error => this.catchErrorTokenExpirado(error)));
+    return this.http.post<void>(`${this.produtosUrl}/finalizarCaixa`, payload);
   }
 
   acessarPaginaCadastro(): Observable<any> {
-    return this.http.get<any>(this.produtosUrl + "/acessarPaginaCadastro")
-      .pipe(catchError(error => this.catchErrorTokenExpirado(error)));
+    return this.http.get<any>(this.produtosUrl + "/acessarPaginaCadastro");
   }
 
   efetuarPesquisa(idUsuario: number, id?: number | null, nome?: string | null, nomeFornecedor?: string | null, valorInicial?: number | null): Observable<ProdutoDTO[]> {
@@ -59,7 +56,7 @@ export class ProdutoService extends HttpBaseService {
     return this.http.get<ProdutoDTO[]>(
       `${this.produtosUrl}/efetuarPesquisa`,
       { params }
-    ).pipe(catchError(error => this.catchErrorTokenExpirado(error)));
+    );
   }
 
   listarProdutos(page: number, size: number, idUsuario: number): Observable<PaginatedResponse<ProdutoDTO>> {
@@ -68,51 +65,44 @@ export class ProdutoService extends HttpBaseService {
       .set('size', size.toString())
       .set('idUsuario', idUsuario.toString());
 
-    return this.http.get<PaginatedResponse<ProdutoDTO>>(this.produtosUrl + "/listarProdutos", { params })
-      .pipe(catchError(error => this.catchErrorTokenExpirado(error)));
+    return this.http.get<PaginatedResponse<ProdutoDTO>>(this.produtosUrl + "/listarProdutos", { params });
   }
 
   adicionarProduto(produto: ProdutoDTO, imagem: File): Observable<ProdutoDTO> {
     const formData = this.createProdutoFormData(produto, imagem);
-    return this.http.post<ProdutoDTO>(this.produtosUrl + "/adicionarProduto", formData)
-      .pipe(catchError(error => this.catchErrorTokenExpirado(error)));
+    return this.http.post<ProdutoDTO>(this.produtosUrl + "/adicionarProduto", formData);
   }
 
   deletarProduto(id: number): Observable<HttpResponse<boolean>> {
     return this.http.delete<boolean>(this.produtosUrl + "/deletarProduto/" + id, {
         observe: 'response'
-    }).pipe(catchError(error => this.catchErrorTokenExpirado(error)));
+    });
 }
 
   atualizarProduto(id: number, produto: ProdutoDTO, imagem: File): Observable<ProdutoDTO> {
     const formData = this.createProdutoFormData(produto, imagem);
-    return this.http.put<ProdutoDTO>(this.produtosUrl + "/atualizarProduto/" + id, formData)
-      .pipe(catchError(error => this.catchErrorTokenExpirado(error)));
+    return this.http.put<ProdutoDTO>(this.produtosUrl + "/atualizarProduto/" + id, formData);
   }
 
   listarProdutoMaisCaro(idUsuario: number): Observable<ProdutoDTO> {
-    return this.http.get<ProdutoDTO>(this.produtosUrl + "/produtoMaisCaro/" + idUsuario)
-      .pipe(catchError(error => this.catchErrorTokenExpirado(error)));
+    return this.http.get<ProdutoDTO>(this.produtosUrl + "/produtoMaisCaro/" + idUsuario);
   }
 
   calcularMedia(idUsuario: number): Observable<number> {
-    return this.http.get<number>(this.produtosUrl + "/mediaPreco/" + idUsuario)
-      .pipe(catchError(error => this.catchErrorTokenExpirado(error)));
+    return this.http.get<number>(this.produtosUrl + "/mediaPreco/" + idUsuario);
   }
 
   calcularDesconto(valorProduto: number, porcentagemDesconto: number): Observable<number> {
     return this.http.get<number>(
       `${this.produtosUrl}/calcularDesconto/${valorProduto}/${porcentagemDesconto}`
-    ).pipe(catchError(error => this.catchErrorTokenExpirado(error)));
+    );
   }
 
   listarFornecedoresList(idUsuario: number): Observable<FornecedorDTO[]> {
-    return this.http.get<FornecedorDTO[]>(this.fornecedorUrl + "/listarFornecedoresList/" + idUsuario)
-      .pipe(catchError(error => this.catchErrorTokenExpirado(error)));
+    return this.http.get<FornecedorDTO[]>(this.fornecedorUrl + "/listarFornecedoresList/" + idUsuario);
   }
 
   buscarProdutoPorId(id: number, idUsuario: number): Observable<ProdutoDTO> {
-    return this.http.get<ProdutoDTO>(`${this.produtosUrl}/buscarProduto/${id}/${idUsuario}`)
-      .pipe(catchError(error => this.catchErrorTokenExpirado(error)));
+    return this.http.get<ProdutoDTO>(`${this.produtosUrl}/buscarProduto/${id}/${idUsuario}`);
   }
 }

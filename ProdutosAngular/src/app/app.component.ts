@@ -21,7 +21,7 @@ export class AppComponent implements OnInit {
   title = 'Sistema de Produtos';
 
   constructor(private authService: AuthService,
-              private router: Router,
+              public router: Router,
               private usuarioService: UsuarioService,
               private deviceService: DeviceService) {
   }
@@ -36,6 +36,7 @@ export class AppComponent implements OnInit {
   // Toast de redirecionamento
   showRedirectToast: boolean = false;
   toastText: string = '';
+
 
   // Variáveis para contablização de acessos
   carregando: boolean = false;
@@ -56,6 +57,8 @@ export class AppComponent implements OnInit {
         this.router.navigate(['/login']);
         this.showRedirectToast = false;
       }, 2000);
+
+      // Removido: expiração será tratada pelos próprios components via catch dos endpoints
     // OBSERVER DE SELEÇÃO DO MENU PARA SABER SE ESTÁ ACESSANDO POR CELULAR/COMPUTADOR
     this.deviceService.isMobileOrTablet.subscribe(isMobile => {
       this.isMobileOrTablet = isMobile;

@@ -22,7 +22,7 @@ public class CaixaItemDTO {
 
     private Long quantidade;
 
-    // "Qual tipo de preço foi utilizado para o item: valorInicial, valorTotalDesc, somaTotalValores")
+    // "Qual tipo de preço foi utilizado para o item: valorInicial, valorTotalDesc, valorTotalFrete")
     private String tipoPreco;
 }
 

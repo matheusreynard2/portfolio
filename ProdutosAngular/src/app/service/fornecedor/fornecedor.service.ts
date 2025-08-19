@@ -28,8 +28,7 @@ export class FornecedorService extends HttpBaseService {
  
 
   acessarPaginaFornecedor(): Observable<any> {
-    return this.http.get<any>(this.fornecedorUrl + "/acessarPaginaFornecedor")
-      .pipe(catchError(error => this.catchErrorTokenExpirado(error)));
+    return this.http.get<any>(this.fornecedorUrl + "/acessarPaginaFornecedor");
   }
 
   listarFornecedores(page: number, size: number, idUsuario: number): Observable<PaginatedResponse<FornecedorDTO>> {
@@ -37,41 +36,35 @@ export class FornecedorService extends HttpBaseService {
       .set('page', page.toString())
       .set('size', size.toString());
 
-    return this.http.get<PaginatedResponse<FornecedorDTO>>(`${this.fornecedorUrl}/listarFornecedores/${idUsuario}`, { params })
-      .pipe(catchError(error => this.catchErrorTokenExpirado(error)));
+    return this.http.get<PaginatedResponse<FornecedorDTO>>(`${this.fornecedorUrl}/listarFornecedores/${idUsuario}`, { params });
   }
 
   adicionarFornecedor(fornecedor: FornecedorDTO): Observable<FornecedorDTO> {
-    return this.http.post<FornecedorDTO>(`${this.fornecedorUrl}/adicionarFornecedor/${fornecedor.idUsuario}`, fornecedor)
-      .pipe(catchError(error => this.catchErrorTokenExpirado(error)));
+    return this.http.post<FornecedorDTO>(`${this.fornecedorUrl}/adicionarFornecedor/${fornecedor.idUsuario}`, fornecedor);
   }
 
   atualizarFornecedor(id: number, idUsuario: number, fornecedor: FornecedorDTO): Observable<FornecedorDTO> {
-    return this.http.put<FornecedorDTO>(`${this.fornecedorUrl}/atualizarFornecedor/${id}/${idUsuario}`, fornecedor)
-      .pipe(catchError(error => this.catchErrorTokenExpirado(error)));
+    return this.http.put<FornecedorDTO>(`${this.fornecedorUrl}/atualizarFornecedor/${id}/${idUsuario}`, fornecedor);
   }
 
   deletarFornecedor(id: number, idUsuario: number): Observable<HttpResponse<boolean>> {
     return this.http.delete<boolean>(this.fornecedorUrl + "/deletarFornecedor/" + id + "/" + idUsuario, {
         observe: 'response'
-    }).pipe(catchError(error => this.catchErrorTokenExpirado(error)));
+    });
   }
   
   buscarFornecedorPorId(id: number): Observable<FornecedorDTO> {
-    return this.http.get<FornecedorDTO>(`${this.fornecedorUrl}/buscarFornecedorPorId/${id}`)
-      .pipe(catchError(error => this.catchErrorTokenExpirado(error)));
+    return this.http.get<FornecedorDTO>(`${this.fornecedorUrl}/buscarFornecedorPorId/${id}`);
   }
 
   listarFornecedoresList(idUsuario: number): Observable<FornecedorDTO[]> {
-    return this.http.get<FornecedorDTO[]>(`${this.fornecedorUrl}/listarFornecedoresList/${idUsuario}`)
-      .pipe(catchError(error => this.catchErrorTokenExpirado(error)));
+    return this.http.get<FornecedorDTO[]>(`${this.fornecedorUrl}/listarFornecedoresList/${idUsuario}`);
   }
 
   // OBTEM DADOS DA EMPRESA ATRAVÉS DO CNPJ
   obterEmpresaViaCNPJ(cnpj: string): Observable<DadosEmpresaDTO> {
     // Remove caracteres não numéricos do CNPJ
     const cnpjLimpo = cnpj.replace(/\D/g, '');
-    return this.http.get<DadosEmpresaDTO>(this.fornecedorUrl + "/consultarCNPJ/" + cnpjLimpo)
-      .pipe(catchError(error => this.catchErrorTokenExpirado(error)));
+    return this.http.get<DadosEmpresaDTO>(this.fornecedorUrl + "/consultarCNPJ/" + cnpjLimpo);
   }
 }

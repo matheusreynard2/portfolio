@@ -65,7 +65,7 @@ public class GlobalTokenRelayFilter implements GlobalFilter, Ordered {
 
                 if (!"AppProdify".equals(decodedJWT.getIssuer())) {
                     System.err.println("[API Gateway] Token com issuer incorreto: " + decodedJWT.getIssuer());
-                    return createErrorResponse(exchange, "Token com issuer incorreto");
+                    return createErrorResponse(exchange, "Token com issuer incorreto", 401);
                 }
 
                 JWT.require(Algorithm.HMAC256(JWT_SECRET))
@@ -83,26 +83,31 @@ public class GlobalTokenRelayFilter implements GlobalFilter, Ordered {
 
             } catch (TokenExpiredException e) {
                 System.err.println("[API Gateway] Token expirado: " + e.getMessage());
-                return createErrorResponse(exchange, "Tempo limite de conexão com o sistema excedido. TOKEN Expirado");
+                return createErrorResponse(exchange, "Tempo limite de conexão com o sistema excedido. TOKEN Expirado", 440);
 
             } catch (SignatureVerificationException e) {
-                return createErrorResponse(exchange, "Token com assinatura inválida");
+                return createErrorResponse(exchange, "Token com assinatura inválida", 401);
 
             } catch (Exception e) {
                 System.err.println("[API Gateway] Erro na validação do token: " + e.getClass().getSimpleName() + " - " + e.getMessage());
                 e.printStackTrace();
-                return createErrorResponse(exchange, "Token inválido");
+                return createErrorResponse(exchange, "Token inválido", 401);
             }
         }
 
         // Se chegou aqui, não tinha Authorization header ou não era Bearer
         System.err.println("[API Gateway] Requisição sem token válido para endpoint protegido: " + path);
-        return createErrorResponse(exchange, "Tempo limite de conexão com o sistema excedido. TOKEN Expirado");
+        return createErrorResponse(exchange, "Tempo limite de conexão com o sistema excedido. TOKEN Expirado", 440);
     }
 
-    private Mono<Void> createErrorResponse(ServerWebExchange exchange, String message) {
-        String body = "{\"status\": 401, \"error\": {\"message\": \"" + message + "\"}}";
-        exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
+    private Mono<Void> createErrorResponse(ServerWebExchange exchange, String message, int statusCode) {
+        int httpStatus = (statusCode == 440) ? 440 : 401;
+        String body = "{\"status\": " + httpStatus + ", \"error\": {\"message\": \"" + message + "\"}}";
+        if (statusCode == 440) {
+            exchange.getResponse().setRawStatusCode(440);
+        } else {
+            exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
+        }
         exchange.getResponse().getHeaders().setContentType(MediaType.APPLICATION_JSON);
         byte[] bytes = body.getBytes(StandardCharsets.UTF_8);
         return exchange.getResponse().writeWith(Mono.just(exchange.getResponse().bufferFactory().wrap(bytes)));
