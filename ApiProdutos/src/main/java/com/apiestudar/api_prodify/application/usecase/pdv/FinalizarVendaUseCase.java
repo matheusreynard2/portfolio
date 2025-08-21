@@ -36,48 +36,54 @@ public class FinalizarVendaUseCase {
 
     @Transactional(rollbackFor = Exception.class)
     public VendaCaixaDTO executar(Long idVendaCaixa) {
-            
+
         long t0 = System.nanoTime();
+
+        // validação obrigatória: lança exceção se for null
         Helper.verificarNull(idVendaCaixa);
 
-		if (vendaCaixaRepository.buscarVendaPorId(idVendaCaixa).isEmpty()) {
-			throw new RegistroNaoEncontradoException();
-		} else {
+        // busca obrigatória: lança se não encontrar
+        VendaCaixa vendaCaixa = vendaCaixaRepository.buscarVendaPorId(idVendaCaixa)
+                .orElseThrow(RegistroNaoEncontradoException::new);
 
-        Optional<VendaCaixa> vendaCaixaSalvo = vendaCaixaRepository.buscarVendaPorId(idVendaCaixa);
-        VendaCaixa vendaCaixaHistorico = vendaCaixaRepository.adicionarHistorico(vendaCaixaSalvo.get());
+        // salva no histórico e mapeia
+        VendaCaixa vendaCaixaHistorico = vendaCaixaRepository.adicionarHistorico(vendaCaixa);
         VendaCaixaDTO vcHistoricoSalvo = modelMapper.map(vendaCaixaHistorico, VendaCaixaDTO.class);
 
-        // Atualiza estoque de produtos no serviço de produtos
-        if (vendaCaixaHistorico.getItens() != null && !vendaCaixaHistorico.getItens().isEmpty()) {
-            Long idUsuario = vendaCaixaHistorico.getIdUsuario();
-            vendaCaixaHistorico.getItens().forEach(item -> {
-                try {
-                    Long idProduto = item.getIdProduto();
-                    // Busca produto atual
-                    ProdutoDTO produtoAtual = produtoFeignClient.buscarProduto(idProduto, idUsuario).getBody();
-                    Helper.verificarNull(produtoAtual);
-                    long novaQuantia = Math.max(0L, (produtoAtual.getQuantia() == null ? 0L : produtoAtual.getQuantia()) - (item.getQuantidade() == null ? 0L : item.getQuantidade()));
-                    if (novaQuantia >= 0L) {
-                        // Atualiza apenas a quantidade (mantendo demais campos)
-                        produtoAtual.setQuantia(novaQuantia);
-                        String produtoJson = jsonMapper.writeValueAsString(produtoAtual);
-                        produtoFeignClient.atualizarProduto(idProduto, produtoJson, null);
-                    }
-                } catch (JsonProcessingException e) {
-                    throw new RuntimeException(e);
+        // Atualiza estoque de produtos no serviço de produtos (se houver itens)
+        Helper.verificarNull(vendaCaixaHistorico.getItens());
+        Long idUsuario = vendaCaixaHistorico.getIdUsuario();
+
+        vendaCaixaHistorico.getItens().forEach(item -> {
+            try {
+                Long idProduto = item.getIdProduto();
+
+                // busca produto atual e valida não-nulo
+                ProdutoDTO produtoAtual = produtoFeignClient.buscarProduto(idProduto, idUsuario).getBody();
+                Helper.verificarNull(produtoAtual);
+
+                long quantiaAtual = produtoAtual.getQuantia() == null ? 0L : produtoAtual.getQuantia();
+                long quantidadeSaida = item.getQuantidade() == null ? 0L : item.getQuantidade();
+                long novaQuantia = Math.max(0L, quantiaAtual - quantidadeSaida);
+
+                // só atualiza se a nova quantidade não for zero (mantém sua regra atual)
+                if (Helper.maiorIgualZero(novaQuantia)) {
+                    produtoAtual.setQuantia(novaQuantia);
+                    String produtoJson = jsonMapper.writeValueAsString(produtoAtual);
+                    produtoFeignClient.atualizarProduto(idProduto, produtoJson, null);
                 }
-            });
-        }
+
+            } catch (JsonProcessingException e) {
+                throw new RuntimeException(e);
+            }
+        });
 
         long ns = System.nanoTime() - t0;
         System.out.println("##############################");
         System.out.printf("### HISTORICO VENDAS SALVO %d ns ( %d ms)%n", ns, ns / 1_000_000);
         System.out.println("##############################");
 
+        // sempre retorna um DTO válido aqui
         return vcHistoricoSalvo;
-
-        }
     }
-
 }

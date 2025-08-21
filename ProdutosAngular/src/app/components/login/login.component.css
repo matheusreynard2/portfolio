@@ -65,6 +65,40 @@ p {
   width: 100% !important; /* inputs e grupos ocupam toda a largura da coluna */
 }
 
+/* Ícone bi-eye na mesma linha e menos espaço à direita do input de senha */
+.div-form-login .input-group {
+  display: flex;
+  align-items: stretch;
+  flex-wrap: nowrap;
+}
+.div-form-login .input-group .form-control {
+  min-width: 0;            /* permite encolher sem quebrar linha */
+  padding-right: 6px;      /* reduz espaço à direita do input */
+}
+.div-form-login .input-group .input-group-text {
+  padding: 0 6px;          /* ícone mais compacto */
+  white-space: nowrap;
+}
+
+/* Evitar estouro horizontal dos botões nas colunas */
+@media (max-width: 480px) {
+  .div-form-login .table td > .btn {
+    max-width: 100% !important;
+    width: auto !important;
+  }
+  .div-form-login .table td {
+    width: auto !important;
+  }
+  .div-form-login .table td:first-child {
+    width: 1%; /* encolhe a coluna do primeiro botão */
+    white-space: nowrap;
+  }
+  .div-form-login .table td[colspan="2"] {
+    width: 1%;
+    white-space: nowrap;
+  }
+}
+
 .maps-info-card, p {
   display: flex;
   flex-direction: column;
@@ -573,6 +607,12 @@ p {
 }
 
 @media (max-width: 480px) {
+  .btn-login,
+  .btn-cadastrar {
+    padding: 2px 6px !important;
+    font-size: 12px !important;
+    width: 74px !important; /* menor para caber na coluna */
+  }
   
   .text-bar {
     height: 30px !important;

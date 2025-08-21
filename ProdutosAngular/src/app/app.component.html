@@ -1,26 +1,30 @@
 <div class="container-fluid" style="padding-left: 20px; padding-right: 20px;">
   <div class="div-banner bg-dark border border-5 border-secondary rounded-top-5 d-flex bg-gradient" style="height: 180px;">
 
-    <div
-      *ngIf="mostrarPerfil; else divVazia"
-      class="perfil-div d-flex flex-column justify-content-between align-items-center border border-2 border-secondary rounded-top-5"
-      style="width: 13%; height: 100%;">
-      <!-- Botão de logout -->
-      <button type="button" class="btn btn-danger mt-2 logout-button" (click)="logout()">SAIR</button>
-      <!-- Foto e nome do usuário -->
-      <div class="d-flex flex-column align-items-center">
-        <img
-          [src]="usuarioLogado.imagem ? 'data:image/jpeg;base64,' + usuarioLogado.imagem : '/foto_perfil.png'" alt="Foto do usuário" [width]="isMobileOrTablet ? 70 : 100" [height]="isMobileOrTablet ? 70 : 100">
-        <span class="text-white mt-2" style="font-size: 16px;">{{usuarioLogado.login}}</span>
-      </div>
+    <div *ngIf="mostrarPerfil;">
+      <!-- Modo Mobile/Tablet: sem imagem e sem container com bordas -->
+      <ng-container *ngIf="isMobileOrTablet; else perfilDesktop">
+        <div class="mobile-user-container">
+          <button class="logout-button btn btn-link p-0" style="color: red; font-size: 16px;" (click)="logout()">SAIR</button>
+          <span class="text-white mobile-user-text">User: {{usuarioLogado.login}}</span>
+        </div>
+      </ng-container>
+      <!-- Modo Desktop: mantém imagem e container com bordas arredondadas -->
+      <ng-template #perfilDesktop>
+        <div
+          class="perfil-div d-flex flex-column justify-content-between align-items-center border border-2 border-secondary rounded-top-5"
+          style="width: 13%; height: 100%;">
+          <!-- Botão de logout -->
+          <button type="button" class="btn btn-danger mt-2 logout-button" (click)="logout()">SAIR</button>
+          <!-- Foto e nome do usuário -->
+          <div class="d-flex flex-column align-items-center">
+            <img
+              [src]="usuarioLogado.imagem ? 'data:image/jpeg;base64,' + usuarioLogado.imagem : '/foto_perfil.png'" alt="Foto do usuário" [width]="isMobileOrTablet ? 70 : 100" [height]="isMobileOrTablet ? 70 : 100">
+            <span class="text-white mt-2" style="font-size: 16px;">{{usuarioLogado.login}}</span>
+          </div>
+        </div>
+      </ng-template>
     </div>
-
-    <ng-template #divVazia>
-      <div
-        class="perfil-div d-flex flex-column justify-content-between align-items-center"
-        style="width: 13%; height: 100%; background-color: transparent;">
-      </div>
-    </ng-template>
 
     <!-- Coluna para o título e botões de navegação (80%) -->
     <div class="w-100 ps-3 d-flex flex-column justify-content-center" style="height: 100%; margin-left: -115px;" [ngClass]="{'centralizado': !mostrarPerfil}">
@@ -73,10 +77,10 @@
         </div>
 
         <!-- Menu para mobile/tablet -->
-        <div *ngIf="isMobileOrTablet" class="mobile-menu">
-          <h2 class="text-center text-white position-relative" style="line-height: 1.2;">
-          <span style="color: red; font-size: 60px; font-family: 'Leckerli One', cursive;">P<span style="color: red; font-size: 40px; font-family: 'Merienda', cursive">RO</span>
-          <span style="color: white; font-size: 40px; font-family: 'Merienda', cursive">DIFY</span>
+        <div *ngIf="isMobileOrTablet">
+          <h2 class="text-center text-white position-relative titulo-mobile" style="line-height: 1.2;">
+          <span style="color: red; font-size: 50px; font-family: 'Leckerli One', cursive;">P<span style="color: red; font-size: 30px; font-family: 'Merienda', cursive">RO</span>
+          <span style="color: white; font-size: 30px; font-family: 'Merienda', cursive">DIFY</span>
           </span>
           </h2>
           

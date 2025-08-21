@@ -49,10 +49,21 @@
                   </td>
                 <tr>
                   <td>
-                    <button type="submit" [disabled]="!loginForm.form.valid" class="btn bg-primary-subtle fw-bold" style="width: 100px">Entrar</button>
+                    <button type="submit" [disabled]="!loginForm.form.valid"
+                            class="btn bg-primary-subtle fw-bold"
+                            [class.btn-login]="isMobile"
+                            [style.width]="isMobile ? '74px' : '145px'"
+                            [style.height]="isMobile ? 'auto' : '45px'"
+                            [style.fontSize]="isMobile ? '12px' : '16px'">Entrar</button>
                   </td>
-                  <td colspan="2" class="coluna-2">
-                    <button type="button" class="btn bg-secondary-subtle fw-bold" style="width: 100px" (click)="cadastrarNovoUsuario()">Cadastrar</button>
+                  <td colspan="2" class="coluna-2 text-center">
+                    <button type="button"
+                            class="btn bg-secondary-subtle fw-bold"
+                            [class.btn-cadastrar]="isMobile"
+                            [style.width]="isMobile ? '74px' : '200px'"
+                            [style.height]="isMobile ? 'auto' : '45px'"
+                            [style.fontSize]="isMobile ? '12px' : '16px'"
+                            (click)="cadastrarNovoUsuario()">Cadastrar</button>
                   </td>
                   <td style="text-align: center; vertical-align: middle;">
                     <p><u>Trocar senha</u><br><span style="font-size: 8px; color: red">em construção</span></p>

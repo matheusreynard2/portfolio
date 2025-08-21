@@ -40,15 +40,14 @@ public class SalvarCaixaUseCase {
                 .collect(Collectors.toSet());
 
         VendaCaixa vendaCaixaAdicionado;
-        if (vendaCaixaDTO.getId() != null && vendaCaixaDTO.getId() > 0) {
+        if (Helper.maiorZero(vendaCaixaDTO.getId()) && vendaCaixaDTO.getId() != null) {
             // Atualiza a venda existente (mesmo id)
             vendaCaixaAdicionado = vendaCaixaRepository.buscarVendaPorId(vendaCaixaDTO.getId())
                 .map(existing -> {
                     // Limpa e aplica novos itens para forçar update da element collection
                     existing.getItens().clear();
-                    if (!isEmpty(itensConvertidos)) {
-                        existing.getItens().addAll(itensConvertidos);
-                    }
+                    Helper.verificarNull(itensConvertidos);
+                    existing.getItens().addAll(itensConvertidos);
                     existing.setTotalQuantidade(vendaCaixaDTO.getTotalQuantidade());
                     existing.setTotalValor(vendaCaixaDTO.getTotalValor());
                     return vendaCaixaRepository.adicionarVenda(existing);
@@ -78,9 +77,8 @@ public class SalvarCaixaUseCase {
         novo.setIdUsuario(vendaCaixaDTO.getIdUsuario());
         novo.setTotalQuantidade(vendaCaixaDTO.getTotalQuantidade());
         novo.setTotalValor(vendaCaixaDTO.getTotalValor());
-        if (!isEmpty(itensConvertidos)) {
-            novo.getItens().addAll(itensConvertidos);
-        }
+        Helper.verificarNull(itensConvertidos);
+        novo.getItens().addAll(itensConvertidos);
         return novo;
     }
 
@@ -90,10 +88,6 @@ public class SalvarCaixaUseCase {
         item.setQuantidade(dto.getQuantidade());
         item.setTipoPreco(dto.getTipoPreco());
         return item;
-    }
-
-    private boolean isEmpty(Set<CaixaItem> itensConvertidos) {
-        return itensConvertidos == null || itensConvertidos.isEmpty();
     }
 }
  

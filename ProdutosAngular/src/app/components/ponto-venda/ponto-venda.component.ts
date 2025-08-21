@@ -52,6 +52,8 @@ export class PontoVendaComponent implements OnInit {
   // Modal de sucesso ao finalizar
   lastVendaResumo: { id: number; totalQuantidade: number; totalValor: number } | null = null;
   lastVendaItensResumo: { nome: string; quantidade: number; subtotal: number }[] = [];
+  // Estado de buffering ao salvar
+  isSaving: boolean = false;
 
   constructor(
     private produtoService: ProdutoService,
@@ -205,6 +207,7 @@ export class PontoVendaComponent implements OnInit {
   }
 
   salvarCaixa(): void {
+    this.isSaving = true;
     const venda: VendaCaixaDTO = {
       id: this.vendaId > 0 ? this.vendaId : null,
       idUsuario: this.authService.getUsuarioLogado().idUsuario,
@@ -219,9 +222,14 @@ export class PontoVendaComponent implements OnInit {
         localStorage.setItem('pdv.vendaId', String(this.vendaId));
         this.atualizarEstadoFinalizacao();
         // Exibe toast de sucesso
+        this.isSaving = false; // encerra buffering assim que o toast for apresentado
         this.saveToastText = 'Venda salva com sucesso. ID ' + this.vendaId + ' atualizada.';
         this.showSaveToast = true;
         setTimeout(() => (this.showSaveToast = false), 2000);
+      },
+      error: () => {
+        // Garante que o buffering termine mesmo em caso de erro
+        this.isSaving = false;
       }
     });
   }
@@ -258,7 +266,10 @@ export class PontoVendaComponent implements OnInit {
         }
         // Atualiza a lista de histórico após finalizar
         this.pdvService.listarHistorico().subscribe({
-          next: (lista) => this.historicoVendas = lista ?? []
+          next: (lista) => {
+            this.historicoVendas = lista ?? [];
+            this.aplicarFiltroHistorico();
+          }
         });
         // Recarrega o estoque/quantidades da lista de produtos para refletir o backend
         const idUsuario = this.authService.getUsuarioLogado().idUsuario;

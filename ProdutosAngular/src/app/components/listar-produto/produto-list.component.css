@@ -998,12 +998,14 @@ td.coluna_nome {
   }
 
   #searchBar_td {
-    width: 60%;
+    width: 75% !important;
   }
 
   .searchBar_input {
     width: 100%;
     font-size: 14px;
+    flex: 1 1 42% !important;
+    min-width: 42% !important;
   }
 
   #combo_tipo_pesquisa {

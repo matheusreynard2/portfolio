@@ -28,9 +28,25 @@ tr.sem-estoque td {
 
 /* Botões do PDV com tamanho maior e uniforme */
 .pdv-action-btn {
-  min-width: 220px;
-  height: 44px;
-  font-size: 16px;
+  min-width: 180px;
+  height: 40px;
+  font-size: 15px;
+}
+
+/* Opacidade 85% ao passar o mouse */
+.hover-100:hover {
+  opacity: 0.85 !important;
+}
+
+/* Opacidade base reduzida para botões de ação, aumentando no hover */
+.half-opacity {
+  opacity: 0.5;
+  transition: opacity 0.15s ease-in-out;
+}
+
+/* Destaque para quantidade zero */
+.estoque-zero {
+  color: #b02a37 !important; /* vermelho bootstrap danger escuro */
 }
 
 /* Harmoniza com estilo de botões de fornecedor (style-btn-form) e garante visibilidade no dark mode */
@@ -84,4 +100,36 @@ tr.sem-estoque td {
   width: 100%;
 }
 
+/* Responsividade e overflow para 400x608 */
+.table-responsive {
+  overflow-x: auto;
+}
+
+.pdv-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+@media (max-width: 576px) {
+  .preco-modo {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .pdv-action-btn {
+    min-width: 120px;
+    height: 34px;
+    font-size: 13px;
+  }
+  .card-header .filtro-produtos {
+    min-width: 160px;
+  }
+  .pdv-actions {
+    margin-left: auto;
+    justify-content: flex-end;
+  }
+  .caixa-title {
+    font-size: 1rem;
+  }
+}
 

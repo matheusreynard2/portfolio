@@ -32,6 +32,10 @@
   margin-bottom: 50px;
 }
 
+.titulo-mobile {
+  margin-left: 50px;
+}
+
 img {
   transform: translateX(40px) translateY(5px);
 }
@@ -52,6 +56,26 @@ p {
   background-color: #333; /* Para destacar a área do perfil */
 }
 
+/* Torna o banner contexto para posicionamento absoluto dos elementos internos */
+.div-banner {
+  position: relative;
+}
+
+/* Container fixo para botão SAIR e login no mobile, dentro do banner */
+.mobile-user-container {
+  position: absolute;
+  bottom: 8px;
+  left: 10px;
+  display: flex;
+  align-items: center;
+  z-index: 2;
+}
+
+.mobile-user-text {
+  font-size: 14px;
+  margin-left: 50px; /* 50px à direita do botão */
+}
+
 #div_banner_menu {
   position: relative;
 }
@@ -67,6 +91,38 @@ p {
   font-weight: bold;
   display: block;
   padding: 3px 9px;
+}
+
+/* Estilo do rótulo de usuário no mobile */
+.mobile-user-label {
+  font-size: 12px;
+}
+
+/* Label User no rodapé do banner em mobile */
+.mobile-user-banner {
+  position: absolute;
+  bottom: 8px;
+  left: 50px; /* desloca ~50px para a direita */
+  font-size: 12px;
+  z-index: 10;
+}
+
+/* Deslocar menu mobile ~50px à direita */
+.botao-menu-celular {
+  left: 60px; /* antes era 10px */
+}
+.menu-overlay.active {
+  /* mantém overlay cobrindo toda a tela; sem alteração */
+}
+.mobile-menu-options {
+  left: 25px; /* desloca painel do menu também */
+}
+
+/* Alinhar botão de tema ao canto superior direito do banner */
+#btnTrocarTema {
+  position: absolute;
+  top: 10px;
+  right: 10px;
 }
 
 .perfil-div img {
@@ -116,7 +172,7 @@ p {
 .mobile-menu-options {
   position: fixed;
   top: 0;
-  left: 0;
+  left: 25px; /* desloca painel do menu 25px à direita */
   width: 250px;
   height: 100vh;
   background: #ffffff;
@@ -147,7 +203,7 @@ p {
 .botao-menu-celular {
   position: fixed;
   top: 10px;
-  left: 10px;
+  left: 35px; /* 25px mais à direita do original */
   z-index: 10000;
 }
 
@@ -209,7 +265,7 @@ p {
 
 /* Ajuste dos sub-menus */
 .mobile-submenu {
-  margin-bottom: 5px;
+  margin-bottom: 10px;
 }
 
 .mobile-submenu-header {
