@@ -53,6 +53,7 @@ p {
 .perfil-div {
   position: relative;;
   text-align: center;
+  margin-left: 10px;
   background-color: #333; /* Para destacar a área do perfil */
 }
 
