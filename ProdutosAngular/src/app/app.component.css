@@ -53,8 +53,15 @@ p {
 .perfil-div {
   position: relative;;
   text-align: center;
-  margin-left: 10px;
+  margin-left: 0px;
   background-color: #333; /* Para destacar a área do perfil */
+  width: 180px; /* aumenta largura para acomodar botões iguais */
+}
+
+/* Spacer fixo para alinhar o título no mobile com/sem login */
+.perfil-spacer {
+  width: 150px;
+  height: 100%;
 }
 
 /* Torna o banner contexto para posicionamento absoluto dos elementos internos */
@@ -62,11 +69,50 @@ p {
   position: relative;
 }
 
+/* Título central fixo no banner */
+#bannerTitle {
+  position: absolute;
+  top: 38%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  pointer-events: none; /* evita capturar cliques do topo */
+  z-index: 1;
+}
+
+#bannerTitle .brand-main { font-size: 60px; }
+#bannerTitle .brand-sub { font-size: 30px; }
+#bannerTitle .brand-sub-alt { font-size: 30px; }
+
+@media (max-width: 768px) {
+  #bannerTitle .brand-main { font-size: 50px; }
+  #bannerTitle .brand-sub, #bannerTitle .brand-sub-alt { font-size: 30px; }
+}
+
+/* Desktop: menu centralizado logo abaixo do título */
+@media (min-width: 769px) {
+  #desktopNav {
+    position: absolute;
+    top: calc(38% + 42px);
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 2;
+  }
+  #desktopNav ul {
+    display: inline-flex;
+    flex-wrap: nowrap;
+    align-items: center;
+    gap: 8px;
+    white-space: nowrap;
+  }
+  #desktopNav .btn-group { white-space: nowrap; }
+}
+
 /* Container fixo para botão SAIR e login no mobile, dentro do banner */
 .mobile-user-container {
   position: absolute;
-  bottom: 8px;
-  left: 10px;
+  bottom: 10px;
+  left: 12px;
   display: flex;
   align-items: center;
   z-index: 2;
@@ -74,11 +120,27 @@ p {
 
 .mobile-user-text {
   font-size: 14px;
-  margin-left: 50px; /* 50px à direita do botão */
+  margin-left: 0;
+}
+
+.saldo-mobile {
+  color: #198754;
+  font-weight: 700;
+  font-size: 16px;
 }
 
 #div_banner_menu {
   position: relative;
+}
+
+/* Fixa a largura do centro do banner no mobile para evitar "andar" do título */
+@media (max-width: 768px) {
+  #bannerCenter {
+    min-width: calc(100% - 150px); /* compensa a coluna do perfil/spacer à esquerda */
+  }
+  #div_banner_menu h2 {
+    width: 100%;
+  }
 }
 
 #div_banner_gradient h2 {
@@ -90,9 +152,23 @@ p {
   font-size: 12px;
   color: white;
   font-weight: bold;
-  display: block;
-  padding: 3px 9px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px 12px; /* aumenta área clicável */
 }
+
+/* botão engrenagem com área clicável maior e altura igual ao SAIR */
+.perfil-div .btn-outline-light {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 38px;
+  padding: 6px 12px;
+  width: 100%;
+}
+
+.perfil-actions { width: 80%; display: flex; gap: 4px; }
 
 /* Estilo do rótulo de usuário no mobile */
 .mobile-user-label {
@@ -123,7 +199,15 @@ p {
 #btnTrocarTema {
   position: absolute;
   top: 10px;
+  right: 10px; /* colado na lateral direita superior do banner */
+  z-index: 1001;
+}
+
+#btnLogoutTopRight {
+  position: absolute;
+  bottom: 10px; /* canto inferior direito do banner */
   right: 10px;
+  z-index: 1000;
 }
 
 .perfil-div img {

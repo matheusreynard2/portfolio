@@ -15,8 +15,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.apiestudar.api_prodify.application.usecase.usuario.AtualizarUsuarioUseCase;
+import com.apiestudar.api_prodify.application.usecase.usuario.BuscarUsuarioPorIdUseCase;
 import com.apiestudar.api_prodify.application.usecase.usuario.AdicionarUsuarioUseCase;
 import com.apiestudar.api_prodify.application.usecase.usuario.DeletarUsuarioUseCase;
 import com.apiestudar.api_prodify.application.usecase.usuario.ListarUsuariosUseCase;
@@ -32,14 +37,16 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 @RequestMapping("api/usuarios")
 public class UsuarioController {
 
-	private static final Logger log = LoggerFactory.getLogger(UsuarioController.class);
-
 	@Autowired
 	private AdicionarUsuarioUseCase adicionarUsuario;
+	@Autowired
+	private AtualizarUsuarioUseCase atualizarUsuario;
 	@Autowired
 	private DeletarUsuarioUseCase deletarUsuario;
 	@Autowired
 	private ListarUsuariosUseCase listarUsuarios;
+	@Autowired
+	private BuscarUsuarioPorIdUseCase buscarUsuarioPorId;
 	@Autowired
 	private UsuarioHelper usuarioHelper;
 
@@ -86,5 +93,23 @@ public class UsuarioController {
 	@DeleteMapping("/deletarUsuario/{id}")
 	public ResponseEntity<Boolean> deletarUsuario(@PathVariable int id) {
 		return ResponseEntity.status(HttpStatus.OK).body(deletarUsuario.executar(id));
+	}
+
+	@Operation(summary = "Atualiza as informações de um usuário.", description = "Atualiza as informações registradas no banco de dados de um usuário de acordo com o número de id passado como parâmetro.")
+	@ApiResponses({
+        @ApiResponse(responseCode = "200", description = "Usuário atualizado.")
+    })
+	@PutMapping("/atualizarUsuario/{idUsuario}")
+	public ResponseEntity<UsuarioDTO> atualizarUsuario(@ModelAttribute UsuarioFormDTO usuarioFormDTO, @PathVariable Long idUsuario) throws IOException {
+		return ResponseEntity.status(HttpStatus.OK).body(atualizarUsuario.executar(idUsuario, usuarioFormDTO, usuarioFormDTO.getImagemFile()));
+	}
+
+	@Operation(summary = "Busca um usuário pelo id.", description = "Busca as informaçõse de um usuário pelo id passado como parâmetro.")
+	@ApiResponses({
+		@ApiResponse(responseCode = "200", description = "Usuário encontrado.")
+	})
+	@GetMapping("/buscarUsuarioPorId/{idUsuario}")
+	public ResponseEntity<UsuarioDTO> buscarUsuarioPorId(@PathVariable int idUsuario) {
+		return ResponseEntity.status(HttpStatus.OK).body(buscarUsuarioPorId.executar(idUsuario));
 	}
 }

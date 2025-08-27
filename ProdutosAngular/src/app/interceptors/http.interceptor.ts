@@ -1,10 +1,11 @@
+// http.interceptor.ts (funcional)
 import { HttpInterceptorFn, HttpRequest, HttpHandlerFn, HttpErrorResponse } from '@angular/common/http';
 import { inject } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { AuthService } from '../service/auth/auth.service';
 import { Router } from '@angular/router';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { environment } from '../../environments/environment';
 
 export const httpInterceptor: HttpInterceptorFn = (
   request: HttpRequest<unknown>,
@@ -12,99 +13,41 @@ export const httpInterceptor: HttpInterceptorFn = (
 ): Observable<any> => {
   const authService = inject(AuthService);
   const router = inject(Router);
-  const modal = inject(NgbModal);
-  const token = authService.getToken();
 
-  if (token) {
-    request = addToken(request, authService);
-  }
-  
+  // ❗ Não injeta Authorization aqui (isso é do AuthInterceptor)
+  // Apenas headers padrão leves
   request = addDefaultHeaders(request);
 
   return next(request).pipe(
     catchError((error: HttpErrorResponse) => {
-      // Log do erro
-      console.error(`Erro na requisição ${request.method} ${request.url}:`, error);
-      
-      // Tratamento específico para token expirado
-      const message = (
-        (error?.error && typeof error.error === 'string' ? error.error : null) ||
-        error?.error?.error?.message ||
-        error?.error?.mensagem ||
-        error?.error?.message ||
-        error?.message
-      );
-
-      // 440 com mensagem de expiração: abrir modal de token expirado do login e marcar flag para exibir
-      if (error.status === 440) {
+      // Lida apenas com 440 (sessão expirada no servidor)
+      if (isApiRequest(request.url) && error.status === 440) {
         authService.adicionarTokenExpirado('true');
-        // Abre o modal usando o template do LoginComponent
-        // Como o template está no LoginComponent, navegamos para login e deixamos o ngOnInit abrir o modal
-        router.navigate(['/login']);
+        // Limpa estado e navega para /login (removerChaves já faz navigate)
+        authService.removerChaves();
         return throwError(() => error);
       }
-
-      // Compatibilidade: 401 com mensagem de expiração
-      const compatMessage = (
-        (error?.error && typeof error.error === 'string' ? error.error : null) ||
-        error?.error?.error?.message ||
-        error?.error?.mensagem ||
-        error?.error?.message ||
-        error?.message
-      );
-      if (error.status === 401 && compatMessage && (compatMessage.includes('TOKEN Expirado') || compatMessage.includes('Tempo limite de conexão'))) {
-        authService.adicionarTokenExpirado('true');
-        router.navigate(['/login']);
-        return throwError(() => error);
-      }
+      // Não trata 401/403 aqui (deixa para o AuthInterceptor)
       return throwError(() => error);
     })
   );
 };
 
-function isPublicEndpoint(url: string): boolean {
-  const publicEndpoints = [
-    '/api/auth/realizarLogin',
-    '/api/auth/refresh',
-    '/api/auth/logout',
-    '/api/usuarios/addNovoAcessoIp',
-    '/api/usuarios/getAllAcessosIp',
-    '/api/usuarios/adicionarUsuario'
-  ];
-  
-  return publicEndpoints.some(endpoint => url.includes(endpoint));
-}
-
-function addToken(request: HttpRequest<unknown>, authService: AuthService): HttpRequest<unknown> {
-  const token = authService.getToken();
-  
-  if (token && token.trim() !== '') {
-    const requestWithToken = request.clone({
-      setHeaders: {
-        Authorization: `Bearer ${token}`
-      }
-    });
-    return requestWithToken;
-  }
-  return request;
-}
-
 function addDefaultHeaders(request: HttpRequest<unknown>): HttpRequest<unknown> {
-  const headers: { [key: string]: string } = {};
-  
-  // Sempre adiciona headers básicos para CORS
-  headers['Accept'] = 'application/json';
-  
-  // Se a requisição for FormData, NÃO define Content-Type
-  // O Angular define automaticamente Content-Type como multipart/form-data para FormData
-  if (!(request.body instanceof FormData)) {
-    // Só define Content-Type como application/json se NÃO for FormData
+  const headers: Record<string, string> = { Accept: 'application/json' };
+
+  // Define Content-Type só quando a requisição TEM body e não for FormData/Blob
+  const hasBody = ['POST', 'PUT', 'PATCH'].includes(request.method.toUpperCase());
+  const isFormData = typeof FormData !== 'undefined' && request.body instanceof FormData;
+  const isBlob = typeof Blob !== 'undefined' && request.body instanceof Blob;
+
+  if (hasBody && !isFormData && !isBlob) {
     headers['Content-Type'] = 'application/json';
   }
-  
-  return request.clone({
-    setHeaders: headers
-  });
+
+  return request.clone({ setHeaders: headers });
 }
 
-// A navegação passa a ser responsabilidade do AppComponent após exibir modal
+function isApiRequest(url: string): boolean {
+  return url.startsWith(environment.API_URL);
+}

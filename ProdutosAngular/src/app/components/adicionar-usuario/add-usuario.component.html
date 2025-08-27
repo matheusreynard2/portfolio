@@ -84,7 +84,10 @@
                 <span>Foto perfil:</span>
               </td>
               <td>
-                <input id="foto_perfil" type="file" class="form-control" (change)="onFileChange($event)" [disabled]="isMobileOrTablet"/>
+                <div class="d-flex align-items-center gap-2">
+                  <input id="foto_perfil" type="file" class="form-control" (change)="onFileChange($event)" [disabled]="isMobileOrTablet"/>
+                  <small style="color:#b02a37; white-space: nowrap;">Max. 20MB • Somente .jpg / .png</small>
+                </div>
                </td>
             </tr>
             <tr>
@@ -130,6 +133,19 @@
   </div>
   <div class="modal-footer">
     <button type="button" class="btn btn-secondary" (click)="modal.close()">Fechar</button>
+  </div>
+</ng-template>
+
+<!-- Modal de aviso de arquivo inválido -->
+<ng-template #modalAvisoArquivo let-modal>
+  <div class="modal-header">
+    <h6 class="modal-title">Aviso</h6>
+  </div>
+  <div class="modal-body">
+    <p>{{ avisoTextoModal }}</p>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-primary btn-sm" (click)="modal.close()">Ok</button>
   </div>
 </ng-template>
 </div>

@@ -1,42 +1,76 @@
-<div class="container-fluid" style="padding-left: 20px; padding-right: 20px;">
-  <div class="div-banner bg-dark border border-5 border-secondary rounded-top-5 d-flex bg-gradient" style="height: 180px;">
+<div class="container-fluid" style="padding-left: 20px; padding-right: 10px; padding-top: 5px; padding-bottom: 5px;">
+  <div class="div-banner bg-dark border border-5 border-secondary rounded-top-5 d-flex bg-gradient" style="height: 210px;">
 
-    <div *ngIf="mostrarPerfil;">
+    <!-- Título central fixo no banner (independente do layout lateral) -->
+    <div id="bannerTitle">
+      <h2 class="text-white m-0 p-0">
+        <span class="brand-main" style="color: red; font-family: 'Leckerli One', cursive;">
+          P<span class="brand-sub" style="color: red; font-family: 'Merienda', cursive;">RO</span>
+          <span class="brand-sub-alt" style="color: white; font-family: 'Merienda', cursive;">DIFY</span>
+        </span>
+      </h2>
+    </div>
+
+    <div>
+      <ng-container *ngIf="mostrarPerfil; else perfilPlaceholder">
       <!-- Modo Mobile/Tablet: sem imagem e sem container com bordas -->
       <ng-container *ngIf="isMobileOrTablet; else perfilDesktop">
-        <div class="mobile-user-container">
-          <button class="logout-button btn btn-link p-0" style="color: red; font-size: 16px;" (click)="logout()">SAIR</button>
-          <span class="text-white mobile-user-text">User: {{usuarioLogado.login}}</span>
+        <!-- Spacer fixo para manter título no mesmo lugar antes/depois do login -->
+        <div class="perfil-div" style="visibility: hidden;"></div>
+        <div class="mobile-user-container d-flex align-items-center">
+          <a routerLink="/editar-usuario" class="btn btn-outline-light p-1 me-2" title="Editar perfil">
+            <i class="bi bi-gear"></i>
+          </a>
+          <div class="d-flex flex-column">
+            <table>
+              <tr>
+                <td>
+                  <span class="mt-1" style="color: #198754; font-weight: 700; font-size: 16px;">R$ {{ (usuarioLogado.saldo?? 0 ) | number:'1.2-2' }}</span>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <span class="text-white mobile-user-text">User: {{usuarioLogado.login}}</span>
+                </td>
+              </tr>
+            </table>
+          </div>
         </div>
       </ng-container>
       <!-- Modo Desktop: mantém imagem e container com bordas arredondadas -->
       <ng-template #perfilDesktop>
         <div
           class="perfil-div d-flex flex-column justify-content-between align-items-center border border-2 border-secondary rounded-top-5"
-          style="width: 120px; height: 100%;">
-          <!-- Botão de logout -->
-          <button type="button" class="btn btn-danger mt-2 logout-button" (click)="logout()">SAIR</button>
+          style="width: 150px; height: 100%;">
+          <!-- Ações: engrenagem + logout -->
+          <div class="perfil-actions mt-2">
+            <div class="perfil-action">
+              <a routerLink="/editar-usuario" class="btn btn-outline-light w-100" title="Editar perfil">
+                <i class="bi bi-gear"></i>
+              </a>
+            </div>
+          </div>
           <!-- Foto e nome do usuário -->
           <div class="d-flex flex-column align-items-center">
             <img
-              [src]="usuarioLogado.imagem ? 'data:image/jpeg;base64,' + usuarioLogado.imagem : '/foto_perfil.png'" alt="Foto do usuário" [width]="isMobileOrTablet ? 70 : 100" [height]="isMobileOrTablet ? 70 : 100">
+              [src]="usuarioLogado.imagem ? 'data:image/jpeg;base64,' + usuarioLogado.imagem : '/foto_perfil.png'" alt="Foto do usuário" style="width: 85px; height: 85px;">
             <span class="text-white mt-2" style="font-size: 16px;">{{usuarioLogado.login}}</span>
+            <span class="mt-1" style="color: #198754; font-weight: 700; font-size: 16px;">R$ {{ (usuarioLogado.saldo?? 0 ) | number:'1.2-2' }}</span>
           </div>
         </div>
+      </ng-template>
+      </ng-container>
+      <ng-template #perfilPlaceholder>
+        <div class="perfil-div" style="width: 150px;"></div>
       </ng-template>
     </div>
 
     <!-- Coluna para o título e botões de navegação (80%) -->
-    <div class="w-100 ps-3 d-flex flex-column justify-content-center" style="height: 100%; margin-left: -115px;" [ngClass]="{'centralizado': !mostrarPerfil}">
+    <div id="bannerCenter" class="w-100 ps-3 d-flex flex-column justify-content-center" style="height: 100%; margin-left: -115px;" [ngClass]="{'centralizado': !mostrarPerfil}">
       <div id="div_banner_menu">
 
-        <!-- Botões de navegação -->
-        <div *ngIf="!isMobileOrTablet">
-          <h2 class="text-center text-white position-relative" style="line-height: 1.2;">
-          <span style="color: red; font-size: 60px; font-family: 'Leckerli One', cursive;">P<span style="color: red; font-size: 30px; font-family: 'Merienda', cursive">RO</span>
-          <span style="color: white; font-size: 30px; font-family: 'Merienda', cursive">DIFY</span>
-          </span>
-          </h2>
+        <!-- Botões de navegação (desktop) -->
+        <div *ngIf="!isMobileOrTablet" id="desktopNav">
           <ul class="text-center list-inline py-1" style="font-size: 14px;">
             <li class="list-inline-item">
               <a routerLink="/login" class="btn btn-outline-secondary fw-bold">Início</a>
@@ -49,6 +83,7 @@
                 <div class="dropdown-menu">
                   <a class="dropdown-item" routerLink="/produtos">Listar produtos</a>
                   <a class="dropdown-item" routerLink="/addproduto">Cadastrar produtos</a>
+                  <a class="dropdown-item" routerLink="/comprar-produtos">Comprar produtos</a>
                 </div>
               </div>
             </li>
@@ -78,17 +113,12 @@
 
         <!-- Menu para mobile/tablet -->
         <div *ngIf="isMobileOrTablet">
-          <h2 class="text-center text-white position-relative titulo-mobile" style="line-height: 1.2;">
-          <span style="color: red; font-size: 50px; font-family: 'Leckerli One', cursive;">P<span style="color: red; font-size: 30px; font-family: 'Merienda', cursive">RO</span>
-          <span style="color: white; font-size: 30px; font-family: 'Merienda', cursive">DIFY</span>
-          </span>
-          </h2>
           
           <!-- Overlay para escurecer o fundo -->
           <div class="menu-overlay" [class.active]="menuOpen" (click)="abrirFecharMenu()"></div>
           
           <!-- Botão de hambúrguer para abrir/fechar o menu -->
-          <div class="botao-menu-celular">
+          <div class="botao-menu-celular" style="margin-top: 10px;">
             <button class="btn menu-mobile-btn" (click)="abrirFecharMenu()">
               &#9776;
             </button>
@@ -113,6 +143,9 @@
                   </li>
                   <li>
                     <a routerLink="/addproduto" (click)="abrirFecharMenu()">Cadastrar produto</a>
+                  </li>
+                  <li>
+                    <a routerLink="/comprar-produtos" (click)="abrirFecharMenu()">Comprar produtos</a>
                   </li>
                 </ul>
               </li>
@@ -150,9 +183,13 @@
       </div>
     </div>
     <div>
-    <button id="btnTrocarTema" (click)="alternarTema()" class="btn btn-light-dark fw-bold">
-      <i [class]="temaEscuro ? 'bi bi-sun' : 'bi bi-moon'"></i>
-    </button>
+      <button id="btnTrocarTema" (click)="alternarTema()" class="btn btn-light-dark fw-bold" title="Tema">
+        <i [class]="temaEscuro ? 'bi bi-sun' : 'bi bi-moon'"></i>
+      </button>
+      <button *ngIf="mostrarPerfil" id="btnLogoutTopRight" (click)="logout()" class="btn btn-danger fw-bold" title="Sair">
+        <i class="bi bi-box-arrow-right"></i>
+      </button>
+
     </div>
   </div>
 
@@ -170,17 +207,6 @@
   </div>
 
   <router-outlet></router-outlet>
-
-  <!-- Toast de redirecionamento (logo abaixo do banner, um pouco acima do centro) -->
-  <ngb-toast
-    *ngIf="showRedirectToast"
-    [autohide]="true"
-    [delay]="1500"
-    class="bg-dark text-white position-fixed shadow"
-    style="top: 40%; left: 50%; transform: translate(-50%, -50%); z-index: 1080;"
-    (hidden)="showRedirectToast = false">
-    {{ toastText }}
-  </ngb-toast>
 
   <!-- Modal de expiração tratado nos components via catch; nenhum toast global aqui -->
 

@@ -11,6 +11,7 @@ import {AuthService} from '../../service/auth/auth.service';
 import {HttpResponse} from '@angular/common/http';
 import {DeviceService} from '../../service/device/device.service';
 import {ProdutoDTO} from '../../model/dto/ProdutoDTO';
+import { UtilsService } from '../../service/utils/utils.service';
 import {FornecedorDTO} from '../../model/dto/FornecedorDTO';
 
 @Component({
@@ -63,14 +64,17 @@ export class ProdutoListComponent implements OnInit {
   @ViewChild('searchBar') searchBar!: ElementRef
   @ViewChild('modalAvisoToken') modalAvisoToken!: ElementRef
   @ViewChild('modalErroExcluirHistorico') modalErroExcluirHistorico!: ElementRef
+  @ViewChild('modalAvisoArquivo') modalAvisoArquivo!: ElementRef
   isMobileOrTablet: boolean = false;
   searchValue: string = '';
   searchNomeFornecedor: string = '';
   searchValorInicial: number | null = null;
+  avisoTextoModal: string = '';
 
   constructor(private produtoService: ProdutoService,
               private produtoFunctionsService: ProdutoFunctionsService,
-              private authService: AuthService, private deviceService: DeviceService) { }
+              private authService: AuthService, private deviceService: DeviceService,
+              private utils: UtilsService) { }
 
   ngOnInit() {
     // Carrega a lista de fornecedores
@@ -317,7 +321,28 @@ export class ProdutoListComponent implements OnInit {
   }
 
   onFileChange(event: any) {
-    this.imagemFile = event.target.files[0];
+    const file: File = event.target.files && event.target.files[0];
+    if (!file) return;
+    const valid = this.utils.validarImagem(file);
+    if (!valid.ok) {
+      const texto = valid.motivo === 'tipo'
+        ? 'Tipo de arquivo inválido. Selecione apenas .jpg ou .png.'
+        : 'Arquivo muito grande. Tamanho máximo permitido: 20MB.';
+      this.showSmallModal(texto);
+      try { event.target.value = null; } catch {}
+      this.imagemFile = new File([], 'arquivo_vazio.txt', {});
+      return;
+    }
+    this.imagemFile = file;
+  }
+
+  private showSmallModal(texto: string) {
+    this.avisoTextoModal = texto;
+    try {
+      this.modalService.open(this.modalAvisoArquivo, { size: 'sm' });
+    } catch {
+      alert(texto);
+    }
   }
 
   // Faz o cálculo dos valores em relação a quantidade

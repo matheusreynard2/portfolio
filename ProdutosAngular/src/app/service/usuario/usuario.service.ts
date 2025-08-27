@@ -37,6 +37,16 @@ export class UsuarioService extends HttpBaseService {
   public getAllAcessosIp(): Observable<number> {
     return this.http.get<number>(this.usuariosUrl + "/getAllAcessosIp", {});
   }
+
+  // ====== Novos métodos para edição do usuário logado ======
+  buscarUsuarioPorId(idUsuario: number): Observable<UsuarioDTO> {
+    return this.http.get<UsuarioDTO>(`${this.usuariosUrl}/buscarUsuarioPorId/${idUsuario}`);
+  }
+
+  atualizarUsuario(idUsuario: number, usuario: UsuarioDTO, imagem: File): Observable<UsuarioDTO> {
+    const formData = this.createUsuarioFormData(usuario, imagem);
+    return this.http.put<UsuarioDTO>(`${this.usuariosUrl}/atualizarUsuario/${idUsuario}`, formData);
+  }
 }
 
 

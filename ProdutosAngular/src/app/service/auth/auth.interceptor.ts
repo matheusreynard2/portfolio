@@ -1,57 +1,105 @@
 import { Injectable } from '@angular/core';
-import { HttpInterceptor, HttpRequest, HttpHandler, HttpEvent, HttpErrorResponse } from '@angular/common/http';
-import { Observable, catchError, switchMap, throwError } from 'rxjs';
-import { AuthService } from './auth.service';
-import { HttpClient } from '@angular/common/http';
-import { environment } from '../../../environments/environment';
+import {
+  HttpInterceptor, HttpRequest, HttpHandler, HttpEvent, HttpErrorResponse
+} from '@angular/common/http';
 import { Router } from '@angular/router';
+import { Observable, Subject, from, throwError } from 'rxjs';
+import { catchError, finalize, switchMap, take, tap } from 'rxjs/operators';
+import { AuthService } from './auth.service';
+import { environment } from '../../../environments/environment';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
-  private refreshing = false;
 
-  constructor(private auth: AuthService, private http: HttpClient, private router: Router) {}
+  private isRefreshing = false;
+  private refreshResult$ = new Subject<boolean>();
+
+  // Endpoints de AUTH do BACKEND (evitar loop)
+  private static readonly AUTH_ENDPOINTS = [
+    `${environment.API_URL}/auth/realizarLogin`,
+    `${environment.API_URL}/auth/refresh`,
+    `${environment.API_URL}/auth/logout`,
+  ];
+
+  constructor(
+    private auth: AuthService,
+    private router: Router,
+  ) {}
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    const token = this.auth.getAccessToken();
-    const withCredReq = token
-      ? req.clone({ withCredentials: true, setHeaders: { Authorization: `Bearer ${token}` } })
-      : req.clone({ withCredentials: true });
+    // 1) Não intercepta chamadas de auth do backend (evita loop). Ainda manda cookies.
+    if (this.isAuthEndpoint(req.url)) {
+      return next.handle(req.clone({ withCredentials: true }));
+    }
 
-    return next.handle(withCredReq).pipe(
+    // 2) Só trata chamadas ao seu backend (não mandar Authorization para terceiros)
+    if (!this.isApiRequest(req.url)) {
+      return next.handle(req);
+    }
+
+    // 3) Anexa Authorization se houver token + withCredentials
+    const withAuth = this.addAuthHeaderIfPresent(req);
+
+    return next.handle(withAuth).pipe(
+      // Marca atividade em respostas OK (mantém sessão viva enquanto usa o app)
+      tap(() => this.auth.markUserActivity()),
       catchError((err: any) => {
-        const isLogin = req.url.includes('/auth/realizarLogin');
-        const isRefresh = req.url.includes('/auth/refresh');
-        const isLogout = req.url.includes('/auth/logout');
+        if (err instanceof HttpErrorResponse && (err.status === 401 || err.status === 403)) {
 
-        if (err instanceof HttpErrorResponse && err.status === 401 && !this.refreshing && !isLogin && !isRefresh && !isLogout) {
-          this.refreshing = true;
-          return this.http.post<{ accessToken: string }>(`${environment.API_URL}/auth/refresh`, {}, { withCredentials: true })
-            .pipe(
-              switchMap(res => {
-                this.auth.setAccessToken(res.accessToken);
-                const retry = req.clone({
-                  withCredentials: true,
-                  setHeaders: { Authorization: `Bearer ${res.accessToken}` }
-                });
-                this.refreshing = false;
-                return next.handle(retry);
-              }),
-              catchError(refreshErr => {
-                this.refreshing = false;
-                // Refresh falhou: marcar token expirado e redirecionar para login
-                this.auth.setAccessToken(null);
-                this.auth.adicionarTokenExpirado('true');
-                // Marca que vamos exibir modal de logout após refresh de página
-                this.router.navigate(['/login']);
-                return throwError(() => refreshErr);
+          // Refresh concorrente: espera e reenvia
+          if (this.isRefreshing) {
+            return this.refreshResult$.pipe(
+              take(1),
+              switchMap(ok => {
+                if (ok) {
+                  const retried = this.addAuthHeaderIfPresent(req);
+                  return next.handle(retried);
+                }
+                this.auth.removerChaves();
+                return throwError(() => err);
               })
             );
+          }
+
+          // Inicia refresh único
+          this.isRefreshing = true;
+          return from(this.auth.refreshToken()).pipe(
+            switchMap(ok => {
+              this.refreshResult$.next(ok);
+              if (ok) {
+                const retried = this.addAuthHeaderIfPresent(req);
+                return next.handle(retried);
+              } else {
+                this.auth.removerChaves();
+                return throwError(() => err);
+              }
+            }),
+            finalize(() => (this.isRefreshing = false))
+          );
         }
+
+        // Outros erros seguem o fluxo normal
         return throwError(() => err);
       })
     );
   }
+
+  private addAuthHeaderIfPresent(req: HttpRequest<any>): HttpRequest<any> {
+    const token = this.auth.getAccessToken();
+    if (!token) {
+      return req.clone({ withCredentials: true });
+    }
+    return req.clone({
+      withCredentials: true,
+      setHeaders: { Authorization: `Bearer ${token}` },
+    });
+  }
+
+  private isAuthEndpoint(url: string): boolean {
+    return AuthInterceptor.AUTH_ENDPOINTS.some(ep => url.startsWith(ep));
+  }
+
+  private isApiRequest(url: string): boolean {
+    return url.startsWith(environment.API_URL);
+  }
 }
-
-

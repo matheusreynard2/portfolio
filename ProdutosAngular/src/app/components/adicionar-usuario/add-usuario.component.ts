@@ -7,6 +7,7 @@ import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {DeviceService} from '../../service/device/device.service';
 import {MatCard, MatCardContent} from '@angular/material/card';
 import { UsuarioDTO } from '../../model/dto/UsuarioDTO';
+import { UtilsService } from '../../service/utils/utils.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 
@@ -39,13 +40,15 @@ export class AddUsuarioComponent implements OnInit {
   adicionouUsuario: boolean = false;
   @ViewChild('modalMsgLoginExistente') modalMsgLoginExistente: any
   @ViewChild('modalMsgAddUser') modalMsgAddUser: any
+  @ViewChild('modalAvisoArquivo') modalAvisoArquivo: any
   imagemFile: File = new File([], '', {})
   isMobileOrTablet: boolean = false;
   mostrarSenha = false;
   mensagemErro: string = '';
   mensagemSucesso: string = '';
+  avisoTextoModal: string = '';
 
-  constructor(private usuarioService: UsuarioService, private router: Router, private deviceService: DeviceService) {}
+  constructor(private usuarioService: UsuarioService, private router: Router, private deviceService: DeviceService, private utils: UtilsService) {}
 
   ngOnInit() {
     this.adicionouUsuario = false;
@@ -90,7 +93,20 @@ export class AddUsuarioComponent implements OnInit {
   }
 
   onFileChange(event: any) {
-    this.imagemFile = event.target.files[0];
+    const file: File = event.target.files && event.target.files[0];
+    if (!file) return;
+    const valid = this.utils.validarImagem(file);
+    if (!valid.ok) {
+      const texto = valid.motivo === 'tipo'
+        ? 'Tipo de arquivo inválido. Selecione apenas .jpg ou .png.'
+        : 'Arquivo muito grande. Tamanho máximo permitido: 20MB.';
+      this.avisoTextoModal = texto;
+      try { this.modalService.open(this.modalAvisoArquivo, { size: 'sm' }); } catch { alert(texto); }
+      try { event.target.value = null; } catch {}
+      this.imagemFile = new File([], '', {});
+      return;
+    }
+    this.imagemFile = file;
   }
 
   toggleSenha() {

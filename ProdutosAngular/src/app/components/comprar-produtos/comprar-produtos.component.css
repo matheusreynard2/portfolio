@@ -1,0 +1,22 @@
+.div-tabela {
+  overflow-x: auto;
+}
+
+table th, table td {
+  vertical-align: middle;
+}
+
+/* Desabilita toda a área enquanto página está em construção */
+.disabled-block {
+  pointer-events: none;
+  opacity: 0.6;
+}
+
+/* Reuso do estilo de sem-estoque da listagem */
+.sem-estoque td,
+.sem-estoque td * {
+  color: #b02a37 !important;
+  font-weight: 600;
+}
+
+

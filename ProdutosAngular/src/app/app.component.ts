@@ -4,7 +4,7 @@ import {FormsModule} from '@angular/forms';
 import {HttpClientModule, HttpResponse} from '@angular/common/http';
 import {NgbModule, NgbToastModule} from '@ng-bootstrap/ng-bootstrap';
 import {AuthService} from './service/auth/auth.service';
-import {NgClass, NgIf, NgOptimizedImage} from '@angular/common';
+import {NgClass, NgIf, NgOptimizedImage, DecimalPipe} from '@angular/common';
 import {filter, firstValueFrom, Observable, of} from 'rxjs';
 import {UsuarioService} from './service/usuario/usuario.service';
 import {DeviceService} from './service/device/device.service';
@@ -13,7 +13,7 @@ import { UsuarioDTO } from './model/dto/UsuarioDTO';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, RouterLink, FormsModule, HttpClientModule, NgbModule, NgbToastModule, NgIf, NgClass],
+  imports: [RouterOutlet, RouterLink, FormsModule, HttpClientModule, NgbModule, NgbToastModule, NgIf, NgClass, DecimalPipe],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
 })
@@ -33,30 +33,32 @@ export class AppComponent implements OnInit {
   isMobileOrTablet: boolean = false;
   menuOpen: boolean = false;
 
-  // Toast de redirecionamento
-  showRedirectToast: boolean = false;
-  toastText: string = '';
-
-
   // Variáveis para contablização de acessos
   carregando: boolean = false;
   erro: string | null = null;
 
   ngOnInit() {
-      // Inicia monitoramento de atividade para refresh proativo
-      this.authService.initActivityMonitor();
-      const navEntry = (performance.getEntriesByType('navigation')[0] as PerformanceNavigationTiming | undefined);
-      const isReload = navEntry && 'type' in navEntry ? navEntry.type === 'reload' : false;
-      if (isReload) {
-        this.toastText = 'Redirecionando para a tela de login...';
-        this.showRedirectToast = true;
-      } else {
-        this.showRedirectToast = false; // evita toast vazio no primeiro acesso
+    this.authService.initActivityMonitor();
+
+    const PUBLIC_ROUTES = ['/login', '/cadastrar-usuario', '/sobreTab1', '/sobreTab2'];
+  
+    const isPublicRoute = (path: string) =>
+      PUBLIC_ROUTES.some(p => (path || '').startsWith(p));
+  
+    const evaluateRedirect = () => {
+      // não avalia durante refresh de sessão
+      if (this.authService.isRefreshing()) return;
+  
+      const hasToken = this.authService.existeToken();
+      const active = this.authService.isActiveWithin(environment.INACTIVITY_WINDOW_MS);
+
+      if (hasToken && !active) {
+        this.authService.logout();;
       }
-      setTimeout(() => {
-        this.router.navigate(['/login']);
-        this.showRedirectToast = false;
-      }, 2000);
+    };
+  
+    // ① Boot: tenta restaurar sessão via refresh cookie e então avalia
+    this.authService.initSessionFromRefresh().finally(() => evaluateRedirect());
 
       // Removido: expiração será tratada pelos próprios components via catch dos endpoints
     // OBSERVER DE SELEÇÃO DO MENU PARA SABER SE ESTÁ ACESSANDO POR CELULAR/COMPUTADOR
@@ -74,8 +76,13 @@ export class AppComponent implements OnInit {
     this.router.events.pipe(
       filter(event => event instanceof NavigationEnd)
     ).subscribe(() => {
+      this.authService.markNavigation();
       this.verificarExibicaoPerfil();
+      // Reavalia redirecionamento a cada navegação
+      evaluateRedirect();
     });
+
+    this.authService.onActivity$().subscribe(() => evaluateRedirect());
 
     // Adiciona event listeners para os sub-menus mobile
     setTimeout(() => {
@@ -85,6 +92,7 @@ export class AppComponent implements OnInit {
           this.toggleSubmenu(event);
         });
       });
+      
     }, 0);
   }
 

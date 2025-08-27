@@ -1,7 +1,7 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, OnInit, TemplateRef, ViewChild} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {Router} from '@angular/router';
-import {NgbModal, NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import {NgbModal, NgbModalRef, NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {NgOptimizedImage} from '@angular/common';
 import {AuthService} from '../../service/auth/auth.service';
 import { MatCardModule } from '@angular/material/card';
@@ -33,9 +33,12 @@ export class LoginComponent implements OnInit {
   };
 
   @ViewChild('modalMsgToken') modalMsgToken: any
+  @ViewChild('inatividadeModal', { static: true }) inatividadeModalTpl!: TemplateRef<any>;
   @ViewChild('modalMsgCredenciais') modalMsgCredenciais: any
   mostrarSenha = false;
   isMobile: boolean = false;
+  private readonly INACTIVITY_LOGOUT_KEY = 'inactivityLogoutTs';
+  private modalRef?: NgbModalRef;
 
   // Propriedade para alternar as imagens de fundo
   bgImgIndex = 0;
@@ -54,10 +57,33 @@ export class LoginComponent implements OnInit {
     }
     this.authService.removerTokenExpirado();
 
+    const tsStr = sessionStorage.getItem(this.INACTIVITY_LOGOUT_KEY);
+    const ts = Number(tsStr);
+    const isRecent = Number.isFinite(ts) && (Date.now() - ts) <= 5000; // ≤ 5s
+
+    if (isRecent) {
+      setTimeout(() => {
+        this.modalRef = this.modalService.open(this.inatividadeModalTpl, {
+          centered: true,
+          backdrop: 'static',
+          keyboard: true
+        });
+      }, 300);
+    }
+
+    // Consome a flag (não exibe modal novamente em refresh sem nova inatividade)
+    if (tsStr !== null) {
+      sessionStorage.removeItem(this.INACTIVITY_LOGOUT_KEY);
+    }
+
     // Alternância das imagens de fundo
     this.bgImgInterval = setInterval(() => {
       this.bgImgIndex = this.bgImgIndex === 0 ? 1 : 0;
     }, 5000);
+  }
+
+  fecharModal(): void {
+    this.modalRef?.close();
   }
 
   ngOnDestroy() {
@@ -73,6 +99,7 @@ export class LoginComponent implements OnInit {
         this.authService.setAccessToken(res.accessToken);
         this.authService.adicionarUsuarioLogado(res.usuario);
         this.authService.removerTokenExpirado();
+        this.authService.startActiveSession();
         this.router.navigate(['/produtos']);
       },
       error: (error) => {

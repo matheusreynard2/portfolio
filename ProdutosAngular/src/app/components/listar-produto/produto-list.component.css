@@ -363,6 +363,13 @@
   font-weight: bold;
 }
 
+/* ===== LINHA SEM ESTOQUE (quantia = 0) ===== */
+.sem-estoque td,
+.sem-estoque td * {
+  color: #b02a37 !important;
+  font-weight: 600;
+}
+
 /* ===== BOTÕES ===== */
 .button-container {
   display: flex;

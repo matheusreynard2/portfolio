@@ -6,6 +6,7 @@ import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import { ProdutoFunctionsService } from '../../service/produto/produto-functions.service';
 import {PorcentagemMaskDirective} from '../../directives/porcentagem-mask.directive';
 import {AuthService} from '../../service/auth/auth.service';
+import { UtilsService } from '../../service/utils/utils.service';
 import {DeviceService} from '../../service/device/device.service';
 import {FornecedorDTO} from '../../model/dto/FornecedorDTO';
 import {ProdutoDTO} from '../../model/dto/ProdutoDTO';
@@ -61,13 +62,16 @@ export class AddProdutoComponent implements OnInit {
   // Services
   private modalService: NgbModal = new NgbModal();
   @ViewChild('modalMsgAddProduto') modalMsgAddProduto: any
+  @ViewChild('modalAvisoArquivo') modalAvisoArquivo: any
   isMobileOrTablet: boolean = false;
+  avisoTextoModal: string = '';
 
   constructor(
     private produtoService: ProdutoService,
     private produtoFunctionsService: ProdutoFunctionsService,
     private authService: AuthService,
-    private deviceService: DeviceService) {
+    private deviceService: DeviceService,
+    private utils: UtilsService) {
   }
 
   ngOnInit() {
@@ -159,7 +163,29 @@ export class AddProdutoComponent implements OnInit {
   }
 
   onFileChange(event: any) {
-    this.imagemFile = event.target.files[0];
+    const file: File = event.target.files && event.target.files[0];
+    if (!file) { return; }
+    const valid = this.utils.validarImagem(file);
+    if (!valid.ok) {
+      const textoAvisoArquivo = valid.motivo === 'tipo'
+        ? 'Tipo de arquivo inválido. Selecione apenas .jpg ou .png.'
+        : 'Arquivo muito grande. Tamanho máximo permitido: 20MB.';
+      // Exibe modal small informativo
+      this.showSmallModal(textoAvisoArquivo);
+      try { event.target.value = null; } catch {}
+      this.imagemFile = new File([], '', {});
+      return;
+    }
+    this.imagemFile = file;
+  }
+
+  private showSmallModal(textoAvisoArquivo: string) {
+    this.avisoTextoModal = textoAvisoArquivo;
+    try {
+      this.modalService.open(this.modalAvisoArquivo, { size: 'sm' });
+    } catch {
+      alert(textoAvisoArquivo);
+    }
   }
 
   // Função que é chamada quando o fornecedor é selecionado

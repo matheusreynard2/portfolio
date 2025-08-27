@@ -22,4 +22,6 @@ public interface UsuarioRepository {
     String buscarSenhaPorLogin(String login);
 
     int contarLoginRepetido(String login);
+
+    Usuario atualizarUsuario(Usuario usuario);
 }

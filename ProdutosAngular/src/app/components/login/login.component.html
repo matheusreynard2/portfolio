@@ -66,7 +66,7 @@
                             (click)="cadastrarNovoUsuario()">Cadastrar</button>
                   </td>
                   <td style="text-align: center; vertical-align: middle;">
-                    <p><u>Trocar senha</u><br><span style="font-size: 8px; color: red">em construção</span></p>
+                    <p><u style="font-size: 12px;">Esqueci minha senha</u><span style="font-size: 8px; color: red">em construção</span></p>
                   </td>
                 </tr>
                 </tbody>
@@ -115,6 +115,21 @@
     <button type="button" class="btn btn-secondary" (click)="modal.close()">Fechar</button>
   </div>
 </ng-template>
+
+<!-- Modal pequeno para inatividade -->
+<ng-template #inatividadeModal let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title">Sessão encerrada por inatividade</h5>
+    <button type="button" class="btn-close" aria-label="Close" (click)="fecharModal()"></button>
+  </div>
+  <div class="modal-body">
+    <p>Sua sessão foi encerrada devido à inatividade. Por favor, faça login novamente para continuar.</p>
+  </div>
+  <div class="modal-footer">
+    <button class="btn btn-primary" (click)="fecharModal()">Entendi</button>
+  </div>
+</ng-template>
+
 
 <!-- Janela (modal) que abre depois de inserir credenciais inválidas -->
 <ng-template #modalMsgCredenciais let-modal class="modal">

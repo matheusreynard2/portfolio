@@ -1,5 +1,6 @@
 package com.apiestudar.api_prodify.domain.model;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -12,6 +13,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Lob;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.NotNull;
 
 import org.springframework.security.core.GrantedAuthority;
@@ -69,6 +71,11 @@ public class Usuario implements UserDetails {
     @Column(nullable = true)
     @Schema(description = "Imagem do usuário")
     private byte[] imagem;
+
+	@Column(nullable = true, length = 100)
+	@Max(value = 2000000000, message = "O saldo não pode ser maior que 2.000.000.000")
+	@Schema(description = "Saldo do usuário")
+	private BigDecimal saldo;
 
 	public static long getSerialversionuid() {
 		return serialVersionUID;

@@ -1,0 +1,75 @@
+<div class="card my-4">
+  <div class="card-body">
+    <h5 class="mb-3">Comprar produtos</h5>
+
+    <div *ngIf="carregando" class="alert alert-info py-2">Carregando produtos...</div>
+    <div *ngIf="erro" class="alert alert-danger py-2">{{ erro }}</div>
+
+    <div class="text-danger fw-bold mb-2">PÁGINA EM CONSTRUÇÃO</div>
+
+    <div class="disabled-block">
+    <div class="mb-3">
+      <div style="display: flex; gap: 12px; align-items: center; width: 100%;">
+        <input type="text" placeholder="Nome do produto..." class="form-control" [(ngModel)]="searchNome" (input)="onSearchChanged()" style="flex: 1 1 50%; min-width: 0;"/>
+        <input type="text" placeholder="Nome do fornecedor..." class="form-control" [(ngModel)]="searchFornecedor" (input)="onSearchChanged()" style="flex: 1 1 50%; min-width: 0;"/>
+      </div>
+    </div>
+
+    <div class="div-tabela">
+      <table class="table table-bordered table-striped">
+        <thead>
+        <tr>
+          <th class="text-left">Nome</th>
+          <th class="text-left">Descrição</th>
+          <th class="text-center">Quantidade</th>
+          <th class="text-center">Valor unitário</th>
+          <th class="text-left">Fornecedor</th>
+          <th class="text-center" style="width: 120px;">Selecionar</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let p of produtosPaginados" [ngClass]="{'sem-estoque': (p.quantia || 0) === 0}">
+          <td class="text-left" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 300px;">{{ p.nome }}</td>
+          <td class="text-left" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 400px;">{{ p.descricao }}</td>
+          <td class="text-center">{{ p.quantia }}</td>
+          <td class="text-center">{{ p.valorInicial | currency:'BRL' }}</td>
+          <td class="text-left" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 300px;">{{ p.fornecedor?.nome }}</td>
+          <td class="text-center">
+            <button class="btn btn-sm btn-primary" (click)="selecionarProduto(p)">Selecionar</button>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="pagination-container">
+      <mat-paginator [length]="totalRecords"
+                     [pageSize]="pageSize"
+                     [pageIndex]="currentPage"
+                     (page)="onPageChange($event)"
+                     [pageSizeOptions]="[5, 10, 25]">
+      </mat-paginator>
+    </div>
+
+    <div *ngIf="produtoSelecionado" class="mt-4">
+      <h6>Produto selecionado: <b>{{ produtoSelecionado.nome }}</b></h6>
+      <div class="row g-3 align-items-end">
+        <div class="col-12 col-md-4">
+          <label for="qtdeCompra" class="form-label">Quantidade a comprar</label>
+          <input id="qtdeCompra" type="number" min="0" class="form-control" [(ngModel)]="quantidadeCompra">
+        </div>
+        <div class="col-12 col-md-4">
+          <label for="precoCompra" class="form-label">Preço de compra (por unidade)</label>
+          <input id="precoCompra" type="number" min="0" step="0.01" class="form-control" [(ngModel)]="precoCompra">
+        </div>
+        <div class="col-12 col-md-4">
+          <label class="form-label">Total</label>
+          <div class="form-control-plaintext fw-bold" [ngStyle]="{color: '#198754'}">{{ totalCompra | currency:'BRL' }}</div>
+        </div>
+      </div>
+    </div>
+    </div>
+  </div>
+</div>
+
+

@@ -48,4 +48,12 @@ export class UtilsService {
   calcularValorTotal(valorUnitario: number, quantidade: number): number {
     return valorUnitario * quantidade;
   }
+
+  validarImagem(file: File): { ok: boolean, motivo?: 'tipo' | 'tamanho' } {
+    const maxBytes = 20 * 1024 * 1024; // 20MB
+    const validTypes = ['image/jpeg', 'image/png'];
+    if (!validTypes.includes(file.type)) return { ok: false, motivo: 'tipo' };
+    if (file.size > maxBytes) return { ok: false, motivo: 'tamanho' };
+    return { ok: true };
+  }
 } 

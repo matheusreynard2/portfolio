@@ -5,4 +5,5 @@ export interface UsuarioDTO {
     email: string;
     token: string;
     imagem?: any;
+    saldo?: number
 } 

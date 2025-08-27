@@ -44,8 +44,10 @@
                      id="quantidade"
                      name="quantidadeProduto"
                      required #quantidade="ngModel"
+                     min="0"
                      maxlength="7"
-                     [ngClass]="{'is-invalid': quantidade.value > 1000000}">
+                     [ngClass]="{'is-invalid': quantidade.value > 1000000}"
+                     [ngStyle]="{color: (produto.quantia || 0) > 0 ? '#0d6efd' : '#b02a37', fontWeight: '700'}">
               <div *ngIf="quantidade.value > 1000000" class="invalid-feedback">
                 A quantidade não pode ser maior que 1.000.000
               </div>
@@ -71,6 +73,7 @@
                      id="frete"
                      name="freteProduto"
                      required #frete="ngModel"
+                     min="0"
                      max="2000000000"
                      [ngClass]="{'is-invalid': frete.value > 2000000000}"
                      [disabled]="!produto.freteAtivo">
@@ -94,7 +97,7 @@
           <tr>
             <td></td>
             <td>
-              <div class="mt-1">{{produto.frete || 0| currency : 'BRL'}}</div>
+              <div class="mt-1" [ngStyle]="{color:'#198754', fontWeight:'700'}">{{produto.frete || 0| currency : 'BRL'}}</div>
             </td>
             <td colspan="4"></td>
           </tr>
@@ -106,6 +109,7 @@
                      id="valorInicial"
                      name="valorInicialProduto"
                      required #valorInicial="ngModel"
+                     min="0"
                      max="2000000000"
                      [ngClass]="{'is-invalid': valorInicial.value > 2000000000}"
                      (ngModelChange)="onValorInicialChange($event)">
@@ -132,13 +136,13 @@
                    max="2000000000"
                    style="display: none;">
             <td colspan="3">
-              <div class="mt-1">{{produto.valorTotalDesc | currency : 'BRL'}}</div>
+              <div class="mt-1" [ngStyle]="{color:'#198754', fontWeight:'700'}">{{produto.valorTotalDesc | currency : 'BRL'}}</div>
             </td>
           </tr>
           <tr>
             <td><label for="produtoValor">Valor quantidade:</label></td>
             <td>
-              <div id="produtoValor" class="mt-1">{{produto.valor || 0 | currency : 'BRL'}}</div>
+              <div id="produtoValor" class="mt-1" [ngStyle]="{color:'#198754', fontWeight:'700'}">{{produto.valor || 0 | currency : 'BRL'}}</div>
             </td>
             <!-- Valor Total com Desconto e Valor Total do Frete na mesma linha -->
             <td>
@@ -153,7 +157,7 @@
                    max="2000000000"
                    style="display: none;">
             <td colspan="3">
-              <div class="mt-1">{{produto.valorTotalFrete | currency : 'BRL'}}</div>
+              <div class="mt-1" [ngStyle]="{color:'#198754', fontWeight:'700'}">{{produto.valorTotalFrete | currency : 'BRL'}}</div>
             </td>
           </tr>
           <tr>
@@ -169,9 +173,10 @@
             </td>
             <td>
               <label for="foto_produto">Foto produto: </label><br>
+              <small style="color:#b02a37">Max. 20MB • Somente .jpg / .png</small>
             </td>
             <td colspan="3">
-              <input id="foto_produto" type="file" (change)="onFileChange($event)" [disabled]="isMobileOrTablet"/>
+              <input id="foto_produto" type="file" class="form-control" (change)="onFileChange($event)" [disabled]="isMobileOrTablet"/>
             </td>
           </tr>
           <tr>
@@ -214,7 +219,7 @@
                    max="2000000000"
                    style="display: none;">
             <td colspan="5">
-              <div class="mt-1">{{produto.somaTotalValores | currency : 'BRL'}}</div>
+              <div class="mt-1" [ngStyle]="{color:'#198754', fontWeight:'700'}">{{produto.somaTotalValores | currency : 'BRL'}}</div>
             </td>
           </tr>
           <tr>
@@ -245,5 +250,18 @@
   </div>
   <div class="modal-footer">
     <button type="button" class="btn btn-secondary" (click)="modal.close()">Fechar</button>
+  </div>
+</ng-template>
+
+<!-- Modal de aviso genérico -->
+<ng-template #modalAvisoArquivo let-modal>
+  <div class="modal-header">
+    <h6 class="modal-title">Aviso</h6>
+  </div>
+  <div class="modal-body">
+    <p>{{ avisoTextoModal }}</p>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-primary btn-sm" (click)="modal.close()">Ok</button>
   </div>
 </ng-template>

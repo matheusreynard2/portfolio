@@ -54,4 +54,9 @@ public class UsuarioRepositoryImpl implements UsuarioRepository {
     public int contarLoginRepetido(String login) {
         return usuarioJpaRepository.findLoginRepetido(login);
     }
+
+    @Override
+    public Usuario atualizarUsuario(Usuario usuario) {
+        return usuarioJpaRepository.save(usuario);
+    }
 }

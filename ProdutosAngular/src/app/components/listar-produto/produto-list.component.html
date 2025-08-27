@@ -219,6 +219,7 @@
                        id="valorInicial"
                        name="valorInicialProduto"
                        required #valorInicial="ngModel"
+                       min="0"
                        max="2000000000"
                        [ngClass]="{'is-invalid': valorInicial.value > 2000000000}"
                        (ngModelChange)="onValorInicialChangeAtualizar($event)">
@@ -242,6 +243,7 @@
                        id="quantidade"
                        name="quantidadeProduto"
                        required #quantidade="ngModel"
+                       min="0"
                        max="1000000"
                        [ngClass]="{'is-invalid': quantidade.value > 1000000}">
                 <div class="valor-display valor-quantidade">{{produtoAtualizar.valor | currency : 'BRL'}}</div>
@@ -321,6 +323,7 @@
                        id="frete"
                        name="freteProduto"
                        required #frete="ngModel"
+                       min="0"
                        max="2000000000"
                        [ngClass]="{'is-invalid': frete.value > 2000000000}"
                        [disabled]="!produtoAtualizar.freteAtivo">
@@ -366,7 +369,7 @@
         <div class="form-section">
           <h6 class="section-title">Foto do Produto</h6>
           <div class="file-upload-container-compact">
-            <label for="foto_produto" class="file-label">Selecionar foto:</label>
+            <label for="foto_produto" class="file-label">Selecionar foto: <small style="color:#b02a37">Max. 20MB • Somente .jpg / .png</small></label>
             <input id="foto_produto" 
                    type="file" 
                    class="form-control-file-compact"
@@ -404,6 +407,19 @@
 </ng-template>
 
 <!--######## FIM DO MODAL DE EDIÇÃO DE PRODUTO ######## -->
+
+<!-- Modal de aviso (arquivo inválido) -->
+<ng-template #modalAvisoArquivo let-modal>
+  <div class="modal-header">
+    <h6 class="modal-title">Aviso</h6>
+  </div>
+  <div class="modal-body">
+    <p>{{ avisoTextoModal }}</p>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-primary btn-sm" (click)="modal.close()">Ok</button>
+  </div>
+</ng-template>
 
 <!-- Janela (modal) que abre ao clicar no botão Excluir -->
 <ng-template #modalMsgExcluir let-modal>

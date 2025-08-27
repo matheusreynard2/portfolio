@@ -1,0 +1,160 @@
+<div class="container d-flex flex-column my-5">
+  <mat-card class="profile-card">
+    <mat-card-content>
+      <div class="div-form-editar-usuario">
+        <form (ngSubmit)="salvar()" #editarForm="ngForm">
+          <div class="div-tabela">
+            <table class="table table-bordered">
+              <thead>
+              <tr>
+                <th colspan="4" class="text-center">EDITAR USUÁRIO</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr>
+                <td>
+                  <label for="login">Login:</label>
+                </td>
+                <td colspan="3">
+                  <input id="login" class="form-control" [value]="usuario.login" disabled>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <span style="color: red">* </span>
+                  <label for="email" class="required"><b>E-mail:</b></label>
+                </td>
+                <td colspan="3">
+                  <input id="email" [(ngModel)]="usuario.email" name="email" class="form-control" required #email="ngModel" [class.is-invalid]="email.invalid && email.touched">
+                  <div *ngIf="email.invalid && email.touched" class="invalid-feedback">E-mail é obrigatório.</div>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <span style="color: red">* </span>
+                  <label for="atualizarSenha"><b>Atualizar senha?</b></label>
+                </td>
+                <td colspan="3">
+                  <div class="d-flex align-items-center gap-3">
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="radio" name="atualizaSenha" id="atualizaSenhaSim" [value]="true" [(ngModel)]="atualizarSenha">
+                      <label class="form-check-label" for="atualizaSenhaSim">Sim</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="radio" name="atualizaSenha" id="atualizaSenhaNao" [value]="false" [(ngModel)]="atualizarSenha">
+                      <label class="form-check-label" for="atualizaSenhaNao">Não</label>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <label for="senha">
+                    <ng-container *ngIf="atualizarSenha; else labelSenhaNormal">
+                      <span style="color: red">* </span><b>Nova senha:</b>
+                    </ng-container>
+                    <ng-template #labelSenhaNormal>
+                      Nova senha:
+                    </ng-template>
+                  </label>
+                </td>
+                <td colspan="3">
+                  <div class="input-group">
+                    <input [type]="mostrarSenha ? 'text' : 'password'"
+                           [(ngModel)]="usuario.senha"
+                           class="form-control"
+                           id="senha"
+                           name="senha"
+                           [required]="atualizarSenha"
+                           [disabled]="!atualizarSenha"
+                           #senha="ngModel"
+                           [attr.pattern]="atualizarSenha ? '.*\\\S.*' : null"
+                           [class.is-invalid]="atualizarSenha && (senha.invalid || senha.errors && senha.errors['pattern']) && senha.touched">
+                    <span class="input-group-text" style="cursor: pointer;" (click)="mostrarSenha = !mostrarSenha">
+                      <i [class]="mostrarSenha ? 'bi bi-eye-slash' : 'bi bi-eye'"></i>
+                    </span>
+                    <div *ngIf="atualizarSenha && senha.touched && (senha.invalid || (senha.errors && senha.errors['pattern']))" class="invalid-feedback">
+                      Nova senha é obrigatória e não pode ser vazia.
+                    </div>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <label for="foto_perfil">Foto de perfil:</label><br>
+                  <small style="color:#b02a37">Max. 20MB • Somente .jpg / .png</small>
+                </td>
+                <td colspan="3">
+                  <input id="foto_perfil" type="file" class="form-control" (change)="onFileChange($event)" [disabled]="isMobile">
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <span style="color: red">* </span>
+                  <label for="saldo" class="required"><b>Saldo:</b></label>
+                </td>
+                <td colspan="3">
+                  <div class="input-group">
+                    <span class="input-group-text"
+                          [ngStyle]="{color: (usuario.saldo ?? 0) < 0 ? '#b02a37' : '#198754'}">R$</span>
+                    <input id="saldo" name="saldo" type="text"
+                           class="form-control"
+                           mask="separator.2" thousandSeparator="." decimalMarker="," prefix="R$ "
+                           [dropSpecialCharacters]="true"
+                           [(ngModel)]="usuario.saldo"
+                           [ngStyle]="{color: (usuario.saldo ?? 0) < 0 ? '#b02a37' : '#198754'}">
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td colspan="4" class="text-center">
+                  <button type="submit" class="btn bg-primary-subtle fw-bold" [disabled]="!editarForm.form.valid">Salvar</button>
+                </td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+        </form>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+  <ng-template #modalSucesso>
+    <div class="modal-header">
+      <h5 class="modal-title">Sucesso</h5>
+    </div>
+    <div class="modal-body">
+      <p>Dados atualizados com sucesso.</p>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-primary" (click)="fecharTemplateModal()">Ok</button>
+    </div>
+  </ng-template>
+
+  <!-- Modal de aviso de arquivo inválido -->
+  <ng-template #modalAvisoArquivo let-modal>
+    <div class="modal-header">
+      <h6 class="modal-title">Aviso</h6>
+    </div>
+    <div class="modal-body">
+      <p>{{ avisoTextoModal }}</p>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-primary btn-sm" (click)="modal.close()">Ok</button>
+    </div>
+  </ng-template>
+
+  <ng-template #modalErro>
+    <div class="modal-header">
+      <h5 class="modal-title">Erro</h5>
+    </div>
+    <div class="modal-body">
+      <p>Não foi possível atualizar os dados. Tente novamente.</p>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" (click)="fecharTemplateModal()">Fechar</button>
+    </div>
+  </ng-template>
+</div>
+
+

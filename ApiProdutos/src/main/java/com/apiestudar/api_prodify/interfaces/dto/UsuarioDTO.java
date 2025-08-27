@@ -2,6 +2,8 @@ package com.apiestudar.api_prodify.interfaces.dto;
 
 import jakarta.validation.constraints.NotNull;
 
+import java.math.BigDecimal;
+
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 
@@ -33,5 +35,8 @@ public class UsuarioDTO {
     
     @Schema(description = "Imagem do usuário")
     private byte[] imagem;
+
+    @Schema(description = "Saldo do usuário")
+    private BigDecimal saldo;
 
 }

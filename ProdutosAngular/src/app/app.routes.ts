@@ -12,10 +12,13 @@ import {Geolocalizacao2Component} from './components/geolocalizacao/geolocalizac
 import {AdicionarFornecedorComponent} from './components/adicionar-fornecedor/adicionar-fornecedor.component';
 import {ListarFornecedorComponent} from './components/listar-fornecedor/listar-fornecedor.component';
 import { PontoVendaComponent } from './components/ponto-venda/ponto-venda.component';
+import { ComprarProdutosComponent } from './components/comprar-produtos/comprar-produtos.component';
+import { EditarUsuarioComponent } from './components/editar-usuario/editar-usuario.component';
 
 export const routes: Routes = [
   { path: 'produtos', component: ProdutoListComponent, canActivate: [AuthGuard] },
   { path: 'addproduto', component: AddProdutoComponent, canActivate: [AuthGuard] },
+  { path: 'comprar-produtos', component: ComprarProdutosComponent, canActivate: [AuthGuard] },
   { path: 'login', component: LoginComponent },
   { path: 'cadastrar-usuario', component: AddUsuarioComponent },
   { path: 'sobreTab1', component: SobreTab1Component },
@@ -25,6 +28,7 @@ export const routes: Routes = [
   { path: 'addfornecedor', component: AdicionarFornecedorComponent, canActivate: [AuthGuard]  },
   { path: 'listarfornecedores', component: ListarFornecedorComponent, canActivate: [AuthGuard]  },
   { path: 'pdv', component: PontoVendaComponent, canActivate: [AuthGuard]  },
+  { path: 'editar-usuario', component: EditarUsuarioComponent, canActivate: [AuthGuard] },
   { path: '', redirectTo: '/login', pathMatch: 'full' }
 ];
 
