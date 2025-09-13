@@ -30,8 +30,10 @@ export class PontoVendaComponent implements OnInit {
   produtosFiltrados: ProdutoDTO[] = [];
   totalRecords: number = 0;
   currentPage: number = 0;
-  pageSize: number = 6;
+  pageSize: number = 5;
   caixa: CaixaItem[] = [];
+  // Quantidade digitada por produto para adição manual ao caixa
+  quantidadeDigitada: { [produtoId: number]: number } = {};
   totalQuantidade = 0;
   totalValor = 0;
   salvarHabilitado = true;
@@ -46,6 +48,7 @@ export class PontoVendaComponent implements OnInit {
   vendaParaVisualizar: VendaCaixaDTO | null = null;
   itensVisualizacao: { item: CaixaItem; produto?: ProdutoDTO; precoUnit: number; subtotal: number }[] = [];
   selectedHistoricoId: number | null = null;
+  selecionadosHistoricoVendasIds: Set<number> = new Set<number>();
   // Toast de salvar
   showSaveToast: boolean = false;
   saveToastText: string = '';
@@ -54,6 +57,11 @@ export class PontoVendaComponent implements OnInit {
   lastVendaItensResumo: { nome: string; quantidade: number; subtotal: number }[] = [];
   // Estado de buffering ao salvar
   isSaving: boolean = false;
+  // Loading states específicos
+  isFinalizandoVenda: boolean = false;
+  isDeletingHistorico: boolean = false;
+  overlayCarregandoPdv: boolean = false;
+  overlayTextoPdv: string = '';
 
   constructor(
     private produtoService: ProdutoService,
@@ -142,6 +150,94 @@ export class PontoVendaComponent implements OnInit {
     // Decrementa o estoque disponível exibido na lista
     produto.quantia = Math.max(0, (produto.quantia ?? 0) - 1);
     this.recalcularTotais();
+  }
+
+  // Adiciona ao caixa a quantidade digitada para o produto
+  adicionarQuantidadeDigitada(produto: ProdutoDTO): void {
+    const id = produto.id!;
+    const disponivel = Math.max(0, produto.quantia ?? 0);
+    const entradaRaw = this.quantidadeDigitada[id];
+    let qtd = Number.isFinite(entradaRaw as any) ? Math.floor(entradaRaw) : 0;
+    if (qtd < 1) { return; }
+    if (qtd > disponivel) { qtd = disponivel; }
+    if (qtd <= 0) { return; }
+
+    const existente = this.caixa.find(i => i.idProduto === id);
+    if (existente) {
+      existente.quantidade += qtd;
+    } else {
+      this.caixa.push({ idProduto: id, quantidade: qtd, tipoPreco: this.modoPreco });
+    }
+    produto.quantia = Math.max(0, disponivel - qtd);
+    this.recalcularTotais();
+  }
+
+  // Atualiza e sanitiza a quantidade digitada (somente números inteiros >= 1)
+  onQuantidadeDigitadaChange(produto: ProdutoDTO, value: any): void {
+    const id = produto.id!;
+    // Sanitiza removendo não-dígitos e evitando concatenação indevida
+    const texto = String(value ?? '').replace(/\D+/g, '');
+    if (texto.length === 0) {
+      // Permite limpar o campo para digitar novamente
+      delete this.quantidadeDigitada[id];
+      return;
+    }
+    let num = Number(texto);
+    if (!Number.isFinite(num)) { delete this.quantidadeDigitada[id]; return; }
+    const max = Math.max(0, produto.quantia ?? 0);
+    if (num > max) { num = max; }
+    this.quantidadeDigitada[id] = num;
+  }
+
+  // Impede digitar dígitos que resultem em valor acima do disponível
+  onQuantidadeDigitadaKeyDownComValidacao(produto: ProdutoDTO, event: KeyboardEvent): void {
+    const allowed = ['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'Tab', 'Home', 'End'];
+    if (allowed.includes(event.key)) { return; }
+    // Somente dígitos
+    if (!/^\d$/.test(event.key)) {
+      event.preventDefault();
+      return;
+    }
+    const input = event.target as HTMLInputElement;
+    const current = input.value ?? '';
+    const start = (input.selectionStart ?? current.length);
+    const end = (input.selectionEnd ?? current.length);
+    const proposed = (current.slice(0, start) + event.key + current.slice(end)).replace(/\D+/g, '');
+    const proposedNum = proposed.length > 0 ? Number(proposed) : 0;
+    const max = Math.max(0, produto.quantia ?? 0);
+    if (proposedNum > max) {
+      event.preventDefault();
+      return;
+    }
+  }
+
+  // Clampa e espelha no input (inclusive para colar/pegar via mouse)
+  onQuantidadeDigitadaInput(produto: ProdutoDTO, event: Event): void {
+    const input = event.target as HTMLInputElement;
+    const texto = (input.value || '').replace(/\D+/g, '');
+    const max = Math.max(0, produto.quantia ?? 0);
+    if (texto.length === 0) {
+      // Campo vazio é permitido; mantém disabled do botão
+      delete this.quantidadeDigitada[produto.id!];
+      input.value = '';
+      return;
+    }
+    let num = Number(texto);
+    if (!Number.isFinite(num)) { delete this.quantidadeDigitada[produto.id!]; input.value = ''; return; }
+    if (num > max) { num = max; }
+    const id = produto.id!;
+    this.quantidadeDigitada[id] = num;
+    // Reflete de volta no campo para evitar concatenação visual
+    input.value = num > 0 ? String(num) : '';
+  }
+
+  // Bloqueia teclas não numéricas no input de quantidade
+  onQuantidadeDigitadaKeyDown(event: KeyboardEvent): void {
+    const allowed = ['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'Tab'];
+    if (allowed.includes(event.key)) { return; }
+    if (!/^[0-9]$/.test(event.key)) {
+      event.preventDefault();
+    }
   }
 
   removerDoCaixa(item: CaixaItem): void {
@@ -235,7 +331,10 @@ export class PontoVendaComponent implements OnInit {
   }
 
   finalizarVenda(): void {
-    if (!this.finalizarHabilitado) return;
+    if (!this.finalizarHabilitado || this.isFinalizandoVenda) return;
+    this.isFinalizandoVenda = true;
+    this.overlayCarregandoPdv = true;
+    this.overlayTextoPdv = 'Finalizando venda...';
     this.pdvService.finalizarVenda(this.vendaId).subscribe({
       next: () => {
         // Prepara dados do modal de sucesso ANTES de limpar
@@ -283,6 +382,14 @@ export class PontoVendaComponent implements OnInit {
         });
         // Limpa venda em andamento persistida, pois foi finalizada
         localStorage.removeItem('pdv.vendaId');
+        this.isFinalizandoVenda = false;
+        this.overlayCarregandoPdv = false;
+        this.overlayTextoPdv = '';
+      },
+      error: () => {
+        this.isFinalizandoVenda = false;
+        this.overlayCarregandoPdv = false;
+        this.overlayTextoPdv = '';
       }
     });
   }
@@ -403,11 +510,26 @@ export class PontoVendaComponent implements OnInit {
   confirmarExclusao(modalRef: any): void {
     if (!this.vendaParaExcluir?.id) { modalRef.dismiss(); return; }
     const id = this.vendaParaExcluir.id;
+    this.isDeletingHistorico = true;
+    this.overlayCarregandoPdv = true;
+    this.overlayTextoPdv = 'Excluindo registro...';
     this.pdvService.excluirHistorico(id).subscribe({
       next: () => {
+        // Remove localmente e re-aplica filtro para refletir na UI
         this.historicoVendas = this.historicoVendas.filter(h => h.id !== id);
+        this.aplicarFiltroHistorico();
         this.vendaParaExcluir = null;
         modalRef.close();
+        // Recarrega do servidor para garantir consistência
+        this.pdvService.listarHistorico().subscribe({
+          next: (lista) => {
+            this.historicoVendas = lista ?? [];
+            this.aplicarFiltroHistorico();
+            this.isDeletingHistorico = false;
+            this.overlayCarregandoPdv = false;
+            this.overlayTextoPdv = '';
+          }
+        });
       },
       error: () => {
         this.pdvService.listarHistorico().subscribe({
@@ -415,6 +537,57 @@ export class PontoVendaComponent implements OnInit {
         });
         this.vendaParaExcluir = null;
         modalRef.dismiss();
+        this.isDeletingHistorico = false;
+        this.overlayCarregandoPdv = false;
+        this.overlayTextoPdv = '';
+      }
+    });
+  }
+
+  // Seleção múltipla no histórico
+  isTodosHistoricoSelecionados(): boolean {
+    if (!this.historicoVendasFiltrado || this.historicoVendasFiltrado.length === 0) return false;
+    return this.historicoVendasFiltrado.every(v => this.selecionadosHistoricoVendasIds.has(v.id || -1));
+  }
+
+  onToggleSelecionarTodosHistorico(event: Event): void {
+    const input = event.target as HTMLInputElement | null;
+    const checked = !!input?.checked;
+    if (!this.historicoVendasFiltrado) return;
+    if (checked) {
+      this.historicoVendasFiltrado.forEach(v => this.selecionadosHistoricoVendasIds.add(v.id || -1));
+    } else {
+      this.selecionadosHistoricoVendasIds.clear();
+    }
+  }
+
+  onToggleCheckboxHistoricoVenda(v: any, event: Event): void {
+    const input = event.target as HTMLInputElement | null;
+    const checked = !!input?.checked;
+    const id = v?.id ?? null;
+    if (!id) return;
+    if (checked) this.selecionadosHistoricoVendasIds.add(id); else this.selecionadosHistoricoVendasIds.delete(id);
+  }
+
+  excluirSelecionadosHistoricoVenda(): void {
+    const ids = Array.from(this.selecionadosHistoricoVendasIds.values());
+    if (ids.length === 0) return;
+    this.isDeletingHistorico = true;
+    this.overlayCarregandoPdv = true;
+    this.overlayTextoPdv = 'Excluindo registros selecionados...';
+    this.pdvService.excluirMultiHistoricos(ids).subscribe({
+      next: () => {
+        this.historicoVendas = this.historicoVendas.filter(v => !this.selecionadosHistoricoVendasIds.has(v.id || -1));
+        this.aplicarFiltroHistorico();
+        this.selecionadosHistoricoVendasIds.clear();
+        this.isDeletingHistorico = false;
+        this.overlayCarregandoPdv = false;
+        this.overlayTextoPdv = '';
+      },
+      error: () => {
+        this.isDeletingHistorico = false;
+        this.overlayCarregandoPdv = false;
+        this.overlayTextoPdv = '';
       }
     });
   }

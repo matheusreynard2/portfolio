@@ -7,7 +7,10 @@ import com.prodify.produto_service.application.usecase.produto.AtualizarProdutoU
 import com.prodify.produto_service.application.usecase.produto.DeletarProdutoUseCase;
 import com.prodify.produto_service.application.usecase.produto.CalculosSobreProdutosUseCase;
 import com.prodify.produto_service.application.usecase.produto.BuscarProdutoUseCase;
+
 import org.modelmapper.ModelMapper;
+
+import com.prodify.produto_service.domain.repository.CompraRepository;
 import com.prodify.produto_service.domain.repository.ProdutoRepository;
 import com.prodify.produto_service.domain.repository.UsuarioRepository;
 import com.prodify.produto_service.domain.repository.VendaCaixaRepository;
@@ -41,8 +44,8 @@ public class UseCaseConfig {
     }
 
     @Bean
-    public DeletarProdutoUseCase DeletarProdutoUseCaseConfig(ProdutoRepository repo, VendaCaixaRepository vendaRepo, ExecutorService dbPool) {
-        return new DeletarProdutoUseCase(repo, vendaRepo, dbPool);
+    public DeletarProdutoUseCase DeletarProdutoUseCaseConfig(ProdutoRepository repo, VendaCaixaRepository vendaRepo, ExecutorService dbPool, CompraRepository compraRepo) {
+        return new DeletarProdutoUseCase(repo, vendaRepo, dbPool, compraRepo);
     }
 
     @Bean

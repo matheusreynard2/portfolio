@@ -28,8 +28,9 @@
             <thead>
               <tr>
                 <th>Produto</th>
+                <th class="text-center">Quantidade</th>
                 <th class="text-end">Valor</th>
-                <th class="text-center">Ações</th>
+                <th class="text-center">Qtde a vender</th>
               </tr>
             </thead>
             <tbody>
@@ -37,13 +38,23 @@
                 <td>
                   <div class="d-flex justify-content-between align-items-center">
                     <span><small class="text-muted" [ngClass]="{'estoque-zero': (p.quantia || 0) === 0}">ID {{ p.id }}</small> - {{ p.nome }}</span>
-                    <small class="text-muted" [ngClass]="{'estoque-zero': (p.quantia || 0) === 0}">Qtd disp.: {{ p.quantia || 0 }}</small>
                   </div>
                   <div><small class="text-muted" [ngClass]="{'estoque-zero': (p.quantia || 0) === 0}">{{ p.descricao }}</small></div>
                 </td>
+                <td class="text-center">{{ p.quantia || 0 }}</td>
                 <td class="text-end">{{ obterPreco(p) | currency:'BRL':'symbol':'1.2-2' }}</td>
                 <td class="text-center">
-                  <button class="btn btn-sm btn-primary" (click)="adicionarNoCaixa(p)" [disabled]="(p.quantia || 0) <= 0">+</button>
+                  <div class="d-flex justify-content-end align-items-center gap-2">
+                    <input type="number" min="1" class="form-control form-control-sm" style="width: 90px;"
+                           [(ngModel)]="quantidadeDigitada[p.id!]"
+                           [max]="p.quantia || 0"
+                           (ngModelChange)="onQuantidadeDigitadaChange(p, $event)"
+                           (keydown)="onQuantidadeDigitadaKeyDownComValidacao(p, $event)"
+                           (input)="onQuantidadeDigitadaInput(p, $event)"
+                           [disabled]="(p.quantia || 0) <= 0">
+                    <button class="btn btn-sm btn-primary" (click)="adicionarQuantidadeDigitada(p)" [disabled]="(p.quantia || 0) <= 0 || !(quantidadeDigitada[p.id!] >= 1)">Adicionar</button>
+                    <button class="btn btn-sm btn-outline-primary" (click)="adicionarNoCaixa(p)" [disabled]="(p.quantia || 0) <= 0">+</button>
+                  </div>
                 </td>
               </tr>
             </tbody>
@@ -54,7 +65,7 @@
           <mat-paginator [length]="totalRecords"
                          [pageSize]="pageSize"
                          [pageIndex]="currentPage"
-                         [pageSizeOptions]="[6]"
+                         [pageSizeOptions]="[5]"
                          (page)="trocarPagina($event)">
           </mat-paginator>
         </div>
@@ -68,7 +79,9 @@
             <button class="btn btn-success btn-sm pdv-action-btn half-opacity hover-100" [disabled]="caixa.length === 0 || isSaving" (click)="salvarCaixa()">
               <span *ngIf="!isSaving; else savingTpl">Salvar</span>
             </button>
-            <button class="btn btn-primary btn-sm pdv-action-btn half-opacity hover-100" [disabled]="!finalizarHabilitado" (click)="finalizarVenda()">Finalizar</button>
+            <button class="btn btn-primary btn-sm pdv-action-btn half-opacity hover-100" [disabled]="!finalizarHabilitado || isFinalizandoVenda" (click)="finalizarVenda()">
+              <ng-container *ngIf="!isFinalizandoVenda; else finalizandoVendaTplCep">Finalizar</ng-container>
+            </button>
             <button class="btn btn-secondary btn-sm pdv-action-btn style-btn-form half-opacity hover-100" (click)="abrirHistorico()">Histórico de vendas</button>
           </div>
         </div>
@@ -124,6 +137,16 @@
   Salvando...
 </ng-template>
 
+<ng-template #finalizandoVendaTplCep>
+  <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+  Finalizando...
+</ng-template>
+
+<ng-template #excluindoVendaTpl>
+  <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+  Excluindo...
+</ng-template>
+
 <!-- Modal: Histórico de vendas -->
 <ng-template #modalHistorico let-modal>
   <div class="modal-header">
@@ -143,6 +166,9 @@
     <table class="table table-striped mb-0" *ngIf="historicoVendasFiltrado.length > 0; else semHistorico">
       <thead>
         <tr>
+          <th class="text-center" style="width: 40px;">
+            <input type="checkbox" [checked]="isTodosHistoricoSelecionados()" (change)="onToggleSelecionarTodosHistorico($event)">
+          </th>
           <th>ID</th>
           <th>Vendedor</th>
           <th class="text-center">Total Qtd</th>
@@ -153,6 +179,7 @@
       <tbody>
         <ng-container *ngFor="let v of historicoVendasFiltrado">
           <tr (click)="onToggleHistorico(v)" style="cursor: pointer;">
+            <td class="text-center"><input type="checkbox" [checked]="selecionadosHistoricoVendasIds.has(v.id||-1)" (click)="$event.stopPropagation()" (change)="onToggleCheckboxHistoricoVenda(v, $event)"></td>
             <td>{{ v.id }}</td>
             <td>{{ usuarioLogin }}</td>
             <td class="text-center">{{ v.totalQuantidade }}</td>
@@ -202,6 +229,9 @@
         </ng-container>
       </tbody>
     </table>
+    <div class="d-flex justify-content-start p-2 mt-3 mb-3" *ngIf="historicoVendasFiltrado.length > 0">
+      <button class="btn btn-sm btn-danger" [disabled]="selecionadosHistoricoVendasIds.size === 0" (click)="excluirSelecionadosHistoricoVenda()">Excluir selecionados</button>
+    </div>
     </div>
     <ng-template #semHistorico>
       <div class="p-3 text-center text-muted">Não há vendas finalizadas no histórico.</div>
@@ -265,7 +295,9 @@
   </div>
   <div class="modal-footer py-2">
     <button class="btn btn-sm btn-secondary" (click)="modal.dismiss()">Cancelar</button>
-    <button class="btn btn-sm btn-danger" (click)="confirmarExclusao(modal)">Excluir</button>
+    <button class="btn btn-sm btn-danger" [disabled]="isDeletingHistorico" (click)="confirmarExclusao(modal)">
+      <ng-container *ngIf="!isDeletingHistorico; else excluindoVendaTpl">Excluir</ng-container>
+    </button>
   </div>
 </ng-template>
 
@@ -309,4 +341,14 @@
   </div>
 </ng-template>
 
+
+<!-- Overlay de carregamento (estilo CEP) -->
+<div *ngIf="overlayCarregandoPdv" class="overlay-carregando">
+  <div class="spinner-wrapper">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Carregando...</span>
+    </div>
+    <p class="mt-2">{{overlayTextoPdv}}</p>
+  </div>
+</div>
 

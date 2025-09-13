@@ -34,7 +34,7 @@
     </div>
 
     <!-- Container da tabela com scroll horizontal -->
-    <div class="div-tabela">
+    <div class="div-tabela" *ngIf="listaDeProdutos; else loadingProdutosTpl">
       <table class="table table-bordered table-striped">
         <thead class="thead-dark">
         <tr>
@@ -136,6 +136,13 @@
     </div>
   </div>
 </div>
+
+<ng-template #loadingProdutosTpl>
+  <div class="d-flex justify-content-center align-items-center" style="min-height: 120px;">
+    <span class="spinner-border me-2" role="status" aria-hidden="true"></span>
+    <span>Carregando produtos...</span>
+  </div>
+</ng-template>
 
 <!--######## INICIO DO MODAL DE EDIÇÃO DE PRODUTO ######## -->
 
@@ -460,7 +467,7 @@
     <button type="button" class="btn-close" aria-label="Close" (click)="modal.close()"></button>
   </div>
   <div class="modal-body">
-    <p>Impossível excluir o produto <b>{{ (produtoExcluido && produtoExcluido.nome) || (produtoAtualizar && produtoAtualizar.nome) }}</b> pois ele possui um histórico relacionado. Exclua o histórico primeiro para poder excluir o produto.</p>
+    <p>Impossível excluir o produto <b>{{ (produtoExcluido && produtoExcluido.nome) || (produtoAtualizar && produtoAtualizar.nome) }}</b> pois ele possui um <b>histórico de {{ tipoHistoricoModal }}</b> relacionado. Exclua o histórico primeiro para poder excluir o produto.</p>
   </div>
   <div class="modal-footer">
     <button type="button" class="btn btn-secondary" (click)="modal.close()">Fechar</button>

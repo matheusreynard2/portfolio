@@ -111,6 +111,14 @@ tr.sem-estoque td {
   gap: 8px;
 }
 
+/* Garante alinhamento vertical da coluna de ações (input + botões) com header */
+table.table td:last-child, table.table th:last-child {
+  vertical-align: middle;
+}
+table.table td .d-flex.gap-2 {
+  align-items: center;
+}
+
 @media (max-width: 576px) {
   .preco-modo {
     flex-wrap: wrap;
@@ -131,5 +139,24 @@ tr.sem-estoque td {
   .caixa-title {
     font-size: 1rem;
   }
+}
+
+/* Overlay de carregamento (estilo CEP) */
+.overlay-carregando {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+}
+.spinner-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 

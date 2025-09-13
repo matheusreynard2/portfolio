@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.apiestudar.api_prodify.domain.model.VendaCaixa;
@@ -19,6 +20,7 @@ import com.apiestudar.api_prodify.application.usecase.pdv.SalvarCaixaUseCase;
 import com.apiestudar.api_prodify.application.usecase.pdv.FinalizarVendaUseCase;
 import com.apiestudar.api_prodify.application.usecase.pdv.ListarHistoricoUseCase;
 import com.apiestudar.api_prodify.application.usecase.pdv.DeletarHistoricoUseCase;
+import com.apiestudar.api_prodify.application.usecase.pdv.DeletarMultiHistoricoVendaUseCase;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -37,6 +39,8 @@ public class PDVController {
     private ListarHistoricoUseCase listarHistorico;
     @Autowired
     private DeletarHistoricoUseCase deletarHistorico;
+    @Autowired
+    private DeletarMultiHistoricoVendaUseCase deletarMultiHistoricoVenda;
 
 
     @Operation(summary = "Adiciona/cadastra um novo usuário.", description = "Cria um novo registro de usuário no banco de dados.")
@@ -79,5 +83,10 @@ public class PDVController {
     @DeleteMapping("/deletarHistorico/{vendaCaixaId}")
     public ResponseEntity<Boolean> deletarHistorico(@PathVariable Long vendaCaixaId) {
         return ResponseEntity.status(HttpStatus.OK).body(deletarHistorico.executar(vendaCaixaId));
+    }
+
+    @DeleteMapping("/deletarMultiHistoricos")
+    public ResponseEntity<Boolean> deletarHistoricos(@RequestParam("ids") List<Long> ids) {
+        return ResponseEntity.status(HttpStatus.OK).body(deletarMultiHistoricoVenda.executar(ids));
     }
 }

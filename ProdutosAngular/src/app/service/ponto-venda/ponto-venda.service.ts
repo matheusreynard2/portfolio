@@ -39,6 +39,12 @@ export class PontoVendaService extends HttpBaseService {
   excluirHistorico(idHistorico: number): Observable<boolean> {
     return this.http.delete<boolean>(`${this.pdvUrl}/deletarHistorico/${idHistorico}`);
   }
+
+  excluirMultiHistoricos(ids: number[]): Observable<boolean> {
+    const params = new URLSearchParams();
+    ids.forEach(id => params.append('ids', String(id)));
+    return this.http.delete<boolean>(`${this.pdvUrl}/deletarMultiHistoricos?${params.toString()}`);
+  }
  
 }
 

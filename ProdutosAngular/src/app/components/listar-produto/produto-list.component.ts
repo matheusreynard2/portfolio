@@ -45,6 +45,7 @@ export class ProdutoListComponent implements OnInit {
 
   listaDeProdutos!: ProdutoDTO[];
   private listaDeProdutosOriginal: ProdutoDTO[] = [];
+  isLoadingProdutos: boolean = false;
   produtoAtualizar!: ProdutoDTO;
   produtoExcluido!: ProdutoDTO;
   imagemFile: File = new File([], 'arquivo_vazio.txt', {})
@@ -70,6 +71,7 @@ export class ProdutoListComponent implements OnInit {
   searchNomeFornecedor: string = '';
   searchValorInicial: number | null = null;
   avisoTextoModal: string = '';
+  tipoHistoricoModal: 'VENDA' | 'COMPRA' = 'VENDA';
 
   constructor(private produtoService: ProdutoService,
               private produtoFunctionsService: ProdutoFunctionsService,
@@ -82,10 +84,17 @@ export class ProdutoListComponent implements OnInit {
       this.fornecedores = data;
     });
 
-    this.produtoService.listarProdutos(this.currentPage, this.pageSize, this.authService.getUsuarioLogado().idUsuario).subscribe(data => {
-      this.listaDeProdutos = data.content;
-      this.listaDeProdutosOriginal = data.content;
-      this.totalRecords = data.totalElements; // Atualiza o total de registros exibidos
+    this.isLoadingProdutos = true;
+    this.produtoService.listarProdutos(this.currentPage, this.pageSize, this.authService.getUsuarioLogado().idUsuario).subscribe({
+      next: (data) => {
+        this.listaDeProdutos = data.content;
+        this.listaDeProdutosOriginal = data.content;
+        this.totalRecords = data.totalElements; // Atualiza o total de registros exibidos
+        this.isLoadingProdutos = false;
+      },
+      error: () => {
+        this.isLoadingProdutos = false;
+      }
     });
 
     this.deviceService.isMobileOrTablet.subscribe(isMobile => {
@@ -131,7 +140,15 @@ export class ProdutoListComponent implements OnInit {
         if (msg.includes('Produto possui histórico de venda relacionado')) {
           // Exibe modal amigável
           this.produtoExcluido = produto;
+          this.tipoHistoricoModal = 'VENDA';
           this.modalService.open(this.modalErroExcluirHistorico);
+          return;
+        }
+        if (msg.includes('Produto possui histórico de compra relacionado')) {
+          this.produtoExcluido = produto;
+          this.tipoHistoricoModal = 'COMPRA';
+          this.modalService.open(this.modalErroExcluirHistorico);
+          return;
         }
       }
     });

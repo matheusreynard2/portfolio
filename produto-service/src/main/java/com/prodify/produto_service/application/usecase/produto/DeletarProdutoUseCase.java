@@ -2,9 +2,11 @@ package com.prodify.produto_service.application.usecase.produto;
 
 import org.springframework.transaction.annotation.Transactional;
 
+import com.prodify.produto_service.domain.repository.CompraRepository;
 import com.prodify.produto_service.domain.repository.ProdutoRepository;
 import com.prodify.produto_service.domain.repository.VendaCaixaRepository;
 import com.prodify.produto_service.shared.exception.RegistroNaoEncontradoException;
+import com.prodify.produto_service.shared.exception.ProdutoPossuiHistoricoCompraException;
 import com.prodify.produto_service.shared.exception.ProdutoPossuiHistoricoVendaException;
 
 import java.util.concurrent.CompletableFuture;
@@ -12,14 +14,16 @@ import java.util.concurrent.ExecutorService;
 
 public class DeletarProdutoUseCase {
 
+    private final CompraRepository compraRepo;
 	private final ProdutoRepository repo;
 	private final VendaCaixaRepository vendaRepo;
 	private final ExecutorService dbPool;
 
-	public DeletarProdutoUseCase(ProdutoRepository repo, VendaCaixaRepository vendaRepo, ExecutorService dbPool) {
+	public DeletarProdutoUseCase(ProdutoRepository repo, VendaCaixaRepository vendaRepo, ExecutorService dbPool, CompraRepository compraRepo) {
 		this.repo = repo;
 		this.vendaRepo = vendaRepo;
 		this.dbPool = dbPool;
+		this.compraRepo = compraRepo;
     }
 
 	@Transactional(rollbackFor = Exception.class)
@@ -31,6 +35,10 @@ public class DeletarProdutoUseCase {
                     boolean relacionado = vendaRepo.existsHistoricoByProdutoId(id);
                     if (relacionado) {
                         throw new ProdutoPossuiHistoricoVendaException();
+                    }
+                    relacionado = compraRepo.existsHistoricoCompraByProdutoId(id);
+                    if (relacionado) {
+                        throw new ProdutoPossuiHistoricoCompraException();
                     }
                     return repo.deletarProdutoPorId(id);
                 })

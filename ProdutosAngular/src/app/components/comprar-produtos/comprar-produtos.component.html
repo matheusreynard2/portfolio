@@ -5,9 +5,8 @@
     <div *ngIf="carregando" class="alert alert-info py-2">Carregando produtos...</div>
     <div *ngIf="erro" class="alert alert-danger py-2">{{ erro }}</div>
 
-    <div class="text-danger fw-bold mb-2">PÁGINA EM CONSTRUÇÃO</div>
-
-    <div class="disabled-block">
+    
+    <div>
     <div class="mb-3">
       <div style="display: flex; gap: 12px; align-items: center; width: 100%;">
         <input type="text" placeholder="Nome do produto..." class="form-control" [(ngModel)]="searchNome" (input)="onSearchChanged()" style="flex: 1 1 50%; min-width: 0;"/>
@@ -19,30 +18,67 @@
       <table class="table table-bordered table-striped">
         <thead>
         <tr>
+          <th class="text-left">ID</th>
           <th class="text-left">Nome</th>
           <th class="text-left">Descrição</th>
-          <th class="text-center">Quantidade</th>
+          <th class="text-center">Qtde estoque</th>
           <th class="text-center">Valor unitário</th>
           <th class="text-left">Fornecedor</th>
-          <th class="text-center" style="width: 120px;">Selecionar</th>
+          <th class="text-center" style="width: 110px;">Selecionar</th>
+          <th class="text-center" style="width: 160px;">Qtde comprar</th>
+          <th class="text-center" style="width: 220px;">Preço compra</th>
+          <th class="text-center" style="width: 160px;">Total</th>
         </tr>
         </thead>
         <tbody>
         <tr *ngFor="let p of produtosPaginados" [ngClass]="{'sem-estoque': (p.quantia || 0) === 0}">
+          <td class="text-left" style="white-space: nowrap; max-width: 120px;">{{ p.id }}</td>
           <td class="text-left" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 300px;">{{ p.nome }}</td>
           <td class="text-left" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 400px;">{{ p.descricao }}</td>
           <td class="text-center">{{ p.quantia }}</td>
           <td class="text-center">{{ p.valorInicial | currency:'BRL' }}</td>
           <td class="text-left" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 300px;">{{ p.fornecedor?.nome }}</td>
           <td class="text-center">
-            <button class="btn btn-sm btn-primary" (click)="selecionarProduto(p)">Selecionar</button>
+            <input type="checkbox"
+                   [checked]="isSelecionado(p)"
+                   (change)="onToggleChange(p, $event)"
+                   title="Selecionar"/>
           </td>
+          <td class="text-center">
+            <input type="number" min="0" class="form-control form-control-sm"
+                   [disabled]="!isSelecionado(p)"
+                   [ngModel]="getQuantidade(p)"
+                   (ngModelChange)="onQuantidadeChanged(p, $event)"
+                   (keydown)="onQuantidadeKeyDown($event)">
+          </td>
+          <td class="text-center">
+            <input type="text" class="form-control form-control-sm"
+                   [disabled]="!isSelecionado(p)"
+                   mask="separator.2" thousandSeparator="." decimalMarker="," prefix="R$ "
+                   [dropSpecialCharacters]="true"
+                   [ngModel]="getPreco(p)"
+                   (ngModelChange)="onPrecoChanged(p, $event)">
+          </td>
+          <td class="text-center fw-bold" [ngStyle]="{color: '#198754'}">{{ getTotalLinha(p) | currency:'BRL' }}</td>
         </tr>
         </tbody>
+        <tfoot>
+        <tr>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td class="text-center fw-bold">{{ totalQuantidadeSelecionada }}</td>
+          <td></td>
+          <td class="text-center fw-bold" [ngStyle]="{color: '#198754'}">{{ totalValorSelecionado | currency:'BRL' }}</td>
+        </tr>
+        </tfoot>
       </table>
     </div>
 
-    <div class="pagination-container">
+    <div class="pagination-container d-flex justify-content-start">
       <mat-paginator [length]="totalRecords"
                      [pageSize]="pageSize"
                      [pageIndex]="currentPage"
@@ -51,25 +87,239 @@
       </mat-paginator>
     </div>
 
-    <div *ngIf="produtoSelecionado" class="mt-4">
-      <h6>Produto selecionado: <b>{{ produtoSelecionado.nome }}</b></h6>
-      <div class="row g-3 align-items-end">
-        <div class="col-12 col-md-4">
-          <label for="qtdeCompra" class="form-label">Quantidade a comprar</label>
-          <input id="qtdeCompra" type="number" min="0" class="form-control" [(ngModel)]="quantidadeCompra">
-        </div>
-        <div class="col-12 col-md-4">
-          <label for="precoCompra" class="form-label">Preço de compra (por unidade)</label>
-          <input id="precoCompra" type="number" min="0" step="0.01" class="form-control" [(ngModel)]="precoCompra">
-        </div>
-        <div class="col-12 col-md-4">
-          <label class="form-label">Total</label>
-          <div class="form-control-plaintext fw-bold" [ngStyle]="{color: '#198754'}">{{ totalCompra | currency:'BRL' }}</div>
-        </div>
+    
+
+    <div class="d-flex justify-content-between align-items-center mt-3">
+      <div></div>
+      <div class="pdv-actions">
+        <button class="btn btn-success pdv-action-btn half-opacity hover-100 me-2" (click)="salvarCompras()" [disabled]="!podeSalvar || isFinalizandoCompra">
+          <ng-container *ngIf="!isFinalizandoCompra; else savingCompraTpl">Salvar</ng-container>
+        </button>
+        <button class="btn btn-primary pdv-action-btn half-opacity hover-100 me-2" (click)="finalizarCompras()" [disabled]="!podeFinalizar || isFinalizandoCompra">
+          <span *ngIf="!isFinalizandoCompra">Finalizar</span>
+          <span *ngIf="isFinalizandoCompra" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+          <span *ngIf="isFinalizandoCompra">Finalizando...</span>
+        </button>
+        <button class="btn btn-secondary pdv-action-btn half-opacity hover-100" (click)="abrirHistorico()">Histórico de compras</button>
       </div>
     </div>
     </div>
   </div>
 </div>
+
+<div class="card my-3">
+  <div class="card-body">
+    <h6 class="mb-3">Itens selecionados</h6>
+    <table class="table table-sm table-bordered">
+      <thead>
+        <tr>
+          <th class="text-left">ID</th>
+          <th class="text-left">Produto</th>
+          <th class="text-center">Quantidade</th>
+          <th class="text-end">Preço unitário</th>
+          <th class="text-end">Subtotal</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let c of compras">
+          <td>{{ c.produto.id }}</td>
+          <td>{{ c.produto.nome }}</td>
+          <td class="text-center">{{ c.quantidadeComprada }}</td>
+          <td class="text-end">{{ c.valorUnitarioCompra | currency:'BRL' }}</td>
+          <td class="text-end">{{ c.valorTotalCompra | currency:'BRL' }}</td>
+        </tr>
+      </tbody>
+      <tfoot>
+        <tr>
+          <td></td>
+          <td></td>
+          <td class="text-center fw-bold">{{ totalQuantidadeSelecionada }}</td>
+          <td class="text-end fw-bold">Totais</td>
+          <td class="text-end fw-bold">{{ totalValorSelecionado | currency:'BRL' }}</td>
+        </tr>
+      </tfoot>
+    </table>
+  </div>
+ </div>
+
+<ng-template #modalCompraSucessoTmpl let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title">Compra finalizada</h5>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modal.close()"></button>
+  </div>
+  <div class="modal-body">
+    <p *ngIf="lastCompraResumo"><b>Compra ID {{ lastCompraResumo.id }} finalizada com sucesso.</b></p>
+    <div *ngIf="lastCompraItensResumo && lastCompraItensResumo.length > 0" class="mb-2">
+      <table class="table table-sm mb-2">
+        <thead>
+          <tr>
+            <th>Item</th>
+            <th class="text-center">Quantidade</th>
+            <th class="text-end">Subtotal</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let it of lastCompraItensResumo">
+            <td>{{ it.nome }}</td>
+            <td class="text-center">{{ it.quantidade }}</td>
+            <td class="text-end">{{ it.subtotal | currency:'BRL':'symbol':'1.2-2' }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p *ngIf="lastCompraResumo" class="mb-0"><b>Total de itens:</b> {{ lastCompraResumo.totalQuantidade }}</p>
+    <p *ngIf="lastCompraResumo" class="mb-0"><b>Valor total:</b> {{ lastCompraResumo.totalValor | currency:'BRL':'symbol':'1.2-2' }}</p>
+  </div>
+  <div class="modal-footer">
+    <button class="btn btn-secondary" (click)="modal.close()">Fechar</button>
+  </div>
+</ng-template>
+
+<ng-template #modalHistoricoComprasTmpl let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title">Histórico de Compras</h5>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modal.close()"></button>
+  </div>
+  <div class="modal-body p-0">
+    <div class="p-2">
+      <div class="row g-2 align-items-center mb-2">
+        <div class="col-12 col-md-6">
+          <input class="form-control" placeholder="Buscar por ID ou nome do produto" [(ngModel)]="historicoFiltro" (input)="aplicarFiltroHistoricoCompras()" />
+        </div>
+      </div>
+      <small class="text-muted">Clique em uma compra para abrir/fechar os detalhes.</small>
+    </div>
+    <div class="table-responsive">
+    <table class="table table-striped mb-0" *ngIf="historicoComprasFiltrado.length > 0; else semHistoricoCompras">
+      <thead>
+        <tr>
+          <th class="text-center" style="width: 40px;">
+            <input type="checkbox"
+                   [checked]="isTodosSelecionados()"
+                   (change)="onToggleSelecionarTodos($event)"
+            />
+          </th>
+          <th>ID</th>
+          <th>Usuário</th>
+          <th class="text-center">Total Qtd</th>
+          <th class="text-end">Total Valor</th>
+          <th class="text-center">Ações</th>
+        </tr>
+      </thead>
+      <tbody>
+        <ng-container *ngFor="let h of historicoComprasFiltrado">
+          <tr (click)="onToggleHistoricoCompra(h)" style="cursor: pointer;">
+            <td class="text-center"><input type="checkbox" [checked]="selecionadosHistoricoIds.has(h.id||-1)" (click)="$event.stopPropagation()" (change)="onToggleCheckboxHistorico(h, $event)"></td>
+            <td>{{ h.id }}</td>
+            <td>{{ usuarioLogin }}</td>
+            <td class="text-center">{{ h.quantidadeTotal }}</td>
+            <td class="text-end">{{ h.valorTotal | currency:'BRL':'symbol':'1.2-2' }}</td>
+            <td class="text-center">
+              <button class="btn btn-sm btn-outline-danger" (click)="$event.stopPropagation(); abrirModalExcluirCompra(h)">Excluir</button>
+            </td>
+          </tr>
+          <tr *ngIf="selectedHistoricoCompraId === h.id">
+            <td colspan="5">
+              <div class="historico-detalhes-wrap">
+              <table class="table table-sm mb-0 historico-detalhes">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Produto</th>
+                    <th>Descrição</th>
+                    <th class="text-end">Preço unit.</th>
+                    <th class="text-center">Qtd</th>
+                    <th class="text-end">Subtotal</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let it of itensCompraVisualizacao">
+                    <td>{{ it.idProduto }}</td>
+                    <td>{{ it.nome }}</td>
+                    <td><small class="text-muted">{{ it.descricao }}</small></td>
+                    <td class="text-end">{{ it.precoUnit | currency:'BRL':'symbol':'1.2-2' }}</td>
+                    <td class="text-center">{{ it.quantidade }}</td>
+                    <td class="text-end">{{ it.subtotal | currency:'BRL':'symbol':'1.2-2' }}</td>
+                  </tr>
+                </tbody>
+                <tfoot>
+                  <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td class="text-center fw-bold">{{ compraParaVisualizar?.quantidadeTotal }}</td>
+                    <td class="text-end fw-bold">{{ compraParaVisualizar?.valorTotal | currency:'BRL':'symbol':'1.2-2' }}</td>
+                  </tr>
+                </tfoot>
+              </table>
+              </div>
+            </td>
+          </tr>
+        </ng-container>
+      </tbody>
+    </table>
+    <div class="d-flex justify-content-start p-2 mt-3 mb-3" *ngIf="historicoComprasFiltrado.length > 0">
+      <button class="btn btn-sm btn-danger" [disabled]="selecionadosHistoricoIds.size === 0" (click)="excluirSelecionadosHistorico()">Excluir selecionados</button>
+    </div>
+    </div>
+    <ng-template #semHistoricoCompras>
+      <div class="p-3 text-center text-muted">Não há compras finalizadas no histórico.</div>
+    </ng-template>
+  </div>
+  <div class="modal-footer">
+    <button class="btn btn-secondary" (click)="modal.close()">Fechar</button>
+  </div>
+</ng-template>
+
+<!-- Modal de Confirmação de Exclusão (pequeno) -->
+<ng-template #modalConfirmDeleteCompra let-modal>
+  <div class="modal-header py-2">
+    <h6 class="modal-title">Confirmar exclusão</h6>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
+  </div>
+  <div class="modal-body">
+    <ng-container *ngIf="!isExcluindoHistorico; else excluindoTpl">
+      Tem certeza que deseja excluir a compra do histórico #{{ compraParaVisualizar?.id }}?
+    </ng-container>
+  </div>
+  <div class="modal-footer py-2">
+    <button class="btn btn-sm btn-secondary" [disabled]="isExcluindoHistorico" (click)="modal.dismiss()">Cancelar</button>
+    <button class="btn btn-sm btn-danger" [disabled]="isExcluindoHistorico" (click)="confirmarExclusaoCompra(modal)">
+      <span *ngIf="!isExcluindoHistorico">Excluir</span>
+      <span *ngIf="isExcluindoHistorico" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+      <span *ngIf="isExcluindoHistorico">Excluindo...</span>
+    </button>
+  </div>
+</ng-template>
+
+<!-- Toast de salvar compra -->
+<ngb-toast *ngIf="showSaveToast" [autohide]="true" [delay]="2000"
+           class="bg-dark text-white position-fixed shadow"
+           style="top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 1080;"
+           (hidden)="showSaveToast = false">
+  {{ saveToastText }}
+</ngb-toast>
+
+<!-- Overlay de carregamento (estilo CEP) -->
+<div *ngIf="overlayCarregando" class="overlay-carregando">
+  <div class="spinner-wrapper">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Carregando...</span>
+    </div>
+    <p class="mt-2">{{overlayTexto}}</p>
+  </div>
+</div>
+
+<!-- Templates de loading -->
+<ng-template #savingCompraTpl>
+  <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>Salvar
+</ng-template>
+<ng-template #excluindoTpl>
+  <div class="d-flex align-items-center">
+    <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+    Excluindo...
+  </div>
+</ng-template>
 
 

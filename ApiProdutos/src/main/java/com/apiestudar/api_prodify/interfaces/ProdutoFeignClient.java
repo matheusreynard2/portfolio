@@ -21,7 +21,6 @@ import com.apiestudar.api_prodify.domain.model.Produto;
 import com.apiestudar.api_prodify.infrastructure.config.FeignConfig;
 import com.apiestudar.api_prodify.interfaces.dto.PaginatedResponseDTO;
 import com.apiestudar.api_prodify.interfaces.dto.ProdutoDTO;
-import com.apiestudar.api_prodify.interfaces.dto.ProdutoFormDTO;
 
 @FeignClient(name = "produto-service", configuration = FeignConfig.class)
 public interface ProdutoFeignClient {

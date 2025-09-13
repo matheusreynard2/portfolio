@@ -44,7 +44,7 @@ public class FornecedorRepositoryImpl implements FornecedorRepository {
 		return fornecedorJpaRepository.findById(id);
 	}
 
-	@Override
+	@Override																																																																														
 	public List<Fornecedor> listarFornecedores() {
 		return fornecedorJpaRepository.findAll();
 	}
@@ -52,7 +52,7 @@ public class FornecedorRepositoryImpl implements FornecedorRepository {
 	@Override
 	public List<Fornecedor> findAll(Specification<Fornecedor> spec) {
 		return fornecedorJpaRepository.findAll(spec);
-	}
+	}										
 
 	@Override
 	public Page<Fornecedor> listarFornecedoresPorUsuario(Long idUsuario, Pageable pageable) {
