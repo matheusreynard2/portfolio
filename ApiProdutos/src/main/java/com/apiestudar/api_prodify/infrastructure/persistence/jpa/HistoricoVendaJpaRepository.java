@@ -53,29 +53,7 @@ public interface HistoricoVendaJpaRepository extends JpaRepository<HistoricoVend
     @Modifying(clearAutomatically = true, flushAutomatically = true)
     @Query(value = "delete from historico_vendas where vendacaixa_id in (:vendaCaixaIds)", nativeQuery = true)
     void deleteHistoricosByVendaCaixaIds(@Param("vendaCaixaIds") List<Long> vendaCaixaIds);
-
-    /*@Query(value = """
-        WITH hv AS (
-        SELECT DISTINCT vendacaixa_id
-        FROM historico_vendas
-        WHERE id IN (:historicoIds)          
-            AND vendacaixa_id IS NOT NULL
-        ),
-        di AS (
-        DELETE FROM vendacaixa_itens
-        WHERE id_vendacaixa IN (SELECT vendacaixa_id FROM hv)
-        RETURNING 1
-        ),
-        dh AS (
-        DELETE FROM historico_vendas
-        WHERE vendacaixa_id IN (SELECT vendacaixa_id FROM hv)
-        RETURNING 1
-        )
-        DELETE FROM venda_caixa
-        WHERE id IN (SELECT vendacaixa_id FROM hv)
-        """, nativeQuery = true)
-    void deleteMultiHistoricoVendas(@Param("historicoIds") List<Long> historicoIds);*/
-
+    
 }
 
 

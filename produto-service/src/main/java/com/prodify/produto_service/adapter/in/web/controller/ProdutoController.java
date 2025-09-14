@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -13,7 +12,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -28,16 +26,14 @@ import lombok.RequiredArgsConstructor;
 import com.prodify.produto_service.application.usecase.produto.AdicionarProdutoUseCase;
 import com.prodify.produto_service.application.usecase.produto.AtualizarProdutoUseCase;
 import com.prodify.produto_service.application.usecase.produto.CalculosSobreProdutosUseCase;
+import com.prodify.produto_service.application.usecase.produto.DeletarMultiProdutosUseCase;
 import com.prodify.produto_service.application.usecase.produto.DeletarProdutoUseCase;
 import com.prodify.produto_service.application.usecase.produto.ListarProdutosUseCase;
 import com.prodify.produto_service.application.usecase.produto.PesquisasSearchBarUseCase;
 import com.prodify.produto_service.application.usecase.produto.BuscarProdutoUseCase;
 import com.prodify.produto_service.domain.model.Produto;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.prodify.produto_service.adapter.in.web.dto.PaginatedResponseDTO;
 import com.prodify.produto_service.adapter.in.web.dto.ProdutoDTO;
-import com.prodify.produto_service.adapter.in.web.dto.ProdutoFormDTO;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -55,6 +51,7 @@ public class ProdutoController {
 	private final DeletarProdutoUseCase deletarProduto;
 	private final CalculosSobreProdutosUseCase consultasProduto;
 	private final BuscarProdutoUseCase buscarProduto;
+	private final DeletarMultiProdutosUseCase deletarMultiProdutos;
 
 	@Operation(summary = "Listagem de todos os produtos cadastrados.", description = "Faz uma busca no banco de dados retornando uma lista com todos os produtos cadastrados.")
 	@ApiResponses({
@@ -104,6 +101,14 @@ public class ProdutoController {
 	public CompletableFuture<ResponseEntity<Void>> deletarProduto(@PathVariable int id) {
 		return deletarProduto.executar(id).thenApply(dto -> ResponseEntity.status(HttpStatus.OK).body(dto));
 	}
+
+	@Operation(summary = "Exclui múltiplos produtos.", description = "Exclui em lote produtos pelos seus IDs, validando histórico de COMPRA/VENDA antes.")
+	@ApiResponses({ @ApiResponse(responseCode = "200", description = "Produtos excluídos."),
+                    @ApiResponse(responseCode = "409", description = "Algum produto possui histórico relacionado.") })
+    @DeleteMapping("/deletarMultiProdutos")
+    public ResponseEntity<Boolean> deletarMultiProdutos(@RequestParam("ids") List<Integer> ids) {
+        return ResponseEntity.status(HttpStatus.OK).body(deletarMultiProdutos.executar(ids));
+    }
 
 	@Operation(summary = "Exibe o produto mais caro.", description = "Exibe o valor unitário do produto mais caro entre todos os produtos registrados no banco de dados.")
 	@ApiResponses({

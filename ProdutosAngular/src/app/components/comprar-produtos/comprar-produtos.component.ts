@@ -22,6 +22,7 @@ export class ComprarProdutosComponent implements OnInit {
   @ViewChild('modalCompraSucessoTmpl') modalCompraSucessoTmpl!: TemplateRef<any>;
   @ViewChild('modalHistoricoComprasTmpl') modalHistoricoComprasTmpl!: TemplateRef<any>;
   @ViewChild('modalConfirmDeleteCompra') modalConfirmDeleteCompra!: TemplateRef<any>;
+  @ViewChild('modalConfirmDeleteMultiCompra') modalConfirmDeleteMultiCompra!: TemplateRef<any>;
   // Toast de salvar
   showSaveToast: boolean = false;
   saveToastText: string = '';
@@ -265,8 +266,25 @@ export class ComprarProdutosComponent implements OnInit {
         }));
         // abre modal de sucesso
         if (this.modalCompraSucessoTmpl) {
-          this.modalService.open(this.modalCompraSucessoTmpl, { size: 'lg' });
+          const ref = this.modalService.open(this.modalCompraSucessoTmpl, { size: 'lg' });
+          const onClose = () => {
+            this.saveToastText = 'Saldo atualizado';
+            this.showSaveToast = true;
+            setTimeout(() => {
+              this.showSaveToast = false;
+              window.location.reload();
+            }, 1000);
+          };
+          ref.closed.subscribe(onClose);
+          ref.dismissed.subscribe(onClose);
         }
+        // Atualiza saldo no perfil (debita total da compra)
+        try {
+          const u = this.auth.getUsuarioLogado() as any;
+          const saldoAtual = Number(u?.saldo || 0);
+          const novoSaldo = saldoAtual - Number(hist?.valorTotal || 0);
+          this.auth.adicionarUsuarioLogado({ ...u, saldo: novoSaldo } as any);
+        } catch {}
         // Recarrega do servidor para garantir consistência
         const idUsuarioRefresh = this.auth.getUsuarioLogado()?.idUsuario;
         if (idUsuarioRefresh) {
@@ -432,6 +450,17 @@ export class ComprarProdutosComponent implements OnInit {
         this.overlayTexto = '';
       }
     });
+  }
+
+  abrirModalExcluirSelecionados(): void {
+    if (this.modalConfirmDeleteMultiCompra) {
+      this.modalService.open(this.modalConfirmDeleteMultiCompra, { size: 'sm' });
+    }
+  }
+
+  confirmarExclusaoSelecionados(modalRef: any): void {
+    modalRef.close();
+    this.excluirSelecionadosHistorico();
   }
 
   abrirModalExcluirCompra(h: HistoricoComprasDTO, event?: Event): void {

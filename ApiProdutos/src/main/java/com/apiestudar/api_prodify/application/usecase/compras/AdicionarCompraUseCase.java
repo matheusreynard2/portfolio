@@ -24,6 +24,7 @@ import com.apiestudar.api_prodify.domain.repository.CompraRepository;
 import com.apiestudar.api_prodify.domain.repository.HistoricoComprasRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.apiestudar.api_prodify.domain.repository.UsuarioRepository;
 
 @Service
 public class AdicionarCompraUseCase {
@@ -35,6 +36,8 @@ public class AdicionarCompraUseCase {
 	@Autowired
 	private ProdutoFeignClient produtoFeignClient;
 	private final ObjectMapper jsonMapper = new ObjectMapper();
+    @Autowired
+    private UsuarioRepository usuarioRepository;
 
 	public AdicionarCompraUseCase(CompraRepository repoCompras, HistoricoComprasRepository historicoComprasRepo) {
 		this.repoCompras = repoCompras;
@@ -99,6 +102,16 @@ public class AdicionarCompraUseCase {
 		});
 	
 		HistoricoComprasDTO historicoComprasDTO = modelMapper.map(historicoCompras, HistoricoComprasDTO.class);
+
+		// Debita o valor total do histórico do saldo do usuário
+		Helper.verificarNull(historicoCompras.getValorTotal());
+		if (Helper.maiorZero(historicoCompras.getValorTotal())) {
+			usuarioRepository.buscarUsuarioPorId(idUsuario).ifPresent(usuario -> {
+				var saldoAtual = usuario.getSaldo() == null ? java.math.BigDecimal.ZERO : usuario.getSaldo();
+				usuario.setSaldo(saldoAtual.subtract(historicoCompras.getValorTotal()));
+				usuarioRepository.atualizarUsuario(usuario);
+			});
+		}
 	
 		long ns = System.nanoTime() - t0;
 		System.out.println("##############################");

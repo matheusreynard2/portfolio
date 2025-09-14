@@ -45,9 +45,9 @@ public class CompraController {
 	private DeletarMultiHistoricoComprasUseCase deletarMultiHistoricoComprasUseCase;
 
 	@Transactional
-	@Operation(summary = "Adiciona/cadastra um novo compra.", description = "Cria um novo registro de compra no banco de dados.")
+	@Operation(summary = "Cadastrar compras", description = "Cria registros de compras e grava um histórico consolidado para o usuário.")
 	@ApiResponses({
-        @ApiResponse(responseCode = "201", description = "Compra cadastrada.")
+        @ApiResponse(responseCode = "201", description = "Compras cadastradas e histórico gerado.")
     })
 	@PostMapping("/adicionarCompra")
 	public ResponseEntity<HistoricoComprasDTO> adicionarCompra(
@@ -55,17 +55,23 @@ public class CompraController {
 		return ResponseEntity.status(HttpStatus.CREATED).body(adicionarCompra.executar(compraDTO));
 	}
 
+	@Operation(summary = "Listar histórico de compras por usuário", description = "Retorna a lista de históricos de compras do usuário informado.")
+	@ApiResponses({ @ApiResponse(responseCode = "200", description = "Lista de histórico retornada.") })
 	@GetMapping("/listarHistoricoCompras/{idUsuario}")
 	public ResponseEntity<List<HistoricoComprasDTO>> listarHistoricoComprasByIdUsuario(@PathVariable Long idUsuario) {
 			return ResponseEntity.status(HttpStatus.OK).body(listarHistorico.executar(idUsuario));
 	}
 
+	@Operation(summary = "Excluir histórico de compra", description = "Exclui um histórico de compra e suas compras associadas.")
+	@ApiResponses({ @ApiResponse(responseCode = "200", description = "Histórico excluído.") })
 	@DeleteMapping("/deletarHistorico/{historicoId}")
 	public ResponseEntity<Boolean> deletarHistoricoCompras(@PathVariable Long historicoId) {
 		return ResponseEntity.status(HttpStatus.OK).body(historicoCompras.executar(historicoId));
 	}
 
-    @DeleteMapping("/deletarHistoricos")
+	@Operation(summary = "Excluir múltiplos históricos de compra", description = "Exclui em lote históricos de compra e suas compras associadas.")
+	@ApiResponses({ @ApiResponse(responseCode = "200", description = "Históricos excluídos.") })
+    @DeleteMapping("/deletarMultiHistoricosCompra")
     public ResponseEntity<Boolean> deletarMultiHistoricosCompras(@RequestParam("ids") List<Long> ids) {
 		return ResponseEntity.status(HttpStatus.OK).body(deletarMultiHistoricoComprasUseCase.executar(ids));
     }

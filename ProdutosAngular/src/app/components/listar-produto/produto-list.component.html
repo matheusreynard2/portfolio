@@ -38,12 +38,14 @@
       <table class="table table-bordered table-striped">
         <thead class="thead-dark">
         <tr>
-          <th colspan="11" class="text-center">Produtos</th>
+          <th colspan="12" class="text-center">Produtos</th>
         </tr>
         <tr>
+          <th class="text-center" style="width: 40px;"><input type="checkbox" [checked]="isTodosProdutosSelecionados()" (change)="onToggleSelecionarTodosProdutos($event)"></th>
           <th class="text-center coluna_id" style="width: 80px; min-width: 60px; max-width: 100px;">ID</th>
-          <th class="text-left coluna_nome" style="width: 400px; min-width: 200px; max-width: 600px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Nome</th>
+          <th class="text-left coluna_nome" style="width: 220px; min-width: 140px; max-width: 380px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Nome</th>
           <th class="text-left coluna_fornecedor" style="width: 400px; min-width: 200px; max-width: 600px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Fornecedor</th>
+          <th class="text-left coluna_descricao">Descrição</th>
           <th class="text-center coluna_qtde" style="width: 60px; min-width: 40px; max-width: 80px;">Qtde</th>
           <th class="text-center coluna_valor" style="width: 200px; min-width: 100px; max-width: 250px;">Valor unit</th>
           <th class="text-center coluna_promocao" style="width: 100px; min-width: 60px; max-width: 120px;">Promoção</th>
@@ -55,20 +57,22 @@
         </thead>
         <tbody>
         <tr *ngFor="let produto of listaDeProdutos" [ngClass]="{'sem-estoque': (produto.quantia || 0) === 0}">
+          <td class="text-center"><input type="checkbox" [checked]="selecionadosProdutoIds.has(produto.id || -1)" (change)="onToggleCheckboxProduto(produto, $event)"></td>
           <td class="text-center coluna_id" style="width: 80px; min-width: 60px; max-width: 100px;">{{ produto.id }}</td>
-          <td class="text-left coluna_nome" style="width: 400px; min-width: 200px; max-width: 600px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+          <td class="text-left coluna_nome" style="width: 220px; min-width: 140px; max-width: 380px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
             <div class="stat-item">
               <span class="stat-label passar_mouse" (mouseenter)="mostrarImgPopup(produto)" (mouseleave)="esconderImgPopup()">
                 {{ produto.nome }}
               </span>
               <div *ngIf="popUpVisivel" class="img-popup">
-                <div class="image-container">
+                <div class="image-container" [ngClass]="{'no-image': !imgBase64}">
                   <img *ngIf="imgBase64" [src]="'data:image/jpeg;base64,' + imgBase64" alt="Imagem do produto"/>
                 </div>
               </div>
             </div>
           </td>
           <td class="text-left coluna_fornecedor" style="width: 400px; min-width: 200px; max-width: 600px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ produto.fornecedor?.nome }}</td>
+          <td class="text-left coluna_descricao"><span class="texto-ellipsis">{{ produto.descricao }}</span></td>
           <td class="text-center coluna_qtde" style="width: 60px; min-width: 40px; max-width: 80px;">{{ produto.quantia }}</td>
           <td class="text-center coluna_valor" style="width: 200px; min-width: 100px; max-width: 250px;">{{ formatarValor(produto.valorInicial) }}</td>
           <td class="text-center coluna_promocao" style="width: 100px; min-width: 60px; max-width: 120px;">
@@ -84,13 +88,13 @@
             <button type="button" class="btn btn-info full-width-btn" id="btn_editar" (click)="atualizarProduto(modalEditar, produto.id ?? 0, produto)">✎</button>
           </td>
           <td class="text-center coluna_acao" style="width: 80px; min-width: 60px; max-width: 100px;">
-            <button type="button" class="btn btn-danger full-width-btn" id="btn_excluir" (click)="deletarProduto(modalMsgExcluir, produto.id ?? 0, produto)">X</button>
+            <button type="button" class="btn btn-danger full-width-btn" id="btn_excluir" (click)="abrirModalConfirmarExclusaoProduto(produto)">X</button>
           </td>
         </tr>
 
         <!-- Label que exibe a variável do produto mais caro -->
         <tr>
-          <td colspan="11" class="text-left">
+          <td colspan="12" class="text-left">
             <div class="stats-container-vertical">
               <span class="stat-row stat-label-container stat-value-container">
                 <span class="stat-text">PRODUTO MAIS CARO - ID:</span>
@@ -102,7 +106,7 @@
           </td>
         </tr>
         <tr>
-          <td colspan="10" class="text-left">
+          <td colspan="12" class="text-left">
             <div class="info-container">
               <div class="info-item">
                 <span class="info-label">Vl qtd desc:</span>
@@ -117,8 +121,11 @@
           </td>
         </tr>
         <tr>
-          <td>
-            <button class="btn bg-primary-subtle fw-bold btn-atualizar-lista" (click)="atualizarLista()" role="button">Atualizar</button>
+          <td colspan="12">
+            <div class="d-flex align-items-center" style="gap: 8px;">
+              <button class="btn btn-sm btn-danger" [disabled]="selecionadosProdutoIds.size === 0" (click)="abrirModalExcluirSelecionadosProdutos()">Excluir selecionados</button>
+              <button class="btn bg-primary-subtle fw-bold btn-atualizar-lista" (click)="atualizarLista()" role="button">Atualizar</button>
+            </div>
           </td>
         </tr>
         </tbody>
@@ -143,6 +150,36 @@
     <span>Carregando produtos...</span>
   </div>
 </ng-template>
+
+<!-- Modal de confirmação para exclusão múltipla (estilo idêntico ao PDV) -->
+<ng-template #modalConfirmDeleteMultiProdutos let-modal>
+  <div class="modal-header py-2 lp-modal">
+    <h6 class="modal-title">Confirmar exclusão</h6>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
+  </div>
+  <div class="modal-body lp-modal">
+    Tem certeza que deseja excluir os produtos selecionados?
+  </div>
+  <div class="modal-footer py-2 lp-modal">
+    <button class="btn btn-sm btn-secondary" (click)="modal.dismiss()">Cancelar</button>
+    <button class="btn btn-sm btn-danger" (click)="confirmarExclusaoSelecionadosProdutos(modal)">Excluir</button>
+  </div>
+  </ng-template>
+
+<!-- Modal de confirmação para exclusão individual (estilo idêntico ao PDV) -->
+<ng-template #modalConfirmDeleteProduto let-modal>
+  <div class="modal-header py-2 lp-modal">
+    <h6 class="modal-title">Confirmar exclusão</h6>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
+  </div>
+  <div class="modal-body lp-modal">
+    Tem certeza que deseja excluir este produto?
+  </div>
+  <div class="modal-footer py-2 lp-modal">
+    <button class="btn btn-sm btn-secondary" (click)="modal.dismiss()">Cancelar</button>
+    <button class="btn btn-sm btn-danger" (click)="confirmarExclusaoProduto(modal)">Excluir</button>
+  </div>
+  </ng-template>
 
 <!--######## INICIO DO MODAL DE EDIÇÃO DE PRODUTO ######## -->
 
@@ -467,7 +504,20 @@
     <button type="button" class="btn-close" aria-label="Close" (click)="modal.close()"></button>
   </div>
   <div class="modal-body">
-    <p>Impossível excluir o produto <b>{{ (produtoExcluido && produtoExcluido.nome) || (produtoAtualizar && produtoAtualizar.nome) }}</b> pois ele possui um <b>histórico de {{ tipoHistoricoModal }}</b> relacionado. Exclua o histórico primeiro para poder excluir o produto.</p>
+    <p>Impossível excluir pois existe <b>histórico de {{ tipoHistoricoModal }}</b> relacionado.</p>
+    <div *ngIf="(produtosRelacionadosErro.length || 0) > 0; else unicoProdutoRelacionado">
+      <p>Produtos relacionados:</p>
+      <ul style="margin:0; padding-left: 18px;">
+        <li *ngFor="let p of produtosRelacionadosErro">ID {{ p.id }} - {{ p.nome }}</li>
+      </ul>
+    </div>
+    <ng-template #unicoProdutoRelacionado>
+      <p>
+        Produto: <b>ID {{ produtoExcluido ? produtoExcluido.id : (produtoAtualizar ? produtoAtualizar.id : '-') }}</b> -
+        <b>{{ produtoExcluido ? produtoExcluido.nome : (produtoAtualizar ? produtoAtualizar.nome : '-') }}</b>
+      </p>
+    </ng-template>
+    <p class="mt-2">Exclua o histórico primeiro para poder excluir o produto.</p>
   </div>
   <div class="modal-footer">
     <button type="button" class="btn btn-secondary" (click)="modal.close()">Fechar</button>

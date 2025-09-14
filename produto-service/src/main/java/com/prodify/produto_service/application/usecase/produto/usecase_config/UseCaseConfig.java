@@ -5,6 +5,7 @@ import com.prodify.produto_service.application.usecase.produto.ListarProdutosUse
 import com.prodify.produto_service.application.usecase.produto.PesquisasSearchBarUseCase;
 import com.prodify.produto_service.application.usecase.produto.AtualizarProdutoUseCase;
 import com.prodify.produto_service.application.usecase.produto.DeletarProdutoUseCase;
+import com.prodify.produto_service.application.usecase.produto.DeletarMultiProdutosUseCase;
 import com.prodify.produto_service.application.usecase.produto.CalculosSobreProdutosUseCase;
 import com.prodify.produto_service.application.usecase.produto.BuscarProdutoUseCase;
 
@@ -56,5 +57,10 @@ public class UseCaseConfig {
     @Bean
     public BuscarProdutoUseCase BuscarProdutoUseCaseConfig(ProdutoRepository repo, UsuarioRepository usuarioRepository) {
         return new BuscarProdutoUseCase(repo, usuarioRepository);
+    }
+
+    @Bean
+    public DeletarMultiProdutosUseCase DeletarMultiProdutosUseCaseConfig(ProdutoRepository repo) {
+        return new DeletarMultiProdutosUseCase(repo);
     }
 }

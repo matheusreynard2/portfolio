@@ -63,7 +63,8 @@ export class ProdutoService extends HttpBaseService {
     const params = new HttpParams()
       .set('page', page.toString())
       .set('size', size.toString())
-      .set('idUsuario', idUsuario.toString());
+      .set('idUsuario', idUsuario.toString())
+      .set('t', Date.now().toString());
 
     return this.http.get<PaginatedResponse<ProdutoDTO>>(this.produtosUrl + "/listarProdutos", { params });
   }
@@ -78,6 +79,13 @@ export class ProdutoService extends HttpBaseService {
         observe: 'response'
     });
 }
+
+  excluirMultiProdutos(ids: number[]) {
+    const params = new HttpParams({ fromObject: { ids: ids.map(String) }});
+    return this.http.delete<boolean>(`${this.produtosUrl}/deletarMultiProdutos`, {
+      params
+    });
+  }
 
   atualizarProduto(id: number, produto: ProdutoDTO, imagem: File): Observable<ProdutoDTO> {
     const formData = this.createProdutoFormData(produto, imagem);

@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.apiestudar.api_prodify.domain.model.VendaCaixa;
 import com.apiestudar.api_prodify.domain.repository.VendaCaixaRepository;
+import com.apiestudar.api_prodify.domain.repository.UsuarioRepository;
 import com.apiestudar.api_prodify.interfaces.dto.VendaCaixaDTO;
 import com.apiestudar.api_prodify.shared.exception.RegistroNaoEncontradoException;
 import com.apiestudar.api_prodify.shared.utils.Helper;
@@ -15,6 +16,7 @@ import com.apiestudar.api_prodify.interfaces.dto.ProdutoDTO;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.math.BigDecimal;
 
 @Service
 public class FinalizarVendaUseCase {
@@ -23,14 +25,17 @@ public class FinalizarVendaUseCase {
     private final ModelMapper modelMapper;
     private final ProdutoFeignClient produtoFeignClient;
     private final ObjectMapper jsonMapper = new ObjectMapper();
+    private final UsuarioRepository usuarioRepository;
 
     public FinalizarVendaUseCase(
             VendaCaixaRepository vendaCaixaRepository,
             ModelMapper modelMapper,
-            ProdutoFeignClient produtoFeignClient) {
+            ProdutoFeignClient produtoFeignClient,
+            UsuarioRepository usuarioRepository) {
         this.vendaCaixaRepository = vendaCaixaRepository;
         this.modelMapper = modelMapper;
         this.produtoFeignClient = produtoFeignClient;
+        this.usuarioRepository = usuarioRepository;
     }
 
     @Transactional(rollbackFor = Exception.class)
@@ -76,6 +81,16 @@ public class FinalizarVendaUseCase {
                 throw new RuntimeException(e);
             }
         });
+
+        // Atualiza saldo do usuário somando o total da venda
+        Helper.verificarNull(vendaCaixaHistorico.getTotalValor());
+        if (Helper.maiorZero(vendaCaixaHistorico.getTotalValor())) {
+            usuarioRepository.buscarUsuarioPorId(idUsuario).ifPresent(usuario -> {
+                BigDecimal saldoAtual = usuario.getSaldo() == null ? BigDecimal.ZERO : usuario.getSaldo();
+                usuario.setSaldo(saldoAtual.add(vendaCaixaHistorico.getTotalValor()));
+                usuarioRepository.atualizarUsuario(usuario);
+            });
+        }
 
         long ns = System.nanoTime() - t0;
         System.out.println("##############################");

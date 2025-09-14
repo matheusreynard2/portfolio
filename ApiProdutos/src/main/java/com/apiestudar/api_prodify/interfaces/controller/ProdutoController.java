@@ -86,6 +86,14 @@ public class ProdutoController {
 		return produtoFeignClient.deletarProduto(id);
 	}
 
+	@Operation(summary = "Exclui múltiplos produtos.", description = "Exclui em lote produtos pelos seus IDs, validando histórico de COMPRA/VENDA antes.")
+	@ApiResponses({ @ApiResponse(responseCode = "200", description = "Produtos excluídos."),
+                    @ApiResponse(responseCode = "409", description = "Algum produto possui histórico relacionado.") })
+    @DeleteMapping("/deletarMultiProdutos")
+    public ResponseEntity<Void> deletarMultiProdutos(@RequestParam("ids") List<Integer> ids) {
+        return produtoFeignClient.deletarMultiProdutos(ids);
+    }
+
 	@Operation(summary = "Exibe o produto mais caro.", description = "Exibe o valor unitário do produto mais caro entre todos os produtos registrados no banco de dados.")
 	@ApiResponses({
 			@ApiResponse(responseCode = "200", description = "Cálculo de preço mais caro efetuado.")

@@ -110,4 +110,13 @@ public class GlobalExceptionHandler {
         errorResponse.put("mensagem", ex.getMessage());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
     }
+
+    @ExceptionHandler(ProdutosPossuemHistoricoRelacionadoException.class)
+    public ResponseEntity<?> handleProdutosComHistorico(ProdutosPossuemHistoricoRelacionadoException ex) {
+        return ResponseEntity.unprocessableEntity().body(Map.of(
+            "message", ex.getMessage(),
+            "produtos", ex.getProdutos() // [{id, nome, tipo}]
+        ));
+    }
+
 }

@@ -37,7 +37,7 @@ export class ComprarProdutosService extends HttpBaseService {
   excluirMultiHistoricosCompras(ids: number[]): Observable<boolean> {
     const params = new URLSearchParams();
     ids.forEach(id => params.append('ids', String(id)));
-    return this.http.delete<boolean>(`${this.comprasUrl}/deletarHistoricos?${params.toString()}`);
+    return this.http.delete<boolean>(`${this.comprasUrl}/deletarMultiHistoricosCompra?${params.toString()}`);
   }
  
 }

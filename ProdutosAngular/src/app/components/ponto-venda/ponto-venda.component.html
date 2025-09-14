@@ -230,7 +230,7 @@
       </tbody>
     </table>
     <div class="d-flex justify-content-start p-2 mt-3 mb-3" *ngIf="historicoVendasFiltrado.length > 0">
-      <button class="btn btn-sm btn-danger" [disabled]="selecionadosHistoricoVendasIds.size === 0" (click)="excluirSelecionadosHistoricoVenda()">Excluir selecionados</button>
+      <button class="btn btn-sm btn-danger" [disabled]="selecionadosHistoricoVendasIds.size === 0" (click)="abrirModalExcluirSelecionadosVendas()">Excluir selecionados</button>
     </div>
     </div>
     <ng-template #semHistorico>
@@ -298,6 +298,21 @@
     <button class="btn btn-sm btn-danger" [disabled]="isDeletingHistorico" (click)="confirmarExclusao(modal)">
       <ng-container *ngIf="!isDeletingHistorico; else excluindoVendaTpl">Excluir</ng-container>
     </button>
+  </div>
+</ng-template>
+
+<!-- Modal de confirmação de exclusão múltipla (pequeno) -->
+<ng-template #modalConfirmDeleteMultiVendas let-modal>
+  <div class="modal-header py-2">
+    <h6 class="modal-title">Confirmar exclusão</h6>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
+  </div>
+  <div class="modal-body">
+    Tem certeza que deseja excluir os registros selecionados do histórico?
+  </div>
+  <div class="modal-footer py-2">
+    <button class="btn btn-sm btn-secondary" (click)="modal.dismiss()">Cancelar</button>
+    <button class="btn btn-sm btn-danger" (click)="confirmarExclusaoSelecionadosVendas(modal)">Excluir</button>
   </div>
 </ng-template>
 

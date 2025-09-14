@@ -86,4 +86,27 @@ public class ProdutoRepositoryImpl implements ProdutoRepository {
     public List<Produto> findAllJoinFetchByIds(List<Long> ids) {
         return produtoJpaRepository.findAllJoinFetchByIds(ids);
     }
+
+    @Override
+    public List<Long> findProdutoIdsComHistoricoVenda(List<Long> ids) {
+        return produtoJpaRepository.findProdutoIdsComHistoricoVenda(ids);
+    }
+
+
+    @Override
+    public List<Long> findProdutoIdsComHistoricoCompra(List<Long> ids) {
+        return produtoJpaRepository.findProdutoIdsComHistoricoCompra(ids);
+    }
+
+
+    @Override
+    public List<Object[]> findIdENomeByIds(List<Long> ids) {
+        return produtoJpaRepository.findIdENomeByIds(ids);
+    }
+
+
+    @Override
+    public int deleteByIds(List<Long> ids) {
+        return produtoJpaRepository.deleteByIds(ids);
+    }
 }

@@ -29,12 +29,21 @@ public interface ProdutoRepository {
 
     BigDecimal obterMediaPreco(Long idUsuario);
 
-    /**
-     * Busca produtos usando Specification, incluindo filtros dinâmicos e JOIN com fornecedor.
-     */
     List<Produto> findAll(Specification<Produto> spec);
 
     Optional<Produto> findByIdJoinFetch(Long id);
 
     List<Produto> findAllJoinFetchByIds(List<Long> ids);
+
+
+    List<Long> findProdutoIdsComHistoricoVenda(List<Long> ids);
+
+
+    List<Long> findProdutoIdsComHistoricoCompra(List<Long> ids);
+
+
+    List<Object[]> findIdENomeByIds(List<Long> ids);
+
+
+    int deleteByIds(List<Long> ids);
 }

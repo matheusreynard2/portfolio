@@ -1,3 +1,16 @@
+/* Estilos de modal idênticos ao PDV (forçados) */
+.lp-modal.modal-header{padding-top:.25rem !important;padding-bottom:.25rem !important;}
+.lp-modal .modal-title{font-size:.95rem !important;line-height:1.2 !important;margin:0 !important;}
+.lp-modal.modal-body{padding:.75rem 1rem !important;}
+.lp-modal.modal-footer{padding-top:.2rem !important;padding-bottom:.2rem !important;display:flex !important;justify-content:flex-end !important;gap:4px !important;flex-wrap:nowrap !important;}
+.lp-modal .btn{font-size:.7rem !important;padding:.1rem .3rem !important;line-height:1 !important;min-width:60px !important;max-width:80px !important;}
+.lp-modal .btn-sm{font-size:.7rem !important;padding:.1rem .3rem !important;}
+.lp-modal .btn-secondary,.lp-modal .btn-danger{white-space:nowrap !important;overflow:hidden !important;text-overflow:ellipsis !important;}
+.lp-modal .btn-close{width:.75rem !important;height:.75rem !important;padding:.2rem !important;}
+
+/* Coluna de descrição compacta */
+.coluna_descricao{max-width:640px !important;min-width:260px !important;width:600px !important;}
+.texto-ellipsis{white-space:nowrap !important;overflow:hidden !important;text-overflow:ellipsis !important;}
 /* Textos estáticos em negrito */
 .stat-text {
   font-weight: bold;
@@ -695,24 +708,24 @@ select.form-control {
   font-weight: 500;
 }
 
-.passar_mouse::after {
+.passar_mouse::before {
   content: "👁️";
   font-size: 14px;
   opacity: 0.7;
   transition: opacity 0.2s;
+  margin-right: 6px;
 }
 
-.passar_mouse:hover::after {
+.passar_mouse:hover::before {
   opacity: 1;
 }
 
 .img-popup {
-  position: absolute;
-  bottom: 80%;
+  position: fixed; /* evita ficar escondido sob o banner/header */
+  top: 80px; /* abaixo do banner fixo */
   left: 50%;
   transform: translateX(-50%);
-  z-index: 1000;
-  margin-bottom: 10px;
+  z-index: 2000; /* acima do conteúdo */
   background: white;
   border-radius: 8px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
@@ -744,6 +757,7 @@ select.form-control {
   padding: 4px 8px;
   text-align: center;
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  z-index: 2;
 }
 
 .image-container img {
@@ -751,6 +765,23 @@ select.form-control {
   max-height: 100%;
   object-fit: contain;
   border-radius: 4px;
+}
+
+/* Placeholder quando não existe imagem: fundo preto + X vermelho de ponta a ponta */
+.image-container.no-image {
+  background: #000000 !important;
+  position: relative;
+}
+.image-container.no-image::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to bottom right, transparent 48%, #ff2b2b 50%, transparent 52%),
+              linear-gradient(to top right, transparent 48%, #ff2b2b 50%, transparent 52%);
+  z-index: 1;
 }
 
 /* Ajustes para o modal de atualização */

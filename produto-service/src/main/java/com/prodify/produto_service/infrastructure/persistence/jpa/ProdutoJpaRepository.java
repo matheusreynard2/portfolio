@@ -9,6 +9,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -64,5 +65,22 @@ public interface ProdutoJpaRepository extends JpaRepository<Produto, Long>, JpaS
 	List<Produto> findAll(Specification<Produto> spec);
 
 	Produto save(Produto produto);
+
+	// VendaCaixaRepository
+	@Query(value = "select distinct vcit.produto_id from vendacaixa_itens vcit where vcit.produto_id in (:ids)", nativeQuery = true)
+	List<Long> findProdutoIdsComHistoricoVenda(@Param("ids") List<Long> ids);
+
+	// CompraRepository
+	@Query(value = "select distinct c.produto_id from compra c where c.produto_id in (:ids)", nativeQuery = true)
+	List<Long> findProdutoIdsComHistoricoCompra(@Param("ids") List<Long> ids);
+
+	// ProdutoRepository
+	@Query(value = "select p.id, p.nome from produto p where p.id in (:ids)", nativeQuery = true)
+	List<Object[]> findIdENomeByIds(@Param("ids") List<Long> ids);
+
+	@Modifying
+	@Query(value = "delete from produto where id in (:ids)", nativeQuery = true)
+	int deleteByIds(@Param("ids") List<Long> ids);
+
 	
 }

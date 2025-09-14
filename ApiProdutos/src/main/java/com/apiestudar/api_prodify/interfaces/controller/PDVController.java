@@ -43,23 +43,23 @@ public class PDVController {
     private DeletarMultiHistoricoVendaUseCase deletarMultiHistoricoVenda;
 
 
-    @Operation(summary = "Adiciona/cadastra um novo usuário.", description = "Cria um novo registro de usuário no banco de dados.")
-	@ApiResponses({
-		@ApiResponse(responseCode = "201", description = "Usuário cadastrado.")
-	})
-	@PostMapping("/salvarCaixa")
-	public ResponseEntity<Long> salvarCaixa(@RequestBody VendaCaixaDTO vendaCaixaDTO) {
-		return ResponseEntity.status(HttpStatus.CREATED).body(salvarCaixa.executar(vendaCaixaDTO));
-	}
+    @Operation(summary = "Salvar venda em andamento (caixa)", description = "Persiste ou atualiza a venda em andamento com itens e totais, retornando o id da venda.")
+    @ApiResponses({
+        @ApiResponse(responseCode = "201", description = "Venda salva com sucesso.")
+    })
+    @PostMapping("/salvarCaixa")
+    public ResponseEntity<Long> salvarCaixa(@RequestBody VendaCaixaDTO vendaCaixaDTO) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(salvarCaixa.executar(vendaCaixaDTO));
+    }
 
-    @Operation(summary = "Adiciona/cadastra um novo usuário.", description = "Cria um novo registro de usuário no banco de dados.")
-	@ApiResponses({
-		@ApiResponse(responseCode = "201", description = "Usuário cadastrado.")
-	})
-	@PostMapping("/finalizarVenda/{idVendaCaixaDTO}")
-	public ResponseEntity<VendaCaixaDTO> finalizarVenda(@PathVariable Long idVendaCaixaDTO) {
-		return ResponseEntity.status(HttpStatus.OK).body(finalizarVenda.executar(idVendaCaixaDTO));
-	}
+    @Operation(summary = "Finalizar venda", description = "Finaliza a venda pelo id informado, grava no histórico e atualiza o estoque.")
+    @ApiResponses({
+        @ApiResponse(responseCode = "200", description = "Venda finalizada com sucesso.")
+    })
+    @PostMapping("/finalizarVenda/{idVendaCaixaDTO}")
+    public ResponseEntity<VendaCaixaDTO> finalizarVenda(@PathVariable Long idVendaCaixaDTO) {
+        return ResponseEntity.status(HttpStatus.OK).body(finalizarVenda.executar(idVendaCaixaDTO));
+    }
 
     @SuppressWarnings("rawtypes")
     @Operation(summary = "Acessar a página de ponto de venda.", description = "Endpoint usado para validação de Token pelo front.")
@@ -78,15 +78,17 @@ public class PDVController {
         return ResponseEntity.status(HttpStatus.OK).body(listarHistorico.executar());
     }
 
-    @Operation(summary = "Excluir um registro do histórico e sua venda relacionada")
-    @ApiResponses({ @ApiResponse(responseCode = "204", description = "Histórico excluído.") })
+    @Operation(summary = "Excluir histórico de venda", description = "Exclui um histórico de venda e a venda relacionada (itens e cabeçalho).")
+    @ApiResponses({ @ApiResponse(responseCode = "200", description = "Histórico excluído.") })
     @DeleteMapping("/deletarHistorico/{vendaCaixaId}")
     public ResponseEntity<Boolean> deletarHistorico(@PathVariable Long vendaCaixaId) {
         return ResponseEntity.status(HttpStatus.OK).body(deletarHistorico.executar(vendaCaixaId));
     }
 
-    @DeleteMapping("/deletarMultiHistoricos")
-    public ResponseEntity<Boolean> deletarHistoricos(@RequestParam("ids") List<Long> ids) {
+    @Operation(summary = "Excluir múltiplos históricos de venda", description = "Exclui em lote históricos de venda e suas vendas relacionadas (itens e cabeçalho).")
+    @ApiResponses({ @ApiResponse(responseCode = "200", description = "Históricos excluídos.") })
+    @DeleteMapping("/deletarMultiHistoricosVenda")
+    public ResponseEntity<Boolean> deletarMultiHistoricosVenda(@RequestParam("ids") List<Long> ids) {
         return ResponseEntity.status(HttpStatus.OK).body(deletarMultiHistoricoVenda.executar(ids));
     }
 }

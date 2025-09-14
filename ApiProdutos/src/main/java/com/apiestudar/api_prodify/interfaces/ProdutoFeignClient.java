@@ -45,6 +45,9 @@ public interface ProdutoFeignClient {
 	@DeleteMapping("/api/produtos/deletarProduto/{id}")
 	public ResponseEntity<Void> deletarProduto(@PathVariable int id);
 
+	@DeleteMapping("/api/produtos/deletarMultiProdutos")
+	public ResponseEntity<Void> deletarMultiProdutos(@RequestParam("ids") List<Integer> ids);
+
 	@GetMapping("/api/produtos/produtoMaisCaro/{idUsuario}")
 	public ResponseEntity<Optional<Produto>> listarProdutoMaisCaro(@PathVariable long idUsuario);
 

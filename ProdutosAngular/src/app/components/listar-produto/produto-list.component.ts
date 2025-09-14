@@ -13,6 +13,8 @@ import {DeviceService} from '../../service/device/device.service';
 import {ProdutoDTO} from '../../model/dto/ProdutoDTO';
 import { UtilsService } from '../../service/utils/utils.service';
 import {FornecedorDTO} from '../../model/dto/FornecedorDTO';
+import { catchError, finalize, tap } from 'rxjs/operators';
+import { EMPTY } from 'rxjs';
 
 @Component({
   selector: 'app-produto-list', 
@@ -56,6 +58,8 @@ export class ProdutoListComponent implements OnInit {
   totalRecords: number = 0;
   currentPage: number = 0;
   pageSize: number = 10;
+  // Seleção múltipla
+  selecionadosProdutoIds: Set<number> = new Set<number>();
 
   // Para calcular valor X quantia
   private valorInicialAnterior: number = 0;
@@ -66,12 +70,17 @@ export class ProdutoListComponent implements OnInit {
   @ViewChild('modalAvisoToken') modalAvisoToken!: ElementRef
   @ViewChild('modalErroExcluirHistorico') modalErroExcluirHistorico!: ElementRef
   @ViewChild('modalAvisoArquivo') modalAvisoArquivo!: ElementRef
+  @ViewChild('modalConfirmDeleteMultiProdutos') modalConfirmDeleteMultiProdutos!: ElementRef
+  @ViewChild('modalConfirmDeleteProduto') modalConfirmDeleteProduto!: ElementRef
+  @ViewChild('modalMsgExcluir') modalMsgExcluir!: ElementRef
   isMobileOrTablet: boolean = false;
   searchValue: string = '';
   searchNomeFornecedor: string = '';
   searchValorInicial: number | null = null;
   avisoTextoModal: string = '';
   tipoHistoricoModal: 'VENDA' | 'COMPRA' = 'VENDA';
+  produtosRelacionadosErro: { id: number, nome: string }[] = [];
+  private idNomeCache = new Map<number, string>();
 
   constructor(private produtoService: ProdutoService,
               private produtoFunctionsService: ProdutoFunctionsService,
@@ -89,6 +98,9 @@ export class ProdutoListComponent implements OnInit {
       next: (data) => {
         this.listaDeProdutos = data.content;
         this.listaDeProdutosOriginal = data.content;
+        data.content.forEach((p: ProdutoDTO) => {
+          if (p?.id) this.idNomeCache.set(p.id, p?.nome || '');
+        });
         this.totalRecords = data.totalElements; // Atualiza o total de registros exibidos
         this.isLoadingProdutos = false;
       },
@@ -136,15 +148,15 @@ export class ProdutoListComponent implements OnInit {
         }
       },
       error: (err) => {
-        const msg: string = (err?.error as string) || '';
-        if (msg.includes('Produto possui histórico de venda relacionado')) {
-          // Exibe modal amigável
+        const msg: string = (err?.error?.message || err?.error || '') as string;
+        this.produtosRelacionadosErro = [{ id: produto.id || 0, nome: produto.nome || '' }];
+        if (msg.includes('histórico de venda') || msg.toLowerCase().includes('venda')) {
           this.produtoExcluido = produto;
           this.tipoHistoricoModal = 'VENDA';
           this.modalService.open(this.modalErroExcluirHistorico);
           return;
         }
-        if (msg.includes('Produto possui histórico de compra relacionado')) {
+        if (msg.includes('histórico de compra') || msg.toLowerCase().includes('compra')) {
           this.produtoExcluido = produto;
           this.tipoHistoricoModal = 'COMPRA';
           this.modalService.open(this.modalErroExcluirHistorico);
@@ -153,6 +165,126 @@ export class ProdutoListComponent implements OnInit {
       }
     });
   }
+
+  // Abertura de modal de confirmação (exclusão individual)
+  abrirModalConfirmarExclusaoProduto(produto: ProdutoDTO) {
+    this.produtoExcluido = produto;
+    this.modalService.open(this.modalConfirmDeleteProduto, { size: 'sm', backdrop: 'static' });
+  }
+
+  confirmarExclusaoProduto(modal: any) {
+    const id = this.produtoExcluido?.id ?? 0;
+    if (!id) { modal.close(); return; }
+    this.deletarProduto(this.modalMsgExcluir, id, this.produtoExcluido);
+    modal.close();
+  }
+
+  // Seleção múltipla helpers
+  isTodosProdutosSelecionados(): boolean {
+    return (this.listaDeProdutos || []).length > 0 && (this.listaDeProdutos || []).every(p => this.selecionadosProdutoIds.has(p.id || -1));
+  }
+
+  onToggleSelecionarTodosProdutos(event: Event): void {
+    const input = event.target as HTMLInputElement | null;
+    const checked = !!input?.checked;
+    if (checked) {
+      (this.listaDeProdutos || []).forEach(p => {
+        const id = (p.id ?? 0);
+        if (id > 0) this.selecionadosProdutoIds.add(id);
+      });
+    } else {
+      this.selecionadosProdutoIds.clear();
+    }
+  }
+
+  onToggleCheckboxProduto(produto: ProdutoDTO, event: Event): void {
+    const input = event.target as HTMLInputElement | null;
+    const checked = !!input?.checked;
+    const id = produto.id ?? 0;
+    if (id <= 0) return;
+    if (checked) this.selecionadosProdutoIds.add(id); else this.selecionadosProdutoIds.delete(id);
+  }
+
+  abrirModalExcluirSelecionadosProdutos() {
+    const ids = Array.from(this.selecionadosProdutoIds.values());
+    if (ids.length === 0) return;
+    this.produtosRelacionadosErro = [];
+    this.modalService.open(this.modalConfirmDeleteMultiProdutos, { size: 'sm', backdrop: 'static' });
+  }
+
+  confirmarExclusaoSelecionadosProdutos(modal: any) {
+    const ids = Array.from(this.selecionadosProdutoIds.values());
+    if (ids.length === 0) { modal.close(); return; }
+    // Atualização otimista imediata na UI
+    const idsSet = new Set(ids);
+    this.listaDeProdutos = (this.listaDeProdutos || []).filter(p => !idsSet.has(p.id || 0));
+    this.totalRecords = (this.listaDeProdutos || []).length;
+    this.selecionadosProdutoIds.clear();
+    this.produtoMultiDelete(ids);
+    modal.close();
+  }
+
+  private produtoMultiDelete(ids: number[]) {
+    this.produtosRelacionadosErro = []; // limpa antes
+
+    this.produtoService.excluirMultiProdutos(ids)
+      .pipe(
+        // se chegou aqui sem erro, consideramos sucesso
+        tap(() => {
+          // reforça estado final
+          this.selecionadosProdutoIds.clear();
+          this.produtosRelacionadosErro = [];
+          // revalida com o backend
+          this.atualizarLista();
+        }),
+        catchError(async (err) => {
+        const payload = await this.alinharResponseMultiDelete(err);
+        const produtosBackend = Array.isArray(payload?.produtos) ? payload.produtos : [];
+
+        // Monta lista APENAS a partir do backend (evita falsos positivos)
+        const bloqueados = produtosBackend
+          .map((pb: any) => ({
+            id: Number(pb.id ?? pb.produtoId ?? pb.idProduto ?? pb['produto_id'] ?? 0),
+            nome: String(pb.nome ?? pb.nomeProduto ?? pb['nome_produto'] ?? this.getNomeLocalById(Number(pb.id ?? 0)))
+          }))
+          .filter(p => p.id > 0);
+
+        // Filtra para manter apenas os que ainda existem na lista (não foram excluídos)
+        const aindaExibidos = bloqueados.filter(p =>
+          !!(this.listaDeProdutos?.some(lp => lp.id === p.id) || this.listaDeProdutosOriginal?.some(lo => lo.id === p.id))
+        );
+        this.produtosRelacionadosErro = aindaExibidos;
+
+        // Define tipo com base no payload
+        const msg = String(payload?.message || '');
+        const temVenda  = produtosBackend.some((p: any) => (p.tipo || '').toUpperCase() === 'VENDA') || msg.toLowerCase().includes('venda');
+        const temCompra = produtosBackend.some((p: any) => (p.tipo || '').toUpperCase() === 'COMPRA') || msg.toLowerCase().includes('compra');
+        this.tipoHistoricoModal = temVenda ? 'VENDA' : 'COMPRA';
+
+        if ((this.produtosRelacionadosErro?.length || 0) > 0) {
+          this.modalService.open(this.modalErroExcluirHistorico);
+        }
+        // não propaga erro para não quebrar finalize()
+        return EMPTY;
+      }),
+      finalize(() => {
+        // sempre refaz a listagem (sucesso ou erro)
+        this.atualizarLista();
+      })
+    )
+    .subscribe();
+}
+  
+  private async alinharResponseMultiDelete(err: any): Promise<{ produtos?: any[]; message?: string }> {
+    let payload: any = err?.error;
+    // 3) Se veio array, use o primeiro item (seu backend manda [{"produtos":...}])
+    if (Array.isArray(payload)) payload = payload[0];
+
+    // 4) Garante objeto
+    if (!payload || typeof payload !== 'object') return { produtos: [], message: '' };
+    return payload;
+  }
+
 
   // Função para atualizar um produto através do id
   atualizarProduto(janelaEditar: any, id: number, produto: ProdutoDTO) {
@@ -196,6 +328,9 @@ export class ProdutoListComponent implements OnInit {
     this.produtoService.listarProdutos(this.currentPage, this.pageSize, this.authService.getUsuarioLogado().idUsuario).subscribe(data => {
       this.listaDeProdutos = data.content;
       this.listaDeProdutosOriginal = data.content;
+      data.content.forEach((p: ProdutoDTO) => {
+        if (p?.id) this.idNomeCache.set(p.id, p?.nome || '');
+      });
       this.totalRecords = data.totalElements; // Atualiza o total de registros exibidos
       this.aplicarFiltroLocal();
     });
@@ -391,6 +526,12 @@ export class ProdutoListComponent implements OnInit {
     if (this.produtoAtualizar) {
       this.produtoAtualizar.valorInicial = novoValor;
     }
+  }
+
+  private getNomeLocalById(id: number): string {
+    return this.idNomeCache.get(id)
+        || (this.listaDeProdutos?.find(p => p.id === id)?.nome ?? '')
+        || (this.listaDeProdutosOriginal?.find(p => p.id === id)?.nome ?? '');
   }
 
   protected readonly alert = alert;

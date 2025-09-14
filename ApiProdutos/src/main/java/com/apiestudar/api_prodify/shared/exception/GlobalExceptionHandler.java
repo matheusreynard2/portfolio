@@ -7,6 +7,7 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -104,4 +105,35 @@ public class GlobalExceptionHandler {
         errorResponse.put("mensagem", ex.getMessage());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
     }
+
+    // GlobalExceptionHandler do api_prodify (o que chama o produto-service)
+    @ExceptionHandler(feign.FeignException.class)
+    public ResponseEntity<?> handleFeign(feign.FeignException ex) {
+        HttpStatus status = HttpStatus.resolve(ex.status());
+        if (status == null) status = HttpStatus.BAD_GATEWAY;
+
+        String body = null;
+        try { body = ex.contentUTF8(); } catch (Exception ignore) {}
+
+        if (body == null || body.isBlank()) {
+            return ResponseEntity.status(status)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(Map.of("message", ex.getMessage()));
+        }
+
+        try {
+            // Preserve o JSON original
+            var node = new com.fasterxml.jackson.databind.ObjectMapper().readTree(body);
+            return ResponseEntity.status(status)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(node);
+        } catch (Exception e) {
+            // Se não for JSON, devolve texto mesmo, mas como campo message
+            return ResponseEntity.status(status)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(Map.of("message", body));
+        }
+    }
+
+
 }

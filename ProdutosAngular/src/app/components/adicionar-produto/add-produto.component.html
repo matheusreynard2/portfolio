@@ -68,14 +68,13 @@
           <tr>
             <td><label for="frete">Valor do frete:</label></td>
             <td>
-              <input type="number" [(ngModel)]="produto.frete"
+              <input type="text" [(ngModel)]="produto.frete"
                      class="form-control"
                      id="frete"
                      name="freteProduto"
                      required #frete="ngModel"
-                     min="0"
-                     max="2000000000"
-                     [ngClass]="{'is-invalid': frete.value > 2000000000}"
+                     mask="separator.2" thousandSeparator="," decimalMarker="." prefix="R$ "
+                     [dropSpecialCharacters]="true"
                      [disabled]="!produto.freteAtivo">
               <div *ngIf="frete.value > 2000000000" class="invalid-feedback">
                 O valor do frete não pode ser maior que 2.000.000.000
@@ -94,24 +93,17 @@
               </select>
             </td>
           </tr>
-          <tr>
-            <td></td>
-            <td>
-              <div class="mt-1" [ngStyle]="{color:'#198754', fontWeight:'700'}">{{produto.frete || 0| currency : 'BRL'}}</div>
-            </td>
-            <td colspan="4"></td>
-          </tr>
+          
           <tr>
             <td><label for="valorInicial">Valor unitário:</label></td>
             <td>
-              <input type="number" [(ngModel)]="produto.valorInicial"
+              <input type="text" [(ngModel)]="produto.valorInicial"
                      class="form-control"
                      id="valorInicial"
                      name="valorInicialProduto"
                      required #valorInicial="ngModel"
-                     min="0"
-                     max="2000000000"
-                     [ngClass]="{'is-invalid': valorInicial.value > 2000000000}"
+                     mask="separator.2" thousandSeparator="," decimalMarker="." prefix="R$ "
+                     [dropSpecialCharacters]="true"
                      (ngModelChange)="onValorInicialChange($event)">
               <div *ngIf="valorInicial.value > 2000000000" class="invalid-feedback">
                 O valor unitário não pode ser maior que 2.000.000.000

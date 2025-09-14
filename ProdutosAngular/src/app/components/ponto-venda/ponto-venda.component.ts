@@ -25,6 +25,7 @@ export class PontoVendaComponent implements OnInit {
   @ViewChild('modalVendaSucessoTmpl') modalVendaSucessoTmpl!: TemplateRef<any>;
   @ViewChild('modalVisualizarVenda') modalVisualizarVenda!: TemplateRef<any>;
   @ViewChild('modalHistorico') modalHistorico!: TemplateRef<any>;
+  @ViewChild('modalConfirmDeleteMultiVendas') modalConfirmDeleteMultiVendas!: TemplateRef<any>;
   vendaId: number = 0;
   produtos: ProdutoDTO[] = [];
   produtosFiltrados: ProdutoDTO[] = [];
@@ -354,6 +355,17 @@ export class PontoVendaComponent implements OnInit {
             subtotal: precoUnit * it.quantidade
           };
         });
+        // Atualiza saldo no perfil (memória e storage) com base no total da venda
+        const u = this.authService.getUsuarioLogado();
+        try {
+          const saldoAtual = Number(u?.saldo || 0);
+          const novoSaldo = saldoAtual + (this.totalValor || 0);
+          this.authService.adicionarUsuarioLogado({
+            ...u,
+            saldo: novoSaldo
+          } as any);
+        } catch {}
+
         // limpa caixa após finalizar
         this.caixa = [];
         this.vendaId = 0;
@@ -361,7 +373,17 @@ export class PontoVendaComponent implements OnInit {
         this.finalizarHabilitado = false; // nova venda começará com novo id
         // Abre modal de sucesso via TemplateRef
         if (this.modalVendaSucessoTmpl) {
-          this.modalService.open(this.modalVendaSucessoTmpl, { size: 'lg' });
+          const ref = this.modalService.open(this.modalVendaSucessoTmpl, { size: 'lg' });
+          const onClose = () => {
+            this.saveToastText = 'Saldo atualizado';
+            this.showSaveToast = true;
+            setTimeout(() => {
+              this.showSaveToast = false;
+              window.location.reload();
+            }, 1000);
+          };
+          ref.closed.subscribe(onClose);
+          ref.dismissed.subscribe(onClose);
         }
         // Atualiza a lista de histórico após finalizar
         this.pdvService.listarHistorico().subscribe({
@@ -590,6 +612,17 @@ export class PontoVendaComponent implements OnInit {
         this.overlayTextoPdv = '';
       }
     });
+  }
+
+  abrirModalExcluirSelecionadosVendas(): void {
+    if (this.modalConfirmDeleteMultiVendas) {
+      this.modalService.open(this.modalConfirmDeleteMultiVendas, { size: 'sm' });
+    }
+  }
+
+  confirmarExclusaoSelecionadosVendas(modalRef: any): void {
+    modalRef.close();
+    this.excluirSelecionadosHistoricoVenda();
   }
 }
 

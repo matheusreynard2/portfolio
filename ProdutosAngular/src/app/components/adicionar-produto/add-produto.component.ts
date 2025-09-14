@@ -2,6 +2,7 @@ import {Component, OnInit, ViewChild} from '@angular/core';
 import { ProdutoService } from '../../service/produto/produto.service';
 import {FormsModule} from '@angular/forms';
 import {CurrencyPipe, NgForOf, NgIf, NgOptimizedImage, CommonModule} from '@angular/common';
+import { NgxMaskDirective, provideNgxMask } from 'ngx-mask';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import { ProdutoFunctionsService } from '../../service/produto/produto-functions.service';
 import {PorcentagemMaskDirective} from '../../directives/porcentagem-mask.directive';
@@ -20,9 +21,11 @@ import {ProdutoDTO} from '../../model/dto/ProdutoDTO';
     NgOptimizedImage,
     PorcentagemMaskDirective,
     NgForOf,
-    CommonModule
+    CommonModule,
+    NgxMaskDirective
   ],
-  styleUrls: ['./add-produto.component.css']
+  styleUrls: ['./add-produto.component.css'],
+  providers: [provideNgxMask()]
 })
 
 export class AddProdutoComponent implements OnInit {
