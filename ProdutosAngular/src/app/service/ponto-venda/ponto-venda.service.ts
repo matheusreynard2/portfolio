@@ -32,12 +32,12 @@ export class PontoVendaService extends HttpBaseService {
     return this.http.get<any>(`${this.pdvUrl}/acessarPaginaPdv`);
   }
 
-  listarHistorico(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.pdvUrl}/listarHistorico`);
+  listarHistorico(): Observable<VendaCaixaDTO[]> {
+    return this.http.get<VendaCaixaDTO[]>(`${this.pdvUrl}/listarHistorico`);
   }
 
-  excluirHistorico(idHistorico: number): Observable<boolean> {
-    return this.http.delete<boolean>(`${this.pdvUrl}/deletarHistorico/${idHistorico}`);
+  excluirHistorico(idVenda: number): Observable<boolean> {
+    return this.http.delete<boolean>(`${this.pdvUrl}/deletarHistorico/${idVenda}`);
   }
 
   excluirMultiHistoricos(ids: number[]): Observable<boolean> {

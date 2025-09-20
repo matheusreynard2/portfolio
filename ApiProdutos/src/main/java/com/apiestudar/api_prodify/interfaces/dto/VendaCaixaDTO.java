@@ -1,6 +1,7 @@
 package com.apiestudar.api_prodify.interfaces.dto;
 
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -37,6 +38,10 @@ public class VendaCaixaDTO {
 
     @Schema(description = "Total de valores")
     private BigDecimal totalValor;
+
+    @NotNull(message = "A data da venda é obrigatória")
+	@Schema(description = "Data da venda")
+	private Date dataVenda;
 }
 
 

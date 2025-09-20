@@ -42,8 +42,8 @@ export class PontoVendaComponent implements OnInit {
   filtro = '';
   // Modo de preço selecionado: valorInicial | valorTotalDesc | valorTotalFrete
   modoPreco: 'valorInicial' | 'valorTotalDesc' | 'valorTotalFrete' = 'valorInicial';
-  historicoVendas: any[] = [];
-  historicoVendasFiltrado: any[] = [];
+  historicoVendas: VendaCaixaDTO[] = [];
+  historicoVendasFiltrado: VendaCaixaDTO[] = [];
   historicoFiltro: string = '';
   usuarioLogin: string = '';
   vendaParaVisualizar: VendaCaixaDTO | null = null;
@@ -90,7 +90,7 @@ export class PontoVendaComponent implements OnInit {
         this.currentPage = 0;
         // Carrega histórico após carregar a tela
         this.pdvService.listarHistorico().subscribe({
-          next: (lista) => {
+          next: (lista: VendaCaixaDTO[]) => {
             this.historicoVendas = lista ?? [];
             this.aplicarFiltroHistorico();
           }
@@ -387,7 +387,7 @@ export class PontoVendaComponent implements OnInit {
         }
         // Atualiza a lista de histórico após finalizar
         this.pdvService.listarHistorico().subscribe({
-          next: (lista) => {
+          next: (lista: VendaCaixaDTO[]) => {
             this.historicoVendas = lista ?? [];
             this.aplicarFiltroHistorico();
           }
@@ -443,7 +443,7 @@ export class PontoVendaComponent implements OnInit {
     }
   }
 
-  onToggleHistorico(v: any): void {
+  onToggleHistorico(v: VendaCaixaDTO): void {
     if (this.selectedHistoricoId === v.id) {
       this.selectedHistoricoId = null;
       this.vendaParaVisualizar = null;
@@ -451,14 +451,7 @@ export class PontoVendaComponent implements OnInit {
     } else {
       this.selectedHistoricoId = v.id;
       // Reutiliza lógica para calcular itens de visualização
-      const vendaDto: VendaCaixaDTO = {
-        id: v.id,
-        idUsuario: v.idUsuario,
-        itens: v.itens || [],
-        totalQuantidade: v.totalQuantidade,
-        totalValor: v.totalValor
-      } as VendaCaixaDTO;
-      this.abrirVisualizacao(vendaDto);
+      this.abrirVisualizacao(v);
     }
   }
 
@@ -477,7 +470,7 @@ export class PontoVendaComponent implements OnInit {
     // Match por ID de produto (numérico) ou por nome do produto (texto) em qualquer item das vendas
     const termoNumero = Number(termo);
     const buscarPorIdProduto = !isNaN(termoNumero);
-    this.historicoVendasFiltrado = (this.historicoVendas || []).filter((v) => {
+    this.historicoVendasFiltrado = (this.historicoVendas || []).filter((v: VendaCaixaDTO) => {
       const itens = v.itens || [];
       return itens.some((it: any) => {
         const prod = this.getProdutoById(it.idProduto);
@@ -504,16 +497,10 @@ export class PontoVendaComponent implements OnInit {
     });
   }
 
-  visualizarHistorico(v: any): void {
+  visualizarHistorico(v: VendaCaixaDTO): void {
     // converte o registro do histórico para o formato esperado (se necessário)
     // assume que v já possui os campos id, idUsuario, itens, totalQuantidade, totalValor
-    this.vendaParaVisualizar = {
-      id: v.id,
-      idUsuario: v.idUsuario,
-      itens: v.itens || [],
-      totalQuantidade: v.totalQuantidade,
-      totalValor: v.totalValor
-    } as VendaCaixaDTO;
+    this.vendaParaVisualizar = v;
     this.recalcularVisualizacao();
     if (this.modalVisualizarVenda) {
       this.modalService.open(this.modalVisualizarVenda, { size: 'lg' });
@@ -523,7 +510,7 @@ export class PontoVendaComponent implements OnInit {
   @ViewChild('modalConfirmDelete') modalConfirmDelete!: TemplateRef<any>;
   vendaParaExcluir: any | null = null;
 
-  abrirModalExcluir(v: any): void {
+  abrirModalExcluir(v: VendaCaixaDTO): void {
     if (!v?.id) return;
     this.vendaParaExcluir = v;
     this.modalService.open(this.modalConfirmDelete, { size: 'sm' });
@@ -544,7 +531,7 @@ export class PontoVendaComponent implements OnInit {
         modalRef.close();
         // Recarrega do servidor para garantir consistência
         this.pdvService.listarHistorico().subscribe({
-          next: (lista) => {
+          next: (lista: VendaCaixaDTO[]) => {
             this.historicoVendas = lista ?? [];
             this.aplicarFiltroHistorico();
             this.isDeletingHistorico = false;
@@ -555,7 +542,7 @@ export class PontoVendaComponent implements OnInit {
       },
       error: () => {
         this.pdvService.listarHistorico().subscribe({
-          next: (lista) => this.historicoVendas = lista ?? []
+          next: (lista: VendaCaixaDTO[]) => this.historicoVendas = lista ?? []
         });
         this.vendaParaExcluir = null;
         modalRef.dismiss();
@@ -583,7 +570,7 @@ export class PontoVendaComponent implements OnInit {
     }
   }
 
-  onToggleCheckboxHistoricoVenda(v: any, event: Event): void {
+  onToggleCheckboxHistoricoVenda(v: VendaCaixaDTO, event: Event): void {
     const input = event.target as HTMLInputElement | null;
     const checked = !!input?.checked;
     const id = v?.id ?? null;

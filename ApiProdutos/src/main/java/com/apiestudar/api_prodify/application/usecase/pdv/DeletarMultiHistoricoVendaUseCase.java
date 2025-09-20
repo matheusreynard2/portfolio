@@ -5,24 +5,22 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.apiestudar.api_prodify.infrastructure.persistence.jpa.HistoricoVendaJpaRepository;
+import com.apiestudar.api_prodify.infrastructure.persistence.jpa.VendaCaixaJpaRepository;
 
 @Service
 public class DeletarMultiHistoricoVendaUseCase {
 
-    private final HistoricoVendaJpaRepository historicoVendaRepo;
+    private final VendaCaixaJpaRepository vendaCaixaRepo;
 
-    public DeletarMultiHistoricoVendaUseCase(HistoricoVendaJpaRepository historicoVendaRepo) {
-        this.historicoVendaRepo = historicoVendaRepo;
+    public DeletarMultiHistoricoVendaUseCase(VendaCaixaJpaRepository vendaCaixaRepo) {
+        this.vendaCaixaRepo = vendaCaixaRepo;
     }
 
     @Transactional(rollbackFor = Exception.class)
     public Boolean executar(List<Long> ids) {
         if (ids == null || ids.isEmpty()) return false;
-        // IMPORTANTE: no front o ID exibido é de VendaCaixa (v.id). Portanto os ids aqui são vendaCaixaIds
-        historicoVendaRepo.deleteHistoricosByVendaCaixaIds(ids);
-        historicoVendaRepo.deleteItensByVendaCaixaIds(ids);
-        historicoVendaRepo.deleteVendaCaixasByIds(ids);
+        vendaCaixaRepo.deleteItensByVendaCaixaIds(ids);
+        vendaCaixaRepo.deleteVendaCaixasByIds(ids);
         return true;
     }
 }

@@ -1,6 +1,7 @@
 package com.apiestudar.api_prodify.domain.model;
 
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -56,6 +57,10 @@ public class VendaCaixa {
 
     @Schema(description = "Total de valores")
     private BigDecimal totalValor;
+
+    @Column(nullable = false, length = 100)
+	@Schema(description = "Data da conclusão da venda")
+	private Date dataVenda;
 }
 
 

@@ -216,6 +216,7 @@
             <td class="text-center">{{ h.quantidadeTotal }}</td>
             <td class="text-end">{{ h.valorTotal | currency:'BRL':'symbol':'1.2-2' }}</td>
             <td class="text-center">
+              <span class="me-2 text-muted" style="white-space: nowrap;">{{ h.dataCompra | date:'dd/MM/yyyy HH:mm' }}</span>
               <button class="btn btn-sm btn-outline-danger" (click)="$event.stopPropagation(); abrirModalExcluirCompra(h)">Excluir</button>
             </td>
           </tr>

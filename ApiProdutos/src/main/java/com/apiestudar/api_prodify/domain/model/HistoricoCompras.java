@@ -54,14 +54,14 @@ public class HistoricoCompras {
 	
 	@Column(nullable = false)
 	@NotNull(message = "Quantidade comprada é obrigatório")
-	@Schema(description = "Quantidade comprada")
+	@Schema(description = "Quantidade total comprada")
 	private Long quantidadeTotal;
 	
 	@Column(nullable = false, length = 100)
-	@Schema(description = "Valor unitário da compra")
+	@Schema(description = "Valor total da compra")
 	private BigDecimal valorTotal;
 
     @Column(nullable = false, length = 100)
-	@Schema(description = "Valor total da compra")
+	@Schema(description = "Data da fialização da compra")
 	private Date dataCompra;
 }
