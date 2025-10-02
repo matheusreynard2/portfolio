@@ -3,7 +3,6 @@ package com.prodify.produto_service.adapter.in.web.controller;
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
-import java.util.concurrent.CompletableFuture;
 
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -29,7 +28,6 @@ import com.prodify.produto_service.application.usecase.produto.CalculosSobreProd
 import com.prodify.produto_service.application.usecase.produto.DeletarMultiProdutosUseCase;
 import com.prodify.produto_service.application.usecase.produto.DeletarProdutoUseCase;
 import com.prodify.produto_service.application.usecase.produto.ListarProdutosUseCase;
-import com.prodify.produto_service.application.usecase.produto.PesquisasSearchBarUseCase;
 import com.prodify.produto_service.application.usecase.produto.BuscarProdutoUseCase;
 import com.prodify.produto_service.domain.model.Produto;
 import com.prodify.produto_service.adapter.in.web.dto.PaginatedResponseDTO;
@@ -44,7 +42,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 @RequiredArgsConstructor
 public class ProdutoController {
 
-	private final PesquisasSearchBarUseCase pesquisasUseCase;
 	private final AdicionarProdutoUseCase adicionarProduto;
 	private final ListarProdutosUseCase listarProdutosUseCase;
 	private final AtualizarProdutoUseCase atualizarProduto;
@@ -58,14 +55,13 @@ public class ProdutoController {
 			@ApiResponse(responseCode = "200", description = "Produtos encontrados.")
 	})
 	@GetMapping("/listarProdutos")
-	public CompletableFuture<ResponseEntity<PaginatedResponseDTO<ProdutoDTO>>> listarProdutos(
+    public ResponseEntity<PaginatedResponseDTO<ProdutoDTO>> listarProdutos(
 			@RequestParam(defaultValue = "0") int page,
 			@RequestParam(defaultValue = "10") int size,
 			@RequestParam Long idUsuario) {
 	
 		Pageable pageable = PageRequest.of(page, size);
-		return listarProdutosUseCase.executar(pageable, idUsuario)
-				.thenApply(ResponseEntity::ok);
+        return ResponseEntity.ok(listarProdutosUseCase.executar(pageable, idUsuario));
 	}
 	
 	@Operation(summary = "Adiciona/cadastra um novo produto.", description = "Cria um novo registro de produto no banco de dados.")
@@ -73,33 +69,31 @@ public class ProdutoController {
 			@ApiResponse(responseCode = "201", description = "Produto cadastrado.")
 	})
     @PostMapping(value = "/adicionarProduto", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public CompletableFuture<ResponseEntity<ProdutoDTO>> adicionarProduto(
+    public ResponseEntity<ProdutoDTO> adicionarProduto(
         @RequestPart("produtoJson") String produtoJson,
         @RequestPart(value = "imagemFile", required = false) MultipartFile imagemFile
     ) throws IOException {
-        return adicionarProduto.executar(produtoJson, imagemFile)
-                .thenApply(response -> ResponseEntity.status(HttpStatus.CREATED).body(response));
+        return ResponseEntity.status(HttpStatus.CREATED).body(adicionarProduto.executar(produtoJson, imagemFile));
     }
 
 	@Operation(summary = "Atualiza as informações de um produto.", description = "Atualiza as informações registradas no banco de dados de um produto de acordo com o número de id passado como parâmetro.")
 	@ApiResponses({
 			@ApiResponse(responseCode = "200", description = "Produto atualizado.")
 	})
-	@PutMapping(value = "/atualizarProduto/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-	public CompletableFuture<ResponseEntity<ProdutoDTO>> atualizarProduto (@PathVariable("id") long id,
-	@RequestPart("produtoJson") String produtoJson,
-	@RequestPart(value = "imagemFile", required = false) MultipartFile imagemFile) {
-		return atualizarProduto.executar(id, produtoJson, imagemFile)
-				.thenApply(dto -> ResponseEntity.status(HttpStatus.OK).body(dto));
-	}
+    @PutMapping(value = "/atualizarProduto/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<ProdutoDTO> atualizarProduto (@PathVariable("id") long id,
+    @RequestPart("produtoJson") String produtoJson,
+    @RequestPart(value = "imagemFile", required = false) MultipartFile imagemFile) throws IOException {
+        return ResponseEntity.status(HttpStatus.OK).body(atualizarProduto.executar(id, produtoJson, imagemFile));
+    }
 
 	@Operation(summary = "Deleta/exclui um produto.", description = "Faz a exclusão de um produto do banco de dados de acordo com o número de id passado como parâmetro.")
 	@ApiResponses({
 			@ApiResponse(responseCode = "200", description = "Produto excluído.")
 	})
 	@DeleteMapping("/deletarProduto/{id}")
-	public CompletableFuture<ResponseEntity<Void>> deletarProduto(@PathVariable int id) {
-		return deletarProduto.executar(id).thenApply(dto -> ResponseEntity.status(HttpStatus.OK).body(dto));
+    public ResponseEntity<Void> deletarProduto(@PathVariable int id) {
+        return ResponseEntity.status(HttpStatus.OK).body(deletarProduto.executar(id));
 	}
 
 	@Operation(summary = "Exclui múltiplos produtos.", description = "Exclui em lote produtos pelos seus IDs, validando histórico de COMPRA/VENDA antes.")
@@ -132,30 +126,11 @@ public class ProdutoController {
 	@ApiResponses({
 			@ApiResponse(responseCode = "200", description = "Cálculo de desconto efetuado.")
 	})
-	@GetMapping("/calcularDesconto/{valorProduto}/{valorDesconto}")
-	public CompletableFuture<ResponseEntity<Double>> calcularValorDesconto(@PathVariable double valorProduto,
-			@PathVariable double valorDesconto) {
-		return consultasProduto
-				.calcularValorComDescontoAsync(valorProduto, valorDesconto)
-				.thenApply(ResponseEntity::ok);
-	}
-
-	// Método responsável por retornar o resultado da barra de pesquisa do
-	// front-end. Filtra por id ou por nome dependendo do que o usuário escolheu
-	@Operation(summary = "Pesquisar registros por 'id' ou por 'nome'.", description = "Faz uma busca de registros no banco de dados utilizando como filtro o id do produto ou o nome do produto.")
-	@ApiResponses({
-			@ApiResponse(responseCode = "200", description = "Produtos encontrados.")
-	})
-	@GetMapping("/efetuarPesquisa")
-	public CompletableFuture<ResponseEntity<List<ProdutoDTO>>> efetuarPesquisa(
-			@RequestParam long idUsuario,
-			@RequestParam(required = false) Long idProduto,
-			@RequestParam(required = false) String nomeProduto,
-			@RequestParam(required = false) String nomeFornecedor,
-			@RequestParam(required = false) Long valorInicial) {
-		return pesquisasUseCase.efetuarPesquisa(idUsuario, idProduto, nomeProduto, nomeFornecedor, valorInicial)
-				.thenApply(ResponseEntity::ok);
-	}
+    @GetMapping("/calcularDesconto/{valorProduto}/{valorDesconto}")
+    public ResponseEntity<Double> calcularValorDesconto(@PathVariable double valorProduto,
+            @PathVariable double valorDesconto) {
+        return ResponseEntity.ok(consultasProduto.calcularValorComDesconto(valorProduto, valorDesconto));
+    }
 
 	@SuppressWarnings("rawtypes")
 	@Operation(summary = "Acessar a página de cadastrar produto.", description = "Endpoint usado para validação de Token pelo front.")

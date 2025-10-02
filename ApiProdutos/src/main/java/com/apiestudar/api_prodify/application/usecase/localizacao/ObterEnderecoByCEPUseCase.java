@@ -12,7 +12,13 @@ public class ObterEnderecoByCEPUseCase {
     }
     
 	public EnderecoFornecedorDTO executar(String cep) {
-        return (EnderecoFornecedorDTO) ConsumidorAPI.chamarAPI("EnderecoByCEP", cep, "");
+		long t0 = System.nanoTime();
+		EnderecoFornecedorDTO dto = (EnderecoFornecedorDTO) ConsumidorAPI.chamarAPI("EnderecoByCEP", cep, "");
+		long ns = System.nanoTime() - t0;
+		System.out.println("##############################");
+		System.out.printf("### OBTER ENDERECO POR CEP %d ns ( %d ms)%n", ns, ns / 1_000_000);
+		System.out.println("##############################");
+		return dto;
 	}   
     
 }

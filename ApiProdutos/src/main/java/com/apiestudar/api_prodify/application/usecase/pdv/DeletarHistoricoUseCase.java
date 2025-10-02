@@ -17,10 +17,15 @@ public class DeletarHistoricoUseCase {
 
     @Transactional(rollbackFor = Exception.class)
     public Boolean executar(Long vendaCaixaId) {
+        long t0 = System.nanoTime();
         if (vendaCaixaRepository.findHistoricoByVendaCaixaId(vendaCaixaId).isEmpty()) {
             throw new RegistroNaoEncontradoException();
         }
         vendaCaixaRepository.deleteCascadeByVendaCaixaId(vendaCaixaId);
+        long ns = System.nanoTime() - t0;
+        System.out.println("##############################");
+        System.out.printf("### DELETAR HISTORICO VENDA %d ns ( %d ms)%n", ns, ns / 1_000_000);
+        System.out.println("##############################");
         return true;
     }
 }

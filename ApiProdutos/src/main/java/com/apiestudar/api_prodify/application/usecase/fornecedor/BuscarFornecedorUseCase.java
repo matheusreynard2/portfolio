@@ -23,8 +23,14 @@ public class BuscarFornecedorUseCase {
 
     @Transactional(readOnly = true)
     public FornecedorDTO executar(Long id) {
+        long t0 = System.nanoTime();
         Fornecedor fornecedor = fornecedorRepository.buscarFornecedorPorId(id)
             .orElseThrow(RegistroNaoEncontradoException::new);  
-        return modelMapper.map(fornecedor, FornecedorDTO.class);
+        FornecedorDTO fornecedorDTO = modelMapper.map(fornecedor, FornecedorDTO.class);
+        long ns = System.nanoTime() - t0;
+        System.out.println("##############################");
+        System.out.printf("### BUSCAR FORNECEDOR %d ns ( %d ms)%n", ns, ns / 1_000_000);
+        System.out.println("##############################");
+        return fornecedorDTO;
     }
 } 

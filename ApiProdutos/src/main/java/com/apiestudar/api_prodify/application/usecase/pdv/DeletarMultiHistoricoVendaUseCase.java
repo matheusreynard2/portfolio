@@ -18,9 +18,14 @@ public class DeletarMultiHistoricoVendaUseCase {
 
     @Transactional(rollbackFor = Exception.class)
     public Boolean executar(List<Long> ids) {
+        long t0 = System.nanoTime();
         if (ids == null || ids.isEmpty()) return false;
         vendaCaixaRepo.deleteItensByVendaCaixaIds(ids);
         vendaCaixaRepo.deleteVendaCaixasByIds(ids);
+        long ns = System.nanoTime() - t0;
+        System.out.println("##############################");
+        System.out.printf("### DELETAR MULTI HISTORICO VENDA %d ns ( %d ms)%n", ns, ns / 1_000_000);
+        System.out.println("##############################");
         return true;
     }
 }

@@ -13,7 +13,10 @@ import com.apiestudar.api_prodify.domain.repository.VendaCaixaRepository;
 import com.apiestudar.api_prodify.interfaces.dto.CaixaItemDTO;
 import com.apiestudar.api_prodify.interfaces.dto.VendaCaixaDTO;
 import com.apiestudar.api_prodify.shared.utils.Helper;
+
+import java.time.Instant;
 import java.util.Collections;
+import java.util.Date;
 
 @Service
 public class SalvarCaixaUseCase {
@@ -50,6 +53,7 @@ public class SalvarCaixaUseCase {
                     existing.getItens().addAll(itensConvertidos);
                     existing.setTotalQuantidade(vendaCaixaDTO.getTotalQuantidade());
                     existing.setTotalValor(vendaCaixaDTO.getTotalValor());
+                    existing.setDataVenda(Date.from(Instant.now()));
                     return vendaCaixaRepository.adicionarVenda(existing);
                 })
                 .orElseGet(() -> {
@@ -77,6 +81,7 @@ public class SalvarCaixaUseCase {
         novo.setIdUsuario(vendaCaixaDTO.getIdUsuario());
         novo.setTotalQuantidade(vendaCaixaDTO.getTotalQuantidade());
         novo.setTotalValor(vendaCaixaDTO.getTotalValor());
+        novo.setDataVenda(Date.from(Instant.now()));
         Helper.verificarNull(itensConvertidos);
         novo.getItens().addAll(itensConvertidos);
         return novo;

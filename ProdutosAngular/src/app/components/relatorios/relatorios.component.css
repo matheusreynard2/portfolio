@@ -1,0 +1,22 @@
+.relatorio-tabela th, .relatorio-tabela td {
+  vertical-align: middle;
+}
+
+.linha-venda td {
+  color: #198754; /* verde bootstrap */
+}
+.linha-compra td {
+  color: #b02a37; /* vermelho bootstrap */
+}
+
+.tabela-wrapper {
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 1px 0 0 #e9ecef, 0 -1px 0 0 #e9ecef;
+  padding: 8px;
+}
+
+@page { size: A4 portrait; margin: 16mm; }
+    body { font-family: 'Noto Sans', Arial, sans-serif; font-size: 12px; }
+    h1   { font-weight: 700; }
+@page { size: A4 landscape; margin: 16mm; }

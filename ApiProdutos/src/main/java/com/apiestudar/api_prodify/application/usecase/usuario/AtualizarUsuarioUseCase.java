@@ -32,6 +32,7 @@ public class AtualizarUsuarioUseCase {
 
     @Transactional(rollbackFor = Exception.class)
     public UsuarioDTO executar(Long idUsuario, UsuarioFormDTO usuarioFormDTO, MultipartFile imagemFile) throws IOException {
+        long t0 = System.nanoTime();
         
         Helper.verificarNull(usuarioFormDTO);
         Helper.verificarNull(idUsuario);
@@ -60,6 +61,11 @@ public class AtualizarUsuarioUseCase {
         usuarioRepository.atualizarUsuario(usuarioExistente);
         
         // JPA detecta mudanças automaticamente - nem precisa de save()!
-        return modelMapper.map(usuarioExistente, UsuarioDTO.class);
+        UsuarioDTO usuarioDTOAtualizado = modelMapper.map(usuarioExistente, UsuarioDTO.class);
+        long ns = System.nanoTime() - t0;
+        System.out.println("##############################");
+        System.out.printf("### ATUALIZAR USUARIO %d ns ( %d ms)%n", ns, ns / 1_000_000);
+        System.out.println("##############################");
+        return usuarioDTOAtualizado;
     }
  }

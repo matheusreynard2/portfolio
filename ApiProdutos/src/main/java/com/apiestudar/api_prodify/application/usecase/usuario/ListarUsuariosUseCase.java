@@ -21,7 +21,13 @@ public class ListarUsuariosUseCase {
 
     @Transactional(rollbackFor = Exception.class)
     public List<UsuarioDTO> executar() {
+        long t0 = System.nanoTime();
         List<Usuario> usuarios = usuarioRepository.listarUsuarios();
-        return Helper.mapClassToDTOList(usuarios, UsuarioDTO.class);
+        List<UsuarioDTO> usuarioDTList = Helper.mapClassToDTOList(usuarios, UsuarioDTO.class);
+        long ns = System.nanoTime() - t0;
+        System.out.println("##############################");
+        System.out.printf("### LISTAR USUARIOS %d ns ( %d ms)%n", ns, ns / 1_000_000);
+        System.out.println("##############################");
+        return usuarioDTList;
     }
 }

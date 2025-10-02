@@ -22,8 +22,8 @@ tr.sem-estoque td {
 /* Filtro ao lado do título ocupando toda a largura restante */
 .card-header .filtro-produtos {
   margin-left: 12px;
-  flex: 1 1 auto;
-  max-width: 100%;
+  flex: 0 1 360px;
+  max-width: 360px;
 }
 
 /* Botões do PDV com tamanho maior e uniforme */
@@ -80,6 +80,12 @@ tr.sem-estoque td {
 .historico-detalhes-wrap {
   max-width: 95%;
   margin: 0 auto;
+}
+
+.checkbox-col {
+  border-right: 2px solid #dee2e6;
+  border-left: 2px solid #dee2e6;
+  background-color: #fdfdfd;
 }
 
 

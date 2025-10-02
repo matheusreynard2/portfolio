@@ -2,7 +2,7 @@
   <!-- Lista de Produtos (ocupando toda a largura) -->
   <div class="card">
         <div class="card-header d-flex align-items-center">
-          <h5 class="mb-0">Produtos</h5>
+          <h5 class="mb-0">PDV - Produtos em estoque</h5>
           <input class="form-control filtro-produtos" placeholder="Filtrar por nome/descrição" [(ngModel)]="filtro" (input)="aplicarFiltro()" />
         </div>
         <div class="card-body p-2">
@@ -166,30 +166,32 @@
     <table class="table table-striped mb-0" *ngIf="historicoVendasFiltrado.length > 0; else semHistorico">
       <thead>
         <tr>
-          <th class="text-center" style="width: 40px;">
+          <th class="text-center checkbox-col" style="width: 40px;">
             <input type="checkbox" [checked]="isTodosHistoricoSelecionados()" (change)="onToggleSelecionarTodosHistorico($event)">
           </th>
           <th>ID</th>
           <th>Vendedor</th>
           <th class="text-center">Total Qtd</th>
           <th class="text-end">Total Valor</th>
+          <th class="text-center">Data da venda</th>
           <th class="text-center">Ações</th>
         </tr>
       </thead>
       <tbody>
         <ng-container *ngFor="let v of historicoVendasFiltrado">
           <tr (click)="onToggleHistorico(v)" style="cursor: pointer;">
-            <td class="text-center"><input type="checkbox" [checked]="selecionadosHistoricoVendasIds.has(v.id||-1)" (click)="$event.stopPropagation()" (change)="onToggleCheckboxHistoricoVenda(v, $event)"></td>
+            <td class="text-center checkbox-col"><input type="checkbox" [checked]="selecionadosHistoricoVendasIds.has(v.id||-1)" (click)="$event.stopPropagation()" (change)="onToggleCheckboxHistoricoVenda(v, $event)"></td>
             <td>{{ v.id }}</td>
             <td>{{ usuarioLogin }}</td>
             <td class="text-center">{{ v.totalQuantidade }}</td>
             <td class="text-end">{{ v.totalValor | currency:'BRL':'symbol':'1.2-2' }}</td>
+            <td class="text-center">{{ $any(v).dataVenda | date:'dd/MM/yyyy HH:mm' }}</td>
             <td class="text-center">
               <button class="btn btn-sm btn-outline-danger" (click)="$event.stopPropagation(); abrirModalExcluir(v)">Excluir</button>
             </td>
           </tr>
           <tr *ngIf="selectedHistoricoId === v.id">
-            <td colspan="5">
+            <td colspan="6">
               <div class="historico-detalhes-wrap">
               <table class="table table-sm mb-0 historico-detalhes">
                 <thead>
@@ -229,15 +231,14 @@
         </ng-container>
       </tbody>
     </table>
-    <div class="d-flex justify-content-start p-2 mt-3 mb-3" *ngIf="historicoVendasFiltrado.length > 0">
-      <button class="btn btn-sm btn-danger" [disabled]="selecionadosHistoricoVendasIds.size === 0" (click)="abrirModalExcluirSelecionadosVendas()">Excluir selecionados</button>
-    </div>
+    
     </div>
     <ng-template #semHistorico>
       <div class="p-3 text-center text-muted">Não há vendas finalizadas no histórico.</div>
     </ng-template>
   </div>
   <div class="modal-footer">
+    <button class="btn btn-sm btn-danger me-2" [disabled]="selecionadosHistoricoVendasIds.size === 0" (click)="abrirModalExcluirSelecionadosVendas()">Excluir selecionados</button>
     <button class="btn btn-secondary" (click)="modal.close()">Fechar</button>
   </div>
 </ng-template>

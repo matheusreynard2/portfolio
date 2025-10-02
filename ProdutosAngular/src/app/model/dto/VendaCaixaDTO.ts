@@ -6,6 +6,7 @@ export interface VendaCaixaDTO {
   itens: CaixaItemDTO[];
   totalQuantidade: number;
   totalValor: number;
+  dataVenda?: string;
 }
 
 

@@ -12,6 +12,12 @@ public class ObterEmpresaByCNPJUseCase {
     }
     
     public DadosEmpresaDTO executar(String cnpj) {
-        return (DadosEmpresaDTO) ConsumidorAPI.chamarAPI("EmpresaByCNPJ", cnpj, "");
+        long t0 = System.nanoTime();
+        DadosEmpresaDTO dadosEmpresaDTO = (DadosEmpresaDTO) ConsumidorAPI.chamarAPI("EmpresaByCNPJ", cnpj, "");
+        long ns = System.nanoTime() - t0;
+        System.out.println("##############################");
+        System.out.printf("### OBTER EMPRESA CNPJ %d ns ( %d ms)%n", ns, ns / 1_000_000);
+        System.out.println("##############################");
+        return dadosEmpresaDTO;
     }   
 }

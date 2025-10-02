@@ -1,4 +1,4 @@
-import {APP_INITIALIZER, ApplicationConfig, provideZoneChangeDetection} from '@angular/core';
+import {APP_INITIALIZER, ApplicationConfig, LOCALE_ID, provideZoneChangeDetection} from '@angular/core';
 import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import { provideRouter } from '@angular/router';
 import { importProvidersFrom } from '@angular/core';
@@ -58,6 +58,7 @@ export const appConfig: ApplicationConfig = {
     provideZoneChangeDetection({ eventCoalescing: true}),
     importProvidersFrom(HttpClientModule),
     provideAnimationsAsync(),
-    provideHttpClient()
+    provideHttpClient(),
+    { provide: LOCALE_ID, useValue: 'pt-BR' }
   ]
 };

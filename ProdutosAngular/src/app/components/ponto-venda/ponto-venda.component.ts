@@ -97,6 +97,19 @@ export class PontoVendaComponent implements OnInit {
         });
       }
     });
+
+    // Exibe toast de saldo atualizado após refresh, se marcado anteriormente
+    try {
+      const shouldShowSaldoToast = localStorage.getItem('saldo.toast.after.refresh');
+      if (shouldShowSaldoToast === '1') {
+        this.saveToastText = 'Saldo atualizado';
+        this.showSaveToast = true;
+        setTimeout(() => {
+          this.showSaveToast = false;
+          try { localStorage.removeItem('saldo.toast.after.refresh'); } catch {}
+        }, 2000);
+      }
+    } catch {}
   }
 
   aplicarFiltro(): void {
@@ -375,12 +388,8 @@ export class PontoVendaComponent implements OnInit {
         if (this.modalVendaSucessoTmpl) {
           const ref = this.modalService.open(this.modalVendaSucessoTmpl, { size: 'lg' });
           const onClose = () => {
-            this.saveToastText = 'Saldo atualizado';
-            this.showSaveToast = true;
-            setTimeout(() => {
-              this.showSaveToast = false;
-              window.location.reload();
-            }, 1000);
+            try { localStorage.setItem('saldo.toast.after.refresh', '1'); } catch {}
+            window.location.reload();
           };
           ref.closed.subscribe(onClose);
           ref.dismissed.subscribe(onClose);

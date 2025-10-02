@@ -8,7 +8,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -22,9 +21,6 @@ import com.apiestudar.api_prodify.domain.model.Produto;
 import com.apiestudar.api_prodify.interfaces.ProdutoFeignClient;
 import com.apiestudar.api_prodify.interfaces.dto.PaginatedResponseDTO;
 import com.apiestudar.api_prodify.interfaces.dto.ProdutoDTO;
-import com.apiestudar.api_prodify.interfaces.dto.ProdutoFormDTO;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -37,7 +33,6 @@ import lombok.RequiredArgsConstructor;
 public class ProdutoController {
 
 	private final ProdutoFeignClient produtoFeignClient;
-	private final ObjectMapper objectMapper;
 
 	@Operation(summary = "Listagem de todos os produtos cadastrados.", description = "Faz uma busca no banco de dados retornando uma lista com todos os produtos cadastrados.")
 	@ApiResponses({
@@ -120,22 +115,6 @@ public class ProdutoController {
 	public ResponseEntity<Double> calcularValorDesconto(@PathVariable double valorProduto,
 			@PathVariable double valorDesconto) {
 		return produtoFeignClient.calcularValorDesconto(valorProduto, valorDesconto);
-	}
-
-	// Método responsável por retornar o resultado da barra de pesquisa do
-	// front-end. Filtra por id ou por nome dependendo do que o usuário escolheu
-	@Operation(summary = "Pesquisar registros por 'id' ou por 'nome'.", description = "Faz uma busca de registros no banco de dados utilizando como filtro o id do produto ou o nome do produto.")
-	@ApiResponses({
-			@ApiResponse(responseCode = "200", description = "Produtos encontrados.")
-	})
-	@GetMapping("/efetuarPesquisa")
-	public ResponseEntity<List<ProdutoDTO>> efetuarPesquisa(
-			@RequestParam long idUsuario,
-			@RequestParam(required = false) Long idProduto,
-			@RequestParam(required = false) String nomeProduto,
-			@RequestParam(required = false) String nomeFornecedor,
-			@RequestParam(required = false) Long valorInicial) {
-		return produtoFeignClient.efetuarPesquisa(idUsuario, idProduto, nomeProduto, nomeFornecedor, valorInicial);
 	}
 
 	@SuppressWarnings("rawtypes")

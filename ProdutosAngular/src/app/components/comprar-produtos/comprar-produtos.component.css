@@ -57,6 +57,12 @@ table th, table td {
   opacity: 0.85 !important;
 }
 
+.checkbox-col {
+  border-right: 2px solid #dee2e6;
+  border-left: 2px solid #dee2e6;
+  background-color: #fdfdfd;
+}
+
 @media (max-width: 576px) {
   .pdv-action-btn {
     min-width: 120px;

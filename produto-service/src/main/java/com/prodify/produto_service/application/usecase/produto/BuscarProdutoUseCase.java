@@ -12,6 +12,7 @@ import com.prodify.produto_service.adapter.in.web.dto.ProdutoDTO;
 import com.prodify.produto_service.shared.exception.RegistroNaoEncontradoException;
 import com.prodify.produto_service.shared.utils.Helper;
 
+@Service    
 public class BuscarProdutoUseCase {
 
     @Autowired

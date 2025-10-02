@@ -14,6 +14,7 @@ import {ListarFornecedorComponent} from './components/listar-fornecedor/listar-f
 import { PontoVendaComponent } from './components/ponto-venda/ponto-venda.component';
 import { ComprarProdutosComponent } from './components/comprar-produtos/comprar-produtos.component';
 import { EditarUsuarioComponent } from './components/editar-usuario/editar-usuario.component';
+import { RelatoriosComponent } from './components/relatorios/relatorios.component';
 
 export const routes: Routes = [
   { path: 'produtos', component: ProdutoListComponent, canActivate: [AuthGuard] },
@@ -29,6 +30,7 @@ export const routes: Routes = [
   { path: 'listarfornecedores', component: ListarFornecedorComponent, canActivate: [AuthGuard]  },
   { path: 'pdv', component: PontoVendaComponent, canActivate: [AuthGuard]  },
   { path: 'editar-usuario', component: EditarUsuarioComponent, canActivate: [AuthGuard] },
+  { path: 'relatorios', component: RelatoriosComponent, canActivate: [AuthGuard] },
   { path: '', redirectTo: '/login', pathMatch: 'full' }
 ];
 

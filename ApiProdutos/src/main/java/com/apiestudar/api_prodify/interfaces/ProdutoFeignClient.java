@@ -58,14 +58,6 @@ public interface ProdutoFeignClient {
 	public ResponseEntity<Double> calcularValorDesconto(@PathVariable double valorProduto,
 			@PathVariable double valorDesconto);
 
-	@GetMapping("/api/produtos/efetuarPesquisa")
-	public ResponseEntity<List<ProdutoDTO>> efetuarPesquisa(
-			@RequestParam long idUsuario,
-			@RequestParam(required = false) Long idProduto,
-			@RequestParam(required = false) String nomeProduto,
-			@RequestParam(required = false) String nomeFornecedor,
-			@RequestParam(required = false) Long valorInicial);
-
 	@SuppressWarnings("rawtypes")
 	@GetMapping("/api/produtos/acessarPaginaCadastro")
 	public ResponseEntity acessarPaginaCadastro();

@@ -23,6 +23,7 @@ export class ComprarProdutosComponent implements OnInit {
   @ViewChild('modalHistoricoComprasTmpl') modalHistoricoComprasTmpl!: TemplateRef<any>;
   @ViewChild('modalConfirmDeleteCompra') modalConfirmDeleteCompra!: TemplateRef<any>;
   @ViewChild('modalConfirmDeleteMultiCompra') modalConfirmDeleteMultiCompra!: TemplateRef<any>;
+  @ViewChild('modalSaldoInsuficiente') modalSaldoInsuficiente!: TemplateRef<any>;
   // Toast de salvar
   showSaveToast: boolean = false;
   saveToastText: string = '';
@@ -56,6 +57,9 @@ export class ComprarProdutosComponent implements OnInit {
   // Overlay de carregamento (estilo CEP)
   overlayCarregando: boolean = false;
   overlayTexto: string = '';
+  // Dados para modal de saldo insuficiente
+  saldoAtual: number = 0;
+  totalCompraAtual: number = 0;
 
   // Filtros e paginação
   searchNome: string = '';
@@ -77,6 +81,19 @@ export class ComprarProdutosComponent implements OnInit {
     }
     this.carregarProdutos(idUsuario);
     this.carregarHistorico(idUsuario);
+
+    // Exibe toast de saldo atualizado após refresh, se marcado anteriormente
+    try {
+      const shouldShowSaldoToast = localStorage.getItem('saldo.toast.after.refresh');
+      if (shouldShowSaldoToast === '1') {
+        this.saveToastText = 'Saldo atualizado';
+        this.showSaveToast = true;
+        setTimeout(() => {
+          this.showSaveToast = false;
+          try { localStorage.removeItem('saldo.toast.after.refresh'); } catch {}
+        }, 2000);
+      }
+    } catch {}
   }
 
   private carregarProdutos(idUsuario: number): void {
@@ -223,6 +240,17 @@ export class ComprarProdutosComponent implements OnInit {
   }
 
   salvarCompras(): void {
+    // Valida saldo antes de salvar
+    const saldo = Number((this.auth.getUsuarioLogado() as any)?.saldo || 0);
+    const total = this.totalValorSelecionado;
+    if (saldo <= 0 || (total > 0 && saldo < total)) {
+      this.saldoAtual = saldo;
+      this.totalCompraAtual = total;
+      if (this.modalSaldoInsuficiente) {
+        this.modalService.open(this.modalSaldoInsuficiente);
+      }
+      return;
+    }
     // mantém somente itens marcados e válidos
     const marcados = Object.keys(this.selecionados).map(k => Number(k)).filter(id => this.isSelecionado({ id } as ProdutoDTO));
     this.compras = this.compras.filter(c => {
@@ -241,6 +269,19 @@ export class ComprarProdutosComponent implements OnInit {
   finalizarCompras(): void {
     // Envia a lista inteira de compras em uma única chamada
     if (!this.podeFinalizar || this.isFinalizandoCompra) { return; }
+    // Checagem defensiva de saldo antes de iniciar processo
+    try {
+      const saldo = Number((this.auth.getUsuarioLogado() as any)?.saldo || 0);
+      const total = this.totalValorSelecionado;
+      if (saldo <= 0 || (total > 0 && saldo < total)) {
+        this.saldoAtual = saldo;
+        this.totalCompraAtual = total;
+        if (this.modalSaldoInsuficiente) {
+          this.modalService.open(this.modalSaldoInsuficiente);
+        }
+        return;
+      }
+    } catch {}
     this.isFinalizandoCompra = true;
     this.overlayCarregando = true;
     this.overlayTexto = 'Finalizando compra...';
@@ -268,12 +309,8 @@ export class ComprarProdutosComponent implements OnInit {
         if (this.modalCompraSucessoTmpl) {
           const ref = this.modalService.open(this.modalCompraSucessoTmpl, { size: 'lg' });
           const onClose = () => {
-            this.saveToastText = 'Saldo atualizado';
-            this.showSaveToast = true;
-            setTimeout(() => {
-              this.showSaveToast = false;
-              window.location.reload();
-            }, 1000);
+            try { localStorage.setItem('saldo.toast.after.refresh', '1'); } catch {}
+            window.location.reload();
           };
           ref.closed.subscribe(onClose);
           ref.dismissed.subscribe(onClose);
@@ -331,7 +368,14 @@ export class ComprarProdutosComponent implements OnInit {
       });
     if (idsSelecionadosValidos.length === 0) return false;
     const idsSalvos = new Set(this.compras.map(c => c.produto.id ?? -1));
-    return idsSelecionadosValidos.every(id => idsSalvos.has(id));
+    const todosSalvos = idsSelecionadosValidos.every(id => idsSalvos.has(id));
+    if (!todosSalvos) return false;
+    // Validação de saldo: não permite finalizar com saldo = 0 ou saldo < total da compra
+    const saldo = Number((this.auth.getUsuarioLogado() as any)?.saldo || 0);
+    const total = this.totalValorSelecionado;
+    if (saldo <= 0) return false;
+    if (total > 0 && saldo < total) return false;
+    return true;
   }
 
   get podeSalvar(): boolean {

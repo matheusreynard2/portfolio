@@ -13,20 +13,25 @@ import com.apiestudar.api_prodify.shared.exception.RegistroNaoEncontradoExceptio
 public class BuscarUsuarioPorIdUseCase {
 
     private final UsuarioRepository usuarioRepository;
-    @Autowired
-    private ModelMapper modelMapper;
+    private final ModelMapper modelMapper;
 
-    @Autowired
-    public BuscarUsuarioPorIdUseCase(UsuarioRepository usuarioRepository) {
+    public BuscarUsuarioPorIdUseCase(UsuarioRepository usuarioRepository, ModelMapper modelMapper) {
         this.usuarioRepository = usuarioRepository;
+        this.modelMapper = modelMapper;
     }
 
     @Transactional(rollbackFor = Exception.class)
     public UsuarioDTO executar(long id) {
+        long t0 = System.nanoTime();
         if (usuarioRepository.buscarUsuarioPorId(id).isEmpty()) {
             throw new RegistroNaoEncontradoException();
         } else {
-            return modelMapper.map(usuarioRepository.buscarUsuarioPorId(id).get(), UsuarioDTO.class);
+            UsuarioDTO usuarioDTO = modelMapper.map(usuarioRepository.buscarUsuarioPorId(id).get(), UsuarioDTO.class);
+            long ns = System.nanoTime() - t0;
+            System.out.println("##############################");
+            System.out.printf("### BUSCAR USUARIO %d ns ( %d ms)%n", ns, ns / 1_000_000);
+            System.out.println("##############################");
+            return usuarioDTO;
         }
     }
 }

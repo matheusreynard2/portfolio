@@ -1,9 +1,7 @@
 package com.apiestudar.api_prodify.application.usecase.fornecedor;
 
 import java.util.List;
-import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -25,14 +23,26 @@ public class ListarFornecedoresUseCase {
 
     @Transactional
 	public Page<FornecedorDTO> executar(Long idUsuario, Pageable pageable) {
-		Page<Fornecedor> fornecedoresPage = fornecedorRepository.listarFornecedoresPorUsuario(idUsuario, pageable);
-		return Helper.mapClassToDTOPage(fornecedoresPage, FornecedorDTO.class);
+        long t0 = System.nanoTime();
+        Page<Fornecedor> fornecedoresPage = fornecedorRepository.listarFornecedoresPorUsuario(idUsuario, pageable);
+        Page<FornecedorDTO> fornecedorDTOPage = Helper.mapClassToDTOPage(fornecedoresPage, FornecedorDTO.class);
+        long ns = System.nanoTime() - t0;
+        System.out.println("##############################");
+        System.out.printf("### LISTAR FORNECEDORES PAGE %d ns ( %d ms)%n", ns, ns / 1_000_000);
+        System.out.println("##############################");
+        return fornecedorDTOPage;
 	}
 
 	@Transactional
 	public List<FornecedorDTO> executar(Long idUsuario) {
-		List<Fornecedor> fornecedores = fornecedorRepository.listarFornecedoresPorUsuario(idUsuario);
-		return Helper.mapClassToDTOList(fornecedores, FornecedorDTO.class);
+        long t0 = System.nanoTime();
+        List<Fornecedor> fornecedores = fornecedorRepository.listarFornecedoresPorUsuario(idUsuario);
+        List<FornecedorDTO> fornecedorDTOList = Helper.mapClassToDTOList(fornecedores, FornecedorDTO.class);
+        long ns = System.nanoTime() - t0;
+        System.out.println("##############################");
+        System.out.printf("### LISTAR FORNECEDORES LIST %d ns ( %d ms)%n", ns, ns / 1_000_000);
+        System.out.println("##############################");
+        return fornecedorDTOList;
 	}
 
 	@Transactional

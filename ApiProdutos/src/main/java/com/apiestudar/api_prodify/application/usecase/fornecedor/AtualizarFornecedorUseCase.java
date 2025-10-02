@@ -23,6 +23,7 @@ public class AtualizarFornecedorUseCase {
 
     @Transactional(rollbackFor = Exception.class)
     public FornecedorDTO executar(long id, FornecedorDTO fornecedorDTO, Long idUsuario) {
+        long t0 = System.nanoTime();
         
         // Busca a entidade
         Fornecedor fornecedorExistente = fornecedorRepository.buscarFornecedorPorIdEUsuario(id, idUsuario);
@@ -35,6 +36,11 @@ public class AtualizarFornecedorUseCase {
         fornecedorExistente.setIdUsuario(idUsuario);
         
         // JPA detecta mudanças automaticamente - nem precisa de save()!
-        return modelMapper.map(fornecedorExistente, FornecedorDTO.class);
+        FornecedorDTO fornecededorAtualizadoDTO = modelMapper.map(fornecedorExistente, FornecedorDTO.class);
+        long ns = System.nanoTime() - t0;
+        System.out.println("##############################");
+        System.out.printf("### ATUALIZAR FORNECEDOR %d ns ( %d ms)%n", ns, ns / 1_000_000);
+        System.out.println("##############################");
+        return fornecededorAtualizadoDTO;
     }
  }

@@ -176,6 +176,22 @@
   </div>
 </ng-template>
 
+<!-- Modal de saldo insuficiente (pequeno) -->
+<ng-template #modalSaldoInsuficiente let-modal>
+  <div class="modal-header py-2">
+    <h6 class="modal-title">Saldo insuficiente</h6>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
+  </div>
+  <div class="modal-body">
+    <p class="mb-0">Seu saldo atual é <b>{{ saldoAtual | currency:'BRL' }}</b>.</p>
+    <p class="mb-0">O total desta compra é <b>{{ totalCompraAtual | currency:'BRL' }}</b>.</p>
+    <p class="mb-0">Não é possível salvar ou finalizar com saldo insuficiente.</p>
+  </div>
+  <div class="modal-footer py-2">
+    <button class="btn btn-sm btn-secondary" (click)="modal.close()">Fechar</button>
+  </div>
+</ng-template>
+
 <ng-template #modalHistoricoComprasTmpl let-modal>
   <div class="modal-header">
     <h5 class="modal-title">Histórico de Compras</h5>
@@ -194,7 +210,7 @@
     <table class="table table-striped mb-0" *ngIf="historicoComprasFiltrado.length > 0; else semHistoricoCompras">
       <thead>
         <tr>
-          <th class="text-center" style="width: 40px;">
+          <th class="text-center checkbox-col" style="width: 40px;">
             <input type="checkbox"
                    [checked]="isTodosSelecionados()"
                    (change)="onToggleSelecionarTodos($event)"
@@ -204,24 +220,25 @@
           <th>Usuário</th>
           <th class="text-center">Total Qtd</th>
           <th class="text-end">Total Valor</th>
+          <th class="text-center">Data da compra</th>
           <th class="text-center">Ações</th>
         </tr>
       </thead>
       <tbody>
         <ng-container *ngFor="let h of historicoComprasFiltrado">
           <tr (click)="onToggleHistoricoCompra(h)" style="cursor: pointer;">
-            <td class="text-center"><input type="checkbox" [checked]="selecionadosHistoricoIds.has(h.id||-1)" (click)="$event.stopPropagation()" (change)="onToggleCheckboxHistorico(h, $event)"></td>
+            <td class="text-center checkbox-col"><input type="checkbox" [checked]="selecionadosHistoricoIds.has(h.id||-1)" (click)="$event.stopPropagation()" (change)="onToggleCheckboxHistorico(h, $event)"></td>
             <td>{{ h.id }}</td>
             <td>{{ usuarioLogin }}</td>
             <td class="text-center">{{ h.quantidadeTotal }}</td>
             <td class="text-end">{{ h.valorTotal | currency:'BRL':'symbol':'1.2-2' }}</td>
+            <td class="text-center">{{ h.dataCompra | date:'dd/MM/yyyy HH:mm' }}</td>
             <td class="text-center">
-              <span class="me-2 text-muted" style="white-space: nowrap;">{{ h.dataCompra | date:'dd/MM/yyyy HH:mm' }}</span>
               <button class="btn btn-sm btn-outline-danger" (click)="$event.stopPropagation(); abrirModalExcluirCompra(h)">Excluir</button>
             </td>
           </tr>
           <tr *ngIf="selectedHistoricoCompraId === h.id">
-            <td colspan="5">
+            <td colspan="6">
               <div class="historico-detalhes-wrap">
               <table class="table table-sm mb-0 historico-detalhes">
                 <thead>
@@ -261,15 +278,14 @@
         </ng-container>
       </tbody>
     </table>
-    <div class="d-flex justify-content-start p-2 mt-3 mb-3" *ngIf="historicoComprasFiltrado.length > 0">
-      <button class="btn btn-sm btn-danger" [disabled]="selecionadosHistoricoIds.size === 0" (click)="abrirModalExcluirSelecionados()">Excluir selecionados</button>
-    </div>
+    
     </div>
     <ng-template #semHistoricoCompras>
       <div class="p-3 text-center text-muted">Não há compras finalizadas no histórico.</div>
     </ng-template>
   </div>
   <div class="modal-footer">
+    <button class="btn btn-sm btn-danger me-2" [disabled]="selecionadosHistoricoIds.size === 0" (click)="abrirModalExcluirSelecionados()">Excluir selecionados</button>
     <button class="btn btn-secondary" (click)="modal.close()">Fechar</button>
   </div>
 </ng-template>

@@ -41,7 +41,7 @@
           <th colspan="12" class="text-center">Produtos</th>
         </tr>
         <tr>
-          <th class="text-center" style="width: 40px;"><input type="checkbox" [checked]="isTodosProdutosSelecionados()" (change)="onToggleSelecionarTodosProdutos($event)"></th>
+          <th class="text-center checkbox-col" style="width: 40px;"><input type="checkbox" [checked]="isTodosProdutosSelecionados()" (change)="onToggleSelecionarTodosProdutos($event)"></th>
           <th class="text-center coluna_id" style="width: 80px; min-width: 60px; max-width: 100px;">ID</th>
           <th class="text-left coluna_nome" style="width: 220px; min-width: 140px; max-width: 380px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Nome</th>
           <th class="text-left coluna_fornecedor" style="width: 400px; min-width: 200px; max-width: 600px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Fornecedor</th>
@@ -57,7 +57,7 @@
         </thead>
         <tbody>
         <tr *ngFor="let produto of listaDeProdutos" [ngClass]="{'sem-estoque': (produto.quantia || 0) === 0}">
-          <td class="text-center"><input type="checkbox" [checked]="selecionadosProdutoIds.has(produto.id || -1)" (change)="onToggleCheckboxProduto(produto, $event)"></td>
+          <td class="text-center checkbox-col"><input type="checkbox" [checked]="selecionadosProdutoIds.has(produto.id || -1)" (change)="onToggleCheckboxProduto(produto, $event)"></td>
           <td class="text-center coluna_id" style="width: 80px; min-width: 60px; max-width: 100px;">{{ produto.id }}</td>
           <td class="text-left coluna_nome" style="width: 220px; min-width: 140px; max-width: 380px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
             <div class="stat-item">

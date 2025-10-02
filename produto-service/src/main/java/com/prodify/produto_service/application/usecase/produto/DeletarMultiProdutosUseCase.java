@@ -1,5 +1,6 @@
 package com.prodify.produto_service.application.usecase.produto;
 
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.prodify.produto_service.adapter.in.web.dto.ProdutoHistoricoBloqueioDTO;      
@@ -13,6 +14,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+@Service
 public class DeletarMultiProdutosUseCase {
 
 	private final ProdutoRepository prodRepo;
@@ -23,6 +25,7 @@ public class DeletarMultiProdutosUseCase {
 
 	@Transactional(rollbackFor = Exception.class)
     public Boolean executar(List<Integer> ids) {
+    long t0 = System.nanoTime();
     if (ids == null || ids.isEmpty()) return false;
 
     List<Long> idsLong = ids.stream().map(Integer::longValue).toList();
@@ -50,6 +53,10 @@ public class DeletarMultiProdutosUseCase {
 
     // Nenhum com histórico -> deleta em lote
     prodRepo.deleteByIds(idsLong);
+    long ns = System.nanoTime() - t0;
+    System.out.println("##############################");
+    System.out.printf("### DELETAR MULTI PRODUTOS %d ns ( %d ms)%n", ns, ns / 1_000_000);
+    System.out.println("##############################");
     return true;
     }
 }

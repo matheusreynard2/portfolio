@@ -17,6 +17,8 @@ import com.apiestudar.api_prodify.interfaces.dto.ProdutoDTO;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.math.BigDecimal;
+import java.time.Instant;
+import java.util.Date;
 
 @Service
 public class FinalizarVendaUseCase {
@@ -51,14 +53,15 @@ public class FinalizarVendaUseCase {
                 .orElseThrow(RegistroNaoEncontradoException::new);
 
         // salva no histórico e mapeia
-        VendaCaixa vendaCaixaHistorico = vendaCaixaRepository.adicionarHistorico(vendaCaixa);
-        VendaCaixaDTO vcHistoricoSalvo = modelMapper.map(vendaCaixaHistorico, VendaCaixaDTO.class);
+        vendaCaixa.setDataVenda(Date.from(Instant.now()));
+        VendaCaixa vendaCaixaSalvo= vendaCaixaRepository.adicionarHistorico(vendaCaixa);
+        VendaCaixaDTO vendaCaixaSalvoDTO = modelMapper.map(vendaCaixaSalvo, VendaCaixaDTO.class);
 
         // Atualiza estoque de produtos no serviço de produtos (se houver itens)
-        Helper.verificarNull(vendaCaixaHistorico.getItens());
-        Long idUsuario = vendaCaixaHistorico.getIdUsuario();
+        Helper.verificarNull(vendaCaixaSalvo.getItens());
+        Long idUsuario = vendaCaixaSalvo.getIdUsuario();
 
-        vendaCaixaHistorico.getItens().forEach(item -> {
+        vendaCaixaSalvo.getItens().forEach(item -> {
             try {
                 Long idProduto = item.getIdProduto();
 
@@ -83,11 +86,11 @@ public class FinalizarVendaUseCase {
         });
 
         // Atualiza saldo do usuário somando o total da venda
-        Helper.verificarNull(vendaCaixaHistorico.getTotalValor());
-        if (Helper.maiorZero(vendaCaixaHistorico.getTotalValor())) {
+        Helper.verificarNull(vendaCaixaSalvo.getTotalValor());
+        if (Helper.maiorZero(vendaCaixaSalvo.getTotalValor())) {
             usuarioRepository.buscarUsuarioPorId(idUsuario).ifPresent(usuario -> {
                 BigDecimal saldoAtual = usuario.getSaldo() == null ? BigDecimal.ZERO : usuario.getSaldo();
-                usuario.setSaldo(saldoAtual.add(vendaCaixaHistorico.getTotalValor()));
+                usuario.setSaldo(saldoAtual.add(vendaCaixaSalvo.getTotalValor()));
                 usuarioRepository.atualizarUsuario(usuario);
             });
         }
@@ -98,6 +101,6 @@ public class FinalizarVendaUseCase {
         System.out.println("##############################");
 
         // sempre retorna um DTO válido aqui
-        return vcHistoricoSalvo;
+        return vendaCaixaSalvoDTO;
     }
 }

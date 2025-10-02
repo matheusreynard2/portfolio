@@ -1018,6 +1018,13 @@ td.coluna_nome {
   margin-bottom: 1rem;
 }
 
+/* Destaque visual para a coluna de checkboxes de seleção */
+.checkbox-col {
+  border-right: 2px solid #dee2e6;
+  border-left: 2px solid #dee2e6;
+  background-color: #fdfdfd;
+}
+
 .table {
   min-width: 1000px; /* Largura mínima para garantir legibilidade */
   margin-bottom: 0;

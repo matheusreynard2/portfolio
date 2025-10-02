@@ -23,9 +23,15 @@ public class AdicionarFornecedorUseCase {
 
     @Transactional(rollbackFor = Exception.class)
     public FornecedorDTO executar(FornecedorDTO fornecedorDTO, Long idUsuario) {
+        long t0 = System.nanoTime();
         Helper.verificarNull(fornecedorDTO);
         Fornecedor fornecedor = modelMapper.map(fornecedorDTO, Fornecedor.class);
         Fornecedor fornecedorAdicionado = fornecedorRepository.adicionarFornecedor(fornecedor, idUsuario);
-        return modelMapper.map(fornecedorAdicionado, FornecedorDTO.class);
+        FornecedorDTO fornecedorAdicionadoDTO = modelMapper.map(fornecedorAdicionado, FornecedorDTO.class);
+        long ns = System.nanoTime() - t0;
+        System.out.println("##############################");
+        System.out.printf("### ADICIONAR FORNECEDOR %d ns ( %d ms)%n", ns, ns / 1_000_000);
+        System.out.println("##############################");
+        return fornecedorAdicionadoDTO;
     }
 }

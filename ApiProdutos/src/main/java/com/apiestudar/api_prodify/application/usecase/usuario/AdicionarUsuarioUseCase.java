@@ -33,7 +33,7 @@ public class AdicionarUsuarioUseCase {
 
     @Transactional(rollbackFor = Exception.class)
     public UsuarioDTO executar(UsuarioFormDTO usuarioFormDTO, MultipartFile imagemFile) throws IOException {
-            
+        long t0 = System.nanoTime();    
         Helper.verificarNull(usuarioFormDTO);
         Helper.verificarNull(imagemFile);
         UsuarioDTO usuarioDTO = objectMapper.readValue(usuarioFormDTO.getUsuarioJson(), UsuarioDTO.class);
@@ -47,6 +47,10 @@ public class AdicionarUsuarioUseCase {
             usuario.setImagem(imagemFile.getBytes());
             usuario = usuarioRepository.adicionarUsuario(usuario);
             usuarioDTO = modelMapper.map(usuario, UsuarioDTO.class);
+            long ns = System.nanoTime() - t0;
+            System.out.println("##############################");
+            System.out.printf("### ADICIONAR USUARIO %d ns ( %d ms)%n", ns, ns / 1_000_000);
+            System.out.println("##############################");
             return usuarioDTO;
         }
     }

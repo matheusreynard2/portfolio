@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title th:text="${titulo}">Relatório</title>
+
+    <style th:if="${paisagem}">
+        @page {
+            size: A4 landscape;
+            margin: 20mm;
+        }
+    </style>
+    <style th:if="${!paisagem}">
+        @page {
+            size: A4 portrait;
+            margin: 20mm;
+        }
+    </style>
+
+    <style>
+        body {
+            font-family: 'Noto Sans', Arial, sans-serif;
+            font-size: 11pt;
+            color: #2d2d2d;
+        }
+
+        h1 {
+            font-size: 18pt;
+            text-align: center;
+            margin-bottom: 18px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            table-layout: fixed;
+        }
+
+        th,
+        td {
+            border: 1px solid #d2d2d2;
+            padding: 8px;
+            word-wrap: break-word;
+        }
+
+        th {
+            background-color: #f2f4f8;
+            font-weight: 700;
+            text-transform: uppercase;
+            font-size: 10pt;
+            letter-spacing: 0.5px;
+        }
+
+        tbody tr:nth-child(even):not(.linha-compra):not(.linha-venda) td {
+            background-color: #fbfbfb;
+        }
+
+        .linha-compra td {
+            background-color: #fde5e7;
+            color: #8c1f28;
+        }
+
+        .linha-venda td {
+            background-color: #e4f6e8;
+            color: #1d5e2a;
+        }
+
+        .sem-dados {
+            margin-top: 24px;
+            text-align: center;
+            font-style: italic;
+            color: #6a6a6a;
+        }
+
+        .tabela-wrapper {
+            border: 1px solid #e1e1e1;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 18px;
+        }
+
+        .orientacao {
+            font-size: 9pt;
+            color: #8a8a8a;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1 th:text="${titulo}">Relatório</h1>
+        <span class="orientacao" th:text="${paisagem} ? 'Orientação: Paisagem' : 'Orientação: Retrato'"></span>
+    </header>
+
+    <div class="tabela-wrapper" th:if="${colunas != null and #lists.size(colunas) > 0}">
+        <table>
+            <thead>
+                <tr>
+                    <th th:each="coluna : ${colunas}" th:text="${coluna}">Coluna</th>
+                </tr>
+            </thead>
+            <tbody th:with="idxTipo=${colunas != null ? colunas.indexOf('TIPO') : -1}">
+                <tr th:each="linha : ${linhasOrdenadas}"
+                    th:classappend="${idxTipo >= 0 and idxTipo < #lists.size(linha)
+                        ? (#strings.equalsIgnoreCase(linha[idxTipo], 'Compra')
+                            ? ' linha-compra'
+                            : (#strings.equalsIgnoreCase(linha[idxTipo], 'Venda') ? ' linha-venda' : ''))
+                        : ''}">
+                    <td th:each="valor : ${linha}" th:text="${valor}">Valor</td>
+                </tr>
+                <tr th:if="${linhasOrdenadas == null or #lists.isEmpty(linhasOrdenadas)}">
+                    <td th:colspan="${#lists.size(colunas)}" style="text-align: center; font-style: italic; color: #6a6a6a;">
+                        Nenhum dado disponível.
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <p class="sem-dados" th:if="${colunas == null or #lists.size(colunas) == 0}">
+        Nenhuma coluna informada para compor o relatório.
+    </p>
+</body>
+</html>
+
