@@ -47,7 +47,7 @@ public class VendaCaixaRepositoryImpl implements VendaCaixaRepository {
 
     @Override
     public List<VendaCaixa> listarVendasComHistorico() {
-        return vendaCaixaRepository.findAll();
+        return vendaCaixaRepository.listarVendasComHistorico();
     }
 
     @Override

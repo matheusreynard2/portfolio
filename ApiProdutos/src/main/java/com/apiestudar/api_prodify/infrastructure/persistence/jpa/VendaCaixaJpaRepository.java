@@ -28,4 +28,7 @@ public interface VendaCaixaJpaRepository extends JpaRepository<VendaCaixa, Long>
     @Modifying(clearAutomatically = true, flushAutomatically = true)
     @Query(value = "delete from venda_caixa where id in (:vendaCaixaIds)", nativeQuery = true)
     void deleteVendaCaixasByIds(@Param("vendaCaixaIds") List<Long> vendaCaixaIds);
+
+    @Query("select distinct vc from VendaCaixa vc left join fetch vc.itens")
+    List<VendaCaixa> listarVendasComHistorico();
 }

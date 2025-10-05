@@ -22,9 +22,18 @@ public interface ProdutoJpaRepository extends JpaRepository<Produto, Long>, JpaS
 
 	@Query("""
 	SELECT p FROM Produto p
-	WHERE p.idUsuario = :idUsuario AND p.somaTotalValores = (
-	  SELECT MAX(p2.somaTotalValores) FROM Produto p2 WHERE p2.idUsuario = :idUsuario
-	)
+	WHERE p.idUsuario = :idUsuario
+	  AND p.somaTotalValores = (
+	    SELECT MAX(p2.somaTotalValores)
+	      FROM Produto p2
+	     WHERE p2.idUsuario = :idUsuario
+	  )
+	  AND p.id = (
+	    SELECT MIN(p3.id)
+	      FROM Produto p3
+	     WHERE p3.idUsuario = :idUsuario
+	       AND p3.somaTotalValores = p.somaTotalValores
+	  )
 	""")
 	Optional<Produto> listarProdutoMaisCaro(@Param("idUsuario") Long idUsuario);
 

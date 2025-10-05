@@ -25,7 +25,6 @@ public interface VendaCaixaRepository {
 
     public Optional<VendaCaixa> findHistoricoByVendaCaixaId(Long vendaCaixaId);
 
-
 }
 
 
