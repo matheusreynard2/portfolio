@@ -14,6 +14,7 @@ import com.apiestudar.api_prodify.interfaces.dto.CaixaItemDTO;
 import com.apiestudar.api_prodify.interfaces.dto.VendaCaixaDTO;
 import com.apiestudar.api_prodify.shared.utils.Helper;
 
+import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.Collections;
 import java.util.Date;
@@ -92,7 +93,9 @@ public class SalvarCaixaUseCase {
         item.setIdProduto(dto.getIdProduto());
         item.setQuantidade(dto.getQuantidade());
         item.setTipoPreco(dto.getTipoPreco());
-        return item;
+        item.setValorUnitario(dto.getValorUnitario());
+        item.setSubtotal(dto.getSubtotal());
+        return item;    
     }
 }
  

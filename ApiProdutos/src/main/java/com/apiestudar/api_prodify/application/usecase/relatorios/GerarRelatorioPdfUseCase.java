@@ -49,6 +49,9 @@ public class GerarRelatorioPdfUseCase {
         model.put("colunas", colunas);
         model.put("linhasOrdenadas", linhasOrdenadas);
         model.put("paisagem", req.isPaisagem());
+        model.put("rodapeDireita", req.getRodapeDireita());
+        model.put("colunasDetalhes", req.getColunasDetalhes());
+        model.put("linhasDetalhadas", req.getLinhasDetalhadas());
 
         if (log.isDebugEnabled()) {
             Map<String, Object> primeiraLinha = (req.getLinhas() != null && !req.getLinhas().isEmpty()) ? req.getLinhas().get(0) : null;

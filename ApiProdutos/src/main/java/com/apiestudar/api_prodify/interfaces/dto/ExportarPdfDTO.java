@@ -11,7 +11,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
@@ -33,6 +32,15 @@ public class ExportarPdfDTO {
 	@NotNull(message = "Paisagem é obrigatório.")
 	@Schema(description = "Paisagem do relatório.")
 	private boolean paisagem;
+
+	@Schema(description = "Texto opcional exibido no rodapé alinhado à direita.")
+	private String rodapeDireita;
+
+	@Schema(description = "Colunas adicionais para detalhamento de cada linha.")
+	private List<String> colunasDetalhes;
+
+	@Schema(description = "Linhas detalhadas alinhadas por índice da linha principal.")
+	private List<List<List<String>>> linhasDetalhadas;
 }
 
 

@@ -7,230 +7,152 @@
       <a class="nav-link disabled">LOCALIZAR POR CEP</a>
     </li>
   </ul>
+
   <div class="card my-5">
     <div class="card-body">
-        <div class="div-tabela" [class.desabilitado-durante-carregamento]="carregando">
-          <table class="table table-bordered" style="width: 100%; table-layout: fixed;">
-            <thead>
-            <tr>
-              <th colspan="6" class="text-center">Localização através de CEP</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr>
-              <td style="width: 12%;">
-                <label for="cep">CEP:</label>
-              </td>
-              <td style="width: 16%;">
-                <input
-                  type="text"
-                  class="form-control"
-                  id="cep"
-                  name="cep"
-                  [(ngModel)]="endereco.cep"
-                  mask="00000-000"
-                  [showMaskTyped]="true"
-                  placeholder="00000-000"
-                  required
-                />
-              <td style="width: 16%;" >
-                <label for="logradouro">Logradouro:</label>
-              </td>
-              <td style="width: 24%;">
-                <input type="text" [(ngModel)]="endereco.logradouro"
-                       class="form-control"
-                       id="logradouro"
-                       name="logradouroFornecedor"
-                       readonly>
-              </td>
-              <td style="width: 12%;">
-                <label for="complemento">Complemento:</label>
-              </td>
-              <td style="width: 20%;">
-                <input type="text" [(ngModel)]="endereco.complemento"
-                       class="form-control"
-                       id="complemento"
-                       name="complementoFornecedor">
-              </td>
-            </tr>
+      <div class="d-flex align-items-center justify-content-between mb-3">
+        <div class="d-flex align-items-center gap-2">
+          <label for="cepBusca" class="mb-0 fw-semibold">Digite o CEP</label>
+          <input
+            type="text"
+            class="form-control" style="width: 160px;"
+            id="cepBusca"
+            name="cepBusca"
+            [(ngModel)]="cepBusca"
+            mask="00000-000"
+            [showMaskTyped]="true"
+            placeholder="00000-000"
+          />
+          <button class="btn btn-primary" [disabled]="carregando" (click)="buscarEnderecoPorCep(cepBusca)">
+            <span *ngIf="!carregando">Buscar CEP</span>
+            <span *ngIf="carregando" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+          </button>
+        </div>
+        <div *ngIf="carregando" class="text-primary fw-semibold">
+          {{ carregandoTexto || 'Processando...' }}
+        </div>
+      </div>
 
-            <!-- Linha 3: Unidade e Bairro -->
-            <tr>
-              <td style="width: 16%;">
-                <label for="unidade">Unidade:</label>
-              </td>
-              <td style="width: 24%;">
-                <input type="text" [(ngModel)]="endereco.unidade"
-                       class="form-control"
-                       id="unidade"
-                       name="unidadeFornecedor"
-                       readonly>
-              </td>
-              <td style="width: 12%;">
-                <label for="bairro">Bairro:</label>
-              </td>
-              <td colspan="3" style="width: 48%;">
-                <input type="text" [(ngModel)]="endereco.bairro"
-                       class="form-control"
-                       id="bairro"
-                       name="bairroFornecedor"
-                       readonly>
-              </td>
-            </tr>
+      <div class="div-tabela" [class.desabilitado-durante-carregamento]="carregando" *ngIf="endereco as e">
+        <table class="table table-bordered" style="width: 100%; table-layout: fixed;">
+          <thead>
+          <tr>
+            <th colspan="6" class="text-center">Localização através de CEP</th>
+          </tr>
+          </thead>
+          <tbody>
 
-            <!-- Linha 4: Cidade, UF, Estado -->
-            <tr>
-              <td style="width: 16%;">
-                <label for="localidade">Cidade:</label>
-              </td>
-              <td style="width: 24%;">
-                <input type="text" [(ngModel)]="endereco.localidade"
-                       class="form-control"
-                       id="localidade"
-                       name="localidadeFornecedor"
-                       readonly>
-              </td>
-              <td style="width: 12%;">
-                <label for="uf">UF:</label>
-              </td>
-              <td style="width: 16%;">
-                <input type="text" [(ngModel)]="endereco.uf"
-                       class="form-control"
-                       id="uf"
-                       name="ufFornecedor"
-                       readonly>
-              </td>
-              <td style="width: 12%;">
-                <label for="estado">Estado:</label>
-              </td>
-              <td style="width: 20%;">
-                <input type="text" [(ngModel)]="endereco.estado"
-                       class="form-control"
-                       id="estado"
-                       name="estadoFornecedor"
-                       readonly>
-              </td>
-            </tr>
+          <!-- Linha 1: CEP / Logradouro / Complemento -->
+          <tr>
+            <td style="width: 12%;">
+              <label for="cep">CEP:</label>
+            </td>
+            <td style="width: 16%;">
+              <input
+                type="text"
+                class="form-control"
+                id="cep"
+                name="cep"
+                [(ngModel)]="e.cep"
+                mask="00000-000"
+                [showMaskTyped]="true"
+                placeholder="00000-000"
+                required
+              />
+            </td>
 
-            <!-- Linha 5: Região, IBGE, GIA -->
-            <tr>
-              <td style="width: 16%;">
-                <label for="regiao">Região:</label>
-              </td>
-              <td style="width: 24%;">
-                <input type="text" [(ngModel)]="endereco.regiao"
-                       class="form-control"
-                       id="regiao"
-                       name="regiaoFornecedor"
-                       readonly>
-              </td>
-              <td style="width: 12%;">
-                <label for="ibge">IBGE:</label>
-              </td>
-              <td style="width: 16%;">
-                <input type="text" [(ngModel)]="endereco.ibge"
-                       class="form-control"
-                       id="ibge"
-                       name="ibgeFornecedor"
-                       readonly>
-              </td>
-              <td style="width: 12%;">
-                <label for="gia">GIA:</label>
-              </td>
-              <td style="width: 20%;">
-                <input type="text" [(ngModel)]="endereco.gia"
-                       class="form-control"
-                       id="gia"
-                       name="giaFornecedor"
-                       readonly>
-              </td>
-            </tr>
+            <td style="width: 16%;">
+              <label for="logradouro">Logradouro:</label>
+            </td>
+            <td style="width: 24%;">
+              <input
+                type="text"
+                [(ngModel)]="e.logradouro"
+                class="form-control"
+                id="logradouro"
+                name="logradouroFornecedor"
+                readonly
+              />
+            </td>
+            <td style="width: 12%;">
+              <label for="complemento">Complemento:</label>
+            </td>
+            <td style="width: 20%;">
+              <input
+                type="text"
+                [(ngModel)]="e.complemento"
+                class="form-control"
+                id="complemento"
+                name="complementoFornecedor"
+              />
+            </td>
+          </tr>
 
-            <!-- Linha 6: DDD, SIAFI -->
-            <tr>
-              <td style="width: 16%;">
-                <label for="ddd">DDD:</label>
-              </td>
-              <td style="width: 24%;">
-                <input type="text" [(ngModel)]="endereco.ddd"
-                       class="form-control"
-                       id="ddd"
-                       name="dddFornecedor"
-                       readonly>
-              </td>
-              <td style="width: 12%;">
-                <label for="siafi">SIAFI:</label>
-              </td>
-              <td colspan="3" style="width: 48%;">
-                <input type="text" [(ngModel)]="endereco.siafi"
-                       class="form-control"
-                       id="siafi"
-                       name="siafiFornecedor"
-                       readonly>
-              </td>
-            </tr>
-            <tr>
-              <td colspan="2" style="width: 12%;">
-                <button type="button" class="btn btn-secondary" (click)="buscarEnderecoPorCep(endereco.cep)">Buscar</button>
-              </td>
-            </tr>
-            </tbody>
+          <!-- Linha 3: Unidade e Bairro -->
+          <tr>
+            <td style="width: 16%;">
+              <label for="unidade">Unidade:</label>
+            </td>
+            <td style="width: 24%;">
+              <input
+                type="text"
+                [(ngModel)]="e.unidade"
+                class="form-control"
+                id="unidade"
+                name="unidadeFornecedor"
+                readonly
+              />
+            </td>
+            <td style="width: 12%;">
+              <label for="bairro">Bairro:</label>
+            </td>
+            <td colspan="3" style="width: 48%;">
+              <input
+                type="text"
+                [(ngModel)]="e.bairro"
+                class="form-control"
+                id="bairro"
+                name="bairroFornecedor"
+                readonly
+              />
+            </td>
+          </tr>
+
+          <!-- Linha 4: Cidade, UF, Estado -->
+          <tr>
+            <td style="width: 16%;">
+              <label for="localidade">Cidade:</label>
+            </td>
+            <td style="width: 24%;">
+              <input
+                type="text"
+                [(ngModel)]="e.localidade"
+                class="form-control"
+                id="localidade"
+                name="localidadeFornecedor"
+                readonly
+              />
+            </td>
+          </tr>
+          </tbody>
           </table>
-        </div>
-    </div>
+            <!-- ...sua tabela... -->
 
-    <!-- Card do mapa -->
-    <mat-card class="profile-card" style="flex: 1; min-width: 300px;" *ngIf="!carregando && !erro && mapsCarregado && !isMobileOrTablet && latitude && longitude">
-      <mat-card-content>
-        <div>
-          <div class="card">
-            <div class="card-header bg-primary text-white">
-              Mapa da Localização
-            </div>
-            <div class="card-body">
-              <google-map
-                height="500px"
-                width="100%"
-                [center]="center"
-                [zoom]="zoom"
-                [options]="mapOptions">
-                <map-marker
-                  [position]="marker.position"
-                  [title]="marker.title"
-                  [options]="marker.options">
-                </map-marker>
-              </google-map>
-            </div>
-          </div>
-        </div>
-      </mat-card-content>
-    </mat-card>
-
-  </div>
-</div>
-
-<!-- Janela (modal) ERROS -->
-<ng-template #modalMsgAviso let-modal>
-  <div class="modal-header">
-    <h5 class="modal-title">
-      Sucesso!
-    </h5>
-    <img ngSrc="/google-maps.png" height="80" width="100" class="img-right"/>
-  </div>
-  <div class="modal-body">
-    <p>{{ mensagemModal }}</p>
-  </div>
-  <div class="modal-footer">
-    <button type="button" class="btn btn-secondary" (click)="modal.close()">Fechar</button>
-  </div>
-</ng-template>
-
-<!-- Exibir durante o carregamento -->
-<div *ngIf="carregando" class="overlay-carregando">
-  <div class="spinner-wrapper">
-    <div class="spinner-border text-primary" role="status">
-      <span class="visually-hidden">Carregando...</span>
-    </div>
-    <p class="mt-2">{{carregandoTexto}}</p>
+<!-- Renderiza o mapa só quando a API carregar e já houver coordenadas -->
+<div class="map-wrapper" *ngIf="apiLoaded && obteveCoordenadas">
+  <div class="map-inner">
+    <google-map
+      #gm
+      [center]="center"
+      [zoom]="zoom"
+      [options]="mapOptions"
+      [width]="'100%'"
+      [height]="'100%'">
+      <map-marker
+        [position]="marker.position"
+        [title]="marker.title"
+        [options]="marker.options">
+      </map-marker>
+    </google-map>
   </div>
 </div>

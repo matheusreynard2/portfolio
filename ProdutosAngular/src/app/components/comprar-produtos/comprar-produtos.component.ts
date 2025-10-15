@@ -10,6 +10,7 @@ import { NgbModule, NgbModal, NgbToastModule } from '@ng-bootstrap/ng-bootstrap'
 import { CompraDTO } from '../../model/dto/CompraDTO';
 import { ComprarProdutosService } from '../../service/comprar-produtos/comprar-produtos.service';
 import { HistoricoComprasDTO } from '../../model/dto/HistoricoComprasDTO';
+import { ExportarRelatorioPayload, RelatoriosService } from '../../service/relatorios/relatorios.service';
 
 @Component({
   selector: 'app-comprar-produtos',
@@ -29,6 +30,10 @@ export class ComprarProdutosComponent implements OnInit {
   saveToastText: string = '';
   private todosProdutos: ProdutoDTO[] = [];
   produtosFiltrados: ProdutoDTO[] = [];
+  sortColumn: 'id' | 'nome' | 'descricao' | 'quantia' | 'valorInicial' | 'fornecedor' = 'id';
+  sortDirection: 'asc' | 'desc' = 'asc';
+  private cacheProdutosOrdenados: ProdutoDTO[] = [];
+  private cacheSortSignature = '';
   carregando = false;
   erro: string | null = null;
 
@@ -68,7 +73,11 @@ export class ComprarProdutosComponent implements OnInit {
   currentPage: number = 0;
   pageSize: number = 5;
 
-  constructor(private produtoService: ProdutoService, private auth: AuthService, private comprasService: ComprarProdutosService, private modalService: NgbModal) {}
+  constructor(private produtoService: ProdutoService,
+              private auth: AuthService,
+              private comprasService: ComprarProdutosService,
+              private modalService: NgbModal,
+              private relatoriosService: RelatoriosService) {}
 
   ngOnInit(): void {
     const usuario = this.auth.getUsuarioLogado();
@@ -418,6 +427,71 @@ export class ComprarProdutosComponent implements OnInit {
     });
   }
 
+  baixarPdfHistoricoCompras(): void {
+    const historico = (this.historico || []);
+    if (historico.length === 0) {
+      this.overlayCarregando = true;
+      this.overlayTexto = 'Não há registros no histórico para exportar.';
+      setTimeout(() => {
+        this.overlayCarregando = false;
+        this.overlayTexto = '';
+      }, 2000);
+      return;
+    }
+
+    const colunas = ['ID compra', 'Usuário', 'Quantidade total', 'Valor total', 'Data compra'];
+    const colunasDetalhes = ['Produto'];
+    const linhasDetalhadas: string[][][] = [];
+    const linhas = historico.map((h) => {
+      const itensCompra = (h.compras || []).map((c) => {
+        const produto = c?.produto || {} as ProdutoDTO;
+        const precoUnit = this.formatarMoeda(Number(c?.valorUnitarioCompra) || 0);
+        const subtotal = this.formatarMoeda(Number(c?.valorTotalCompra) || 0);
+        return [
+          `${produto.id ?? '-'} - ${produto.nome || '-'}\nDescrição: ${produto.descricao || '-'}\nQtd: ${c?.quantidadeComprada ?? 0} | Preço: ${precoUnit} | Subtotal: ${subtotal}`
+        ];
+      });
+      linhasDetalhadas.push(itensCompra);
+      return {
+        'ID compra': h.id ?? '-',
+        'Usuário': this.usuarioLogin || '-',
+        'Quantidade total': h.quantidadeTotal ?? 0,
+        'Valor total': this.formatarMoeda(Number(h.valorTotal) || 0),
+        'Data compra': h.dataCompra ? (new Date(h.dataCompra)).toLocaleString('pt-BR') : '-'
+      };
+    });
+
+    const payload: ExportarRelatorioPayload = {
+      titulo: 'Histórico de compras detalhado',
+      colunas,
+      linhas,
+      paisagem: true,
+      rodapeDireita: `Total de registros: ${historico.length}`,
+      colunasDetalhes,
+      linhasDetalhadas
+    };
+
+    this.relatoriosService.exportarPdf(payload).subscribe({
+      next: (blob: Blob) => {
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'historico-compras.pdf';
+        a.click();
+        window.URL.revokeObjectURL(url);
+      }
+    });
+  }
+
+  private formatarMoeda(valor: number): string {
+    return (valor || 0).toLocaleString('pt-BR', {
+      style: 'currency',
+      currency: 'BRL',
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2
+    });
+  }
+
   onToggleHistoricoCompra(h: HistoricoComprasDTO): void {
     if (this.selectedHistoricoCompraId === h.id) {
       this.selectedHistoricoCompraId = null;
@@ -568,17 +642,81 @@ export class ComprarProdutosComponent implements OnInit {
     });
     this.totalRecords = this.produtosFiltrados.length;
     this.currentPage = 0;
+    this.cacheSortSignature = '';
   }
 
   get produtosPaginados(): ProdutoDTO[] {
     const start = this.currentPage * this.pageSize;
     const end = start + this.pageSize;
-    return this.produtosFiltrados.slice(start, end);
+    const listaOrdenada = this.obterProdutosOrdenados();
+    return listaOrdenada.slice(start, end);
   }
 
   onPageChange(event: PageEvent): void {
     this.currentPage = event.pageIndex;
     this.pageSize = event.pageSize;
+  }
+
+  setSort(column: 'id' | 'nome' | 'descricao' | 'quantia' | 'valorInicial' | 'fornecedor'): void {
+    if (this.sortColumn === column) {
+      this.sortDirection = this.sortDirection === 'asc' ? 'desc' : 'asc';
+    } else {
+      this.sortColumn = column;
+      this.sortDirection = column === 'nome' || column === 'descricao' || column === 'fornecedor' ? 'asc' : 'desc';
+    }
+    this.cacheSortSignature = '';
+  }
+
+  getSortClass(column: 'id' | 'nome' | 'descricao' | 'quantia' | 'valorInicial' | 'fornecedor'): string {
+    if (this.sortColumn !== column) return 'inactive';
+    return this.sortDirection === 'asc' ? 'asc' : 'desc';
+  }
+
+  private obterProdutosOrdenados(): ProdutoDTO[] {
+    const assinatura = `${this.sortColumn}_${this.sortDirection}_${this.produtosFiltrados.length}`;
+    if (this.cacheSortSignature === assinatura) {
+      return this.cacheProdutosOrdenados;
+    }
+    this.cacheProdutosOrdenados = [...this.produtosFiltrados].sort((a, b) => this.compararProdutos(a, b));
+    this.cacheSortSignature = assinatura;
+    return this.cacheProdutosOrdenados;
+  }
+
+  private compararProdutos(a: ProdutoDTO, b: ProdutoDTO): number {
+    let valorA: any;
+    let valorB: any;
+    switch (this.sortColumn) {
+      case 'id':
+        valorA = a.id ?? 0;
+        valorB = b.id ?? 0;
+        break;
+      case 'nome':
+        valorA = (a.nome || '').toLowerCase();
+        valorB = (b.nome || '').toLowerCase();
+        break;
+      case 'descricao':
+        valorA = (a.descricao || '').toLowerCase();
+        valorB = (b.descricao || '').toLowerCase();
+        break;
+      case 'quantia':
+        valorA = a.quantia ?? 0;
+        valorB = b.quantia ?? 0;
+        break;
+      case 'valorInicial':
+        valorA = a.valorInicial ?? 0;
+        valorB = b.valorInicial ?? 0;
+        break;
+      case 'fornecedor':
+        valorA = (a.fornecedor?.nome || '').toLowerCase();
+        valorB = (b.fornecedor?.nome || '').toLowerCase();
+        break;
+      default:
+        valorA = 0;
+        valorB = 0;
+    }
+    if (valorA < valorB) return this.sortDirection === 'asc' ? -1 : 1;
+    if (valorA > valorB) return this.sortDirection === 'asc' ? 1 : -1;
+    return 0;
   }
 }
 

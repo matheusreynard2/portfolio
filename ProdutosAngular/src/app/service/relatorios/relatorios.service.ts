@@ -8,6 +8,9 @@ export interface ExportarRelatorioPayload {
   colunas: string[];
   linhas: Array<Record<string, any>>;
   paisagem: boolean;
+  rodapeDireita?: string;
+  colunasDetalhes?: string[];
+  linhasDetalhadas?: string[][][];
 }
 
 @Injectable({ providedIn: 'root' })

@@ -20,6 +20,8 @@ import { environment } from '../../../environments/environment';
 })
 export class RelatoriosComponent implements OnInit {
   transacoes: TransacaoEconomicaDTO[] = [];
+  sortColumn: 'tipo' | 'id' | 'data' | 'totalQuantidade' | 'totalValor' | 'saldoApos' = 'data';
+  sortDirection: 'asc' | 'desc' = 'desc';
   // Saldo atual do usuário (pós todas as transações já consolidadas)
   saldoAtualUsuario = 0;
   // Saldo base anterior ao primeiro registro do histórico (derivado)
@@ -27,6 +29,8 @@ export class RelatoriosComponent implements OnInit {
   pageSize = 10;
   currentPage = 0;
   totalRecords = 0;
+  private cacheTransacoesOrdenadas: TransacaoEconomicaDTO[] = [];
+  private cacheSortSignature = '';
 
   constructor(
     private http: HttpClient,
@@ -108,10 +112,10 @@ export class RelatoriosComponent implements OnInit {
   }
 
   get transacoesPaginadas(): TransacaoEconomicaDTO[] {
-    // Exibição em ordem DESC (mais recente primeiro)
+    // Exibição em ordem definida pela ordenação escolhida
     const inicio = this.currentPage * this.pageSize;
-    const listaDesc = [...this.transacoes].reverse();
-    return listaDesc.slice(inicio, inicio + this.pageSize);
+    const listaOrdenada = this.obterTransacoesOrdenadas();
+    return listaOrdenada.slice(inicio, inicio + this.pageSize);
   }
 
   onPageChange(event: PageEvent): void {
@@ -119,11 +123,75 @@ export class RelatoriosComponent implements OnInit {
     this.pageSize = event.pageSize;
   }
 
+  setSort(column: 'tipo' | 'id' | 'data' | 'totalQuantidade' | 'totalValor' | 'saldoApos'): void {
+    if (this.sortColumn === column) {
+      this.sortDirection = this.sortDirection === 'asc' ? 'desc' : 'asc';
+    } else {
+      this.sortColumn = column;
+      this.sortDirection = column === 'data' ? 'desc' : 'asc';
+    }
+    this.cacheSortSignature = '';
+    this.currentPage = 0;
+  }
+
+  private compararTransacoes(a: TransacaoEconomicaDTO, b: TransacaoEconomicaDTO): number {
+    let valorA: any;
+    let valorB: any;
+    switch (this.sortColumn) {
+      case 'tipo':
+        valorA = a.tipo;
+        valorB = b.tipo;
+        break;
+      case 'id':
+        valorA = a.id;
+        valorB = b.id;
+        break;
+      case 'data':
+        valorA = new Date(a.data).getTime();
+        valorB = new Date(b.data).getTime();
+        break;
+      case 'totalQuantidade':
+        valorA = a.totalQuantidade;
+        valorB = b.totalQuantidade;
+        break;
+      case 'totalValor':
+        valorA = Number(a.totalValor) || 0;
+        valorB = Number(b.totalValor) || 0;
+        break;
+      case 'saldoApos':
+        valorA = this.getSaldoAposTransacao(this.transacoes.indexOf(a));
+        valorB = this.getSaldoAposTransacao(this.transacoes.indexOf(b));
+        break;
+    }
+    if (valorA < valorB) return this.sortDirection === 'asc' ? -1 : 1;
+    if (valorA > valorB) return this.sortDirection === 'asc' ? 1 : -1;
+    return 0;
+  }
+
+  private obterTransacoesOrdenadas(): TransacaoEconomicaDTO[] {
+    const assinatura = `${this.sortColumn}_${this.sortDirection}_${this.transacoes.length}`;
+    if (this.cacheSortSignature === assinatura) {
+      return this.cacheTransacoesOrdenadas;
+    }
+    this.cacheTransacoesOrdenadas = [...this.transacoes].sort((a, b) => this.compararTransacoes(a, b));
+    this.cacheSortSignature = assinatura;
+    return this.cacheTransacoesOrdenadas;
+  }
+
   getSaldoAposTransacaoGlobal(indexOnPage: number): number {
-    // Mapear índice da visualização DESC para o índice ASC do array base
-    const descGlobalIndex = this.currentPage * this.pageSize + indexOnPage;
-    const ascIndex = (this.transacoes.length - 1) - descGlobalIndex;
-    return this.getSaldoAposTransacao(ascIndex);
+    const listaOrdenada = this.cacheTransacoesOrdenadas;
+    const globalIndex = this.currentPage * this.pageSize + indexOnPage;
+    const transacao = listaOrdenada[globalIndex];
+    if (!transacao) {
+      return this.saldoBaseHistorico;
+    }
+    const indiceOriginal = this.transacoes.indexOf(transacao);
+    return this.getSaldoAposTransacao(indiceOriginal);
+  }
+
+  getSortClass(column: 'tipo' | 'id' | 'data' | 'totalQuantidade' | 'totalValor' | 'saldoApos'): string {
+    if (this.sortColumn !== column) return 'inactive';
+    return this.sortDirection === 'asc' ? 'asc' : 'desc';
   }
 
   private recalcularSaldoBaseHistorico(): void {
@@ -137,17 +205,17 @@ export class RelatoriosComponent implements OnInit {
   }
 
   baixarPdf() {
-    const colunas = ['TIPO', 'ID', 'DATA', 'QUANTIDADE', 'TOTAL', 'SALDO APÓS'];
-    const listaDesc = [...this.transacoes].reverse();
-    const linhas = listaDesc.map((t, i) => ({
-      'TIPO': t.tipo === 'VENDA' ? 'Venda' : 'Compra',
+    const colunas = ['ID', 'TIPO', 'DATA', 'QUANTIDADE', 'VALOR TRANSAÇÃO', 'SALDO FINAL'];
+    const listaOrdenada = this.obterTransacoesOrdenadas();
+    const totalRegistros = listaOrdenada.length;
+    const linhas = listaOrdenada.map((t) => ({
       'ID': t.id,
+      'TIPO': t.tipo === 'VENDA' ? 'Venda' : 'Compra',
       'DATA': this.date.transform(t.data, 'dd/MM/yyyy HH:mm', undefined, 'pt-BR'),
       'QUANTIDADE': t.totalQuantidade,
-      'TOTAL': this.currency.transform(Number(t.totalValor) || 0, 'BRL', 'symbol', '1.2-2', 'pt-BR'),
-      'SALDO APÓS': this.currency.transform(
-        // converte índice DESC para índice ASC do array base
-        this.getSaldoAposTransacao((this.transacoes.length - 1) - i),
+      'VALOR TRANSAÇÃO': this.currency.transform(Number(t.totalValor) || 0, 'BRL', 'symbol', '1.2-2', 'pt-BR'),
+      'SALDO FINAL': this.currency.transform(
+        this.getSaldoAposTransacao(this.transacoes.indexOf(t)),
         'BRL',
         'symbol',
         '1.2-2',
@@ -159,7 +227,8 @@ export class RelatoriosComponent implements OnInit {
       titulo: 'Relatório financeiro',
       colunas,
       linhas,
-      paisagem: true
+      paisagem: true,
+      rodapeDireita: totalRegistros > 0 ? `Total de registros: ${totalRegistros}` : undefined
     };
 
     this.relatoriosService.exportarPdf(payload).subscribe((blob: Blob) => {

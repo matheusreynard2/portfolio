@@ -122,6 +122,56 @@
   max-width: 100px;
 }
 
+.sortable {
+  cursor: pointer;
+  user-select: none;
+}
+
+.sortable:hover {
+  background-color: #f8f9fa;
+}
+
+.sort-indicator {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  margin-left: 6px;
+  position: relative;
+}
+
+.sort-indicator::before,
+.sort-indicator::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  border-left: 4px solid transparent;
+  border-right: 4px solid transparent;
+}
+
+.sort-indicator::before {
+  border-bottom: 6px solid #ced4da;
+  top: -6px;
+}
+
+.sort-indicator::after {
+  border-top: 6px solid #ced4da;
+  bottom: -6px;
+}
+
+.sort-indicator.asc::before {
+  border-bottom-color: #0d6efd;
+}
+
+.sort-indicator.desc::after {
+  border-top-color: #0d6efd;
+}
+
+.sort-indicator.inactive::before,
+.sort-indicator.inactive::after {
+  opacity: 0.4;
+}
+
 /* Classes para células com ellipsis */
 .cell-ellipsis {
   white-space: nowrap;

@@ -15,6 +15,7 @@ import { UtilsService } from '../../service/utils/utils.service';
 import {FornecedorDTO} from '../../model/dto/FornecedorDTO';
 import { catchError, finalize, tap } from 'rxjs/operators';
 import { EMPTY } from 'rxjs';
+import {RelatoriosService, ExportarRelatorioPayload} from '../../service/relatorios/relatorios.service';
 
 @Component({
   selector: 'app-produto-list', 
@@ -42,11 +43,15 @@ export class ProdutoListComponent implements OnInit {
   stringProdutoMaisCaro: string = '';
   mediaPreco: number = 0;
   tipoPesquisaSelecionado: string = 'nome';
-  popUpVisivel = false;  // Controle de visibilidade do pop-up
-  imgBase64: string = ''  // Variável para armazenar a imagem do produto
+  popUpVisivel = false; 
+  imgBase64: string = ''  
 
   listaDeProdutos!: ProdutoDTO[];
   private listaDeProdutosOriginal: ProdutoDTO[] = [];
+  sortColumn: 'checkbox' | 'id' | 'nome' | 'fornecedor' | 'descricao' | 'quantia' | 'valorInicial' | 'promocao' | 'valorTotalDesc' | 'somaTotalValores' = 'id';
+  sortDirection: 'asc' | 'desc' = 'asc';
+  private cacheSortSignature = '';
+  private cacheListaOrdenada: ProdutoDTO[] = [];
   isLoadingProdutos: boolean = false;
   produtoAtualizar!: ProdutoDTO;
   produtoExcluido!: ProdutoDTO;
@@ -85,7 +90,8 @@ export class ProdutoListComponent implements OnInit {
   constructor(private produtoService: ProdutoService,
               private produtoFunctionsService: ProdutoFunctionsService,
               private authService: AuthService, private deviceService: DeviceService,
-              private utils: UtilsService) { }
+              private utils: UtilsService,
+              private relatoriosService: RelatoriosService) { }
 
   ngOnInit() {
     // Carrega a lista de fornecedores
@@ -332,10 +338,54 @@ export class ProdutoListComponent implements OnInit {
         if (p?.id) this.idNomeCache.set(p.id, p?.nome || '');
       });
       this.totalRecords = data.totalElements; // Atualiza o total de registros exibidos
+      this.cacheSortSignature = '';
       this.aplicarFiltroLocal();
     });
     this.listarProdutoMaisCaro(this.authService.getUsuarioLogado().idUsuario);
     this.calcularMedia(this.authService.getUsuarioLogado().idUsuario);
+  }
+
+  baixarPdfProdutos(): void {
+    const produtos = this.obterListaOrdenada();
+    if (!produtos || produtos.length === 0) {
+      this.showSmallModal('Não há produtos para exportar.');
+      return;
+    }
+
+    const colunas = ['ID', 'Nome', 'Fornecedor', 'Quantidade', 'Valor unitário', 'Promoção', 'Vl qtd desc', 'Valor total'];
+    const linhas = produtos.map((produto: ProdutoDTO) => ({
+      'ID': produto.id ?? '-',
+      'Nome': produto.nome || '-',
+      'Fornecedor': produto.fornecedor?.nome || '- (Sem fornecedor)',
+      'Quantidade': produto.quantia ?? 0,
+      'Valor unitário': this.formatarValor(produto.valorInicial ?? 0),
+      'Promoção': produto.promocao ? 'Ativa' : 'Inativa',
+      'Vl qtd desc': this.formatarValor(produto.valorTotalDesc ?? 0),
+      'Valor total': this.formatarValor(produto.somaTotalValores ?? 0)
+    }));
+
+    const totalRegistros = produtos.length;
+    const payload: ExportarRelatorioPayload = {
+      titulo: 'Lista de produtos',
+      colunas,
+      linhas,
+      paisagem: true,
+      rodapeDireita: totalRegistros > 0 ? `Total de registros: ${totalRegistros}` : undefined
+    };
+
+    this.relatoriosService.exportarPdf(payload).subscribe({
+      next: (blob: Blob) => {
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'lista-produtos.pdf';
+        a.click();
+        window.URL.revokeObjectURL(url);
+      },
+      error: () => {
+        this.showSmallModal('Erro ao exportar PDF. Tente novamente.');
+      }
+    });
   }
 
   trocarPagina(event: PageEvent): void {
@@ -438,6 +488,8 @@ export class ProdutoListComponent implements OnInit {
 
     this.listaDeProdutos = filtrado;
     this.totalRecords = filtrado.length;
+    this.cacheSortSignature = '';
+    this.obterListaOrdenada();
   }
 
   // Dispara filtro automaticamente conforme o usuário digita (como no PDV)
@@ -532,6 +584,88 @@ export class ProdutoListComponent implements OnInit {
     return this.idNomeCache.get(id)
         || (this.listaDeProdutos?.find(p => p.id === id)?.nome ?? '')
         || (this.listaDeProdutosOriginal?.find(p => p.id === id)?.nome ?? '');
+  }
+
+  setSort(column: 'checkbox' | 'id' | 'nome' | 'fornecedor' | 'descricao' | 'quantia' | 'valorInicial' | 'promocao' | 'valorTotalDesc' | 'somaTotalValores'): void {
+    if (column === 'checkbox') return;
+    if (this.sortColumn === column) {
+      this.sortDirection = this.sortDirection === 'asc' ? 'desc' : 'asc';
+    } else {
+      this.sortColumn = column;
+      this.sortDirection = column === 'id' || column === 'nome' ? 'asc' : 'desc';
+    }
+    this.cacheSortSignature = '';
+    this.obterListaOrdenada();
+  }
+
+  getSortClass(column: 'checkbox' | 'id' | 'nome' | 'fornecedor' | 'descricao' | 'quantia' | 'valorInicial' | 'promocao' | 'valorTotalDesc' | 'somaTotalValores'): string {
+    if (this.sortColumn !== column) return 'inactive';
+    return this.sortDirection === 'asc' ? 'asc' : 'desc';
+  }
+
+  get produtosOrdenados(): ProdutoDTO[] {
+    return this.obterListaOrdenada();
+  }
+
+  private obterListaOrdenada(): ProdutoDTO[] {
+    const assinatura = `${this.sortColumn}_${this.sortDirection}_${this.listaDeProdutos?.length || 0}_${this.totalRecords}`;
+    if (this.cacheSortSignature === assinatura) {
+      return this.cacheListaOrdenada;
+    }
+    const lista = [...(this.listaDeProdutos || [])];
+    lista.sort((a, b) => this.compararProdutos(a, b));
+    this.cacheListaOrdenada = lista;
+    this.cacheSortSignature = assinatura;
+    return lista;
+  }
+
+  private compararProdutos(a: ProdutoDTO, b: ProdutoDTO): number {
+    let valorA: any;
+    let valorB: any;
+    switch (this.sortColumn) {
+      case 'id':
+        valorA = a.id ?? 0;
+        valorB = b.id ?? 0;
+        break;
+      case 'nome':
+        valorA = (a.nome || '').toLowerCase();
+        valorB = (b.nome || '').toLowerCase();
+        break;
+      case 'fornecedor':
+        valorA = (a.fornecedor?.nome || '').toLowerCase();
+        valorB = (b.fornecedor?.nome || '').toLowerCase();
+        break;
+      case 'descricao':
+        valorA = (a.descricao || '').toLowerCase();
+        valorB = (b.descricao || '').toLowerCase();
+        break;
+      case 'quantia':
+        valorA = a.quantia ?? 0;
+        valorB = b.quantia ?? 0;
+        break;
+      case 'valorInicial':
+        valorA = a.valorInicial ?? 0;
+        valorB = b.valorInicial ?? 0;
+        break;
+      case 'promocao':
+        valorA = a.promocao ? 1 : 0;
+        valorB = b.promocao ? 1 : 0;
+        break;
+      case 'valorTotalDesc':
+        valorA = a.valorTotalDesc ?? 0;
+        valorB = b.valorTotalDesc ?? 0;
+        break;
+      case 'somaTotalValores':
+        valorA = a.somaTotalValores ?? 0;
+        valorB = b.somaTotalValores ?? 0;
+        break;
+      default:
+        valorA = 0;
+        valorB = 0;
+    }
+    if (valorA < valorB) return this.sortDirection === 'asc' ? -1 : 1;
+    if (valorA > valorB) return this.sortDirection === 'asc' ? 1 : -1;
+    return 0;
   }
 
   protected readonly alert = alert;

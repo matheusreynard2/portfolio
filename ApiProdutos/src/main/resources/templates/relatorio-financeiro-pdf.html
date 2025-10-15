@@ -99,23 +99,45 @@
 
     <div class="tabela-wrapper" th:if="${colunas != null and #lists.size(colunas) > 0}">
         <table>
+            <colgroup>
+                <col th:each="coluna, iterStat : ${colunas}" th:classappend="${iterStat.last ? 'col-final' : ''}" />
+            </colgroup>
             <thead>
                 <tr>
                     <th th:each="coluna : ${colunas}" th:text="${coluna}">Coluna</th>
                 </tr>
             </thead>
             <tbody th:with="idxTipo=${colunas != null ? colunas.indexOf('TIPO') : -1}">
-                <tr th:each="linha : ${linhasOrdenadas}"
-                    th:classappend="${idxTipo >= 0 and idxTipo < #lists.size(linha)
+                <th:block th:each="linha, linhaIdx : ${linhasOrdenadas}">
+                    <tr th:classappend="${idxTipo >= 0 and idxTipo < #lists.size(linha)
                         ? (#strings.equalsIgnoreCase(linha[idxTipo], 'Compra')
                             ? ' linha-compra'
                             : (#strings.equalsIgnoreCase(linha[idxTipo], 'Venda') ? ' linha-venda' : ''))
                         : ''}">
-                    <td th:each="valor : ${linha}" th:text="${valor}">Valor</td>
-                </tr>
+                        <td th:each="valor, iterStat : ${linha}"
+                            th:classappend="${iterStat.last ? 'col-final' : ''}"
+                            th:text="${valor}">Valor</td>
+                    </tr>
+                    <tr th:if="${linhasDetalhadas != null
+                        and linhaIdx.index < #lists.size(linhasDetalhadas)
+                        and linhasDetalhadas[linhaIdx.index] != null
+                        and !#lists.isEmpty(linhasDetalhadas[linhaIdx.index])}">
+                        <td th:colspan="${#lists.size(colunas)}" class="table-detail-cell">
+                            <ul class="detalhes-lista">
+                                <li th:each="detLinha : ${linhasDetalhadas[linhaIdx.index]}"
+                                    th:text="${detLinha[0]}">Produto</li>
+                            </ul>
+                        </td>
+                    </tr>
+                </th:block>
                 <tr th:if="${linhasOrdenadas == null or #lists.isEmpty(linhasOrdenadas)}">
                     <td th:colspan="${#lists.size(colunas)}" style="text-align: center; font-style: italic; color: #6a6a6a;">
                         Nenhum dado disponível.
+                    </td>
+                </tr>
+                <tr th:if="${rodapeDireita != null and !#strings.isEmpty(rodapeDireita)}">
+                    <td th:colspan="${#lists.size(colunas)}" style="text-align: right; font-weight: bold;">
+                        <span th:text="${rodapeDireita}">Total</span>
                     </td>
                 </tr>
             </tbody>

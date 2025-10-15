@@ -5,6 +5,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.apiestudar.api_prodify.domain.model.CaixaItem;
 import com.apiestudar.api_prodify.domain.model.VendaCaixa;
 import com.apiestudar.api_prodify.domain.repository.VendaCaixaRepository;
 import com.apiestudar.api_prodify.domain.repository.UsuarioRepository;
@@ -19,6 +20,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.Date;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class FinalizarVendaUseCase {
@@ -54,7 +57,20 @@ public class FinalizarVendaUseCase {
 
         // salva no histórico e mapeia
         vendaCaixa.setDataVenda(Date.from(Instant.now()));
-        VendaCaixa vendaCaixaSalvo= vendaCaixaRepository.adicionarHistorico(vendaCaixa);
+        // Snapshot dos itens na venda finalizada
+        Set<CaixaItem> itens = vendaCaixa.getItens().stream()
+            .map(item -> CaixaItem.builder()
+                .idProduto(item.getIdProduto())
+                .quantidade(item.getQuantidade())
+                .tipoPreco(item.getTipoPreco())
+                .valorUnitario(item.getValorUnitario())
+                .subtotal(item.getSubtotal())
+                .build())
+            .collect(Collectors.toSet());
+        vendaCaixa.getItens().clear();
+        vendaCaixa.getItens().addAll(itens);
+
+        VendaCaixa vendaCaixaSalvo = vendaCaixaRepository.adicionarHistorico(vendaCaixa);
         VendaCaixaDTO vendaCaixaSalvoDTO = modelMapper.map(vendaCaixaSalvo, VendaCaixaDTO.class);
 
         // Atualiza estoque de produtos no serviço de produtos (se houver itens)

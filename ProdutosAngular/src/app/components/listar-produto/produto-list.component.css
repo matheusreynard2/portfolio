@@ -1018,6 +1018,66 @@ td.coluna_nome {
   margin-bottom: 1rem;
 }
 
+.produtos-tabela-wrapper {
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 1px 0 0 #e9ecef, 0 -1px 0 0 #e9ecef;
+  padding: 8px;
+  margin-top: 1rem;
+}
+
+.produtos-tabela th,
+.produtos-tabela td {
+  vertical-align: middle;
+}
+
+.produtos-tabela thead th {
+  position: relative;
+}
+
+.produtos-tabela tbody tr:hover {
+  background-color: rgba(13, 110, 253, 0.05);
+}
+
+.sortable {
+  cursor: pointer;
+  user-select: none;
+  position: relative;
+  padding-right: 16px;
+}
+
+.sort-indicator {
+  position: absolute;
+  right: 6px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 0;
+  height: 0;
+  border-left: 4px solid transparent;
+  border-right: 4px solid transparent;
+}
+
+.sort-indicator.asc {
+  border-bottom: 6px solid #0d6efd;
+}
+
+.sort-indicator.desc {
+  border-top: 6px solid #0d6efd;
+}
+
+.sort-indicator.inactive {
+  border-bottom: 6px solid transparent;
+  border-top: 6px solid transparent;
+}
+
+.produtos-info-extra {
+  margin-top: 1rem;
+}
+
+.produtos-acoes {
+  margin-top: 0.75rem;
+}
+
 /* Destaque visual para a coluna de checkboxes de seleção */
 .checkbox-col {
   border-right: 2px solid #dee2e6;

@@ -1,5 +1,13 @@
 <div class="card my-5">
   <div class="card-body">
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center mb-3">
+      <div class="h6 mb-2 mb-md-0 text-secondary">Clique na coluna para ordenar</div>
+      <button class="btn btn-outline-primary btn-sm" type="button" (click)="baixarPdfFornecedores()">
+        <i class="bi bi-file-earmark-pdf"></i>
+        Exportar PDF
+      </button>
+    </div>
+
     <div class="div-tabela">
       <table class="table table-bordered table-striped">
         <thead class="thead-dark">
@@ -7,19 +15,40 @@
             <th colspan="9" class="text-center">Fornecedores</th>
         </tr>
         <tr>
-            <th class="text-center coluna_id_header">ID</th>
-            <th class="text-left coluna_nome_header">Nome fornecedor</th>
-            <th class="text-left coluna_razao_social_header">Razão Social CNPJ</th>
-            <th class="text-left coluna_logradouro_header">Logradouro</th>
-            <th class="text-center coluna_bairro_header">Bairro</th>
-            <th class="text-center coluna_estado_header">Estado</th>
-            <th class="text-center coluna_cep_header">CEP</th>
+            <th class="text-center coluna_id_header sortable" (click)="setSort('id')">
+              ID
+              <span [class]="'sort-indicator ' + getSortClass('id')"></span>
+            </th>
+            <th class="text-left coluna_nome_header sortable" (click)="setSort('nome')">
+              Nome fornecedor
+              <span [class]="'sort-indicator ' + getSortClass('nome')"></span>
+            </th>
+            <th class="text-left coluna_razao_social_header sortable" (click)="setSort('razaoSocial')">
+              Razão Social CNPJ
+              <span [class]="'sort-indicator ' + getSortClass('razaoSocial')"></span>
+            </th>
+            <th class="text-left coluna_logradouro_header sortable" (click)="setSort('logradouro')">
+              Logradouro
+              <span [class]="'sort-indicator ' + getSortClass('logradouro')"></span>
+            </th>
+            <th class="text-center coluna_bairro_header sortable" (click)="setSort('bairro')">
+              Bairro
+              <span [class]="'sort-indicator ' + getSortClass('bairro')"></span>
+            </th>
+            <th class="text-center coluna_estado_header sortable" (click)="setSort('estado')">
+              Estado
+              <span [class]="'sort-indicator ' + getSortClass('estado')"></span>
+            </th>
+            <th class="text-center coluna_cep_header sortable" (click)="setSort('cep')">
+              CEP
+              <span [class]="'sort-indicator ' + getSortClass('cep')"></span>
+            </th>
             <th class="text-center coluna_acao_header"></th>
             <th class="text-center coluna_acao_header"></th>
         </tr>
         </thead>
         <tbody>
-        <tr *ngFor="let fornecedor of listaFornecedores">
+        <tr *ngFor="let fornecedor of fornecedoresOrdenados">
             <td class="text-center coluna_id">{{ fornecedor.id }}</td>
             <td class="text-left coluna_nome cell-ellipsis">{{ fornecedor.nome }}</td>
             <td class="text-left coluna_razao_social cell-ellipsis">{{ fornecedor.dadosEmpresa.razaoSocial || '-' }}</td>
@@ -52,7 +81,8 @@
         </tbody>
       </table>
     </div>
-    <div class="pagination-container">
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center gap-2 pagination-container">
+      <div class="text-muted small">Total de registros: {{ totalRecords }}</div>
       <mat-paginator [length]="totalRecords" 
                      [pageSize]="pageSize" 
                      [pageIndex]="currentPage" 

@@ -1,7 +1,16 @@
 <div class="card my-5">
   <div class="card-body">
-    <!-- Barra de pesquisa responsiva -->
-    <div class="search-container">
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center mb-3">
+      <div class="h6 mb-2 mb-md-0 text-secondary">Clique na coluna para ordenar</div>
+      <button class="btn btn-outline-primary btn-sm" (click)="baixarPdfProdutos()" type="button">
+        <i class="bi bi-file-earmark-pdf"></i>
+        Exportar PDF
+      </button>
+    </div>
+
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <div class="search-container flex-grow-1 me-3">
+        <!-- Barra de pesquisa responsiva -->
       <table class="w-100">
         <tr>
           <td id="searchBar_td">
@@ -31,109 +40,110 @@
           </td>
         </tr>
       </table>
+      </div>
     </div>
 
-    <!-- Container da tabela com scroll horizontal -->
-    <div class="div-tabela" *ngIf="listaDeProdutos; else loadingProdutosTpl">
-      <table class="table table-bordered table-striped">
-        <thead class="thead-dark">
-        <tr>
-          <th colspan="12" class="text-center">Produtos</th>
-        </tr>
-        <tr>
-          <th class="text-center checkbox-col" style="width: 40px;"><input type="checkbox" [checked]="isTodosProdutosSelecionados()" (change)="onToggleSelecionarTodosProdutos($event)"></th>
-          <th class="text-center coluna_id" style="width: 80px; min-width: 60px; max-width: 100px;">ID</th>
-          <th class="text-left coluna_nome" style="width: 220px; min-width: 140px; max-width: 380px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Nome</th>
-          <th class="text-left coluna_fornecedor" style="width: 400px; min-width: 200px; max-width: 600px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Fornecedor</th>
-          <th class="text-left coluna_descricao">Descrição</th>
-          <th class="text-center coluna_qtde" style="width: 60px; min-width: 40px; max-width: 80px;">Qtde</th>
-          <th class="text-center coluna_valor" style="width: 200px; min-width: 100px; max-width: 250px;">Valor unit</th>
-          <th class="text-center coluna_promocao" style="width: 100px; min-width: 60px; max-width: 120px;">Promoção</th>
-          <th class="text-center coluna_valor_desc" style="width: 200px; min-width: 100px; max-width: 250px;">Vl qtd desc</th>
-          <th class="text-center coluna_valor_total" style="width: 200px; min-width: 100px; max-width: 250px;">Valor total</th>
-          <th class="text-center coluna_acao" style="width: 80px; min-width: 60px; max-width: 100px;"></th>
-          <th class="text-center coluna_acao" style="width: 80px; min-width: 60px; max-width: 100px;"></th>
-        </tr>
+    <div class="produtos-tabela-wrapper" *ngIf="listaDeProdutos; else loadingProdutosTpl">
+      <table class="table table-sm table-hover table-bordered relatorio-tabela produtos-tabela">
+        <colgroup>
+          <col style="width: 4%;">
+          <col style="width: 6%;">
+          <col style="width: 16%;">
+          <col style="width: 16%;">
+          <col style="width: 20%;">
+          <col style="width: 6%;">
+          <col style="width: 8%;">
+          <col style="width: 6%;">
+          <col style="width: 8%;">
+          <col style="width: 8%;">
+          <col style="width: 6%;">
+          <col style="width: 6%;">
+        </colgroup>
+        <thead>
+          <tr>
+            <th class="text-center checkbox-col" (click)="setSort('checkbox')"><input type="checkbox" [checked]="isTodosProdutosSelecionados()" (change)="onToggleSelecionarTodosProdutos($event)"></th>
+            <th class="text-center coluna_id sortable" (click)="setSort('id')">ID <span [class]="'sort-indicator ' + getSortClass('id')"></span></th>
+            <th class="text-start sortable" (click)="setSort('nome')">Nome <span [class]="'sort-indicator ' + getSortClass('nome')"></span></th>
+            <th class="text-start sortable" (click)="setSort('fornecedor')">Fornecedor <span [class]="'sort-indicator ' + getSortClass('fornecedor')"></span></th>
+            <th class="text-start sortable" (click)="setSort('descricao')">Descrição <span [class]="'sort-indicator ' + getSortClass('descricao')"></span></th>
+            <th class="text-center sortable" (click)="setSort('quantia')">Quantidade <span [class]="'sort-indicator ' + getSortClass('quantia')"></span></th>
+            <th class="text-center sortable" (click)="setSort('valorInicial')">Valor unit <span [class]="'sort-indicator ' + getSortClass('valorInicial')"></span></th>
+            <th class="text-center sortable" (click)="setSort('promocao')">Promoção <span [class]="'sort-indicator ' + getSortClass('promocao')"></span></th>
+            <th class="text-center sortable" (click)="setSort('valorTotalDesc')">Vl qtd desc <span [class]="'sort-indicator ' + getSortClass('valorTotalDesc')"></span></th>
+            <th class="text-center sortable" (click)="setSort('somaTotalValores')">Valor total <span [class]="'sort-indicator ' + getSortClass('somaTotalValores')"></span></th>
+            <th class="text-center"></th>
+            <th class="text-center"></th>
+          </tr>
         </thead>
         <tbody>
-        <tr *ngFor="let produto of listaDeProdutos" [ngClass]="{'sem-estoque': (produto.quantia || 0) === 0}">
-          <td class="text-center checkbox-col"><input type="checkbox" [checked]="selecionadosProdutoIds.has(produto.id || -1)" (change)="onToggleCheckboxProduto(produto, $event)"></td>
-          <td class="text-center coluna_id" style="width: 80px; min-width: 60px; max-width: 100px;">{{ produto.id }}</td>
-          <td class="text-left coluna_nome" style="width: 220px; min-width: 140px; max-width: 380px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
-            <div class="stat-item">
-              <span class="stat-label passar_mouse" (mouseenter)="mostrarImgPopup(produto)" (mouseleave)="esconderImgPopup()">
-                {{ produto.nome }}
-              </span>
-              <div *ngIf="popUpVisivel" class="img-popup">
-                <div class="image-container" [ngClass]="{'no-image': !imgBase64}">
-                  <img *ngIf="imgBase64" [src]="'data:image/jpeg;base64,' + imgBase64" alt="Imagem do produto"/>
+          <tr *ngFor="let produto of produtosOrdenados" [ngClass]="{'sem-estoque': (produto.quantia || 0) === 0}">
+            <td class="text-center checkbox-col"><input type="checkbox" [checked]="selecionadosProdutoIds.has(produto.id || -1)" (change)="onToggleCheckboxProduto(produto, $event)"></td>
+            <td class="text-center coluna_id">{{ produto.id }}</td>
+            <td class="text-start coluna_nome">
+              <div class="stat-item">
+                <span class="stat-label passar_mouse" (mouseenter)="mostrarImgPopup(produto)" (mouseleave)="esconderImgPopup()">
+                  {{ produto.nome }}
+                </span>
+                <div *ngIf="popUpVisivel" class="img-popup">
+                  <div class="image-container" [ngClass]="{'no-image': !imgBase64}">
+                    <img *ngIf="imgBase64" [src]="'data:image/jpeg;base64,' + imgBase64" alt="Imagem do produto"/>
+                  </div>
                 </div>
               </div>
-            </div>
-          </td>
-          <td class="text-left coluna_fornecedor" style="width: 400px; min-width: 200px; max-width: 600px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ produto.fornecedor?.nome }}</td>
-          <td class="text-left coluna_descricao"><span class="texto-ellipsis">{{ produto.descricao }}</span></td>
-          <td class="text-center coluna_qtde" style="width: 60px; min-width: 40px; max-width: 80px;">{{ produto.quantia }}</td>
-          <td class="text-center coluna_valor" style="width: 200px; min-width: 100px; max-width: 250px;">{{ formatarValor(produto.valorInicial) }}</td>
-          <td class="text-center coluna_promocao" style="width: 100px; min-width: 60px; max-width: 120px;">
-            <img
-              [src]="produto.promocao ? '/bolinha_verde.png' : '/bolinha_vermelha.png'"
-              [alt]="produto.promocao ? 'Promoção Ativa' : 'Promoção Inativa'"
-              width="25"
-              height="25">
-          </td>
-          <td class="text-center coluna_valor_desc" style="width: 200px; min-width: 100px; max-width: 250px;">{{ formatarValor(produto.valorTotalDesc) }}</td>
-          <td class="text-center coluna_valor_total" style="width: 200px; min-width: 100px; max-width: 250px;">{{ formatarValor(produto.somaTotalValores) }}</td>
-          <td class="text-center coluna_acao" style="width: 80px; min-width: 60px; max-width: 100px;">
-            <button type="button" class="btn btn-info full-width-btn" id="btn_editar" (click)="atualizarProduto(modalEditar, produto.id ?? 0, produto)">✎</button>
-          </td>
-          <td class="text-center coluna_acao" style="width: 80px; min-width: 60px; max-width: 100px;">
-            <button type="button" class="btn btn-danger full-width-btn" id="btn_excluir" (click)="abrirModalConfirmarExclusaoProduto(produto)">X</button>
-          </td>
-        </tr>
-
-        <!-- Label que exibe a variável do produto mais caro -->
-        <tr>
-          <td colspan="12" class="text-left">
-            <div class="stats-container-vertical">
-              <span class="stat-row stat-label-container stat-value-container">
-                <span class="stat-text">PRODUTO MAIS CARO - ID:</span>
-                <span class="stat-variable">{{ stringProdutoMaisCaro }}</span>
-                <span class="stat-text"> | MÉDIA DE PREÇO -</span>
-                <span class="stat-variable">{{ formatarValor(mediaPreco) }}</span>
-              </span>
-            </div>
-          </td>
-        </tr>
-        <tr>
-          <td colspan="12" class="text-left">
-            <div class="info-container">
-              <div class="info-item">
-                <span class="info-label">Vl qtd desc:</span>
-                <span class="info-text">este é o valor da soma total da quantia de produtos com desconto, caso esteja em promoção.</span>
-              </div>
-              <div class="info-divider">|</div>
-              <div class="info-item">
-                <span class="info-label">Valor total:</span>
-                <span class="info-text">este é o valor total do produto, com frete e com desconto, caso tenha frete e caso esteja em promoção.</span>
-              </div>
-            </div>
-          </td>
-        </tr>
-        <tr>
-          <td colspan="12">
-            <div class="d-flex align-items-center" style="gap: 8px;">
-              <button class="btn btn-sm btn-danger" [disabled]="selecionadosProdutoIds.size === 0" (click)="abrirModalExcluirSelecionadosProdutos()">Excluir selecionados</button>
-              <button class="btn bg-primary-subtle fw-bold btn-atualizar-lista" (click)="atualizarLista()" role="button">Atualizar</button>
-            </div>
-          </td>
-        </tr>
+            </td>
+            <td class="text-start coluna_fornecedor">{{ produto.fornecedor?.nome }}</td>
+            <td class="text-start coluna_descricao"><span class="texto-ellipsis">{{ produto.descricao }}</span></td>
+            <td class="text-center coluna_qtde">{{ produto.quantia }}</td>
+            <td class="text-center coluna_valor">{{ formatarValor(produto.valorInicial) }}</td>
+            <td class="text-center coluna_promocao">
+              <img
+                [src]="produto.promocao ? '/bolinha_verde.png' : '/bolinha_vermelha.png'"
+                [alt]="produto.promocao ? 'Promoção Ativa' : 'Promoção Inativa'"
+                width="25"
+                height="25">
+            </td>
+            <td class="text-center coluna_valor_desc">{{ formatarValor(produto.valorTotalDesc) }}</td>
+            <td class="text-center coluna_valor_total">{{ formatarValor(produto.somaTotalValores) }}</td>
+            <td class="text-center coluna_acao">
+              <button type="button" class="btn btn-info full-width-btn" id="btn_editar" (click)="atualizarProduto(modalEditar, produto.id ?? 0, produto)">✎</button>
+            </td>
+            <td class="text-center coluna_acao">
+              <button type="button" class="btn btn-danger full-width-btn" id="btn_excluir" (click)="abrirModalConfirmarExclusaoProduto(produto)">X</button>
+            </td>
+          </tr>
         </tbody>
       </table>
     </div>
 
+    <div *ngIf="listaDeProdutos" class="produtos-info-extra">
+      <div class="stats-container-vertical">
+        <span class="stat-row stat-label-container stat-value-container">
+          <span class="stat-text">PRODUTO MAIS CARO - ID:</span>
+          <span class="stat-variable">{{ stringProdutoMaisCaro }}</span>
+          <span class="stat-text"> | MÉDIA DE PREÇO -</span>
+          <span class="stat-variable">{{ formatarValor(mediaPreco) }}</span>
+        </span>
+      </div>
+      <div class="info-container">
+        <div class="info-item">
+          <span class="info-label">Vl qtd desc:</span>
+          <span class="info-text">este é o valor da soma total da quantia de produtos com desconto, caso esteja em promoção.</span>
+        </div>
+        <div class="info-divider">|</div>
+        <div class="info-item">
+          <span class="info-label">Valor total:</span>
+          <span class="info-text">este é o valor total do produto, com frete e com desconto, caso tenha frete e caso esteja em promoção.</span>
+        </div>
+      </div>
+      <div class="produtos-acoes d-flex align-items-center" style="gap: 8px;">
+        <button class="btn btn-sm btn-danger" [disabled]="selecionadosProdutoIds.size === 0" (click)="abrirModalExcluirSelecionadosProdutos()">Excluir selecionados</button>
+        <button class="btn bg-primary-subtle fw-bold btn-atualizar-lista" (click)="atualizarLista()" role="button">Atualizar</button>
+      </div>
+    </div>
+
     <!-- Paginação responsiva -->
-    <div class="pagination-container">
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center gap-2 pagination-container">
+      <div class="text-muted small">Total de registros: {{ totalRecords }}</div>
       <mat-paginator [length]="totalRecords" 
                      [pageSize]="pageSize" 
                      [pageIndex]="currentPage" 

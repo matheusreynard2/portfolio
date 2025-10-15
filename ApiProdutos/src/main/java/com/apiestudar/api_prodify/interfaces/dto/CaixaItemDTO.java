@@ -9,6 +9,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import java.math.BigDecimal;
 
 @Data
 @NoArgsConstructor
@@ -24,6 +25,10 @@ public class CaixaItemDTO {
 
     // "Qual tipo de preço foi utilizado para o item: valorInicial, valorTotalDesc, valorTotalFrete")
     private String tipoPreco;
+
+    private BigDecimal valorUnitario;
+
+    private BigDecimal subtotal;
 }
 
 

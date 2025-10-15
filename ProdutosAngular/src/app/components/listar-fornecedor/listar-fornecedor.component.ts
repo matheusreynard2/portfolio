@@ -17,6 +17,7 @@ import { EnderecoFornecedorDTO } from '../../model/dto/EnderecoFornecedorDTO';
 import { DadosEmpresaDTO } from '../../model/dto/DadosEmpresaDTO';
 import { EmptyDadosEmpresa } from '../../model/templates/EmptyDadosEmpresa';
 import { EmptyEnderecoFornecedor } from '../../model/templates/EmptyEnderecoFornecedor';
+import {ExportarRelatorioPayload, RelatoriosService} from '../../service/relatorios/relatorios.service';
 
 @Component({
   selector: 'app-listar-fornecedor',  // Corrigido para 'app-produto-list', sem a barra inicial
@@ -46,7 +47,7 @@ export class ListarFornecedorComponent implements OnInit {
   @ViewChild('modalAviso') modalAviso!: TemplateRef<any>;
   @ViewChild('modalMsgErro') modalMsgErro!: TemplateRef<any>;
   @ViewChild('modalMsgAviso') modalMsgAviso!: TemplateRef<any>;
-  
+
 
   listaFornecedores!: FornecedorDTO[];
   fornecedorAtualizar!: FornecedorDTO;
@@ -70,13 +71,19 @@ export class ListarFornecedorComponent implements OnInit {
   @ViewChild('searchBar') searchBar!: ElementRef
   isMobileOrTablet: boolean = false;
 
+  sortColumn: 'id' | 'nome' | 'razaoSocial' | 'logradouro' | 'bairro' | 'estado' | 'cep' = 'id';
+  sortDirection: 'asc' | 'desc' = 'asc';
+  private cacheSortSignature = '';
+  private cacheListaOrdenada: FornecedorDTO[] = [];
+
   constructor(
     private fornecedorService: FornecedorService,
     private authService: AuthService,
     private deviceService: DeviceService,
     private modalService: NgbModal,
     private router: Router,
-    private geolocalizacaoService: GeolocalizacaoService
+    private geolocalizacaoService: GeolocalizacaoService,
+    private relatoriosService: RelatoriosService
   ) { }
 
   ngOnInit() {
@@ -84,6 +91,79 @@ export class ListarFornecedorComponent implements OnInit {
     this.deviceService.isMobileOrTablet.subscribe(isMobile => {
       this.isMobileOrTablet = isMobile;
     });
+  }
+
+  get fornecedoresOrdenados(): FornecedorDTO[] {
+    return this.obterListaOrdenada();
+  }
+
+  setSort(column: 'id' | 'nome' | 'razaoSocial' | 'logradouro' | 'bairro' | 'estado' | 'cep'): void {
+    if (this.sortColumn === column) {
+      this.sortDirection = this.sortDirection === 'asc' ? 'desc' : 'asc';
+    } else {
+      this.sortColumn = column;
+      this.sortDirection = column === 'id' || column === 'nome' ? 'asc' : 'desc';
+    }
+    this.cacheSortSignature = '';
+    this.obterListaOrdenada();
+  }
+
+  getSortClass(column: 'id' | 'nome' | 'razaoSocial' | 'logradouro' | 'bairro' | 'estado' | 'cep'): string {
+    if (this.sortColumn !== column) return 'inactive';
+    return this.sortDirection === 'asc' ? 'asc' : 'desc';
+  }
+
+  private obterListaOrdenada(): FornecedorDTO[] {
+    const assinatura = `${this.sortColumn}_${this.sortDirection}_${this.listaFornecedores?.length || 0}_${this.totalRecords}`;
+    if (this.cacheSortSignature === assinatura) {
+      return this.cacheListaOrdenada;
+    }
+    const lista = [...(this.listaFornecedores || [])];
+    lista.sort((a, b) => this.compararFornecedores(a, b));
+    this.cacheListaOrdenada = lista;
+    this.cacheSortSignature = assinatura;
+    return lista;
+  }
+
+  private compararFornecedores(a: FornecedorDTO, b: FornecedorDTO): number {
+    let valorA: any;
+    let valorB: any;
+    switch (this.sortColumn) {
+      case 'id':
+        valorA = a.id ?? 0;
+        valorB = b.id ?? 0;
+        break;
+      case 'nome':
+        valorA = (a.nome || '').toLowerCase();
+        valorB = (b.nome || '').toLowerCase();
+        break;
+      case 'razaoSocial':
+        valorA = (a.dadosEmpresa?.razaoSocial || '').toLowerCase();
+        valorB = (b.dadosEmpresa?.razaoSocial || '').toLowerCase();
+        break;
+      case 'logradouro':
+        valorA = (a.enderecoFornecedor?.logradouro || '').toLowerCase();
+        valorB = (b.enderecoFornecedor?.logradouro || '').toLowerCase();
+        break;
+      case 'bairro':
+        valorA = (a.enderecoFornecedor?.bairro || '').toLowerCase();
+        valorB = (b.enderecoFornecedor?.bairro || '').toLowerCase();
+        break;
+      case 'estado':
+        valorA = (a.enderecoFornecedor?.estado || '').toLowerCase();
+        valorB = (b.enderecoFornecedor?.estado || '').toLowerCase();
+        break;
+      case 'cep':
+        valorA = (a.enderecoFornecedor?.cep || '').replace(/\D/g, '');
+        valorB = (b.enderecoFornecedor?.cep || '').replace(/\D/g, '');
+        break;
+      default:
+        valorA = 0;
+        valorB = 0;
+    }
+    if (valorA < valorB) return this.sortDirection === 'asc' ? -1 : 1;
+    if (valorA > valorB) return this.sortDirection === 'asc' ? 1 : -1;
+    return 0;
   }
 
   // Função para atualizar um fornecedor
@@ -178,6 +258,48 @@ export class ListarFornecedorComponent implements OnInit {
     ).subscribe(data => {
       this.listaFornecedores = data.content;
       this.totalRecords = data.totalElements;
+      this.cacheSortSignature = '';
+      this.obterListaOrdenada();
+    });
+  }
+
+  baixarPdfFornecedores(): void {
+    const fornecedores = this.obterListaOrdenada();
+    if (!fornecedores || fornecedores.length === 0) {
+      this.modalService.open(this.modalAviso);
+      this.mensagemErro = 'Não há fornecedores para exportar.';
+      return;
+    }
+
+    const colunas = ['ID', 'Nome', 'Razão Social', 'Logradouro', 'Bairro', 'Estado', 'CEP'];
+    const totalRegistros = fornecedores.length;
+    const linhas = fornecedores.map((fornecedor: FornecedorDTO) => ({
+      'ID': fornecedor.id ?? '-',
+      'Nome': fornecedor.nome || '-',
+      'Razão Social': fornecedor.dadosEmpresa?.razaoSocial || '-',
+      'Logradouro': fornecedor.enderecoFornecedor?.logradouro || '-',
+      'Bairro': fornecedor.enderecoFornecedor?.bairro || '-',
+      'Estado': fornecedor.enderecoFornecedor?.estado || '-',
+      'CEP': fornecedor.enderecoFornecedor?.cep || '-'
+    }));
+
+    const payload: ExportarRelatorioPayload = {
+      titulo: 'Lista de fornecedores',
+      colunas,
+      linhas,
+      paisagem: true,
+      rodapeDireita: totalRegistros > 0 ? `Total de registros: ${totalRegistros}` : undefined
+    };
+
+    this.relatoriosService.exportarPdf(payload).subscribe({
+      next: (blob: Blob) => {
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'lista-fornecedores.pdf';
+        a.click();
+        window.URL.revokeObjectURL(url);
+      }
     });
   }
 

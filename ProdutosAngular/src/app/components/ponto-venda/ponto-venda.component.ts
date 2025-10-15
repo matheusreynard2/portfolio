@@ -11,6 +11,7 @@ import { PontoVendaService } from '../../service/ponto-venda/ponto-venda.service
 import { CaixaItemDTO } from '../../model/dto/CaixaItemDTO';
 import { VendaCaixaDTO } from '../../model/dto/VendaCaixaDTO';
 import { UsuarioDTO } from '../../model/dto/UsuarioDTO';
+import { ExportarRelatorioPayload, RelatoriosService } from '../../service/relatorios/relatorios.service';
 
 interface CaixaItem extends CaixaItemDTO {}
 
@@ -68,7 +69,8 @@ export class PontoVendaComponent implements OnInit {
     private produtoService: ProdutoService,
     private authService: AuthService,
     private pdvService: PontoVendaService,
-    private modalService: NgbModal
+    private modalService: NgbModal,
+    private relatoriosService: RelatoriosService
   ) {}
 
   ngOnInit(): void {
@@ -158,8 +160,17 @@ export class PontoVendaComponent implements OnInit {
     const existente = this.caixa.find(i => i.idProduto === produto.id);
     if (existente) {
       existente.quantidade += 1;
+      existente.valorUnitario = existente.valorUnitario;
+      existente.subtotal = (existente.valorUnitario) * existente.quantidade;
     } else {
-      this.caixa.push({ idProduto: produto.id!, quantidade: 1 , tipoPreco: this.modoPreco});
+    const valorUnitario = this.obterPreco(produto);
+    this.caixa.push({
+      idProduto: produto.id!,
+      quantidade: 1,
+      tipoPreco: this.modoPreco,
+      valorUnitario,
+      subtotal: valorUnitario
+    });
     }
     // Decrementa o estoque disponível exibido na lista
     produto.quantia = Math.max(0, (produto.quantia ?? 0) - 1);
@@ -179,8 +190,19 @@ export class PontoVendaComponent implements OnInit {
     const existente = this.caixa.find(i => i.idProduto === id);
     if (existente) {
       existente.quantidade += qtd;
+      const unit = existente.valorUnitario;
+      existente.valorUnitario = unit;
+      existente.subtotal = unit * existente.quantidade;
     } else {
-      this.caixa.push({ idProduto: id, quantidade: qtd, tipoPreco: this.modoPreco });
+    const produto = this.getProdutoById(id);
+    const valorUnitario = produto ? this.obterPreco(produto) : 0;
+    this.caixa.push({
+      idProduto: id,
+      quantidade: qtd,
+      tipoPreco: this.modoPreco,
+      valorUnitario,
+      subtotal: valorUnitario * qtd
+    });
     }
     produto.quantia = Math.max(0, disponivel - qtd);
     this.recalcularTotais();
@@ -272,6 +294,7 @@ export class PontoVendaComponent implements OnInit {
     if (!prod) {
       return;
     }
+    const unit = item.valorUnitario ?? this.obterPrecoItem(item);
     if (delta > 0) {
       // Somente incrementa se houver estoque disponível
       if ((prod.quantia ?? 0) > 0) {
@@ -285,14 +308,16 @@ export class PontoVendaComponent implements OnInit {
         prod.quantia = (prod.quantia ?? 0) + 1;
       }
     }
+    item.valorUnitario = unit;
+    item.subtotal = unit * item.quantidade;
     this.recalcularTotais();
   }
 
   private recalcularTotais(): void {
     this.totalQuantidade = this.caixa.reduce((s, i) => s + i.quantidade, 0);
     this.totalValor = this.caixa.reduce((s, i) => {
-      const prod = this.produtos.find(p => p.id === i.idProduto);
-      return s + ((prod ? this.obterPreco(prod) : 0) * i.quantidade);
+      const unit = i.valorUnitario ?? this.obterPrecoItem(i);
+      return s + (unit * i.quantidade);
     }, 0);
     this.atualizarEstadoFinalizacao();
   }
@@ -312,6 +337,9 @@ export class PontoVendaComponent implements OnInit {
   }
 
   obterPrecoItem(item: CaixaItem): number {
+    if (item.valorUnitario != null && !Number.isNaN(item.valorUnitario)) {
+      return item.valorUnitario;
+    }
     const p = this.getProdutoById(item.idProduto);
     return p ? this.obterPreco(p) : 0;
   }
@@ -321,7 +349,11 @@ export class PontoVendaComponent implements OnInit {
     const venda: VendaCaixaDTO = {
       id: this.vendaId > 0 ? this.vendaId : null,
       idUsuario: this.authService.getUsuarioLogado().idUsuario,
-      itens: this.caixa,
+      itens: this.caixa.map(item => ({
+        ...item,
+        valorUnitario: this.obterPrecoItem(item),
+        subtotal: this.obterPrecoItem(item) * (item.quantidade || 0)
+      })),
       totalQuantidade: this.totalQuantidade,
       totalValor: this.totalValor
     };
@@ -438,11 +470,10 @@ export class PontoVendaComponent implements OnInit {
   abrirVisualizacao(venda: VendaCaixaDTO): void {
     this.vendaParaVisualizar = venda;
     this.itensVisualizacao = (venda.itens || []).map((it) => {
-      const prod = this.getProdutoById(it.idProduto);
-      const precoUnit = prod ? this.obterPreco(prod) : 0;
+      const precoUnit = this.obterPrecoItem(it as CaixaItem);
       return {
         item: it as CaixaItem,
-        produto: prod,
+        produto: this.getProdutoById(it.idProduto),
         precoUnit,
         subtotal: precoUnit * (it.quantidade || 0)
       };
@@ -489,6 +520,73 @@ export class PontoVendaComponent implements OnInit {
         const nome = (prod?.nome || '').toLowerCase();
         return nome.includes(termo);
       });
+    });
+  }
+
+  baixarPdfHistoricoVendas(): void {
+    const historico = this.historicoVendas || [];
+    if (historico.length === 0) {
+      this.overlayCarregandoPdv = true;
+      this.overlayTextoPdv = 'Não há registros no histórico para exportar.';
+      setTimeout(() => {
+        this.overlayCarregandoPdv = false;
+        this.overlayTextoPdv = '';
+      }, 2000);
+      return;
+    }
+
+    const colunas = ['ID venda', 'Vendedor', 'Quantidade total', 'Valor total', 'Data venda'];
+    const colunasDetalhes = ['Produto'];
+    const linhasDetalhadas: string[][][] = [];
+    const linhas = historico.map((v: any) => {
+      const itens = (v?.itens || []).map((item: any) => {
+        const produto = this.getProdutoById(item?.idProduto) || {} as ProdutoDTO;
+        const precoUnitRaw = Number(item?.precoUnit ?? item?.valorUnitario ?? this.obterPreco(produto));
+        const subtotalRaw = Number(item?.subtotal ?? (precoUnitRaw * Number(item?.quantidade || 0)));
+        const precoUnit = this.formatarMoeda(precoUnitRaw);
+        const subtotal = this.formatarMoeda(subtotalRaw);
+        return [
+          `${produto.id ?? '-'} - ${produto.nome || '-'}\nDescrição: ${produto.descricao || '-'}\nQtd: ${item?.quantidade ?? 0} | Preço: ${precoUnit} | Subtotal: ${subtotal}`
+        ];
+      });
+      linhasDetalhadas.push(itens);
+      return {
+        'ID venda': v.id ?? '-',
+        'Vendedor': this.usuarioLogin || '-',
+        'Quantidade total': v.totalQuantidade ?? 0,
+        'Valor total': this.formatarMoeda(Number(v.totalValor) || 0),
+        'Data venda': v?.dataVenda ? (new Date(v.dataVenda)).toLocaleString('pt-BR') : '-'
+      };
+    });
+
+    const payload: ExportarRelatorioPayload = {
+      titulo: 'Histórico de vendas detalhado',
+      colunas,
+      linhas,
+      paisagem: true,
+      rodapeDireita: `Total de registros: ${historico.length}`,
+      colunasDetalhes,
+      linhasDetalhadas
+    };
+
+    this.relatoriosService.exportarPdf(payload).subscribe({
+      next: (blob: Blob) => {
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'historico-vendas.pdf';
+        a.click();
+        window.URL.revokeObjectURL(url);
+      }
+    });
+  }
+
+  private formatarMoeda(valor: number): string {
+    return (valor || 0).toLocaleString('pt-BR', {
+      style: 'currency',
+      currency: 'BRL',
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2
     });
   }
 

@@ -11,7 +11,7 @@
   "private": true,
   "dependencies": {
     "@angular/animations": "^19.2.15",
-    "@angular/cdk": "^19.1.4",
+    "@angular/cdk": "^19.2.19",
     "@angular/common": "^19.2.15",
     "@angular/compiler": "^19.2.15",
     "@angular/core": "^19.2.15",
@@ -21,7 +21,10 @@
     "@angular/platform-browser": "^19.2.15",
     "@angular/platform-browser-dynamic": "^19.2.15",
     "@angular/router": "^19.2.15",
+    "@floating-ui/dom": "^1.7.4",
     "@ng-bootstrap/ng-bootstrap": "^18.0.0",
+    "@ngverse/motion": "^1.0.0",
+    "@radix-ng/primitives": "^0.50.0",
     "bootstrap": "^5.3.3",
     "fs": "^0.0.1-security",
     "jspdf": "^3.0.1",
@@ -36,6 +39,7 @@
     "@angular-devkit/build-angular": "^19.2.17",
     "@angular/cli": "^19.2.17",
     "@angular/compiler-cli": "^19.2.15",
+    "@tailwindcss/postcss": "^4.1.14",
     "@types/jasmine": "~5.1.0",
     "jasmine-core": "~5.4.0",
     "karma": "~6.4.0",
@@ -43,6 +47,8 @@
     "karma-coverage": "~2.2.0",
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.1.0",
+    "postcss": "^8.5.6",
+    "tailwindcss": "^4.1.14",
     "typescript": "~5.6.2"
   }
 }
