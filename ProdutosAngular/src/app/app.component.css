@@ -1,581 +1,354 @@
-.fonte-rodape {
-  font-size: 13px;
+:host {
+  display: block;
+  min-height: 100vh;
 }
 
-#img-whats {
-  margin-right: 8px;
-  position: relative;
-  left: -35px; /* Ajuste esse valor para mover mais para a esquerda conforme necessário */
-  margin-bottom: 18px;
-}
-
-.card-body .d-flex.align-items-center {
-  justify-content: flex-start;
-  width: 100%;
-  text-align: left;
-  margin-bottom: 8px;
-}
-
-@media (max-width: 768px) {
-  .d-flex.flex-wrap {
-    flex-direction: column;
-    align-items: flex-start !important;
-  }
-}
-
-.ms-n2 {
-  margin-left: -0.5rem !important;
-}
-
-.container {
-  margin-top: 12px;
-  margin-bottom: 50px;
-}
-
-.titulo-mobile {
-  margin-left: 50px;
-}
-
-img {
-  transform: translateX(40px) translateY(5px);
-}
-
-p {
-  font-size: 12px;
-  color: black;
-}
-
-#div_banner {
+.app-shell {
+  --app-bg-color: #f8f9fa;
+  --app-text-color: #212529;
+  --app-surface-color: #ffffff;
+  --app-border-color: rgba(0, 0, 0, 0.06);
+  --app-muted-color: #6c757d;
+  min-height: 100vh;
   display: flex;
+  flex-direction: column;
+  background: var(--app-bg-color);
+  color: var(--app-text-color);
+}
+
+.app-shell.dark-mode-shell {
+  --app-bg-color: #0f1115;
+  --app-text-color: #e9ecef;
+  --app-surface-color: #151a1f;
+  --app-border-color: rgba(255, 255, 255, 0.1);
+  --app-muted-color: rgba(233, 236, 239, 0.7);
+}
+
+.app-header {
+  background: linear-gradient(180deg, #050608 0%, #1b1f24 100%);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.header-layout {
+  display: flex;
+  align-items: stretch;
+}
+
+.sidebar {
+  width: 240px;
+  background: #10151d;
+  border-right: 1px solid rgba(255, 255, 255, 0.05);
+  display: flex;
+  align-items: stretch;
+}
+
+.sidebar.placeholder {
+  background: #0d1117;
+}
+
+.sidebar-content {
+  padding: 1rem 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  width: 100%;
+}
+
+.sidebar-header {
+  display: flex;
+  align-items: center;
   justify-content: space-between;
 }
 
-.perfil-div {
-  position: relative;;
+.sidebar-title {
+  font-family: "Montserrat", sans-serif;
+  font-size: 1.2rem;
+  letter-spacing: 0.15em;
+  color: #f8f9fa;
+  text-transform: uppercase;
+}
+
+.sidebar-profile {
   text-align: center;
-  margin-left: 0px;
-  background-color: #333; /* Para destacar a área do perfil */
-  width: 180px; /* aumenta largura para acomodar botões iguais */
+  gap: 0.75rem !important;
 }
 
-/* Spacer fixo para alinhar o título no mobile com/sem login */
-.perfil-spacer {
-  width: 150px;
-  height: 100%;
+.sidebar-username,
+.sidebar-saldo {
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-transform: uppercase;
 }
 
-/* Torna o banner contexto para posicionamento absoluto dos elementos internos */
-.div-banner {
-  position: relative;
+.sidebar-saldo {
+  color: #ffc107;
 }
 
-/* Título central fixo no banner */
-#bannerTitle {
-  position: absolute;
-  top: 38%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  text-align: center;
-  pointer-events: none; /* evita capturar cliques do topo */
-  z-index: 1;
+.sidebar-avatar {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid rgba(255, 255, 255, 0.35);
 }
 
-#bannerTitle .brand-main { font-size: 60px; }
-#bannerTitle .brand-sub { font-size: 30px; }
-#bannerTitle .brand-sub-alt { font-size: 30px; }
-
-@media (max-width: 768px) {
-  #bannerTitle .brand-main { font-size: 50px; }
-  #bannerTitle .brand-sub, #bannerTitle .brand-sub-alt { font-size: 30px; }
-}
-
-/* Desktop: menu centralizado logo abaixo do título */
-@media (min-width: 769px) {
-  #desktopNav {
-    position: absolute;
-    top: calc(38% + 42px);
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 2;
-  }
-  #desktopNav ul {
-    display: inline-flex;
-    flex-wrap: nowrap;
-    align-items: center;
-    gap: 8px;
-    white-space: nowrap;
-  }
-  #desktopNav .btn-group { white-space: nowrap; }
-}
-
-/* Container fixo para botão SAIR e login no mobile, dentro do banner */
-.mobile-user-container {
-  position: absolute;
-  bottom: 10px;
-  left: 12px;
+.sidebar-actions .btn {
   display: flex;
   align-items: center;
-  z-index: 2;
+  justify-content: center;
+  gap: 0.6rem;
 }
 
-.mobile-user-text {
-  font-size: 14px;
-  margin-left: 0;
+.sidebar-actions .btn-outline-light {
+  border-color: rgba(255, 255, 255, 0.35);
+  color: #f8f9fa;
 }
 
-.saldo-mobile {
-  color: #198754;
+.sidebar-actions .btn-outline-light:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.sidebar-actions .btn-danger {
+  border-radius: 999px;
+  padding-inline: 1.25rem;
+}
+
+.navbar-container {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.navbar-container.full-width {
+  width: 100%;
+}
+
+.navbar-brand .brand-logo {
+  font-family: "Montserrat", sans-serif;
   font-weight: 700;
-  font-size: 16px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
 }
 
-#div_banner_menu {
-  position: relative;
+.navbar-dark .navbar-nav .nav-link {
+  padding: 0.75rem 1rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  transition: color 0.2s ease;
 }
 
-/* Fixa a largura do centro do banner no mobile para evitar "andar" do título */
-@media (max-width: 768px) {
-  #bannerCenter {
-    min-width: calc(100% - 150px); /* compensa a coluna do perfil/spacer à esquerda */
-  }
-  #div_banner_menu h2 {
-    width: 100%;
-  }
+.navbar-dark .navbar-nav .nav-link.active,
+.navbar-dark .navbar-nav .nav-link:hover {
+  color: #ffc107;
 }
 
-#div_banner_gradient h2 {
-  margin-top: 10px;
-  margin-bottom: 7px;
+.navbar-dark .dropdown-menu {
+  background-color: rgba(15, 17, 21, 0.96);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  padding: 0.5rem 0;
+  border-radius: 0.5rem;
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.35);
 }
 
-.logout-button {
-  font-size: 12px;
-  color: white;
-  font-weight: bold;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 6px 12px; /* aumenta área clicável */
+.navbar-dark .dropdown-item {
+  color: #f8f9fa;
+  font-weight: 500;
+  padding: 0.55rem 1.25rem;
 }
 
-/* botão engrenagem com área clicável maior e altura igual ao SAIR */
-.perfil-div .btn-outline-light {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  height: 38px;
-  padding: 6px 12px;
-  width: 100%;
+.navbar-dark .dropdown-item:hover,
+.navbar-dark .dropdown-item.active {
+  background-color: rgba(255, 193, 7, 0.18);
+  color: #ffc107;
 }
 
-.perfil-actions { width: 80%; display: flex; gap: 4px; }
-
-/* Estilo do rótulo de usuário no mobile */
-.mobile-user-label {
-  font-size: 12px;
+.breadcrumb-bar {
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 }
 
-/* Label User no rodapé do banner em mobile */
-.mobile-user-banner {
-  position: absolute;
-  bottom: 8px;
-  left: 50px; /* desloca ~50px para a direita */
-  font-size: 12px;
-  z-index: 10;
-}
-
-/* Deslocar menu mobile ~50px à direita */
-.botao-menu-celular {
-  left: 60px; /* antes era 10px */
-}
-.menu-overlay.active {
-  /* mantém overlay cobrindo toda a tela; sem alteração */
-}
-.mobile-menu-options {
-  left: 25px; /* desloca painel do menu também */
-}
-
-/* Alinhar botão de tema ao canto superior direito do banner */
-#btnTrocarTema {
-  position: absolute;
-  top: 10px;
-  right: 10px; /* colado na lateral direita superior do banner */
-  z-index: 1001;
-}
-
-#btnLogoutTopRight {
-  position: absolute;
-  bottom: 10px; /* canto inferior direito do banner */
-  right: 10px;
-  z-index: 1000;
-}
-
-.perfil-div img {
-  border-radius: 25%; /* Deixa a imagem circular */
-  margin-left: -79px;
-}
-
-.text-white {
-  color: white;
-}
-
-.centralizado {
-  margin-left: 0; /* Alinha ao centro da tela */
-  text-align: center;
-}
-
-.news-container {
-  position: absolute;
-  margin-top: 10px;
-  bottom: 0px; /* Ajuste a altura conforme necessário */
-  left: 3px; /* Ajuste a posição inicial da notícia */
-  right: 100px; /* Para não ultrapassar a logo */
-  overflow: hidden;
-  background: rgba(0, 0, 0, 0.2);
-  padding: 8px 0;
-  color: white;
-  font-size: 12px;
-  height: 20px;
+.breadcrumb {
   display: flex;
-  align-items: center;
-  white-space: nowrap;
+  gap: 0.35rem;
+  margin-bottom: 0;
 }
 
-.news-marquee {
-  display: inline-block;
-  white-space: nowrap;
-  min-width: 100%;
+.breadcrumb-item {
+  color: rgba(248, 249, 250, 0.75);
+  text-transform: uppercase;
+  font-size: 0.78rem;
+  letter-spacing: 0.08em;
 }
 
-#btnTrocarTema {
-  border: 2px solid rgba(255, 255, 255, 0.2); /* Borda quase invisível (branca com opacidade) */
-  border-top-right-radius: 25px; /* Arredonda apenas o canto superior direito */
-  font-size: 16px;
+.breadcrumb-item + .breadcrumb-item::before {
+  content: '>';
+  color: rgba(248, 249, 250, 0.45);
+  padding: 0 0.35rem;
 }
 
-/* Menu mobile */
-.mobile-menu-options {
-  position: fixed;
-  top: 0;
-  left: 25px; /* desloca painel do menu 25px à direita */
-  width: 250px;
-  height: 100vh;
-  background: #ffffff;
-  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.2);
-  z-index: 9999;
-  overflow-y: auto;
-  padding: 60px 15px 20px 15px;
-  border-right: 1px solid #dee2e6;
+.breadcrumb-item.active {
+  color: #ffc107;
 }
 
-/* Overlay para escurecer o fundo quando o menu estiver aberto */
-.menu-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
+.announcement-bar {
+  background: linear-gradient(90deg, rgba(33, 37, 41, 0.95), rgba(73, 80, 87, 0.95));
+  color: #f8f9fa;
+  font-size: 0.875rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.announcement-bar .btn-outline-light {
+  border-color: rgba(255, 255, 255, 0.35);
+  color: #f8f9fa;
+}
+
+.app-main {
+  flex: 1 1 auto;
   width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.5);
-  z-index: 9998;
-  display: none;
+  padding-block: 1.5rem;
 }
 
-.menu-overlay.active {
-  display: block;
-}
-
-/* Ajuste do botão do menu */
-.botao-menu-celular {
-  position: fixed;
-  top: 10px;
-  left: 35px; /* 25px mais à direita do original */
-  z-index: 10000;
-}
-
-.menu-mobile-btn {
-  background: #000000;
-  border: 1px solid #343a40;
-  color: #ffffff;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  transition: all 0.3s ease;
-}
-
-.menu-mobile-btn:hover,
-.menu-mobile-btn:focus,
-.menu-mobile-btn:active {
-  background: #000000;
-  color: #ffffff;
-  border-color: #343a40;
-}
-
-/* Ajuste para o tema escuro */
-.dark-mode .menu-mobile-btn {
-  background: #ffffff !important;
-  border-color: #dee2e6 !important;
-  color: #000000 !important;
-}
-
-.dark-mode .menu-mobile-btn:hover,
-.dark-mode .menu-mobile-btn:focus,
-.dark-mode .menu-mobile-btn:active {
-  background: #ffffff !important;
-  border-color: #dee2e6 !important;
-  color: #000000 !important;
-}
-
-/* Estilos dos itens do menu */
-.mobile-menu-options ul {
-  list-style: none;
-  margin: 0;
+.app-main > * {
+  background: none;
+  border-radius: 0;
+  box-shadow: none;
+  border: none;
   padding: 0;
 }
 
-.mobile-menu-options li {
-  margin-bottom: 5px;
+.app-shell.dark-mode-shell .app-main > * {
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.45);
 }
 
-.mobile-menu-options a {
-  color: #000000;
+.app-footer {
+  background: #0b0d11;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.app-footer h6 {
+  color: #f8f9fa;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.app-footer .text-muted {
+  color: var(--app-muted-color) !important;
+}
+
+.app-footer a {
+  color: #ffc107;
   text-decoration: none;
-  display: block;
-  padding: 10px 15px;
-  border-radius: 4px;
-  transition: all 0.3s ease;
+  font-weight: 500;
 }
 
-.mobile-menu-options a:hover {
-  background: #f8f9fa;
-  color: #000000;
+.app-footer a:hover {
+  text-decoration: underline;
 }
 
-/* Ajuste dos sub-menus */
-.mobile-submenu {
-  margin-bottom: 10px;
+.footer-links {
+  text-transform: uppercase;
+  font-size: 0.76rem;
+  letter-spacing: 0.08em;
 }
 
-.mobile-submenu-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 10px 15px;
-  cursor: pointer;
-  background: #f8f9fa;
-  color: #000000;
-  border-radius: 4px;
-  transition: all 0.3s ease;
+.footer-contact span {
+  font-weight: 600;
 }
 
-.mobile-submenu-header:hover {
-  background: #e9ecef;
-}
-
-.mobile-submenu-items {
-  display: none;
-  padding: 5px 0 5px 15px;
-  background: #ffffff;
-}
-
-.mobile-submenu.active .mobile-submenu-items {
-  display: block;
-}
-
-.mobile-submenu.active .submenu-arrow {
-  transform: rotate(180deg);
-}
-
-.submenu-arrow {
-  transition: transform 0.3s ease;
-  font-size: 10px;
-  color: #000000;
-}
-
-/* Ajuste para o tema escuro */
-.dark-mode .mobile-menu-options {
-  background: #ffffff !important;
-  border-right: 1px solid #dee2e6;
-}
-
-.dark-mode .mobile-menu-options a {
-  color: #000000 !important;
-  background: #ffffff !important;
-}
-
-.dark-mode .mobile-menu-options a:hover {
-  background: #f8f9fa !important;
-  color: #000000 !important;
-}
-
-.dark-mode .mobile-submenu-header {
-  background: #ffffff !important;
-  color: #000000 !important;
-}
-
-.dark-mode .mobile-submenu-header:hover {
-  background: #f8f9fa !important;
-}
-
-.dark-mode .mobile-submenu-items {
-  background: #ffffff !important;
-}
-
-.dark-mode .mobile-submenu-items a {
-  background: #ffffff !important;
-  color: #000000 !important;
-}
-
-.dark-mode .mobile-submenu-items a:hover {
-  background: #f8f9fa !important;
-  color: #000000 !important;
-}
-
-/*///////////////////////////////////// */
-
-.btn-light-dark {
-  opacity: 0.65;
-}
-
-/* Estilos para os sub-menus mobile */
-.mobile-submenu {
-  margin-bottom: 5px;
-}
-
-.mobile-submenu-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 8px 10px;
-  cursor: pointer;
-  background: #f8f9fa;
-  border-radius: 4px;
-  margin-bottom: 2px;
-  transition: background-color 0.3s ease;
-}
-
-.mobile-submenu-header:hover {
-  background-color: #e9ecef !important;
-}
-
-.mobile-submenu-items {
-  display: none;
-  list-style: none;
-  margin: 0;
-  padding: 5px 0 5px 15px;
-  background: #fff;
-  border-radius: 0 0 4px 4px;
-}
-
-.mobile-submenu.active .mobile-submenu-items {
-  display: block !important;
-}
-
-.mobile-submenu.active .submenu-arrow {
-  transform: rotate(180deg);
-}
-
-.submenu-arrow {
-  transition: transform 0.3s ease;
-  font-size: 10px;
+.truncatable {
+  max-width: 180px;
   display: inline-block;
-}
-
-.mobile-submenu-items a {
-  display: block;
-  padding: 8px 10px;
-  color: #495057;
-  text-decoration: none;
-  transition: all 0.3s ease;
-  border-radius: 4px;
-}
-
-.mobile-submenu-items a:hover {
-  background-color: #e9ecef;
-  color: #212529;
-}
-
-/* Barra personalizada */
-.custom-bar {
-  position: relative;
-  width: 100%;
-  height: 40px;
-  background-color: #212529;
-  margin-bottom: 20px;
+  white-space: nowrap;
   overflow: hidden;
-  background-image: linear-gradient(rgba(0, 0, 0, 0.3) 0%, rgba(0, 0, 0, 0.3) 100%);
-  border-left: 5px solid var(--bs-secondary) !important;
-  border-right: 5px solid var(--bs-secondary) !important;
-  border-bottom: 5px solid var(--bs-secondary) !important;
-  border-top: none !important;
+  text-overflow: ellipsis;
 }
 
-.image-bar-container {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  justify-content: flex-start; /* Volta para o alinhamento à esquerda */
-  gap: 20px; /* Aumentado o espaçamento entre as imagens */
-  opacity: 0.7;
-  padding-left: 20px; /* Mantém apenas o padding à esquerda */
-}
-
-.background-bar-image {
-  height: 200%; /* Dobro do tamanho original */
-  width: auto;
-  object-fit: contain;
-  transform: translateY(-25%); /* Ajusta a posição vertical para centralizar */
-}
-
-.image-bar-1 {
-  opacity: 0.8; /* Maior opacidade */
-}
-
-.image-bar-2 {
-  opacity: 0.5; /* Opacidade média */
-}
-
-.image-bar-3 {
-  opacity: 0.3; /* Menor opacidade */
-}
-
-.text-bar {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: white;
-  font-size: 18px;
-  font-weight: bold;
-  z-index: 1;
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
-}
-
-/* Responsividade para mobile */
-@media (max-width: 768px) {
-  .custom-bar {
-    height: 30px; /* Altura menor para mobile */
-  }
-  
-  .text-overlay {
-    font-size: 14px;
+@media (max-width: 1200px) {
+  .sidebar {
+    width: 210px;
   }
 
-  .text-overlay span {
-    font-size: 11px !important; /* Força a sobreposição do estilo inline */
-    line-height: 1.2;
-    padding: 0 10px;
+  .sidebar-avatar {
+    width: 100px;
+    height: 100px;
+  }
+  .truncatable {
+    max-width: 150px;
+  }
+}
+
+@media (max-width: 992px) {
+  .header-layout {
+    flex-direction: column;
+  }
+
+  .sidebar {
+    width: 100%;
+    border-right: none;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .sidebar-content {
+    padding: 0.75rem 1rem;
+    align-items: center;
+  }
+
+  .navbar-container {
+    width: 100%;
+  }
+  .truncatable {
+    max-width: 200px;
+  }
+}
+
+@media (max-width: 576px) {
+  .announcement-bar .container-fluid {
+    gap: 0.5rem;
     text-align: center;
-    display: block;
+  }
+
+  .announcement-bar .btn-outline-light,
+  .announcement-bar .btn-outline-light.btn-sm {
+    width: auto;
+  }
+
+  .app-footer {
+    text-align: center;
+  }
+
+  .footer-links {
+    justify-content: center;
+  }
+  .truncatable {
+    max-width: 140px;
   }
 }
 
-@media (max-width: 480px) {
-  .text-overlay span {
-    font-size: 10px !important;
+.navbar,
+.announcement-bar,
+.app-footer,
+.app-main > * {
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.dropdown-menu {
+  transition: opacity 0.2s ease, transform 0.2s ease;
+  transform-origin: top;
+}
+
+.navbar-nav .dropdown:hover > .dropdown-menu {
+  display: block;
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.collapse.navbar-collapse.show {
+  display: flex !important;
+}
+
+@media (min-width: 992px) {
+  .collapse.navbar-collapse {
+    display: flex !important;
   }
 }

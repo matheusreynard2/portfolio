@@ -1,29 +1,13 @@
-@import "tailwindcss";/* You can add global styles to this file, and also import other style files */
+body {
+  margin: 0;
+  font-family: 'Montserrat', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+  background-color: #f8f9fa;
+  color: #212529;
+}
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
-
-/* Para NgBootstrap Modal (que você parece estar usando) */
+.mat-card,
+.mat-dialog-container,
 .modal-content {
-  color: black !important;
-}
-
-/* Se estiver usando Angular Material Dialog */
-.mat-dialog-container {
-  color: black !important;
-}
-
-/* Em styles.scss */
-:root {
-  --modal-text-color: black !important;
-}
-
-/* Seletor genérico para pegar a maioria dos modais */
-[class*="modal"],
-[class*="dialog"],
-[class*="popup"],
-[class*="modal"] *,
-[class*="dialog"] *,
-[class*="popup"] * {
-  color: var(--modal-text-color);
+  background-color: #ffffff;
+  color: #212529;
 }

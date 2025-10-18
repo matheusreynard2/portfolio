@@ -1,236 +1,115 @@
-<div class="container-fluid" style="padding-left: 20px; padding-right: 10px; padding-top: 5px; padding-bottom: 5px;">
-  <div class="div-banner bg-dark border border-5 border-secondary rounded-top-5 d-flex bg-gradient" style="height: 210px;">
-
-    <!-- Título central fixo no banner (independente do layout lateral) -->
-    <div id="bannerTitle">
-      <h2 class="text-white m-0 p-0">
-        <span class="brand-main" style="color: red; font-family: 'Leckerli One', cursive;">
-          P<span class="brand-sub" style="color: red; font-family: 'Merienda', cursive;">RO</span>
-          <span class="brand-sub-alt" style="color: white; font-family: 'Merienda', cursive;">DIFY</span>
-        </span>
-      </h2>
-    </div>
-
-    <div>
-      <ng-container *ngIf="mostrarPerfil; else perfilPlaceholder">
-      <!-- Modo Mobile/Tablet: sem imagem e sem container com bordas -->
-      <ng-container *ngIf="isMobileOrTablet; else perfilDesktop">
-        <!-- Spacer fixo para manter título no mesmo lugar antes/depois do login -->
-        <div class="perfil-div" style="visibility: hidden;"></div>
-        <div class="mobile-user-container d-flex align-items-center">
-          <a routerLink="/editar-usuario" class="btn btn-outline-light p-1 me-2" title="Editar perfil">
-            <i class="bi bi-gear"></i>
+<div class="app-shell" [class.dark-mode-shell]="temaEscuro">
+  <header class="app-header shadow-sm">
+    <div class="header-layout">
+      <aside class="sidebar" *ngIf="mostrarPerfil">
+        <div class="sidebar-content">
+          <div class="sidebar-header"></div>
+          <div class="sidebar-profile d-flex flex-column align-items-center text-light gap-3">
+            <span class="sidebar-username truncatable" [title]="usuarioLogado.login">{{usuarioLogado.login}}</span>
+            <img class="sidebar-avatar" [src]="usuarioLogado.imagem ? 'data:image/jpeg;base64,' + usuarioLogado.imagem : '/foto_perfil.png'" alt="Foto do usuário">
+            <span class="sidebar-saldo truncatable" [title]="(usuarioLogado.saldo ?? 0) | number:'1.2-2'">R$ {{ (usuarioLogado.saldo ?? 0) | number:'1.2-2' }}</span>
+          </div>
+        </div>
+      </aside>
+      <ng-template #sidebarPlaceholder>
+        <aside class="sidebar placeholder">
+          <div class="sidebar-content">
+            <div class="sidebar-header"></div>
+          </div>
+        </aside>
+      </ng-template>
+      <div class="navbar-container" [class.full-width]="!mostrarPerfil">
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark px-3">
+          <a class="navbar-brand d-flex align-items-center" routerLink="/login" (click)="handleNavInteraction()">
+            <span class="brand-logo">Prodify</span>
           </a>
-          <div class="d-flex flex-column">
-            <table>
-              <tr>
-                <td>
-                  <span class="mt-1" style="color: #198754; font-weight: 700; font-size: 16px;">R$ {{ (usuarioLogado.saldo?? 0 ) | number:'1.2-2' }}</span>
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <span class="text-white mobile-user-text">User: {{usuarioLogado.login}}</span>
-                </td>
-              </tr>
-            </table>
-          </div>
-        </div>
+          <button class="navbar-toggler" type="button" (click)="toggleNavbar()" aria-controls="mainNavbar" aria-expanded="!isNavCollapsed" aria-label="Alternar navegação">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" [class.show]="!isNavCollapsed" id="mainNavbar">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+              <li
+                class="nav-item"
+                *ngFor="let item of navLinks; let i = index"
+                [class.dropdown]="item.children?.length"
+                [class.show]="!isMobileOrTablet && openDropdownIndex === i"
+                (mouseenter)="onMouseEnter(i)"
+                (mouseleave)="onMouseLeave(i)"
+              >
+                <ng-container *ngIf="!item.children?.length">
+                  <a *ngIf="!item.external" class="nav-link" routerLinkActive="active" [routerLink]="item.routerLink" (click)="handleNavInteraction()">{{item.label}}</a>
+                  <a *ngIf="item.external" class="nav-link" [href]="item.routerLink" target="_blank" rel="noopener">{{item.label}}</a>
       </ng-container>
-      <!-- Modo Desktop: mantém imagem e container com bordas arredondadas -->
-      <ng-template #perfilDesktop>
-        <div
-          class="perfil-div d-flex flex-column justify-content-between align-items-center border border-2 border-secondary rounded-top-5"
-          style="width: 150px; height: 100%;">
-          <!-- Ações: engrenagem + logout -->
-          <div class="perfil-actions mt-2">
-            <div class="perfil-action">
-              <a routerLink="/editar-usuario" class="btn btn-outline-light w-100" title="Editar perfil">
-                <i class="bi bi-gear"></i>
-              </a>
-            </div>
-          </div>
-          <!-- Foto e nome do usuário -->
-          <div class="d-flex flex-column align-items-center">
-            <img
-              [src]="usuarioLogado.imagem ? 'data:image/jpeg;base64,' + usuarioLogado.imagem : '/foto_perfil.png'" alt="Foto do usuário" style="width: 85px; height: 85px;">
-            <span class="text-white mt-2" style="font-size: 16px;">{{usuarioLogado.login}}</span>
-            <span class="mt-1" style="color: #198754; font-weight: 700; font-size: 16px;">R$ {{ (usuarioLogado.saldo?? 0 ) | number:'1.2-2' }}</span>
-          </div>
-        </div>
-      </ng-template>
-      </ng-container>
-      <ng-template #perfilPlaceholder>
-        <div class="perfil-div" style="width: 150px;"></div>
-      </ng-template>
-    </div>
-
-    <!-- Coluna para o título e botões de navegação (80%) -->
-    <div id="bannerCenter" class="w-100 ps-3 d-flex flex-column justify-content-center" style="height: 100%; margin-left: -115px;" [ngClass]="{'centralizado': !mostrarPerfil}">
-      <div id="div_banner_menu">
-
-        <!-- Botões de navegação (desktop) -->
-        <div *ngIf="!isMobileOrTablet" id="desktopNav">
-          <ul class="text-center list-inline py-1" style="font-size: 14px;">
-            <li class="list-inline-item">
-              <a routerLink="/login" class="btn btn-outline-secondary fw-bold">Início</a>
-            </li>
-            <li class="list-inline-item">
-              <a routerLink="/relatorios" class="btn btn-outline-secondary fw-bold">Relatório financeiro</a>
-            </li>
-            <li class="list-inline-item">
-              <div class="btn-group">
-                <button type="button" class="btn btn-outline-secondary fw-bold dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                  Gerenciar produtos
-                </button>
-                <div class="dropdown-menu">
-                  <a class="dropdown-item" routerLink="/produtos">Listar produtos</a>
-                  <a class="dropdown-item" routerLink="/addproduto">Cadastrar produtos</a>
-                  <a class="dropdown-item" routerLink="/comprar-produtos">Comprar produtos</a>
-                </div>
-              </div>
-            </li>
-            <li class="list-inline-item">
-              <div class="btn-group">
-                <button type="button" class="btn btn-outline-secondary fw-bold dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                  Gerenciar fornecedores
-                </button>
-                <div class="dropdown-menu">
-                  <a class="dropdown-item" routerLink="/geoloc">Localizar fornecedor</a>
-                  <a class="dropdown-item" routerLink="/addfornecedor">Cadastrar fornecedor</a>
-                  <a class="dropdown-item" routerLink="/listarfornecedores">Listar fornecedores</a>
-                </div>
-              </div>
-            </li>
-            <li class="list-inline-item">
-              <a routerLink="/pdv" class="btn btn-outline-secondary fw-bold">Ponto de venda</a>
-            </li>
-            <li class="list-inline-item">
-              <a routerLink="/sobreTab1" class="btn btn-outline-secondary fw-bold">Sobre</a>
-            </li>
-            <li class="list-inline-item">
-              <a href="https://www.sistemaprodify.com/swagger-ui/index.html" target="_blank" class="btn btn-outline-secondary fw-bold">Swagger</a>
+                <ng-container *ngIf="item.children?.length">
+                  <a
+                    class="nav-link dropdown-toggle"
+                    role="button"
+                    [attr.data-bs-toggle]="isMobileOrTablet ? 'dropdown' : null"
+                    [class.show]="!isMobileOrTablet && openDropdownIndex === i"
+                    aria-expanded="openDropdownIndex === i"
+                    (click)="toggleDropdown($event, i)"
+                  >
+                    {{item.label}}
+                  </a>
+                  <ul class="dropdown-menu" [class.show]="openDropdownIndex === i">
+                    <li *ngFor="let child of item.children">
+                      <a class="dropdown-item" [routerLink]="child.routerLink" routerLinkActive="active" (click)="handleNavInteraction()">{{child.label}}</a>
             </li>
           </ul>
-        </div>
-
-        <!-- Menu para mobile/tablet -->
-        <div *ngIf="isMobileOrTablet">
-          
-          <!-- Overlay para escurecer o fundo -->
-          <div class="menu-overlay" [class.active]="menuOpen" (click)="abrirFecharMenu()"></div>
-          
-          <!-- Botão de hambúrguer para abrir/fechar o menu -->
-          <div class="botao-menu-celular" style="margin-top: 10px;">
-            <button class="btn menu-mobile-btn" (click)="abrirFecharMenu()">
-              &#9776;
-            </button>
-          </div>
-          
-          <!-- Menu que é exibido ao clicar no botão -->
-          <div *ngIf="menuOpen" class="mobile-menu-options">
-            <ul class="mdc-list">
-              <li>
-                <a routerLink="/login" (click)="abrirFecharMenu()">Início</a>
-              </li>
-              
-              <!-- Submenu Produtos -->
-              <li class="mobile-submenu">
-                <div class="mobile-submenu-header" (click)="toggleSubmenu($event)">
-                  <span>Gerenciar Produtos</span>
-                  <span class="submenu-arrow">▼</span>
-                </div>
-                <ul class="mobile-submenu-items">
-                  <li>
-                    <a routerLink="/produtos" (click)="abrirFecharMenu()">Listar produtos</a>
-                  </li>
-                  <li>
-                    <a routerLink="/addproduto" (click)="abrirFecharMenu()">Cadastrar produto</a>
-                  </li>
-                  <li>
-                    <a routerLink="/comprar-produtos" (click)="abrirFecharMenu()">Comprar produtos</a>
-                  </li>
-                </ul>
-              </li>
-              <li>
-                <a routerLink="/pdv" (click)="abrirFecharMenu()">Ponto de venda</a>
-              </li>
-
-              <!-- Submenu Fornecedores -->
-              <li class="mobile-submenu">
-                <div class="mobile-submenu-header" (click)="toggleSubmenu($event)">
-                  <span>Gerenciar Fornecedores</span>
-                  <span class="submenu-arrow">▼</span>
-                </div>
-                <ul class="mobile-submenu-items">
-                  <li>
-                    <a routerLink="/geoloc" (click)="abrirFecharMenu()">Localizar fornecedor</a>
-                  </li>
-                  <li>
-                    <a routerLink="/addfornecedor" (click)="abrirFecharMenu()">Cadastrar fornecedor</a>
-                  </li>
-                  <li>
-                    <a routerLink="/listarfornecedores" (click)="abrirFecharMenu()">Listar fornecedores</a>
-                  </li>
-                </ul>
-              </li>
-              <li>
-                <a routerLink="/relatorios" (click)="abrirFecharMenu()">Relatório financeiro</a>
-              </li>
-              <li>
-                <a routerLink="/sobreTab1" (click)="abrirFecharMenu()">Sobre</a>
-              </li>
-              <li>
-                <a href="https://www.sistemaprodify.com/swagger-ui/index.html" target="_blank" (click)="abrirFecharMenu()">Swagger</a>
+                </ng-container>
               </li>
             </ul>
           </div>
+        </nav>
+        <div class="breadcrumb-bar bg-dark text-light px-3 py-2">
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb m-0">
+              <li *ngFor="let crumb of breadcrumbTrail; let last = last" class="breadcrumb-item" [class.active]="last" [attr.aria-current]="last ? 'page' : null">
+                <ng-container *ngIf="!last; else activeCrumb">{{crumb}}</ng-container>
+                <ng-template #activeCrumb>{{crumb}}</ng-template>
+              </li>
+            </ol>
+          </nav>
         </div>
       </div>
     </div>
-    <div>
-      <button id="btnTrocarTema" (click)="alternarTema()" class="btn btn-light-dark fw-bold" title="Tema">
+  </header>
+
+  <section class="announcement-bar" role="status">
+    <div class="container-fluid d-flex flex-column flex-md-row justify-content-between align-items-center py-2">
+      <div class="d-flex align-items-center gap-2"></div>
+      <div class="d-flex align-items-center gap-3 text-muted small">
+        <button class="btn btn-outline-light btn-sm" (click)="alternarTema()" title="Tema">
         <i [class]="temaEscuro ? 'bi bi-sun' : 'bi bi-moon'"></i>
       </button>
-      <button *ngIf="mostrarPerfil" id="btnLogoutTopRight" (click)="logout()" class="btn btn-danger fw-bold" title="Sair">
+        <a routerLink="/editar-usuario" class="btn btn-outline-light btn-sm" title="Editar perfil" (click)="handleNavInteraction()">
+          <i class="bi bi-gear"></i>
+        </a>
+        <button class="btn btn-danger btn-sm" title="Sair" (click)="logout()">
         <i class="bi bi-box-arrow-right"></i>
       </button>
-
-    </div>
-  </div>
-
-  <!-- Barra personalizada -->
-  <div class="custom-bar rounded-bottom-5">
-    <div class="image-bar-container">
-      <img src="/java_img.png" alt="Imagem 1" class="background-bar-image image-bar-1">
-      <img src="/spring_img.png" alt="Imagem 2" class="background-bar-image image-bar-2">
-      <img src="/angular_img.png" alt="Imagem 3" class="background-bar-image image-bar-3">
     </div>  
-    <div class="text-bar">
-      <span *ngIf="!isMobileOrTablet" style="font-size: 14px;">Deseja ter acesso ao código deste projeto? Ou saber mais sobre o sistema ou sobre o desenvolvedor? <a routerLink="/sobreTab2">Clique aqui!</a></span>
-      <span *ngIf="isMobileOrTablet" style="font-size: 11px;">Acesse o GitHub do Prodify - <a routerLink="/sobreTab2">Clique aqui!</a></span>
     </div>
-  </div>
+  </section>
 
+  <main class="app-main container-fluid py-3">
   <router-outlet></router-outlet>
+  </main>
 
-  <!-- Modal de expiração tratado nos components via catch; nenhum toast global aqui -->
-
-  <div class="bg-dark border border-5 border-secondary position-relative">
-    <div class="card-body text-center text-white">
-      <div class="bg-gradient p-3">
-        <div class="d-flex align-items-center">
-          <img src="/whatsapp-logo.png" height="30" width="30" id="img-whats" class="ms-n2 me-3" />
-          <div class="d-flex flex-wrap align-items-center">
-            <span class="me-2 fonte-rodape">(41) 99539-7044 |</span>
-            <span class="me-2 fonte-rodape">Acessos: {{numeroVisitas}} |</span>
-            <span class="me-1 fonte-rodape"><a href="https://www.linkedin.com/in/matheus-reynard" target="_blank">Conheça o Desenvolvedor!</a></span>
-          </div>
+  <footer class="app-footer bg-dark text-light py-4 mt-auto">
+    <div class="container d-flex flex-column flex-lg-row align-items-center justify-content-between gap-3">
+      <div class="d-flex align-items-center gap-2">
+        <img src="/logo_sacolas.png" alt="Logo Prodify" width="100" height="70">
+        <div>
+          <h6 class="m-0">Prodify</h6>
+          <small class="text-muted">Microsserviços para gestão de produtos</small>
         </div>
       </div>
-      <div class="position-absolute end-0 bottom-0 d-flex align-items-end">
-        <img src="/logo_sacolas.png" alt="Logo" width="150" height="110">
+      <div class="footer-links d-flex flex-wrap align-items-center gap-3">
+        <a routerLink="/sobreTab2" class="text-light" (click)="handleNavInteraction()">Conheça o Sistema</a>
+        <a href="https://github.com/matheusreynard2/portfolio" target="_blank" rel="noopener" class="text-light">GitHub</a>
+        <a href="https://www.sistemaprodify.com/swagger-ui/index.html" target="_blank" rel="noopener" class="text-light">Swagger</a>
       </div>
     </div>
-  </div>
+  </footer>
 </div>

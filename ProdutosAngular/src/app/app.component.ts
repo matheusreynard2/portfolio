@@ -1,19 +1,27 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
-import {NavigationEnd, Router, RouterLink, RouterOutlet} from '@angular/router';
+import {Component, HostListener, OnInit} from '@angular/core';
+import {NavigationEnd, Router, RouterLink, RouterLinkActive, RouterOutlet} from '@angular/router';
 import {FormsModule} from '@angular/forms';
-import {HttpClientModule, HttpResponse} from '@angular/common/http';
+import {HttpClientModule} from '@angular/common/http';
 import {NgbModule, NgbToastModule} from '@ng-bootstrap/ng-bootstrap';
 import {AuthService} from './service/auth/auth.service';
-import {NgClass, NgIf, NgOptimizedImage, DecimalPipe} from '@angular/common';
-import {filter, firstValueFrom, Observable, of} from 'rxjs';
+import {CommonModule} from '@angular/common';
+import {filter, firstValueFrom} from 'rxjs';
 import {UsuarioService} from './service/usuario/usuario.service';
 import {DeviceService} from './service/device/device.service';
 import {environment} from '../environments/environment';
-import { UsuarioDTO } from './model/dto/UsuarioDTO';
+import {UsuarioDTO} from './model/dto/UsuarioDTO';
+import {DecimalPipe} from '@angular/common';
+
+interface NavLink {
+  label: string;
+  routerLink?: string;
+  external?: boolean;
+  children?: NavLink[];
+}
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, RouterLink, FormsModule, HttpClientModule, NgbModule, NgbToastModule, NgIf, NgClass, DecimalPipe],
+  imports: [CommonModule, RouterOutlet, RouterLink, RouterLinkActive, FormsModule, HttpClientModule, NgbModule, NgbToastModule, DecimalPipe],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
 })
@@ -31,7 +39,47 @@ export class AppComponent implements OnInit {
   numeroVisitas: number = 0;
   temaEscuro: boolean = false;
   isMobileOrTablet: boolean = false;
-  menuOpen: boolean = false;
+  isNavCollapsed: boolean = true;
+  openDropdownIndex: number | null = null;
+  navLinks: NavLink[] = [
+    {label: 'Início', routerLink: '/login'},
+    {
+      label: 'Gerenciar produtos',
+      children: [
+        {label: 'Listar produtos', routerLink: '/produtos'},
+        {label: 'Cadastrar produtos', routerLink: '/addproduto'},
+        {label: 'Comprar produtos', routerLink: '/comprar-produtos'},
+      ],
+    },
+    {
+      label: 'Gerenciar fornecedores',
+      children: [
+        {label: 'Localizar fornecedor', routerLink: '/geoloc'},
+        {label: 'Cadastrar fornecedor', routerLink: '/addfornecedor'},
+        {label: 'Listar fornecedores', routerLink: '/listarfornecedores'},
+      ],
+    },
+    {label: 'Ponto de venda', routerLink: '/pdv'},
+    {label: 'Relatório financeiro', routerLink: '/relatorios'},
+    {label: 'Sobre', routerLink: '/sobreTab1'},
+    {label: 'Swagger', routerLink: 'https://www.sistemaprodify.com/swagger-ui/index.html', external: true},
+  ];
+  breadcrumbTrail: string[] = ['Início'];
+  private readonly breadcrumbDefinitions: { pattern: RegExp; trail: string[] }[] = [
+    {pattern: /^\/?$/, trail: ['Início']},
+    {pattern: /^\/login$/, trail: ['Início']},
+    {pattern: /^\/produtos$/, trail: ['Início', 'Gerenciar Produtos', 'Listar Produtos']},
+    {pattern: /^\/addproduto$/, trail: ['Início', 'Gerenciar Produtos', 'Cadastrar Produtos']},
+    {pattern: /^\/comprar-produtos$/, trail: ['Início', 'Gerenciar Produtos', 'Comprar Produtos']},
+    {pattern: /^\/relatorios$/, trail: ['Início', 'Relatórios Financeiros']},
+    {pattern: /^\/sobreTab1$/, trail: ['Início', 'Sobre', 'Sobre o Dev']},
+    {pattern: /^\/sobreTab2$/, trail: ['Início', 'Sobre', 'Infos Sistema']},
+    {pattern: /^\/geoloc$/, trail: ['Início', 'Gerenciar Fornecedores', 'Localizar Fornecedor']},
+    {pattern: /^\/addfornecedor$/, trail: ['Início', 'Gerenciar Fornecedores', 'Cadastrar Fornecedor']},
+    {pattern: /^\/listarfornecedores$/, trail: ['Início', 'Gerenciar Fornecedores', 'Listar Fornecedores']},
+    {pattern: /^\/pdv$/, trail: ['Início', 'Ponto de Venda']},
+    {pattern: /^\/editar-usuario$/, trail: ['Início', 'Perfil', 'Editar Usuário']},
+  ];
 
   // Variáveis para contablização de acessos
   carregando: boolean = false;
@@ -64,14 +112,17 @@ export class AppComponent implements OnInit {
     // OBSERVER DE SELEÇÃO DO MENU PARA SABER SE ESTÁ ACESSANDO POR CELULAR/COMPUTADOR
     this.deviceService.isMobileOrTablet.subscribe(isMobile => {
       this.isMobileOrTablet = isMobile;
-      // Se voltar para desktop, garante que o menu mobile seja fechado.
-      if (!this.isMobileOrTablet) {
-        this.menuOpen = false;
+      if (isMobile) {
+        this.isNavCollapsed = true;
+      } else {
+        this.isNavCollapsed = false;
+        this.openDropdownIndex = null;
       }
     });
 
     this.verificarExibicaoPerfil();
     this.verificarTema();
+    this.updateBreadcrumbs(this.router.url);
     this.verificarAcessos();
     this.router.events.pipe(
       filter(event => event instanceof NavigationEnd)
@@ -80,20 +131,12 @@ export class AppComponent implements OnInit {
       this.verificarExibicaoPerfil();
       // Reavalia redirecionamento a cada navegação
       evaluateRedirect();
+      this.closeNavigation();
+      this.updateBreadcrumbs(this.router.url);
     });
 
     this.authService.onActivity$().subscribe(() => evaluateRedirect());
 
-    // Adiciona event listeners para os sub-menus mobile
-    setTimeout(() => {
-      const submenuHeaders = document.querySelectorAll('.mobile-submenu-header');
-      submenuHeaders.forEach(header => {
-        header.addEventListener('click', (event) => {
-          this.toggleSubmenu(event);
-        });
-      });
-      
-    }, 0);
   }
 
   private verificarAcessos() {
@@ -109,12 +152,8 @@ export class AppComponent implements OnInit {
   }
 
   private verificarTema() {
-    const tema = localStorage.getItem('tema');
-    if (tema === 'escuro') {
-      document.body.classList.add('tema-escuro');
-    } else {
-      document.body.classList.remove('tema-escuro');
-    }
+    const temaEscuro = localStorage.getItem('temaEscuro');
+    this.temaEscuro = temaEscuro === 'true';
   }
 
   // Método separado para verificação do perfil
@@ -139,7 +178,6 @@ export class AppComponent implements OnInit {
     this.erro = null;
     try {
       const acessoRegistrado = await firstValueFrom(this.usuarioService.addNovoAcessoIp());
-      // Segunda chamada somente se a primeira retornar true
       acessoRegistrado
         ? this.numeroVisitas = await firstValueFrom(this.usuarioService.getAllAcessosIp())
         : this.erro = "Não foi possível registrar o acesso atual.";
@@ -152,52 +190,81 @@ export class AppComponent implements OnInit {
     return Promise.resolve();
   }
 
-  // CARREGAR TEMA CLARO/ESCURO
-  carregarTema() {
-    const temaEscuro = localStorage.getItem('temaEscuro');
-    if (temaEscuro === 'true') {
-      this.temaEscuro = true;
-      document.body.classList.add('dark-mode');
-    } else {
-      this.temaEscuro = false;
-      document.body.classList.remove('dark-mode');
-    }
-  }
-
-  // ALTERNA ENTRE TEMAS CLARO/ESCURO
   alternarTema() {
-    this.temaEscuro = !this.temaEscuro
+    this.temaEscuro = !this.temaEscuro;
     localStorage.setItem('temaEscuro', this.temaEscuro.toString());
-    if (this.temaEscuro) {
-      document.body.classList.add('dark-mode');
-    } else {
-      document.body.classList.remove('dark-mode');
-    }
   }
 
-  // FAZ LOGOUT DO USUÁRIO
   logout() {
-    // Executa o logout
-    this.authService.logout()
+    this.authService.logout();
   }
 
-  abrirFecharMenu() {
-    this.menuOpen = !this.menuOpen;
-    if (!this.menuOpen) {
-      // Fecha todos os sub-menus quando o menu principal é fechado
-      const submenus = document.querySelectorAll('.mobile-submenu');
-      submenus.forEach(submenu => {
-        submenu.classList.remove('active');
-      });
+  toggleNavbar() {
+    if (!this.isMobileOrTablet) {
+      return;
+    }
+
+    this.isNavCollapsed = !this.isNavCollapsed;
+    if (this.isNavCollapsed) {
+      this.openDropdownIndex = null;
     }
   }
 
-  toggleSubmenu(event: Event) {
-    const header = event.currentTarget as HTMLElement;
-    const submenu = header.closest('.mobile-submenu');
-    if (submenu) {
-      submenu.classList.toggle('active');
+  toggleDropdown(event: Event, index: number) {
+    if (this.isMobileOrTablet) {
+      event.preventDefault();
+      event.stopPropagation();
+      this.openDropdownIndex = this.openDropdownIndex === index ? null : index;
     }
   }
 
+  handleNavInteraction() {
+    if (this.isMobileOrTablet) {
+      this.closeNavigation();
+    }
+  }
+
+  closeNavigation() {
+    if (this.isMobileOrTablet) {
+      this.isNavCollapsed = true;
+    } else {
+      this.isNavCollapsed = false;
+    }
+    this.openDropdownIndex = null;
+  }
+
+  onMouseEnter(index: number) {
+    if (!this.isMobileOrTablet) {
+      this.openDropdownIndex = index;
+    }
+  }
+
+  onMouseLeave(index: number) {
+    if (!this.isMobileOrTablet && this.openDropdownIndex === index) {
+      this.openDropdownIndex = null;
+    }
+  }
+
+  private updateBreadcrumbs(url: string) {
+    const cleanUrl = (url || '').split('?')[0];
+    const match = this.breadcrumbDefinitions.find(def => def.pattern.test(cleanUrl));
+    if (match) {
+      this.breadcrumbTrail = match.trail;
+      return;
+    }
+
+    const segments = cleanUrl.split('/').filter(Boolean);
+    if (!segments.length) {
+      this.breadcrumbTrail = ['Início'];
+      return;
+    }
+
+    const friendlySegments = segments.map(segment => {
+      const transformed = segment.replace(/-/g, ' ');
+      return transformed.charAt(0).toUpperCase() + transformed.slice(1);
+    });
+
+    this.breadcrumbTrail = ['Início', ...friendlySegments];
+  }
 }
+
