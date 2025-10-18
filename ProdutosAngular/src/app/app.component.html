@@ -11,13 +11,6 @@
           </div>
         </div>
       </aside>
-      <ng-template #sidebarPlaceholder>
-        <aside class="sidebar placeholder">
-          <div class="sidebar-content">
-            <div class="sidebar-header"></div>
-          </div>
-        </aside>
-      </ng-template>
       <div class="navbar-container" [class.full-width]="!mostrarPerfil">
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark px-3">
           <a class="navbar-brand d-flex align-items-center" routerLink="/login" (click)="handleNavInteraction()">
@@ -27,68 +20,81 @@
             <span class="navbar-toggler-icon"></span>
           </button>
           <div class="collapse navbar-collapse" [class.show]="!isNavCollapsed" id="mainNavbar">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-              <li
-                class="nav-item"
-                *ngFor="let item of navLinks; let i = index"
-                [class.dropdown]="item.children?.length"
-                [class.show]="!isMobileOrTablet && openDropdownIndex === i"
-                (mouseenter)="onMouseEnter(i)"
-                (mouseleave)="onMouseLeave(i)"
-              >
-                <ng-container *ngIf="!item.children?.length">
+            <div class="navbar-lines">
+              <ul class="navbar-nav mb-2 mb-lg-0">
+                <li
+                  class="nav-item"
+                  *ngFor="let item of primaryNavLinks; let i = index"
+                  [class.dropdown]="item.children?.length"
+                  [class.show]="!isMobileOrTablet && openDropdownIndex === i"
+                  (mouseenter)="onMouseEnter(i)"
+                  (mouseleave)="onMouseLeave(i)"
+                >
+                  <ng-container *ngIf="!item.children?.length">
+                    <a *ngIf="!item.external" class="nav-link" routerLinkActive="active" [routerLink]="item.routerLink" (click)="handleNavInteraction()">{{item.label}}</a>
+                    <a *ngIf="item.external" class="nav-link" [href]="item.routerLink" target="_blank" rel="noopener">{{item.label}}</a>
+                  </ng-container>
+                  <ng-container *ngIf="item.children?.length">
+                    <a
+                      class="nav-link dropdown-toggle"
+                      role="button"
+                      [attr.data-bs-toggle]="isMobileOrTablet ? 'dropdown' : null"
+                      [class.show]="!isMobileOrTablet && openDropdownIndex === i"
+                      aria-expanded="openDropdownIndex === i"
+                      (click)="toggleDropdown($event, i)"
+                    >
+                      {{item.label}}
+                    </a>
+                    <ul class="dropdown-menu" [class.show]="openDropdownIndex === i">
+                      <li *ngFor="let child of item.children">
+                        <a class="dropdown-item" [routerLink]="child.routerLink" routerLinkActive="active" (click)="handleNavInteraction()">{{child.label}}</a>
+                      </li>
+                    </ul>
+                  </ng-container>
+                </li>
+              </ul>
+              <ul class="navbar-nav mb-2 mb-lg-0 secondary-line">
+                <li
+                  class="nav-item"
+                  *ngFor="let item of secondaryNavLinks"
+                >
                   <a *ngIf="!item.external" class="nav-link" routerLinkActive="active" [routerLink]="item.routerLink" (click)="handleNavInteraction()">{{item.label}}</a>
                   <a *ngIf="item.external" class="nav-link" [href]="item.routerLink" target="_blank" rel="noopener">{{item.label}}</a>
-      </ng-container>
-                <ng-container *ngIf="item.children?.length">
-                  <a
-                    class="nav-link dropdown-toggle"
-                    role="button"
-                    [attr.data-bs-toggle]="isMobileOrTablet ? 'dropdown' : null"
-                    [class.show]="!isMobileOrTablet && openDropdownIndex === i"
-                    aria-expanded="openDropdownIndex === i"
-                    (click)="toggleDropdown($event, i)"
-                  >
-                    {{item.label}}
-                  </a>
-                  <ul class="dropdown-menu" [class.show]="openDropdownIndex === i">
-                    <li *ngFor="let child of item.children">
-                      <a class="dropdown-item" [routerLink]="child.routerLink" routerLinkActive="active" (click)="handleNavInteraction()">{{child.label}}</a>
-            </li>
-          </ul>
-                </ng-container>
-              </li>
-            </ul>
+                </li>
+              </ul>
+            </div>
           </div>
         </nav>
-        <div class="breadcrumb-bar bg-dark text-light px-3 py-2">
-          <nav aria-label="breadcrumb">
-            <ol class="breadcrumb m-0">
-              <li *ngFor="let crumb of breadcrumbTrail; let last = last" class="breadcrumb-item" [class.active]="last" [attr.aria-current]="last ? 'page' : null">
-                <ng-container *ngIf="!last; else activeCrumb">{{crumb}}</ng-container>
-                <ng-template #activeCrumb>{{crumb}}</ng-template>
-              </li>
-            </ol>
-          </nav>
-        </div>
       </div>
     </div>
   </header>
 
   <section class="announcement-bar" role="status">
     <div class="container-fluid d-flex flex-column flex-md-row justify-content-between align-items-center py-2">
-      <div class="d-flex align-items-center gap-2"></div>
-      <div class="d-flex align-items-center gap-3 text-muted small">
+      <div class="d-flex align-items-center gap-3 announcement-actions order-1 order-md-2">
         <button class="btn btn-outline-light btn-sm" (click)="alternarTema()" title="Tema">
-        <i [class]="temaEscuro ? 'bi bi-sun' : 'bi bi-moon'"></i>
-      </button>
+          <i [class]="temaEscuro ? 'bi bi-sun' : 'bi bi-moon'"></i>
+        </button>
         <a routerLink="/editar-usuario" class="btn btn-outline-light btn-sm" title="Editar perfil" (click)="handleNavInteraction()">
           <i class="bi bi-gear"></i>
         </a>
         <button class="btn btn-danger btn-sm" title="Sair" (click)="logout()">
-        <i class="bi bi-box-arrow-right"></i>
-      </button>
-    </div>  
+          <i class="bi bi-box-arrow-right"></i>
+          <span>SAIR</span>
+        </button>
+      </div>
+      <div class="announcement-left d-flex align-items-center gap-2 text-uppercase order-2 order-md-1">
+        <nav aria-label="breadcrumb" class="breadcrumb-wrapper">
+          <ol class="breadcrumb m-0">
+            <li *ngFor="let crumb of breadcrumbTrail; let last = last; let idx = index" class="breadcrumb-item" [class.active]="last" [attr.aria-current]="last ? 'page' : null">
+              <ng-container *ngIf="!last">
+                <a class="breadcrumb-link" (click)="navigateToBreadcrumb(idx)">{{crumb.label}}</a>
+              </ng-container>
+              <ng-template #activeCrumb>{{crumb.label}}</ng-template>
+            </li>
+          </ol>
+        </nav>
+      </div>
     </div>
   </section>
 
@@ -109,6 +115,10 @@
         <a routerLink="/sobreTab2" class="text-light" (click)="handleNavInteraction()">Conheça o Sistema</a>
         <a href="https://github.com/matheusreynard2/portfolio" target="_blank" rel="noopener" class="text-light">GitHub</a>
         <a href="https://www.sistemaprodify.com/swagger-ui/index.html" target="_blank" rel="noopener" class="text-light">Swagger</a>
+        <a href="https://wa.me/5541995397044" target="_blank" rel="noopener" class="text-light d-inline-flex align-items-center gap-1 whatsapp-link">
+          <i class="bi bi-whatsapp"></i>
+          <span>(41) 99539-7044</span>
+        </a>
       </div>
     </div>
   </footer>

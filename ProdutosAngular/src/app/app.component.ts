@@ -1,4 +1,4 @@
-import {Component, HostListener, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {NavigationEnd, Router, RouterLink, RouterLinkActive, RouterOutlet} from '@angular/router';
 import {FormsModule} from '@angular/forms';
 import {HttpClientModule} from '@angular/common/http';
@@ -17,6 +17,12 @@ interface NavLink {
   routerLink?: string;
   external?: boolean;
   children?: NavLink[];
+  secondaryRow?: boolean;
+}
+
+interface BreadcrumbItem {
+  label: string;
+  url?: string;
 }
 
 @Component({
@@ -60,26 +66,81 @@ export class AppComponent implements OnInit {
       ],
     },
     {label: 'Ponto de venda', routerLink: '/pdv'},
-    {label: 'Relatório financeiro', routerLink: '/relatorios'},
-    {label: 'Sobre', routerLink: '/sobreTab1'},
-    {label: 'Swagger', routerLink: 'https://www.sistemaprodify.com/swagger-ui/index.html', external: true},
+    {label: 'Relatório financeiro', routerLink: '/relatorios', secondaryRow: true},
+    {label: 'Sobre', routerLink: '/sobreTab1', secondaryRow: true},
+    {label: 'Swagger', routerLink: 'https://www.sistemaprodify.com/swagger-ui/index.html', external: true, secondaryRow: true},
   ];
-  breadcrumbTrail: string[] = ['Início'];
-  private readonly breadcrumbDefinitions: { pattern: RegExp; trail: string[] }[] = [
-    {pattern: /^\/?$/, trail: ['Início']},
-    {pattern: /^\/login$/, trail: ['Início']},
-    {pattern: /^\/produtos$/, trail: ['Início', 'Gerenciar Produtos', 'Listar Produtos']},
-    {pattern: /^\/addproduto$/, trail: ['Início', 'Gerenciar Produtos', 'Cadastrar Produtos']},
-    {pattern: /^\/comprar-produtos$/, trail: ['Início', 'Gerenciar Produtos', 'Comprar Produtos']},
-    {pattern: /^\/relatorios$/, trail: ['Início', 'Relatórios Financeiros']},
-    {pattern: /^\/sobreTab1$/, trail: ['Início', 'Sobre', 'Sobre o Dev']},
-    {pattern: /^\/sobreTab2$/, trail: ['Início', 'Sobre', 'Infos Sistema']},
-    {pattern: /^\/geoloc$/, trail: ['Início', 'Gerenciar Fornecedores', 'Localizar Fornecedor']},
-    {pattern: /^\/addfornecedor$/, trail: ['Início', 'Gerenciar Fornecedores', 'Cadastrar Fornecedor']},
-    {pattern: /^\/listarfornecedores$/, trail: ['Início', 'Gerenciar Fornecedores', 'Listar Fornecedores']},
-    {pattern: /^\/pdv$/, trail: ['Início', 'Ponto de Venda']},
-    {pattern: /^\/editar-usuario$/, trail: ['Início', 'Perfil', 'Editar Usuário']},
-  ];
+  breadcrumbTrail: BreadcrumbItem[] = [{label: 'Início', url: '/login'}];
+  private readonly breadcrumbConfig: Record<string, BreadcrumbItem[]> = {
+    '/login': [{label: 'Início', url: '/login'}],
+    '/produtos': [
+      {label: 'Início', url: '/login'},
+      {label: 'Gerenciar Produtos'},
+      {label: 'Listar Produtos'}
+    ],
+    '/addproduto': [
+      {label: 'Início', url: '/login'},
+      {label: 'Gerenciar Produtos'},
+      {label: 'Cadastrar Produtos'}
+    ],
+    '/comprar-produtos': [
+      {label: 'Início', url: '/login'},
+      {label: 'Gerenciar Produtos'},
+      {label: 'Comprar Produtos'}
+    ],
+    '/geoloc': [
+      {label: 'Início', url: '/login'},
+      {label: 'Gerenciar Fornecedores'},
+      {label: 'Localizar Fornecedor'}
+    ],
+    '/addfornecedor': [
+      {label: 'Início', url: '/login'},
+      {label: 'Gerenciar Fornecedores'},
+      {label: 'Cadastrar Fornecedor'}
+    ],
+    '/listarfornecedores': [
+      {label: 'Início', url: '/login'},
+      {label: 'Gerenciar Fornecedores'},
+      {label: 'Listar Fornecedores'}
+    ],
+    '/relatorios': [
+      {label: 'Início', url: '/login'},
+      {label: 'Relatório Financeiro'}
+    ],
+    '/sobreTab1': [
+      {label: 'Início', url: '/login'},
+      {label: 'Sobre'},
+      {label: 'Sobre o Dev'}
+    ],
+    '/sobreTab2': [
+      {label: 'Início', url: '/login'},
+      {label: 'Sobre'},
+      {label: 'Infos Sistema'}
+    ],
+    '/pdv': [
+      {label: 'Início', url: '/login'},
+      {label: 'Ponto de Venda'}
+    ],
+    '/editar-usuario': [
+      {label: 'Início', url: '/login'},
+      {label: 'Perfil'},
+      {label: 'Editar Usuário'}
+    ]
+  };
+  private readonly routeLabelMap: Record<string, string> = {
+    '/login': 'Início',
+    '/produtos': 'Listar Produtos',
+    '/addproduto': 'Cadastrar Produtos',
+    '/comprar-produtos': 'Comprar Produtos',
+    '/geoloc': 'Localizar Fornecedor',
+    '/addfornecedor': 'Cadastrar Fornecedor',
+    '/listarfornecedores': 'Listar Fornecedores',
+    '/relatorios': 'Relatório Financeiro',
+    '/sobreTab1': 'Sobre',
+    '/sobreTab2': 'Infos Sistema',
+    '/pdv': 'Ponto de Venda',
+    '/editar-usuario': 'Editar Usuário'
+  };
 
   // Variáveis para contablização de acessos
   carregando: boolean = false;
@@ -247,24 +308,53 @@ export class AppComponent implements OnInit {
 
   private updateBreadcrumbs(url: string) {
     const cleanUrl = (url || '').split('?')[0];
-    const match = this.breadcrumbDefinitions.find(def => def.pattern.test(cleanUrl));
-    if (match) {
-      this.breadcrumbTrail = match.trail;
+    const configTrail = this.breadcrumbConfig[cleanUrl];
+    if (configTrail) {
+      this.breadcrumbTrail = configTrail;
       return;
     }
 
     const segments = cleanUrl.split('/').filter(Boolean);
     if (!segments.length) {
-      this.breadcrumbTrail = ['Início'];
+      this.breadcrumbTrail = [{label: 'Início', url: '/login'}];
       return;
     }
 
-    const friendlySegments = segments.map(segment => {
-      const transformed = segment.replace(/-/g, ' ');
-      return transformed.charAt(0).toUpperCase() + transformed.slice(1);
+    const trail: BreadcrumbItem[] = [{label: 'Início', url: '/login'}];
+    let accumulated = '';
+    segments.forEach((segment, index) => {
+      accumulated += '/' + segment;
+      const label = this.routeLabelMap['/' + segment] || segment.replace(/-/g, ' ');
+      const formattedLabel = label.charAt(0).toUpperCase() + label.slice(1);
+      trail.push({label: formattedLabel, url: index === segments.length - 1 ? accumulated : undefined});
     });
 
-    this.breadcrumbTrail = ['Início', ...friendlySegments];
+    this.breadcrumbTrail = trail;
+  }
+
+  get primaryNavLinks(): NavLink[] {
+    return this.navLinks.filter(link => !link.secondaryRow);
+  }
+
+  get secondaryNavLinks(): NavLink[] {
+    return this.navLinks.filter(link => link.secondaryRow);
+  }
+
+  navigateToBreadcrumb(index: number) {
+    if (index < 0 || index >= this.breadcrumbTrail.length) {
+      return;
+    }
+
+    const target = this.breadcrumbTrail[index];
+    if (target.url) {
+      this.router.navigate([target.url]);
+      return;
+    }
+
+    const matchedRoute = Object.entries(this.routeLabelMap).find(([, label]) => label === target.label);
+    if (matchedRoute) {
+      this.router.navigate([matchedRoute[0]]);
+    }
   }
 }
 

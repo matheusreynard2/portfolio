@@ -103,6 +103,7 @@
                            [dropSpecialCharacters]="true"
                            [(ngModel)]="usuario.saldo"
                            [ngStyle]="{color: (usuario.saldo ?? 0) < 0 ? '#b02a37' : '#198754'}">
+                    <span class="input-group-text limite-saldo">Max: R$2.000.000.000</span>
                   </div>
                 </td>
               </tr>

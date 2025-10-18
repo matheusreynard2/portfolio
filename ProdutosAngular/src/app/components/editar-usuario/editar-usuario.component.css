@@ -18,4 +18,11 @@
   min-width: 120px;
 }
 
+.div-form-editar-usuario .limite-saldo {
+  background-color: transparent;
+  border: none;
+  font-size: 0.8rem;
+  color: #6c757d;
+}
+
 
