@@ -14,21 +14,23 @@
 }
 
 .mat-card-subtitle {
-  font-size: 16px; /* Tamanho da fonte do subtítulo */
-  color: black;
+  font-size: 16px;
+  color: #000000;
 }
 .mat-card-content {
-  color: black;
+  color: #000000;
   overflow-y: auto; /* Barra de rolagem vertical, se necessário */
   height: 100%; /* Use 100% da altura do contêiner pai */
 }
 
 .profile-card {
-  width: 100%; /* Ocupar 100% da largura disponível */
-  padding: 20px; /* Você pode ajustar conforme necessário */
-  box-shadow: none; /* Remover sombra, se necessário, para um visual mais limpo */
+  width: 100%;
+  padding: 20px;
+  box-shadow: none;
   text-align: justify;
   overflow-y: auto;
+  background-color: #f8f9fa;
+  color: #000000;
 }
 
 .icon-row {
@@ -58,15 +60,15 @@
 
 /* Definindo a cor do texto */
 .profile-card label {
-  color: black;
+  color: #000000;
 }
 .profile-card p {
   font-size: 16px;
-  color: black;
+  color: #000000;
 }
 .profile-card #titulo {
   font-size: 24px;
-  color: black;
+  color: #000000;
 }
 .profile-card h1,
 .profile-card h2,
@@ -74,7 +76,7 @@
 .profile-card h4,
 .profile-card h5,
 .profile-card h6 {
-  color: black; /* Define que todas as escritas sejam pretas */
+  color: #000000;
 }
 
 /* /////////////// ABAS //////////////////////// */
@@ -83,18 +85,18 @@
 }
 
 .nav-tabs .nav-link {
-  color: #6c757d; /* Texto cinza escuro */
-  background-color: #f8f9fa; /* Fundo cinza claro */
+  color: #000000;
+  background-color: #f8f9fa;
   border: none;
-  border-radius: 0.375rem 0.375rem 0 0; /* Canto arredondado superior */
+  border-radius: 0.375rem 0.375rem 0 0;
   margin-right: 5px;
   padding: 0.75rem 1.5rem;
   transition: all 0.3s ease;
 }
 
 .nav-tabs .nav-link:hover:not(.active):not(.disabled) {
-  background-color: #e9ecef; /* Cinza no hover */
-  color: #343a40; /* Texto mais escuro no hover */
+  background-color: #e9ecef;
+  color: #212529;
 }
 
 .nav-tabs .nav-link.active {
@@ -104,8 +106,8 @@
 }
 
 .nav-tabs .nav-link.disabled {
-  color: #adb5bd; /* Cinza claro desabilitado */
-  background-color: #f1f3f5; /* Fundo cinza mais claro */
+  color: rgba(73, 80, 87, 0.6);
+  background-color: rgba(248, 249, 250, 0.8);
   cursor: not-allowed;
 }
 
@@ -116,8 +118,8 @@
 }
 
 .nav-tabs.dark-mode .nav-link {
-  color: #ced4da; /* Texto cinza claro */
-  background-color: #212529; /* Fundo preto */
+  color: #f8f9fa;
+  background-color: #212529;
   border: none;
   border-radius: 0.375rem 0.375rem 0 0;
   margin-right: 5px;
@@ -130,13 +132,13 @@
 }
 
 .nav-tabs.dark-mode .nav-link.active {
-  color: #212529; /* Texto preto */
-  background-color: #f8f9fa; /* Fundo cinza claro */
+  color: #212529;
+  background-color: #f8f9fa;
   border-bottom: 2px solid transparent;
 }
 
 .nav-tabs.dark-mode .nav-link.disabled {
-  color: #6c757d;
+  color: rgba(206, 212, 218, 0.6);
   background-color: #343a40;
   cursor: not-allowed;
 }

@@ -239,11 +239,16 @@ td:has(.btn.bg-primary-subtle.fw-bold.btn-atualizar-lista) {
 
 .info-label {
   font-weight: 600;
-  color: #dc3545;
+  color: #f8f9fa;
 }
 
 .info-text {
-  color: #6c757d;
+  color: rgba(233, 236, 239, 0.75);
+}
+
+.total-registros {
+  color: #f8f9fa;
+  font-weight: 600;
 }
 
 /* Modal */
@@ -375,12 +380,22 @@ td:has(.btn.bg-primary-subtle.fw-bold.btn-atualizar-lista) {
 
 /* Melhorias para o container do modal */
 .fornecedor-info {
-  background-color: #e3f2fd;
+  background-color: rgba(227, 242, 253, 0.15);
+  color: #f8f9fa;
   padding: 12px;
   border-radius: 6px;
   margin-bottom: 20px;
-  border-left: 4px solid #2196f3;
+  border-left: 4px solid rgba(33, 150, 243, 0.6);
   font-size: 14px;
+}
+
+.fornecedor-info b {
+  color: #ffffff;
+}
+
+.fornecedor-info-label {
+  color: #ffffff;
+  font-weight: 700;
 }
 
 /* Button container */
@@ -401,13 +416,13 @@ td:has(.btn.bg-primary-subtle.fw-bold.btn-atualizar-lista) {
 }
 
 .btn-salvar:disabled {
-  background-color: #6c757d;
+  background-color: rgba(108, 117, 125, 0.6);
   cursor: not-allowed;
 }
 
 .btn-fechar {
-  background-color: #6c757d;
-  color: white;
+  background-color: #495057;
+  color: #f8f9fa;
   padding: 8px 20px;
   border: none;
   border-radius: 4px;
@@ -444,18 +459,21 @@ td:has(.btn.bg-primary-subtle.fw-bold.btn-atualizar-lista) {
 
 /* Estilos para campos readonly */
 .form-control[readonly] {
-  background-color: #f8f9fa;
+  background-color: rgba(52, 58, 64, 0.65);
+  color: rgba(233, 236, 239, 0.75);
   opacity: 1;
   cursor: not-allowed;
 }
 
 /* Estilos para melhorar a aparência dos campos editáveis */
 .form-control {
-  border: 1px solid #ced4da;
+  border: 1px solid rgba(255, 255, 255, 0.12);
   border-radius: 4px;
   padding: 8px 12px;
   font-size: 14px;
   transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+  background-color: #2b3036;
+  color: #f8f9fa;
 }
 
 .form-control:focus {
@@ -487,11 +505,12 @@ td:has(.btn.bg-primary-subtle.fw-bold.btn-atualizar-lista) {
 
 /* Estilos para campos de busca */
 .search-controls {
-  background-color: #f8f9fa;
-  border: 1px solid #dee2e6;
+  background-color: rgba(47, 52, 59, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 8px;
   padding: 15px;
   margin-bottom: 10px;
+  color: #f8f9fa;
 }
 
 .search-controls .form-row {
@@ -515,9 +534,9 @@ td:has(.btn.bg-primary-subtle.fw-bold.btn-atualizar-lista) {
 }
 
 .search-controls .btn-secondary {
-  background-color: #6c757d;
-  border-color: #6c757d;
-  color: white;
+  background-color: #495057;
+  border-color: #495057;
+  color: #f8f9fa;
 }
 
 .search-controls .btn-secondary:hover {
@@ -526,8 +545,8 @@ td:has(.btn.bg-primary-subtle.fw-bold.btn-atualizar-lista) {
 }
 
 .search-controls .btn-secondary:disabled {
-  background-color: #6c757d;
-  border-color: #6c757d;
+  background-color: rgba(108, 117, 125, 0.6);
+  border-color: rgba(108, 117, 125, 0.6);
   opacity: 0.65;
 }
 

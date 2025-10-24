@@ -1,12 +1,12 @@
 body {
-  background-color: #ffffff;
-  color: #000000;
+  background-color: #2f343b;
+  color: #e9ecef;
   transition: background-color 0.5s ease, color 0.5s ease;
 }
 
 body.dark-mode {
-  background-color: #121212 !important;
-  color: #ffffff !important;
+  background-color: #15191f !important;
+  color: #f8f9fa !important;
 }
 
 .bg-gradient {
@@ -34,23 +34,23 @@ body.dark-mode {
 
 /* Bordas e botões */
 .border-secondary {
-  border-color: #6c757d !important;
+  border-color: #8a939d !important;
 }
 
 .dark-mode .border-secondary {
-  border-color: #aaa !important;
+  border-color: #c0c5cc !important;
 }
 
 /* Estilizando botões */
 .btn-outline-secondary {
-  border-color: #6c757d;
-  color: #6c757d;
+  border-color: #8a939d;
+  color: #cfd3d8;
   transition: background 0.5s, color 0.5s;
 }
 
 .btn-outline-secondary:hover {
-  background-color: #6c757d;
-  color: white;
+  background-color: #8a939d;
+  color: #121212;
 }
 
 .dark-mode .btn-outline-secondary {
@@ -75,6 +75,6 @@ body.dark-mode {
 
 .modal-content,
 .mat-dialog-container {
-  background-color: #ffffff !important;
-  color: #000000 !important;
+  background-color: #3b4149 !important;
+  color: #f8f9fa !important;
 }

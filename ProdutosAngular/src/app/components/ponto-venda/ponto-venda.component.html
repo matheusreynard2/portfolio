@@ -292,6 +292,19 @@
   </div>
 </ng-template>
 
+<ng-template #modalLimiteSaldo let-modal>
+  <div class="modal-header py-2">
+    <h6 class="modal-title">Aviso</h6>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
+  </div>
+  <div class="modal-body">
+    <p>O saldo do usuário ultrapassou o limite de R$2.000.000.000,00. Impossível prosseguir.</p>
+  </div>
+  <div class="modal-footer py-2">
+    <button class="btn btn-primary btn-sm" (click)="modal.close()">Ok</button>
+  </div>
+</ng-template>
+
 <!-- Modal de Confirmação de Exclusão (pequeno) -->
 <ng-template #modalConfirmDelete let-modal>
   <div class="modal-header py-2">

@@ -26,7 +26,7 @@ table th, table td {
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(255, 255, 255, 0.8);
+  background: rgba(33, 37, 41, 0.85);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -58,16 +58,16 @@ table th, table td {
 }
 
 .checkbox-col {
-  border-right: 2px solid #dee2e6;
-  border-left: 2px solid #dee2e6;
-  background-color: #fdfdfd;
+  border-right: 2px solid rgba(255, 255, 255, 0.08);
+  border-left: 2px solid rgba(255, 255, 255, 0.08);
+  background-color: #2f343b;
 }
 
 .comprar-tabela-wrapper {
-  background: #fff;
+  background: #3b4149;
   border-radius: 8px;
-  box-shadow: 0 1px 0 0 #e9ecef, 0 -1px 0 0 #e9ecef;
-  padding: 8px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+  padding: 16px;
 }
 
 .relatorio-tabela th,
@@ -75,8 +75,17 @@ table th, table td {
   vertical-align: middle;
 }
 
+.relatorio-tabela tbody tr {
+  background-color: rgba(52, 58, 64, 0.55);
+  color: #f8f9fa;
+}
+
+.relatorio-tabela tbody tr:nth-of-type(odd) {
+  background-color: rgba(47, 52, 59, 0.65);
+}
+
 .relatorio-tabela tbody tr:hover {
-  background-color: rgba(13, 110, 253, 0.05);
+  background-color: rgba(13, 110, 253, 0.12);
 }
 
 .produto-coluna {
@@ -96,7 +105,7 @@ table th, table td {
 
 .produto-coluna .produto-id {
   font-size: 12px;
-  color: #6c757d;
+  color: rgba(233, 236, 239, 0.65);
 }
 
 .produto-coluna .produto-nome {
@@ -112,6 +121,7 @@ table th, table td {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  color: rgba(248, 249, 250, 0.75);
 }
 
 .sortable {

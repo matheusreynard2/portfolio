@@ -54,9 +54,9 @@
   max-width: 1100px;
   min-height: 80vh;
   margin: 0 auto;
-  background: #ffffff;
+  background: #3b4149;
   border-radius: 12px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.35);
   overflow: hidden;
   display: flex;
   flex-direction: column;
@@ -64,8 +64,8 @@
 
 /* ===== MODAL HEADER ===== */
 .modal-header {
-  background: white;
-  color: #495057;
+  background: #2f343b;
+  color: #f8f9fa;
   padding: 15px 20px;
   position: relative;
   border-bottom: 1px solid #e9ecef;
@@ -76,7 +76,7 @@
   font-size: 22px;
   font-weight: 600;
   margin: 0;
-  color: #495057;
+  color: #f8f9fa;
   white-space: nowrap;
 }
 
@@ -92,38 +92,47 @@
 /* ===== MODAL BODY ===== */
 .modal-body {
   padding: 0;
-  background: #f8f9fa;
+  background: #2b3036;
   flex: 1;
   overflow-y: auto;
 }
 
 .produto-info {
-  background: white;
+  background: #3b4149;
   margin: 0;
   padding: 15px 20px;
   font-size: 15px;
-  color: #495057;
+  color: #f8f9fa;
   border-bottom: 1px solid #e9ecef;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
+.produto-info b {
+  color: #ffffff;
+}
+
+.produto-info-label {
+  color: #ffffff;
+  font-weight: 700;
+}
+
 /* ===== FORMULÁRIO ===== */
 .produto-form {
   padding: 15px 15px 25px 15px;
-  background: #f8f9fa;
+  background: #2b3036;
   height: 100%;
 }
 
 /* ===== SEÇÕES DO FORMULÁRIO ===== */
 .form-section {
-  background: white;
+  background: #3b4149;
   border-radius: 8px;
   padding: 15px;
   margin-bottom: 12px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
-  border: 1px solid #e9ecef;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+  border: 1px solid rgba(255, 255, 255, 0.06);
   position: relative;
 }
 
@@ -132,7 +141,7 @@
 }
 
 .section-title {
-  color: #495057;
+  color: #f8f9fa;
   font-size: 15px;
   font-weight: 600;
   margin: 0 0 15px 0;
@@ -190,7 +199,7 @@
 
 .form-group label {
   font-weight: 600;
-  color: #495057;
+  color: #f8f9fa;
   font-size: 13px;
   margin: 0;
   white-space: nowrap;
@@ -207,24 +216,25 @@
 /* ===== INPUTS ===== */
 .form-control {
   padding: 8px 12px;
-  border: 2px solid #dee2e6;
+  border: 1px solid rgba(255, 255, 255, 0.12);
   border-radius: 6px;
   font-size: 16px;
   transition: all 0.3s ease;
-  background: white;
+  background: #2b3036;
+  color: #f8f9fa;
   height: 36px;
 }
 
 .form-control:focus {
-  border-color: #667eea;
-  box-shadow: 0 0 0 0.15rem rgba(102, 126, 234, 0.2);
+  border-color: #adb5bd;
+  box-shadow: 0 0 0 0.2rem rgba(173, 181, 189, 0.25);
   outline: none;
 }
 
 .form-control:disabled {
-  background-color: #f8f9fa;
-  border-color: #dee2e6;
-  color: #6c757d;
+  background-color: #2f343b;
+  border-color: rgba(255, 255, 255, 0.1);
+  color: rgba(248, 249, 250, 0.6);
 }
 
 .hidden-input {
@@ -244,7 +254,7 @@
 }
 
 .valor-display {
-  background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+  background: linear-gradient(135deg, rgba(40, 167, 69, 0.85) 0%, rgba(32, 201, 151, 0.85) 100%);
   color: white;
   padding: 6px 12px;
   border-radius: 5px;
@@ -252,7 +262,7 @@
   font-size: 12px;
   min-width: 100px;
   text-align: center;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 16px rgba(40, 167, 69, 0.35);
   white-space: nowrap;
   height: 28px;
   display: flex;
@@ -276,20 +286,20 @@
   justify-content: space-between;
   align-items: center;
   padding: 10px 15px;
-  background: #f8f9fa;
+  background: #2f343b;
   border-radius: 6px;
-  border: 1px solid #dee2e6;
+  border: 1px solid rgba(255, 255, 255, 0.06);
 }
 
 .total-item label {
   font-weight: 600;
-  color: #495057;
+  color: #f8f9fa;
   margin: 0;
   white-space: nowrap;
 }
 
 .valor-display-large {
-  background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+  background: linear-gradient(135deg, rgba(40, 167, 69, 0.8) 0%, rgba(32, 201, 151, 0.8) 100%);
   color: white;
   padding: 8px 16px;
   border-radius: 6px;
@@ -297,7 +307,7 @@
   font-size: 14px;
   min-width: 120px;
   text-align: center;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 16px rgba(32, 201, 151, 0.3);
   white-space: nowrap;
 }
 
@@ -313,7 +323,7 @@
 }
 
 .valor-display-final {
-  background: white;
+  background: #3b4149;
   color: #28a745;
   padding: 10px 20px;
   border-radius: 6px;
@@ -321,15 +331,15 @@
   font-size: 18px;
   min-width: 150px;
   text-align: center;
-  border: 2px solid white;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border: 2px solid rgba(40, 167, 69, 0.25);
+  box-shadow: 0 4px 12px rgba(40, 167, 69, 0.25);
   white-space: nowrap;
 }
 
 /* ===== UPLOAD DE ARQUIVO COMPACTO ===== */
 .file-upload-container-compact {
-  background: #f8f9fa;
-  border: 2px dashed #dee2e6;
+  background: #2f343b;
+  border: 2px dashed rgba(255, 255, 255, 0.2);
   border-radius: 6px;
   padding: 10px;
   text-align: center;
@@ -338,12 +348,12 @@
 
 .file-upload-container-compact:hover {
   border-color: #667eea;
-  background: #f8f9fa;
+  background: rgba(102, 126, 234, 0.08);
 }
 
 .file-label {
   font-weight: 600;
-  color: #495057;
+  color: rgba(248, 249, 250, 0.9);
   display: block;
   margin-bottom: 8px;
   white-space: nowrap;
@@ -352,9 +362,10 @@
 
 .form-control-file-compact {
   padding: 6px;
-  border: 2px solid #dee2e6;
+  border: 1px solid rgba(255, 255, 255, 0.12);
   border-radius: 5px;
-  background: white;
+  background: #2b3036;
+  color: #f8f9fa;
   font-size: 12px;
   width: 100%;
   max-width: 250px;
@@ -365,14 +376,14 @@
 .file-warning-compact {
   margin-top: 15px;
   padding: 6px;
-  background: #fff3cd;
-  border: 1px solid #ffeaa7;
+  background: rgba(255, 243, 205, 0.15);
+  border: 1px solid rgba(255, 234, 167, 0.3);
   border-radius: 4px;
   font-size: 11px;
 }
 
 .warning-text {
-  color: #856404;
+  color: #ffe08a;
   font-weight: bold;
 }
 
@@ -614,6 +625,11 @@ select.form-control {
   font-size: 14px;
 }
 
+.searchBar_input::placeholder {
+  color: #000 !important;
+  opacity: 1;
+}
+
 /* Estilos para as estatísticas */
 .stats-container {
   display: flex;
@@ -671,16 +687,21 @@ select.form-control {
 
 .info-label {
   font-weight: 600;
-  color: #495057;
+  color: #f8f9fa;
 }
 
 .info-text {
-  color: #6c757d;
+  color: rgba(233, 236, 239, 0.75);
 }
 
 .info-divider {
   color: #dee2e6;
   font-weight: 300;
+}
+
+.total-registros {
+  color: #f8f9fa;
+  font-weight: 600;
 }
 
 /* Estilos para os modais de mensagem */

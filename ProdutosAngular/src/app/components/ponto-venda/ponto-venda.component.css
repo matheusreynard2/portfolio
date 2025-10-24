@@ -7,7 +7,8 @@
 }
 
 .card-header {
-  background: #f8f9fa;
+  background: #2f343b;
+  color: #f8f9fa;
 }
 
 .btn-group .btn {
@@ -54,11 +55,7 @@ tr.sem-estoque td {
   border-radius: 6px;
 }
 
-.dark-mode .btn-secondary.style-btn-form {
-  color: #fff !important;
-  background-color: #6c757d !important;
-  border-color: #6c757d !important;
-}
+
 
 .dark-mode .btn-secondary.style-btn-form:hover {
   background-color: #5a6268 !important;
@@ -83,9 +80,9 @@ tr.sem-estoque td {
 }
 
 .checkbox-col {
-  border-right: 2px solid #dee2e6;
-  border-left: 2px solid #dee2e6;
-  background-color: #fdfdfd;
+  border-right: 2px solid rgba(255, 255, 255, 0.12);
+  border-left: 2px solid rgba(255, 255, 255, 0.12);
+  background-color: #2f343b;
 }
 
 
@@ -154,7 +151,7 @@ table.table td .d-flex.gap-2 {
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(255, 255, 255, 0.8);
+  background: rgba(26, 31, 38, 0.85);
   display: flex;
   align-items: center;
   justify-content: center;

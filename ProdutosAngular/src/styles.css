@@ -1,13 +1,75 @@
 body {
   margin: 0;
   font-family: 'Montserrat', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
-  background-color: #f8f9fa;
-  color: #212529;
+  background-color: #2f343b;
+  color: #e9ecef;
 }
 
 .mat-card,
 .mat-dialog-container,
-.modal-content {
-  background-color: #ffffff;
-  color: #212529;
+.modal-content,
+.card,
+.table,
+.list-group,
+.form-control,
+.input-group,
+.accordion-item,
+.accordion-body,
+.accordion-header,
+.offcanvas,
+.bg-white,
+.content-surface {
+  background-color: #3b4149 !important;
+  color: #f8f9fa !important;
+}
+
+.table thead th {
+  background-color: #454b55 !important;
+  color: #f8f9fa !important;
+}
+
+.table-striped > tbody > tr:nth-of-type(odd) {
+  --bs-table-bg-type: #343a40;
+}
+
+.table-hover > tbody > tr:hover {
+  --bs-table-bg-hover: #454b55;
+  color: #f8f9fa !important;
+}
+
+.form-control,
+.input-group-text,
+.form-select {
+  background-color: #2b3036;
+  color: #f8f9fa;
+  border-color: #4a515b;
+}
+
+.form-control::placeholder,
+.form-select::placeholder,
+textarea::placeholder,
+input::placeholder {
+  color: rgba(233, 236, 239, 0.55) !important;
+  opacity: 1;
+}
+
+.form-control:focus,
+.form-select:focus {
+  background-color: #343a40;
+  color: #f8f9fa;
+  border-color: #adb5bd;
+  box-shadow: 0 0 0 0.2rem rgba(173, 181, 189, 0.25);
+}
+
+.btn-light,
+.btn-white {
+  background-color: #495059;
+  color: #f8f9fa;
+  border-color: #5a626d;
+}
+
+.btn-light:hover,
+.btn-white:hover {
+  background-color: #5a626d;
+  color: #ffffff;
 }

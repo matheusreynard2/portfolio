@@ -9,25 +9,29 @@
   width: 100%;
   margin: 0 auto;
   overflow-x: auto;
-  border: 1px solid #dee2e6;
-  border-radius: 4px;
-  background-color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 8px;
+  background-color: #3b4149;
+  box-shadow: 0 1.5rem 3rem rgba(0, 0, 0, 0.35);
+  padding: 1rem;
 }
 
 /* Estilos da tabela */
 .table {
   margin-bottom: 0;
-  background-color: #fff;
+  background-color: rgba(47, 52, 59, 0.9);
   width: 100%;
   min-width: 900px;
+  color: #f8f9fa;
 }
 
 /* Colunas */
 .coluna-label {
   width: 16%;
-  background-color: #f8f9fa;
+  background-color: rgba(59, 65, 73, 0.85);
   font-weight: bold;
   vertical-align: middle;
+  color: #f8f9fa;
 }
 
 .coluna-input {
@@ -49,26 +53,23 @@
   }
 
   .table td {
-    min-width: 120px; /* Largura mínima para as células */
-    white-space: nowrap; /* Evita quebra de texto */
+    min-width: 120px;
+    white-space: nowrap;
   }
 
-  /* Ajusta larguras específicas para algumas colunas */
-  .table td:nth-child(1) { /* Coluna dos labels */
+  .table td:nth-child(1) {
     min-width: 140px;
   }
 
-  .table td:nth-child(2) { /* Coluna dos inputs */
+  .table td:nth-child(2) {
     min-width: 180px;
   }
 
-  /* Ajusta o tamanho dos inputs */
   .form-control {
     min-width: 150px;
     width: 100%;
   }
 
-  /* Ajusta o container da tabela para ter scroll horizontal */
   .card-body {
     padding: 1rem;
     overflow-x: auto;

@@ -4,13 +4,12 @@ import {FormsModule} from '@angular/forms';
 import {HttpClientModule} from '@angular/common/http';
 import {NgbModule, NgbToastModule} from '@ng-bootstrap/ng-bootstrap';
 import {AuthService} from './service/auth/auth.service';
-import {CommonModule} from '@angular/common';
+import {CommonModule, DecimalPipe} from '@angular/common';
 import {filter, firstValueFrom} from 'rxjs';
 import {UsuarioService} from './service/usuario/usuario.service';
 import {DeviceService} from './service/device/device.service';
 import {environment} from '../environments/environment';
 import {UsuarioDTO} from './model/dto/UsuarioDTO';
-import {DecimalPipe} from '@angular/common';
 
 interface NavLink {
   label: string;
@@ -18,11 +17,6 @@ interface NavLink {
   external?: boolean;
   children?: NavLink[];
   secondaryRow?: boolean;
-}
-
-interface BreadcrumbItem {
-  label: string;
-  url?: string;
 }
 
 @Component({
@@ -47,6 +41,21 @@ export class AppComponent implements OnInit {
   isMobileOrTablet: boolean = false;
   isNavCollapsed: boolean = true;
   openDropdownIndex: number | null = null;
+  navigationHistory: { label: string; route: string }[] = [];
+  private readonly maxHistoryItems = 5;
+  private readonly routeLabels: Record<string, string> = {
+    '/login': 'Início',
+    '/cadastrar-usuario': 'Cadastrar usuário',
+    '/sobreTab1': 'Sobre o Dev',
+    '/sobreTab2': 'Infos Sistema',
+    '/geoloc': 'Localizar fornecedor',
+    '/geoloc2': 'Geolocalização',
+    '/addfornecedor': 'Cadastrar fornecedor',
+    '/listarfornecedores': 'Listar fornecedores',
+    '/pdv': 'Ponto de venda',
+    '/editar-usuario': 'Configurações do usuário',
+    '/relatorios': 'Relatório financeiro',
+  };
   navLinks: NavLink[] = [
     {label: 'Início', routerLink: '/login'},
     {
@@ -70,92 +79,14 @@ export class AppComponent implements OnInit {
     {label: 'Sobre', routerLink: '/sobreTab1', secondaryRow: true},
     {label: 'Swagger', routerLink: 'https://www.sistemaprodify.com/swagger-ui/index.html', external: true, secondaryRow: true},
   ];
-  breadcrumbTrail: BreadcrumbItem[] = [{label: 'Início', url: '/login'}];
-  private readonly breadcrumbConfig: Record<string, BreadcrumbItem[]> = {
-    '/login': [{label: 'Início', url: '/login'}],
-    '/produtos': [
-      {label: 'Início', url: '/login'},
-      {label: 'Gerenciar Produtos'},
-      {label: 'Listar Produtos'}
-    ],
-    '/addproduto': [
-      {label: 'Início', url: '/login'},
-      {label: 'Gerenciar Produtos'},
-      {label: 'Cadastrar Produtos'}
-    ],
-    '/comprar-produtos': [
-      {label: 'Início', url: '/login'},
-      {label: 'Gerenciar Produtos'},
-      {label: 'Comprar Produtos'}
-    ],
-    '/geoloc': [
-      {label: 'Início', url: '/login'},
-      {label: 'Gerenciar Fornecedores'},
-      {label: 'Localizar Fornecedor'}
-    ],
-    '/addfornecedor': [
-      {label: 'Início', url: '/login'},
-      {label: 'Gerenciar Fornecedores'},
-      {label: 'Cadastrar Fornecedor'}
-    ],
-    '/listarfornecedores': [
-      {label: 'Início', url: '/login'},
-      {label: 'Gerenciar Fornecedores'},
-      {label: 'Listar Fornecedores'}
-    ],
-    '/relatorios': [
-      {label: 'Início', url: '/login'},
-      {label: 'Relatório Financeiro'}
-    ],
-    '/sobreTab1': [
-      {label: 'Início', url: '/login'},
-      {label: 'Sobre'},
-      {label: 'Sobre o Dev'}
-    ],
-    '/sobreTab2': [
-      {label: 'Início', url: '/login'},
-      {label: 'Sobre'},
-      {label: 'Infos Sistema'}
-    ],
-    '/pdv': [
-      {label: 'Início', url: '/login'},
-      {label: 'Ponto de Venda'}
-    ],
-    '/editar-usuario': [
-      {label: 'Início', url: '/login'},
-      {label: 'Perfil'},
-      {label: 'Editar Usuário'}
-    ]
-  };
-  private readonly routeLabelMap: Record<string, string> = {
-    '/login': 'Início',
-    '/produtos': 'Listar Produtos',
-    '/addproduto': 'Cadastrar Produtos',
-    '/comprar-produtos': 'Comprar Produtos',
-    '/geoloc': 'Localizar Fornecedor',
-    '/addfornecedor': 'Cadastrar Fornecedor',
-    '/listarfornecedores': 'Listar Fornecedores',
-    '/relatorios': 'Relatório Financeiro',
-    '/sobreTab1': 'Sobre',
-    '/sobreTab2': 'Infos Sistema',
-    '/pdv': 'Ponto de Venda',
-    '/editar-usuario': 'Editar Usuário'
-  };
 
-  // Variáveis para contablização de acessos
   carregando: boolean = false;
   erro: string | null = null;
 
   ngOnInit() {
     this.authService.initActivityMonitor();
-
-    const PUBLIC_ROUTES = ['/login', '/cadastrar-usuario', '/sobreTab1', '/sobreTab2'];
-  
-    const isPublicRoute = (path: string) =>
-      PUBLIC_ROUTES.some(p => (path || '').startsWith(p));
   
     const evaluateRedirect = () => {
-      // não avalia durante refresh de sessão
       if (this.authService.isRefreshing()) return;
   
       const hasToken = this.authService.existeToken();
@@ -166,11 +97,8 @@ export class AppComponent implements OnInit {
       }
     };
   
-    // ① Boot: tenta restaurar sessão via refresh cookie e então avalia
     this.authService.initSessionFromRefresh().finally(() => evaluateRedirect());
 
-      // Removido: expiração será tratada pelos próprios components via catch dos endpoints
-    // OBSERVER DE SELEÇÃO DO MENU PARA SABER SE ESTÁ ACESSANDO POR CELULAR/COMPUTADOR
     this.deviceService.isMobileOrTablet.subscribe(isMobile => {
       this.isMobileOrTablet = isMobile;
       if (isMobile) {
@@ -183,17 +111,16 @@ export class AppComponent implements OnInit {
 
     this.verificarExibicaoPerfil();
     this.verificarTema();
-    this.updateBreadcrumbs(this.router.url);
     this.verificarAcessos();
     this.router.events.pipe(
       filter(event => event instanceof NavigationEnd)
-    ).subscribe(() => {
+    ).subscribe(event => {
+      const navigationEnd = event as NavigationEnd;
       this.authService.markNavigation();
       this.verificarExibicaoPerfil();
-      // Reavalia redirecionamento a cada navegação
+      this.updateNavigationHistory(navigationEnd.urlAfterRedirects);
       evaluateRedirect();
       this.closeNavigation();
-      this.updateBreadcrumbs(this.router.url);
     });
 
     this.authService.onActivity$().subscribe(() => evaluateRedirect());
@@ -202,10 +129,11 @@ export class AppComponent implements OnInit {
 
   private verificarAcessos() {
     this.usuarioService.addNovoAcessoIp().subscribe({
-      next: () => {
+      next: (novoAcesso: boolean) => {
         this.usuarioService.getAllAcessosIp().subscribe({
           next: (acessos) => {
-            this.numeroVisitas = acessos;
+            const incremento = typeof novoAcesso === 'boolean' && novoAcesso ? 1 : 0;
+            this.numeroVisitas = (acessos ?? 0) + incremento;
           }
         });
       }
@@ -217,21 +145,9 @@ export class AppComponent implements OnInit {
     this.temaEscuro = temaEscuro === 'true';
   }
 
-  // Método separado para verificação do perfil
   private verificarExibicaoPerfil() {
-    // Atualizar usuário logado
     this.usuarioLogado = this.authService.getUsuarioLogado();
-    const rotaAtual = this.router.url;
-
-    // CHECAGEM PARA EXIBIÇÃO DO PERFIL NO CANTO SUPERIOR ESQUERDO DA TELA
-    if (!this.authService.existeToken()) {
-      this.mostrarPerfil = false;
-    } else {
-      const rotasPublicas = ['login', 'cadastrar-usuario', 'sobreTab1', 'sobreTab2'];
-      const estaEmRotaPublica = rotasPublicas.some(rota => rotaAtual.includes(rota));
-
-      this.mostrarPerfil = !estaEmRotaPublica;
-    }
+    this.mostrarPerfil = this.authService.existeToken() && !!this.usuarioLogado;
   }
 
   async adicionarContabilizarAcessos(): Promise<void> {
@@ -239,9 +155,13 @@ export class AppComponent implements OnInit {
     this.erro = null;
     try {
       const acessoRegistrado = await firstValueFrom(this.usuarioService.addNovoAcessoIp());
-      acessoRegistrado
-        ? this.numeroVisitas = await firstValueFrom(this.usuarioService.getAllAcessosIp())
-        : this.erro = "Não foi possível registrar o acesso atual.";
+      if (typeof acessoRegistrado === 'boolean') {
+        const acessos = await firstValueFrom(this.usuarioService.getAllAcessosIp());
+        this.numeroVisitas = (acessos ?? 0) + (acessoRegistrado ? 1 : 0);
+      } else {
+        const acessos = await firstValueFrom(this.usuarioService.getAllAcessosIp());
+        this.numeroVisitas = acessos ?? 0;
+      }
     } catch (error) {
       console.error('Erro ao processar acessos:', error);
       this.erro = "Ocorreu um erro ao processar os dados de acesso.";
@@ -258,6 +178,9 @@ export class AppComponent implements OnInit {
 
   logout() {
     this.authService.logout();
+    this.mostrarPerfil = false;
+    this.usuarioLogado = {} as UsuarioDTO;
+    this.navigationHistory = [];
   }
 
   toggleNavbar() {
@@ -279,7 +202,12 @@ export class AppComponent implements OnInit {
     }
   }
 
-  handleNavInteraction() {
+  handleNavInteraction(route?: string) {
+    if (route === '/login' && this.authService.existeToken()) {
+      this.logout();
+      return;
+    }
+
     if (this.isMobileOrTablet) {
       this.closeNavigation();
     }
@@ -306,32 +234,6 @@ export class AppComponent implements OnInit {
     }
   }
 
-  private updateBreadcrumbs(url: string) {
-    const cleanUrl = (url || '').split('?')[0];
-    const configTrail = this.breadcrumbConfig[cleanUrl];
-    if (configTrail) {
-      this.breadcrumbTrail = configTrail;
-      return;
-    }
-
-    const segments = cleanUrl.split('/').filter(Boolean);
-    if (!segments.length) {
-      this.breadcrumbTrail = [{label: 'Início', url: '/login'}];
-      return;
-    }
-
-    const trail: BreadcrumbItem[] = [{label: 'Início', url: '/login'}];
-    let accumulated = '';
-    segments.forEach((segment, index) => {
-      accumulated += '/' + segment;
-      const label = this.routeLabelMap['/' + segment] || segment.replace(/-/g, ' ');
-      const formattedLabel = label.charAt(0).toUpperCase() + label.slice(1);
-      trail.push({label: formattedLabel, url: index === segments.length - 1 ? accumulated : undefined});
-    });
-
-    this.breadcrumbTrail = trail;
-  }
-
   get primaryNavLinks(): NavLink[] {
     return this.navLinks.filter(link => !link.secondaryRow);
   }
@@ -340,21 +242,58 @@ export class AppComponent implements OnInit {
     return this.navLinks.filter(link => link.secondaryRow);
   }
 
-  navigateToBreadcrumb(index: number) {
-    if (index < 0 || index >= this.breadcrumbTrail.length) {
+  private updateNavigationHistory(url: string) {
+    const route = url.split('?')[0];
+    const label = this.getLabelForRoute(route);
+
+    if (!label) {
       return;
     }
 
-    const target = this.breadcrumbTrail[index];
-    if (target.url) {
-      this.router.navigate([target.url]);
-      return;
+    const existingIndex = this.navigationHistory.findIndex(item => item.route === route);
+    if (existingIndex !== -1) {
+      this.navigationHistory.splice(existingIndex, 1);
     }
 
-    const matchedRoute = Object.entries(this.routeLabelMap).find(([, label]) => label === target.label);
-    if (matchedRoute) {
-      this.router.navigate([matchedRoute[0]]);
+    this.navigationHistory.push({label, route});
+
+    if (this.navigationHistory.length > this.maxHistoryItems) {
+      this.navigationHistory = this.navigationHistory.slice(-this.maxHistoryItems);
     }
+  }
+
+  private getLabelForRoute(route: string): string | null {
+    if (!route) {
+      return null;
+    }
+
+    const labelFromNav = this.findLabelInNavLinks(route, this.navLinks);
+    if (labelFromNav) {
+      return labelFromNav;
+    }
+
+    if (this.routeLabels[route]) {
+      return this.routeLabels[route];
+    }
+
+    return null;
+  }
+
+  private findLabelInNavLinks(route: string, links: NavLink[]): string | null {
+    for (const link of links) {
+      if (link.routerLink === route) {
+        return link.label;
+      }
+
+      if (link.children?.length) {
+        const childLabel = this.findLabelInNavLinks(route, link.children);
+        if (childLabel) {
+          return childLabel;
+        }
+      }
+    }
+
+    return null;
   }
 }
 

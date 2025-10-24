@@ -1,70 +1,76 @@
-.modal-header {
-  position: relative;
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  width: 100%;  /* Garante que o modal ocupe toda a largura */
-}
 
-.modal-title {
-  margin-right: 160px; /* Ajusta para o espaço da imagem */
-}
 
-.img-right {
-  position: absolute;
-  right: 0;
-  top: 0;
-  opacity: 75%;
-}
-
+/* Estilos aplicados diretamente na tabela do formulário */
 .div-tabela {
   width: 100%;
   margin: 0 auto;
   overflow-x: auto;
   overflow-y: auto;
+  background: #2f343b;
+  border-radius: 0.75rem;
+  box-shadow: 0 1.25rem 2.5rem rgba(0, 0, 0, 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 1rem;
 }
 
-p {
-  font-size: 16px;
-  color: black;
-}
-
+p,
 h5 {
-  font-size: 20px;
-  color: black;
+  color: #f8f9fa;
+}
+
+.table {
+  background-color: #3b4149;
+  color: #f8f9fa;
+  border-radius: 0.5rem;
+  overflow: hidden;
+}
+
+.table thead th {
+  background-color: #454b55;
+  color: #f8f9fa;
+}
+
+.table tbody tr:nth-of-type(odd) {
+  background-color: rgba(47, 52, 59, 0.9);
+}
+
+.table tbody tr:nth-of-type(even) {
+  background-color: rgba(59, 65, 73, 0.85);
+}
+
+.table td,
+.table th {
+  border-color: rgba(255, 255, 255, 0.06);
+}
+
+.table tbody tr:hover {
+  background-color: rgba(13, 110, 253, 0.12);
 }
 
 /* Ajustes para responsividade em dispositivos móveis */
 @media (max-width: 768px) {
   .div-tabela {
-    min-width: 800px; /* Garante uma largura mínima para a tabela */
-  }
-
-  .table {
-    margin-bottom: 0;
+    min-width: 800px;
   }
 
   .table td {
-    min-width: 120px; /* Largura mínima para as células */
-    white-space: nowrap; /* Evita quebra de texto */
+    min-width: 120px;
+    white-space: nowrap;
   }
 
-  /* Ajusta larguras específicas para algumas colunas */
-  .table td:nth-child(1) { /* Coluna dos labels */
+  .table td:nth-child(1) {
     min-width: 140px;
   }
 
-  .table td:nth-child(2) { /* Coluna dos inputs */
+  .table td:nth-child(2) {
     min-width: 180px;
   }
 
-  /* Ajusta o tamanho dos inputs */
   .form-control {
     min-width: 150px;
     width: 100%;
   }
 
-  /* Ajusta o container da tabela para ter scroll horizontal */
   .card-body {
     padding: 1rem;
     overflow-x: auto;
@@ -82,6 +88,7 @@ h5 {
   background-repeat: no-repeat;
   background-position: right calc(0.375em + 0.1875rem) center;
   background-size: calc(0.75em + 0.375rem) calc(0.75em + 0.375rem);
+  background-color: rgba(220, 53, 69, 0.12);
 }
 
 .invalid-feedback {

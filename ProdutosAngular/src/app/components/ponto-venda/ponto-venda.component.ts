@@ -27,6 +27,7 @@ export class PontoVendaComponent implements OnInit {
   @ViewChild('modalVisualizarVenda') modalVisualizarVenda!: TemplateRef<any>;
   @ViewChild('modalHistorico') modalHistorico!: TemplateRef<any>;
   @ViewChild('modalConfirmDeleteMultiVendas') modalConfirmDeleteMultiVendas!: TemplateRef<any>;
+  @ViewChild('modalLimiteSaldo') modalLimiteSaldo!: TemplateRef<any>;
   vendaId: number = 0;
   produtos: ProdutoDTO[] = [];
   produtosFiltrados: ProdutoDTO[] = [];
@@ -64,6 +65,7 @@ export class PontoVendaComponent implements OnInit {
   isDeletingHistorico: boolean = false;
   overlayCarregandoPdv: boolean = false;
   overlayTextoPdv: string = '';
+  private readonly SALDO_MAXIMO = 2000000000;
 
   constructor(
     private produtoService: ProdutoService,
@@ -378,6 +380,13 @@ export class PontoVendaComponent implements OnInit {
 
   finalizarVenda(): void {
     if (!this.finalizarHabilitado || this.isFinalizandoVenda) return;
+    const saldoAtual = Number(this.authService.getUsuarioLogado()?.saldo || 0);
+    const novoSaldo = saldoAtual + (this.totalValor || 0);
+    if (novoSaldo > this.SALDO_MAXIMO) {
+      this.modalService.open(this.modalLimiteSaldo, { size: 'sm' });
+      return;
+    }
+
     this.isFinalizandoVenda = true;
     this.overlayCarregandoPdv = true;
     this.overlayTextoPdv = 'Finalizando venda...';
@@ -400,11 +409,16 @@ export class PontoVendaComponent implements OnInit {
             subtotal: precoUnit * it.quantidade
           };
         });
-        // Atualiza saldo no perfil (memória e storage) com base no total da venda
         const u = this.authService.getUsuarioLogado();
         try {
           const saldoAtual = Number(u?.saldo || 0);
           const novoSaldo = saldoAtual + (this.totalValor || 0);
+          if (novoSaldo > this.SALDO_MAXIMO) {
+            this.modalService.open(this.modalLimiteSaldo, { size: 'sm' });
+            this.isFinalizandoVenda = false;
+            this.overlayCarregandoPdv = false;
+            return;
+          }
           this.authService.adicionarUsuarioLogado({
             ...u,
             saldo: novoSaldo

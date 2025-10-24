@@ -11,60 +11,60 @@
   height: auto;
   padding: 16px;
   margin-bottom: 20px;
-  background-color: #ffffff;
-  border: 1px solid #e0e0e0;
+  background-color: #3b4149;
+  border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 1.5rem 3rem rgba(0, 0, 0, 0.35);
   transition: all 0.3s ease;
 }
 
 .profile-card:hover {
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2rem 3.5rem rgba(0, 0, 0, 0.45);
   transform: translateY(-2px);
 }
 
 /* Sobrescrevendo os cabeçalhos dos cards para a paleta de preto/cinza */
-.card-header.bg-primary {
-  background-color: #212529 !important;
+/* Cabeçalhos com texto branco forçado */
+.card-header {
   color: #ffffff !important;
   border-bottom: none;
   font-weight: 500;
+}
+
+.card-header.bg-primary {
+  background-color: #212529 !important;
 }
 
 .card-header.bg-success {
   background-color: #343a40 !important;
-  color: #ffffff !important;
-  border-bottom: none;
-  font-weight: 500;
 }
 
 .card-header.bg-info {
   background-color: #495057 !important;
-  color: #ffffff !important;
-  border-bottom: none;
-  font-weight: 500;
 }
 
 /* Estilização dos cards internos */
 .card {
   border: none;
   border-radius: 6px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.03);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.35);
   margin-bottom: 16px;
-  background-color: #f8f9fa;
+  background-color: #2f343b;
+  color: #ffffff;
 }
 
 .card-body {
   padding: 1.25rem;
-  background-color: #ffffff;
+  background-color: #3b4149;
   border-radius: 0 0 6px 6px;
+  color: #ffffff;
 }
 
 /* Melhorando a aparência dos textos e informações */
 .card-body p {
   margin-bottom: 0.75rem;
-  color: #343a40;
-  border-bottom: 1px solid #f0f0f0;
+  color: #ffffff;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   padding-bottom: 0.75rem;
 }
 
@@ -74,10 +74,21 @@
 }
 
 .card-body p strong {
-  color: #212529;
+  color: #ffffff;
   font-weight: 600;
   min-width: 120px;
   display: inline-block;
+}
+
+.card-body h5,
+.card-body label,
+.card-body span,
+.card-body small {
+  color: #ffffff !important;
+}
+
+.card-body .text-muted {
+  color: rgba(255, 255, 255, 0.7) !important;
 }
 
 /* Estilização para os botões dentro dos cards */
@@ -121,7 +132,7 @@
 }
 
 .nav-tabs .nav-link {
-  color: #6c757d;
+  color: #000000;
   background-color: #f8f9fa;
   border: none;
   border-radius: 0.375rem 0.375rem 0 0;
@@ -132,7 +143,7 @@
 
 .nav-tabs .nav-link:hover:not(.active):not(.disabled) {
   background-color: #e9ecef;
-  color: #343a40;
+  color: #212529;
 }
 
 .nav-tabs .nav-link.active {
@@ -142,8 +153,8 @@
 }
 
 .nav-tabs .nav-link.disabled {
-  color: #adb5bd;
-  background-color: #f1f3f5;
+  color: rgba(73, 80, 87, 0.6);
+  background-color: rgba(248, 249, 250, 0.8);
   cursor: not-allowed;
 }
 
@@ -153,7 +164,7 @@
 }
 
 .nav-tabs.dark-mode .nav-link {
-  color: #ced4da;
+  color: #f8f9fa;
   background-color: #212529;
   border: none;
   border-radius: 0.375rem 0.375rem 0 0;
@@ -173,7 +184,7 @@
 }
 
 .nav-tabs.dark-mode .nav-link.disabled {
-  color: #6c757d;
+  color: rgba(206, 212, 218, 0.6);
   background-color: #343a40;
   cursor: not-allowed;
 }

@@ -94,6 +94,12 @@ export class EditarUsuarioComponent implements OnInit {
 
   salvar() {
     const id = this.auth.getUsuarioLogado()?.idUsuario ?? 0;
+    const saldoNumerico = Number(this.usuario.saldo || 0);
+    if (saldoNumerico > 2000000000) {
+      this.showSmallModal('O saldo informado ultrapassa o limite de R$2.000.000.000,00. Ajuste o valor antes de salvar.');
+      return;
+    }
+
     const payload: UsuarioDTO = {
       ...this.usuario,
       idUsuario: id,
